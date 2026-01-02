@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert, TimeSlot, BookingCreateRequest, BookingResponse, PRDResponse, ConversationSummaryResponse } from '../types';
+import { ChatStore, Message, CreateSessionRequest, MatchedExpert, TimeSlot, BookingCreateRequest, PRDResponse, ConversationSummaryResponse } from '../types';
 import { api } from '../api/client';
 import { wsClient } from '../api/websocket';
 
@@ -12,9 +12,6 @@ const getVisitorId = (): string => {
   localStorage.setItem('unobot_visitor_id', newId);
   return newId;
 };
-
-// Flag to control whether to use WebSocket (set to true to enable)
-let USE_WEBSOCKET = false;
 
 // Helper to setup WebSocket event listeners
 const setupWebSocketListeners = (set: any, get: any) => {
@@ -271,7 +268,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   sendMessage: async (content: string) => {
     try {
-      const { sessionId, messages, addMessage } = get();
+      const { sessionId, addMessage } = get();
 
       if (!sessionId) {
         throw new Error('No session available');
@@ -718,7 +715,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         id: `summary_regen_${Date.now()}`,
         session_id: sessionId,
         role: 'assistant',
-        content: `🔄 New summary generated!\n\n**New Summary:**\n${response.summary}\n\nDo you approve this revised summary?`,
+        content: `🔄 New summary generated!\n\n**New Summary:**\n${summaryResponse.summary}\n\nDo you approve this revised summary?`,
         meta_data: { type: 'summary_regenerated' },
         created_at: new Date().toISOString(),
       };
