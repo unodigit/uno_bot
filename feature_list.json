@@ -1996,11 +1996,12 @@
       "Step 3: Verify chat takes 100% height",
       "Step 4: Verify proper mobile styling"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:26:51.426420Z"
+    "dev_completed_at": "2026-01-02T08:26:51.426420Z",
+    "qa_completed_at": "2026-01-02T08:58:40.392599+00:00"
   },
   {
     "category": "style",
@@ -2253,8 +2254,10 @@
       "Step 3: Verify under 3000ms"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:59:30.001566Z"
   },
   {
     "category": "functional",
