@@ -188,7 +188,12 @@ class SessionService:
                 "content": msg.content,
             })
 
-        # Check for ambiguous response FIRST - before extracting info
+        # Extract user information from their response FIRST
+        # This updates session data which is used for context
+        # Always extract, even if the response is ambiguous
+        await self._extract_user_info(session, user_message)
+
+        # Check for ambiguous response AFTER extracting info
         ambiguity_check = await self._check_ambiguity(user_message, session)
         if ambiguity_check["is_ambiguous"]:
             # Generate clarification response instead of normal flow
@@ -208,10 +213,6 @@ class SessionService:
             await self.db.commit()
             await self.db.refresh(ai_message)
             return ai_message
-
-        # Extract user information from their response FIRST
-        # This updates session data which is used for context
-        await self._extract_user_info(session, user_message)
 
         # Calculate lead score and recommend service after each message
         # This ensures it runs even if extraction returns early
@@ -309,13 +310,10 @@ class SessionService:
         if not session.business_context.get("challenges"):
             challenge_keywords = ['problem', 'issue', 'challenge', 'difficulty', 'struggle', 'pain', 'need', 'want', 'looking for', 'trying to']
             if any(keyword in user_text for keyword in challenge_keywords):
-                print(f"DEBUG: Extracting challenges from '{user_message}'")
-                print(f"DEBUG: Before update, business_context: {session.business_context}")
                 await self.update_session_data(
                     session,
                     business_context={"challenges": user_message}
                 )
-                print(f"DEBUG: After update, business_context: {session.business_context}")
                 return
 
         # Extract industry

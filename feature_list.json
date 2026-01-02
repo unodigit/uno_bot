@@ -1871,10 +1871,12 @@
       "Step 3: Verify font sizes match spec",
       "Step 4: Verify font weights match spec"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T08:26:14.089398Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T08:26:14.089398Z",
+    "qa_completed_at": "2026-01-02T08:31:03.975410+00:00",
+    "qa_retry_count": 0
   },
   {
     "category": "style",

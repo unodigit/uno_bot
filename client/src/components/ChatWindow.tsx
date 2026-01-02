@@ -223,7 +223,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
           className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
           data-testid="chat-window"
         >
@@ -274,7 +274,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
           className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
           data-testid="chat-window"
         >
@@ -330,7 +330,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
           className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
           data-testid="chat-window"
         >
@@ -384,7 +384,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
           className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
           data-testid="chat-window"
         >
@@ -411,8 +411,8 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
               <X className="w-8 h-8 text-red-600" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Booking Cancelled</h3>
-            <p className="text-sm text-gray-600 mb-6">
+            <h3 className="text-lg font-bold text-white mb-2">Booking Cancelled</h3>
+            <p className="text-sm text-white-muted mb-6">
               Your appointment has been successfully cancelled.
             </p>
             <button
@@ -438,7 +438,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.15 }}
           className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
           data-testid="chat-window"
         >
@@ -679,7 +679,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           data-testid="messages-container"
         >
           {messages.length === 0 && !isLoading && (
-            <div className="flex justify-center items-center h-full text-text-muted text-sm">
+            <div className="flex justify-center items-center h-full text-white-muted text-sm">
               <div className="text-center">
                 <div className="animate-pulse mb-2">...</div>
                 <p>Initializing chat...</p>
@@ -692,7 +692,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               key={message.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.15 }}
               className={twMerge(
                 'flex w-full',
                 message.role === 'user' ? 'justify-end' : 'justify-start'
@@ -704,13 +704,13 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   'max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm',
                   message.role === 'user'
                     ? 'bg-primary text-white rounded-br-sm'
-                    : 'bg-surface text-text rounded-bl-sm border border-border'
+                    : 'bg-surface text-white rounded-bl-sm border border-border'
                 )}
               >
                 <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                 <span className={twMerge(
                   'text-[10px] opacity-70 mt-1 block',
-                  message.role === 'user' ? 'text-white/80' : 'text-text-muted'
+                  message.role === 'user' ? 'text-white/80' : 'text-white-muted'
                 )}>
                   {formatTime(message.created_at)}
                 </span>
@@ -805,7 +805,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   key={idx}
                   onClick={() => sendMessage(reply)}
                   className={twMerge(
-                    'px-3 py-1.5 text-xs rounded-full transition-all duration-200 border',
+                    'px-3 py-1.5 text-xs rounded-full transition-all duration-150 border font-medium',
                     'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                     'disabled:opacity-50 disabled:cursor-not-allowed',
                     'bg-surface text-text border-border hover:bg-gray-200 active:scale-95 shadow-sm'
@@ -836,7 +836,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             onClick={handleSend}
             disabled={!inputValue.trim() || isStreaming || isLoading}
             className={twMerge(
-              'h-full px-4 rounded-md transition-all duration-200 flex items-center justify-center',
+              'h-full px-4 rounded-md transition-all duration-150 flex items-center justify-center font-medium',
               'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
               // Enabled state
               (!inputValue.trim() || isStreaming || isLoading)

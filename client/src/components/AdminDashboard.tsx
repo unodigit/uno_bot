@@ -359,8 +359,8 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-sm text-gray-600">Manage experts, templates, and system analytics</p>
+              <h1 className="text-2xl font-bold text-text">Admin Dashboard</h1>
+              <p className="text-sm text-text-muted">Manage experts, templates, and system analytics</p>
             </div>
             <div className="flex items-center gap-3">
               {onBack && (
@@ -414,8 +414,8 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
               <Card className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Total Experts</p>
-                    <p className="text-2xl font-bold text-gray-900">{totalExperts}</p>
+                    <p className="text-sm font-medium text-text">Total Experts</p>
+                    <p className="text-2xl font-bold text-text">{totalExperts}</p>
                   </div>
                   <Users className="w-8 h-8 text-blue-600" />
                 </div>
@@ -424,8 +424,8 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
               <Card className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Active Experts</p>
-                    <p className="text-2xl font-bold text-gray-900">{activeExperts}</p>
+                    <p className="text-sm font-medium text-text">Active Experts</p>
+                    <p className="text-2xl font-bold text-text">{activeExperts}</p>
                   </div>
                   <Activity className="w-8 h-8 text-green-600" />
                 </div>
@@ -434,8 +434,8 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
               <Card className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Inactive Experts</p>
-                    <p className="text-2xl font-bold text-gray-900">{inactiveExperts}</p>
+                    <p className="text-sm font-medium text-text">Inactive Experts</p>
+                    <p className="text-2xl font-bold text-text">{inactiveExperts}</p>
                   </div>
                   <Database className="w-8 h-8 text-orange-600" />
                 </div>
@@ -444,8 +444,8 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
               <Card className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">System Status</p>
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-sm font-medium text-text">System Status</p>
+                    <p className="text-2xl font-bold text-text">
                       {analytics?.system?.status ? 'Operational' : 'Checking...'}
                     </p>
                   </div>
@@ -459,7 +459,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <Card className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Conversation Analytics (30 days)</h3>
+                    <h3 className="text-lg font-semibold text-text">Conversation Analytics (30 days)</h3>
                     <BarChart3 className="w-6 h-6 text-blue-600" />
                   </div>
                   <div className="space-y-4">
@@ -469,7 +469,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
                         <div className="text-sm text-blue-800">Total Sessions</div>
                       </div>
                       <div className="bg-green-50 p-4 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">{analytics.conversations?.sessions?.completed || 0}</div>
+                        <div className="text-2xl font-bold text-text">{analytics.conversations?.sessions?.completed || 0}</div>
                         <div className="text-sm text-green-800">Completed</div>
                       </div>
                     </div>
@@ -514,7 +514,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
 
                 <Card className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Booking Analytics (30 days)</h3>
+                    <h3 className="text-lg font-semibold text-text">Booking Analytics (30 days)</h3>
                     <Clock className="w-6 h-6 text-purple-600" />
                   </div>
                   <div className="space-y-4">
@@ -524,7 +524,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
                         <div className="text-sm text-purple-800">Total Bookings</div>
                       </div>
                       <div className="bg-green-50 p-4 rounded-lg">
-                        <div className="text-2xl font-bold text-green-600">{analytics.bookings?.bookings?.confirmed || 0}</div>
+                        <div className="text-2xl font-bold text-text">{analytics.bookings?.bookings?.confirmed || 0}</div>
                         <div className="text-sm text-green-800">Confirmed</div>
                       </div>
                       <div className="bg-orange-50 p-4 rounded-lg">
@@ -558,7 +558,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
                 </Card>
 
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">System Health</h3>
+                  <h3 className="text-lg font-semibold text-text mb-4">System Health</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Status:</span>
@@ -584,7 +584,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
                 </Card>
 
                 <Card className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Expert Performance (30 days)</h3>
+                  <h3 className="text-lg font-semibold text-text mb-4">Expert Performance (30 days)</h3>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Total Experts:</span>
@@ -652,7 +652,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
             {/* Experts List */}
             <div className="bg-white rounded-lg shadow-sm border">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Expert Management</h2>
+                <h2 className="text-lg font-semibold text-text">Expert Management</h2>
                 <p className="text-sm text-gray-600 mt-1">Manage UnoDigit expert profiles and availability</p>
               </div>
 
@@ -692,7 +692,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
             {(addingTemplate || editingTemplate) && (
               <Card className="p-6 mb-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">
+                  <h2 className="text-lg font-semibold text-text">
                     {addingTemplate ? 'Add New Template' : 'Edit Template'}
                   </h2>
                   <Button variant="outline" onClick={handleCancelTemplate} className="flex items-center gap-2">
@@ -772,7 +772,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
             {/* Templates List */}
             <div className="bg-white rounded-lg shadow-sm border">
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Welcome Message Templates</h2>
+                <h2 className="text-lg font-semibold text-text">Welcome Message Templates</h2>
                 <p className="text-sm text-gray-600 mt-1">Configure customizable welcome messages for different industries</p>
               </div>
 
