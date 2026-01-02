@@ -143,7 +143,7 @@ async def update_expert(
     This endpoint is intended for admin use to update expert profiles.
     """
     service = ExpertService(db)
-    expert = await service.get_expert(expert_id)
+    expert = await service.get_expert_model(expert_id)
 
     if not expert:
         raise HTTPException(
@@ -185,7 +185,7 @@ async def delete_expert(
     This endpoint is intended for admin use to delete expert profiles.
     """
     service = ExpertService(db)
-    expert = await service.get_expert(expert_id)
+    expert = await service.get_expert_model(expert_id)
 
     if not expert:
         raise HTTPException(
@@ -348,7 +348,7 @@ async def oauth_callback(
         # Store refresh token
         if credentials.refresh_token:
             expert_service = ExpertService(db)
-            expert = await expert_service.get_expert(expert_id)
+            expert = await expert_service.get_expert_model(expert_id)
             if not expert:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,

@@ -2498,9 +2498,12 @@
       "Step 4: Verify faster response",
       "Step 5: Verify cache TTL works"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T19:50:00.000Z",
+    "qa_completed_at": "2026-01-02T19:50:00.000Z"
   },
   {
     "category": "functional",
@@ -2551,7 +2554,10 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": true
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T19:50:00.000Z",
+    "qa_completed_at": "2026-01-02T19:50:00.000Z"
   },
   {
     "category": "functional",
@@ -2652,9 +2658,11 @@
       "Step 3: Verify expert matching tested",
       "Step 4: Verify PRD generation tested"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T11:03:32.611425Z"
   },
   {
     "category": "functional",
@@ -2665,9 +2673,11 @@
       "Step 3: Verify database interactions tested",
       "Step 4: Verify proper test isolation"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T11:02:23.918775Z"
   },
   {
     "category": "functional",
