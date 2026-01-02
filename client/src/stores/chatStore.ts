@@ -643,11 +643,14 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       set({ isGeneratingPRD: true, isReviewingSummary: false, error: null });
 
       // Approve summary and generate PRD
-      const prdResponse = await api.approveSummaryAndGeneratePRD({
+      const response = await api.approveSummaryAndGeneratePRD({
         session_id: sessionId,
         summary: conversationSummary,
         approve: true,
       });
+
+      // When approve=true, API returns PRDResponse
+      const prdResponse = response as PRDResponse;
 
       // Get preview
       const preview = await api.getPRDPreview(prdResponse.id);
