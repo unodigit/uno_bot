@@ -53,8 +53,16 @@ class SessionService:
         if not session.started_at:
             return False
 
+        # Normalize to UTC for comparison
         expiry_date = session.started_at + timedelta(days=settings.session_expiry_days)
-        return datetime.utcnow() > expiry_date
+        now = datetime.utcnow()
+
+        # Handle timezone-aware datetimes
+        if session.started_at.tzinfo is not None:
+            expiry_date = expiry_date.astimezone(now.tzinfo) if now.tzinfo else expiry_date.replace(tzinfo=None)
+            now = now.replace(tzinfo=expiry_date.tzinfo) if expiry_date.tzinfo else now
+
+        return now > expiry_date
 
     @staticmethod
     def get_session_expiry_date(session: ConversationSession) -> datetime | None:
@@ -82,7 +90,17 @@ class SessionService:
         """
         if not session.started_at:
             return -1
-        age = datetime.utcnow() - session.started_at
+
+        now = datetime.utcnow()
+        started_at = session.started_at
+
+        # Handle timezone-aware datetimes by converting to naive UTC
+        if started_at.tzinfo is not None:
+            # Convert to UTC and make naive
+            started_at = started_at.astimezone(now.tzinfo).replace(tzinfo=None) if now.tzinfo else started_at.replace(tzinfo=None)
+            now = now.replace(tzinfo=None)
+
+        age = now - started_at
         return age.days
 
     async def create_session(self, session_create: SessionCreate) -> ConversationSession:
