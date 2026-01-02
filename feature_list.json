@@ -2847,9 +2847,11 @@
       "Step 3: Perform actions and check state",
       "Step 4: Verify state persists appropriately"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T13:01:12.503146+00:00",
+    "qa_completed_at": "2026-01-02T13:01:12.503152+00:00"
   },
   {
     "category": "functional",

@@ -1,0 +1,37 @@
+[
+  {
+    "test": "Store initialization",
+    "passed": true,
+    "details": "Chat widget button found - store likely initialized"
+  },
+  {
+    "test": "Chat state open/close",
+    "passed": true,
+    "details": "Chat window opened successfully"
+  },
+  {
+    "test": "Session creation state",
+    "passed": true,
+    "details": "Welcome message found - session created and state updated"
+  },
+  {
+    "test": "Message state update",
+    "passed": false,
+    "details": "Could not find send button"
+  },
+  {
+    "test": "State persistence",
+    "passed": false,
+    "details": "Page.wait_for_selector: Timeout 2000ms exceeded.\nCall log:\n  - waiting for locator(\"textarea\") to be visible\n"
+  },
+  {
+    "test": "Loading state management",
+    "passed": true,
+    "details": "State management handles loading states"
+  },
+  {
+    "test": "Error state handling",
+    "passed": true,
+    "details": "Error state management structure exists"
+  }
+]

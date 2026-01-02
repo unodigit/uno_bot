@@ -175,12 +175,12 @@ class TestZustandStateManagement:
             await chat_button.click()
             await asyncio.sleep(2)
 
-            # Find input field
+            # Find input field (it's an input element, not textarea)
             input_selectors = [
-                'textarea[placeholder*="Type"]',
+                '[data-testid="message-input"]',
+                'input[type="text"]',
                 'input[placeholder*="Type"]',
-                'textarea[class*="input"]',
-                '[data-testid="chat-input"]',
+                'input[class*="input"]',
             ]
 
             input_field = None
@@ -200,31 +200,24 @@ class TestZustandStateManagement:
             await input_field.fill("Test message from state test")
             await asyncio.sleep(0.5)
 
-            # Send message
-            send_button = await self.page.query_selector('button[aria-label="Send"]')
-            if not send_button:
-                send_button = await self.page.query_selector('button:has-text("Send")')
+            # Send message by pressing Enter (more reliable than clicking send button)
+            await input_field.press('Enter')
+            await asyncio.sleep(2)
 
-            if send_button:
-                await send_button.click()
-                await asyncio.sleep(2)
-
-                # Check if message appears in chat
-                user_message = await self.page.query_selector('text=Test message from state test')
-                if user_message:
-                    self.log_result(
-                        "Message state update",
-                        True,
-                        "Message appeared in chat - state updated correctly"
-                    )
-                else:
-                    self.log_result(
-                        "Message state update",
-                        False,
-                        "Message did not appear in chat"
-                    )
+            # Check if message appears in chat
+            user_message = await self.page.query_selector('text=Test message from state test')
+            if user_message:
+                self.log_result(
+                    "Message state update",
+                    True,
+                    "Message appeared in chat - state updated correctly"
+                )
             else:
-                self.log_result("Message state update", False, "Could not find send button")
+                self.log_result(
+                    "Message state update",
+                    False,
+                    "Message did not appear in chat"
+                )
 
         except Exception as e:
             self.log_result("Message state update", False, str(e))
@@ -240,52 +233,36 @@ class TestZustandStateManagement:
             await asyncio.sleep(2)
 
             # Send a message
-            input_field = await self.page.wait_for_selector('textarea', timeout=2000)
+            input_field = await self.page.wait_for_selector('[data-testid="message-input"]', timeout=2000)
             await input_field.fill("Persistence test message")
             await asyncio.sleep(0.5)
 
-            send_button = await self.page.query_selector('button:has-text("Send")')
-            if send_button:
-                await send_button.click()
-                await asyncio.sleep(2)
+            # Send by pressing Enter
+            await input_field.press('Enter')
+            await asyncio.sleep(2)
 
-                # Refresh page
-                await self.page.reload(wait_until='networkidle')
-                await asyncio.sleep(2)
+            # Get session ID before refresh
+            session_id_before = await self.page.evaluate('() => localStorage.getItem("unobot_session_id")')
 
-                # Reopen chat
-                chat_button = await self.page.wait_for_selector('button', timeout=5000)
-                await chat_button.click()
-                await asyncio.sleep(2)
+            # Refresh page
+            await self.page.reload(wait_until='networkidle')
+            await asyncio.sleep(2)
 
-                # Check if previous session is loaded
-                # (The chat should open without creating a new session)
-                session_restored = await self.page.query_selector('text=Persistence test message')
+            # Check if session ID persisted
+            session_id_after = await self.page.evaluate('() => localStorage.getItem("unobot_session_id")')
 
-                if session_restored:
-                    self.log_result(
-                        "State persistence",
-                        True,
-                        "Session persisted across refresh"
-                    )
-                else:
-                    # Even if messages aren't restored, check if session ID persists
-                    # by checking localStorage via JavaScript
-                    session_id = await self.page.evaluate('() => localStorage.getItem("unobot_session_id")')
-                    if session_id:
-                        self.log_result(
-                            "State persistence",
-                            True,
-                            f"Session ID persisted: {session_id[:8]}..."
-                        )
-                    else:
-                        self.log_result(
-                            "State persistence",
-                            False,
-                            "Session not persisted"
-                        )
+            if session_id_before and session_id_before == session_id_after:
+                self.log_result(
+                    "State persistence",
+                    True,
+                    f"Session ID persisted across refresh: {session_id_after[:8]}..."
+                )
             else:
-                self.log_result("State persistence", False, "Could not send test message")
+                self.log_result(
+                    "State persistence",
+                    False,
+                    f"Session ID not persisted (before: {session_id_before}, after: {session_id_after})"
+                )
 
         except Exception as e:
             self.log_result("State persistence", False, str(e))
