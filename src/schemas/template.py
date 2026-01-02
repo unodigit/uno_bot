@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class WelcomeMessageTemplateBase(BaseModel):
@@ -39,7 +39,13 @@ class WelcomeMessageTemplateUpdate(BaseModel):
 class WelcomeMessageTemplateResponse(WelcomeMessageTemplateBase):
     """Schema for welcome message template response."""
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat(),
+            UUID: lambda v: str(v),
+        }
+    )
 
     id: UUID
     use_count: int

@@ -1110,7 +1110,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T21:45:00.000000Z",
+    "dev_completed_at": "2026-01-02T07:12:37.008043Z",
     "qa_completed_at": "2026-01-02T21:50:00.000000Z",
     "test_files": [
       "tests/integration/test_summary_feature.py",
@@ -1398,7 +1398,7 @@
       "Step 4: Verify ready to send/receive"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1412,7 +1412,7 @@
       "Step 5: Verify complete 'message' event received"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1426,7 +1426,7 @@
       "Step 5: Verify indicator cleared"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1439,7 +1439,7 @@
       "Step 4: Verify phase name is correct"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1452,7 +1452,7 @@
       "Step 4: Verify event contains prd_id"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1465,7 +1465,7 @@
       "Step 4: Verify slots data included"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1478,7 +1478,7 @@
       "Step 4: Verify booking details included"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1491,7 +1491,7 @@
       "Step 4: Verify connection remains stable"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {

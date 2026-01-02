@@ -61,7 +61,7 @@ async def validation_exception_handler(
 
     return JSONResponse(
         status_code=422,
-        content=error_response.model_dump(exclude_none=True),
+        content=error_response.model_dump(mode='json', exclude_none=True),
     )
 
 
@@ -98,7 +98,7 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
 
     return JSONResponse(
         status_code=exc.status_code,
-        content=error_response.model_dump(exclude_none=True),
+        content=error_response.model_dump(mode='json', exclude_none=True),
     )
 
 
@@ -141,7 +141,7 @@ async def unobot_exception_handler(request: Request, exc: UnoBotError) -> JSONRe
 
     return JSONResponse(
         status_code=exc.status_code,
-        content=error_response.model_dump(exclude_none=True),
+        content=error_response.model_dump(mode='json', exclude_none=True),
     )
 
 
@@ -175,7 +175,7 @@ async def database_exception_handler(request: Request, exc: SQLAlchemyError) -> 
 
     return JSONResponse(
         status_code=status_code,
-        content=error_response.model_dump(exclude_none=True),
+        content=error_response.model_dump(mode='json', exclude_none=True),
     )
 
 
@@ -198,7 +198,7 @@ async def external_service_exception_handler(request: Request, exc: Exception) -
 
     return JSONResponse(
         status_code=503,
-        content=error_response.model_dump(exclude_none=True),
+        content=error_response.model_dump(mode='json', exclude_none=True),
     )
 
 
