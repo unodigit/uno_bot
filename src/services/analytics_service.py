@@ -135,8 +135,8 @@ class AnalyticsService:
         # Sort by booking count
         expert_metrics.sort(key=lambda x: cast(int, x["total_bookings"]), reverse=True)
 
-        total_bookings = sum(e["total_bookings"] for e in expert_metrics)
-        avg_bookings = total_bookings / len(expert_metrics) if expert_metrics else 0.0
+        total_bookings: int = sum(cast(int, e["total_bookings"]) for e in expert_metrics)
+        avg_bookings: float = total_bookings / len(expert_metrics) if expert_metrics else 0.0
 
         return {
             "time_period": {

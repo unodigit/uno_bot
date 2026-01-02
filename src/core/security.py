@@ -82,6 +82,21 @@ class RateLimiter:
 
         return True, remaining
 
+    def reset(self, identifier: str) -> None:
+        """Reset rate limit for a specific identifier.
+
+        Args:
+            identifier: Unique identifier to reset
+        """
+        if identifier in _rate_limit_store:
+            del _rate_limit_store[identifier]
+
+
+def reset_rate_limiter() -> None:
+    """Clear all rate limit data. Useful for testing."""
+    global _rate_limit_store
+    _rate_limit_store = {}
+
 
 # Global rate limiter instance
 rate_limiter = RateLimiter(requests=100, window_seconds=60)

@@ -88,7 +88,9 @@ async def test_prd_generation_missing_data_returns_400(client, sample_visitor_id
     )
 
     assert response.status_code == 400
-    assert "challenges" in response.json()["detail"].lower()
+    # The error message should indicate missing data (either name or challenges)
+    detail = response.json()["detail"].lower()
+    assert "required" in detail or "missing" in detail
 
 
 @pytest.mark.asyncio

@@ -62,12 +62,13 @@ class SessionResponse(BaseModel):
     started_at: datetime
     last_activity: datetime
     completed_at: datetime | None = None
-    email_opt_in: bool = False
-    email_preferences: dict[str, Any] = {}
-    messages: list["MessageResponse"] = []
+    email_opt_in: bool = Field(default=False)
+    email_preferences: dict[str, Any] = Field(default_factory=dict)
+    messages: list["MessageResponse"] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
+        populate_by_name = True
 
 
 class MessageCreate(BaseModel):

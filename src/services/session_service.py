@@ -19,7 +19,7 @@ from src.schemas.session import MessageCreate, SessionCreate
 from src.services.ai_service import AIService
 from src.services.expert_service import ExpertService
 from src.services.template_service import TemplateService
-from src.services.cache_service import cache_session_data, get_cached_session_data
+from src.services.cache_service import cache_session_data, get_cached_session_data, delete_cached_session_data
 
 
 class SessionService:
@@ -109,15 +109,17 @@ class SessionService:
                 {
                     "id": str(session.id),
                     "visitor_id": session.visitor_id,
-                    "status": session.status.value,
-                    "current_phase": session.current_phase.value,
+                    "status": session.status,
+                    "current_phase": session.current_phase,
                     "client_info": session.client_info,
                     "business_context": session.business_context,
                     "qualification": session.qualification,
+                    "email_opt_in": session.email_opt_in,
+                    "email_preferences": session.email_preferences,
                     "messages": [
                         {
                             "id": str(m.id),
-                            "role": m.role.value,
+                            "role": m.role,
                             "content": m.content,
                             "meta_data": m.meta_data,
                             "created_at": m.created_at.isoformat()
@@ -144,6 +146,8 @@ class SessionService:
             client_info=cached_data["client_info"],
             business_context=cached_data["business_context"],
             qualification=cached_data["qualification"],
+            email_opt_in=cached_data.get("email_opt_in", False),
+            email_preferences=cached_data.get("email_preferences", {}),
             started_at=datetime.utcnow(),  # These would need to be cached too
             last_activity=datetime.utcnow(),
         )
@@ -167,6 +171,8 @@ class SessionService:
         session.last_activity = datetime.utcnow()
         self.db.add(session)
         await self.db.commit()
+        # Invalidate cache
+        await delete_cached_session_data(str(session.id))
 
     async def add_message(
         self, session_id: uuid.UUID, message_create: MessageCreate, role: MessageRole
@@ -189,6 +195,8 @@ class SessionService:
         self.db.add(message)
         await self.db.commit()
         await self.db.refresh(message)
+        # Invalidate cache
+        await delete_cached_session_data(str(session_id))
         return message
 
     async def get_session_messages(self, session_id: uuid.UUID) -> list[Message]:
@@ -209,6 +217,8 @@ class SessionService:
         await self.db.refresh(session)
         # Reload messages after refresh
         await self.db.refresh(session, attribute_names=["messages"])
+        # Invalidate cache
+        await delete_cached_session_data(str(session.id))
         return session
 
     async def complete_session(self, session: ConversationSession) -> ConversationSession:

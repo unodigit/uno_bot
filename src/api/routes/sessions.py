@@ -80,8 +80,8 @@ async def create_session(
         started_at=session.started_at,
         last_activity=session.last_activity,
         completed_at=session.completed_at,
-        email_opt_in=session.email_opt_in,
-        email_preferences=session.email_preferences,
+        email_opt_in=session.email_opt_in if session.email_opt_in is not None else False,
+        email_preferences=session.email_preferences if session.email_preferences is not None else {},
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -138,8 +138,8 @@ async def get_session(
         started_at=session.started_at,
         last_activity=session.last_activity,
         completed_at=session.completed_at,
-        email_opt_in=session.email_opt_in,
-        email_preferences=session.email_preferences,
+        email_opt_in=session.email_opt_in if session.email_opt_in is not None else False,
+        email_preferences=session.email_preferences if session.email_preferences is not None else {},
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -256,8 +256,8 @@ async def resume_session_path(
         started_at=resumed_session.started_at,
         last_activity=resumed_session.last_activity,
         completed_at=resumed_session.completed_at,
-        email_opt_in=resumed_session.email_opt_in,
-        email_preferences=resumed_session.email_preferences,
+        email_opt_in=resumed_session.email_opt_in if resumed_session.email_opt_in is not None else False,
+        email_preferences=resumed_session.email_preferences if resumed_session.email_preferences is not None else {},
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -322,8 +322,8 @@ async def resume_session(
         started_at=resumed_session.started_at,
         last_activity=resumed_session.last_activity,
         completed_at=resumed_session.completed_at,
-        email_opt_in=resumed_session.email_opt_in,
-        email_preferences=resumed_session.email_preferences,
+        email_opt_in=resumed_session.email_opt_in if resumed_session.email_opt_in is not None else False,
+        email_preferences=resumed_session.email_preferences if resumed_session.email_preferences is not None else {},
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -462,8 +462,8 @@ async def update_session(
         started_at=updated_session.started_at,
         last_activity=updated_session.last_activity,
         completed_at=updated_session.completed_at,
-        email_opt_in=updated_session.email_opt_in,
-        email_preferences=updated_session.email_preferences,
+        email_opt_in=updated_session.email_opt_in if updated_session.email_opt_in is not None else False,
+        email_preferences=updated_session.email_preferences if updated_session.email_preferences is not None else {},
         messages=[
             MessageResponse(
                 id=msg.id,

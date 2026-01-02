@@ -384,6 +384,12 @@ async def get_cached_session_data(session_id: str) -> Optional[Dict[str, Any]]:
     return await cache_service.get(key)
 
 
+async def delete_cached_session_data(session_id: str) -> bool:
+    """Delete cached session data."""
+    key = f"{CACHE_PREFIXES['session']}{session_id}"
+    return await cache_service.delete(key)
+
+
 async def cache_expert_data(
     expert_id: str,
     data: Dict[str, Any],
@@ -477,6 +483,7 @@ __all__ = [
     "cache_service",
     "cache_session_data",
     "get_cached_session_data",
+    "delete_cached_session_data",
     "cache_expert_data",
     "get_cached_expert_data",
     "cache_api_response",

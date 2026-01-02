@@ -64,7 +64,8 @@ async def test_google_calendar_oauth_flow_completes_successfully(
     assert "Calendar connected successfully" in callback_data["message"]
 
     # Step 4: Verify expert has refresh_token and calendar_id stored
-    updated_expert = await service.get_expert(expert.id)
+    # Use get_expert_model to access sensitive fields like refresh_token
+    updated_expert = await service.get_expert_model(expert.id)
     assert updated_expert.refresh_token == "test_refresh_token"
     assert updated_expert.calendar_id is not None
 

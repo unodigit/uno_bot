@@ -9,7 +9,9 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from src.core.database import Base, get_db
+from src.core.security import _rate_limit_store
 from src.main import app
+from src.services.cache_service import cache_service
 
 # Test database URL - uses SQLite for local testing
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
@@ -68,6 +70,10 @@ async def db_session(engine) -> AsyncGenerator[AsyncSession, None]:
 @pytest_asyncio.fixture
 async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
     """Create test client with database override."""
+    # Clear rate limiter before each test
+    _rate_limit_store.clear()
+    # Clear cache before each test
+    cache_service.in_memory_cache.cache.clear()
 
     async def override_get_db():
         yield db_session
@@ -81,6 +87,10 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
         yield ac
 
     app.dependency_overrides.clear()
+    # Clear rate limiter after each test
+    _rate_limit_store.clear()
+    # Clear cache after each test
+    cache_service.in_memory_cache.cache.clear()
 
 
 @pytest.fixture
