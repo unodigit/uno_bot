@@ -1,9 +1,9 @@
 """Expert schemas for API validation."""
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field, HttpUrl
+from pydantic import BaseModel, EmailStr, Field
 
 
 class AvailabilityConfig(BaseModel):
@@ -23,8 +23,8 @@ class ExpertBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     email: EmailStr
     role: str = Field(..., min_length=1, max_length=255)
-    bio: Optional[str] = None
-    photo_url: Optional[str] = None
+    bio: str | None = None
+    photo_url: str | None = None
     specialties: list[str] = Field(default_factory=list)
     services: list[str] = Field(default_factory=list)
 
@@ -32,30 +32,30 @@ class ExpertBase(BaseModel):
 class ExpertCreate(ExpertBase):
     """Request schema for creating an expert."""
 
-    calendar_id: Optional[str] = None
-    availability: Optional[dict[str, Any]] = None
+    calendar_id: str | None = None
+    availability: dict[str, Any] | None = None
 
 
 class ExpertUpdate(BaseModel):
     """Request schema for updating an expert."""
 
-    name: Optional[str] = Field(None, min_length=1, max_length=255)
-    email: Optional[EmailStr] = None
-    role: Optional[str] = Field(None, min_length=1, max_length=255)
-    bio: Optional[str] = None
-    photo_url: Optional[str] = None
-    specialties: Optional[list[str]] = None
-    services: Optional[list[str]] = None
-    calendar_id: Optional[str] = None
-    availability: Optional[dict[str, Any]] = None
-    is_active: Optional[bool] = None
+    name: str | None = Field(None, min_length=1, max_length=255)
+    email: EmailStr | None = None
+    role: str | None = Field(None, min_length=1, max_length=255)
+    bio: str | None = None
+    photo_url: str | None = None
+    specialties: list[str] | None = None
+    services: list[str] | None = None
+    calendar_id: str | None = None
+    availability: dict[str, Any] | None = None
+    is_active: bool | None = None
 
 
 class ExpertResponse(ExpertBase):
     """Response schema for expert data."""
 
     id: UUID
-    calendar_id: Optional[str] = None
+    calendar_id: str | None = None
     availability: dict[str, Any]
     is_active: bool
     created_at: datetime
@@ -71,8 +71,8 @@ class ExpertPublicResponse(BaseModel):
     id: UUID
     name: str
     role: str
-    bio: Optional[str] = None
-    photo_url: Optional[str] = None
+    bio: str | None = None
+    photo_url: str | None = None
     specialties: list[str]
     services: list[str]
 
@@ -83,8 +83,8 @@ class ExpertPublicResponse(BaseModel):
 class ExpertMatchRequest(BaseModel):
     """Request schema for expert matching."""
 
-    service_type: Optional[str] = None
-    specialties: Optional[list[str]] = None
+    service_type: str | None = None
+    specialties: list[str] | None = None
 
 
 class ExpertMatchResponse(BaseModel):

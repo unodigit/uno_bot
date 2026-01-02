@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"tailwind-merge": "^3.4.0",
+		"clsx": "^2.1.1"
+	}
+}

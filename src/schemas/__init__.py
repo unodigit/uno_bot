@@ -1,17 +1,17 @@
 # Pydantic schemas for API request/response validation
-from src.schemas.session import (
-    SessionCreate,
-    SessionResponse,
-    MessageCreate,
-    MessageResponse,
-)
-from src.schemas.expert import ExpertCreate, ExpertUpdate, ExpertResponse
-from src.schemas.prd import PRDCreate, PRDResponse, PRDPreview
 from src.schemas.booking import (
+    AvailabilityResponse,
     BookingCreate,
     BookingResponse,
     TimeSlot,
-    AvailabilityResponse,
+)
+from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
+from src.schemas.prd import PRDCreate, PRDPreview, PRDResponse
+from src.schemas.session import (
+    MessageCreate,
+    MessageResponse,
+    SessionCreate,
+    SessionResponse,
 )
 
 __all__ = [

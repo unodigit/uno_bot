@@ -1,6 +1,5 @@
 """PRD (Project Requirements Document) schemas for API validation."""
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, Field
@@ -26,11 +25,11 @@ class PRDResponse(BaseModel):
     session_id: UUID
     version: int
     content_markdown: str
-    client_company: Optional[str] = None
-    client_name: Optional[str] = None
-    recommended_service: Optional[str] = None
-    matched_expert: Optional[str] = None
-    storage_url: Optional[str] = None
+    client_company: str | None = None
+    client_name: str | None = None
+    recommended_service: str | None = None
+    matched_expert: str | None = None
+    storage_url: str | None = None
     download_count: int
     created_at: datetime
     expires_at: datetime
@@ -62,4 +61,4 @@ class PRDRegenerateRequest(BaseModel):
     """Request schema for regenerating a PRD."""
 
     session_id: UUID
-    feedback: Optional[str] = Field(None, description="Optional feedback for regeneration")
+    feedback: str | None = Field(None, description="Optional feedback for regeneration")

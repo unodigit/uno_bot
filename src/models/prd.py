@@ -1,7 +1,6 @@
 """PRD (Project Requirements Document) model."""
 import uuid
 from datetime import datetime, timedelta
-from typing import Optional
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
@@ -35,17 +34,17 @@ class PRDDocument(Base):
     content_markdown: Mapped[str] = mapped_column(Text, nullable=False)
 
     # Client info for PRD
-    client_company: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
-    client_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    client_company: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    client_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Service and expert info
-    recommended_service: Mapped[Optional[str]] = mapped_column(
+    recommended_service: Mapped[str | None] = mapped_column(
         String(100), nullable=True
     )
-    matched_expert: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    matched_expert: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Storage
-    storage_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    storage_url: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Analytics
     download_count: Mapped[int] = mapped_column(Integer, default=0)

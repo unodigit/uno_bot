@@ -43,7 +43,7 @@ class SessionService:
         welcome_message = Message(
             session_id=session.id,
             role=MessageRole.ASSISTANT,
-            content="Hello\! I'm UnoBot, your AI business consultant. I can help you explore our services, understand your needs, and connect you with the right expert. How can I help you today?",
+            content=r"Hello\! I'm UnoBot, your AI business consultant. I can help you explore our services, understand your needs, and connect you with the right expert. How can I help you today?",
             metadata={"type": "welcome"},
             created_at=datetime.utcnow(),
         )
@@ -78,7 +78,7 @@ class SessionService:
             session_id=session_id,
             role=role,
             content=message_create.content,
-            metadata=message_create.metadata or {},
+            msg_metadata=message_create.msg_metadata or {},
             created_at=datetime.utcnow(),
         )
         self.db.add(message)
@@ -177,7 +177,7 @@ class SessionService:
             session_id=session.id,
             role=MessageRole.ASSISTANT,
             content=ai_content,
-            metadata={},
+            msg_metadata={},
             created_at=datetime.utcnow(),
         )
         self.db.add(ai_message)

@@ -1,11 +1,7 @@
 """AI service for generating responses using LangChain/DeepAgents."""
-import os
-from typing import Optional
 
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.output_parsers import StrOutputParser
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
 from src.core.config import settings
 
@@ -71,7 +67,7 @@ class AIService:
             print(f"AI service error: {e}")
             return self._fallback_response(user_message, context)
 
-    def _get_system_prompt(self, context: Optional[dict]) -> str:
+    def _get_system_prompt(self, context: dict | None) -> str:
         """Get the system prompt for the AI assistant."""
         base_prompt = """You are UnoBot, an AI business consultant for UnoDigit, a digital transformation company.
 
@@ -113,7 +109,7 @@ Current context:
 
         return base_prompt
 
-    def _fallback_response(self, user_message: str, context: Optional[dict]) -> str:
+    def _fallback_response(self, user_message: str, context: dict | None) -> str:
         """Generate a fallback response when AI service is unavailable."""
         user_message_lower = user_message.lower()
 

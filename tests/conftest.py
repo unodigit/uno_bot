@@ -1,18 +1,18 @@
 """Shared test fixtures and configuration."""
 import asyncio
-from typing import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator, Generator
 from uuid import uuid4
 
 import pytest
 import pytest_asyncio
-from httpx import AsyncClient
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from src.core.database import Base, get_db
 from src.main import app
 
-# Test database URL - uses a separate test database
-TEST_DATABASE_URL = "postgresql+asyncpg://unobot:unobot@localhost:5432/unobot_test"
+# Test database URL - uses SQLite for local testing
+TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 
 @pytest.fixture(scope="session")
@@ -32,9 +32,6 @@ async def engine():
         await conn.run_sync(Base.metadata.create_all)
 
     yield engine
-
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
 
     await engine.dispose()
 
@@ -60,7 +57,10 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
 
     app.dependency_overrides[get_db] = override_get_db
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(
+        transport=ASGITransport(app=app),
+        base_url="http://test"
+    ) as ac:
         yield ac
 
     app.dependency_overrides.clear()
@@ -116,24 +116,3 @@ def sample_booking_data() -> dict:
         "client_name": "Jane Smith",
         "client_email": "jane.smith@example.com",
     }
-
-
-# Playwright fixtures for E2E testing
-from playwright.sync_api import Page, BrowserContext
-
-
-@pytest.fixture(scope="function")
-def browser_context_args(browser_context_args):
-    """Configure browser context for E2E tests."""
-    return {
-        **browser_context_args,
-        "viewport": {"width": 1280, "height": 720},
-    }
-
-
-@pytest.fixture(scope="function")
-def page(browser: BrowserContext) -> Page:
-    """Create a new page for each test."""
-    page = browser.new_page()
-    yield page
-    page.close()

@@ -1,6 +1,6 @@
 """Session and message schemas for API validation."""
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel, EmailStr, Field
@@ -9,37 +9,37 @@ from pydantic import BaseModel, EmailStr, Field
 class ClientInfo(BaseModel):
     """Client information collected during conversation."""
 
-    name: Optional[str] = None
-    email: Optional[EmailStr] = None
-    company: Optional[str] = None
-    phone: Optional[str] = None
+    name: str | None = None
+    email: EmailStr | None = None
+    company: str | None = None
+    phone: str | None = None
 
 
 class BusinessContext(BaseModel):
     """Business context collected during discovery."""
 
-    industry: Optional[str] = None
-    challenges: Optional[str] = None
-    current_stack: Optional[list[str]] = None
-    goals: Optional[str] = None
+    industry: str | None = None
+    challenges: str | None = None
+    current_stack: list[str] | None = None
+    goals: str | None = None
 
 
 class Qualification(BaseModel):
     """Qualification data for lead scoring."""
 
-    budget_range: Optional[str] = None
-    timeline: Optional[str] = None
-    urgency: Optional[str] = None
-    decision_maker: Optional[bool] = None
-    success_criteria: Optional[str] = None
+    budget_range: str | None = None
+    timeline: str | None = None
+    urgency: str | None = None
+    decision_maker: bool | None = None
+    success_criteria: str | None = None
 
 
 class SessionCreate(BaseModel):
     """Request schema for creating a new session."""
 
     visitor_id: str = Field(..., description="Unique visitor identifier")
-    source_url: Optional[str] = Field(None, description="URL where chat was started")
-    user_agent: Optional[str] = Field(None, description="Browser user agent")
+    source_url: str | None = Field(None, description="URL where chat was started")
+    user_agent: str | None = Field(None, description="Browser user agent")
 
 
 class SessionResponse(BaseModel):
@@ -52,14 +52,14 @@ class SessionResponse(BaseModel):
     client_info: dict[str, Any]
     business_context: dict[str, Any]
     qualification: dict[str, Any]
-    lead_score: Optional[int] = None
-    recommended_service: Optional[str] = None
-    matched_expert_id: Optional[UUID] = None
-    prd_id: Optional[UUID] = None
-    booking_id: Optional[UUID] = None
+    lead_score: int | None = None
+    recommended_service: str | None = None
+    matched_expert_id: UUID | None = None
+    prd_id: UUID | None = None
+    booking_id: UUID | None = None
     started_at: datetime
     last_activity: datetime
-    completed_at: Optional[datetime] = None
+    completed_at: datetime | None = None
     messages: list["MessageResponse"] = []
 
     class Config:
@@ -70,7 +70,7 @@ class MessageCreate(BaseModel):
     """Request schema for sending a message."""
 
     content: str = Field(..., min_length=1, max_length=10000)
-    metadata: Optional[dict[str, Any]] = None
+    metadata: dict[str, Any] | None = Field(None, alias="meta_data")
 
 
 class MessageResponse(BaseModel):
@@ -80,11 +80,12 @@ class MessageResponse(BaseModel):
     session_id: UUID
     role: str
     content: str
-    metadata: dict[str, Any]
+    meta_data: dict[str, Any]
     created_at: datetime
 
     class Config:
         from_attributes = True
+        populate_by_name = True
 
 
 class SessionResumeRequest(BaseModel):

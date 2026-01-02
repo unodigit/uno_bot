@@ -1,12 +1,11 @@
 """Unit tests for SessionService."""
 import uuid
-from datetime import datetime
 
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.session import MessageRole, SessionPhase, SessionStatus
-from src.schemas.session import SessionCreate, MessageCreate
+from src.schemas.session import MessageCreate, SessionCreate
 from src.services.session_service import SessionService
 
 

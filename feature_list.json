@@ -9,9 +9,9 @@
       "Step 4: Verify button has correct size (60x60px)",
       "Step 5: Verify button has 24px margin from edges"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T02:24:29.590135Z"
   },
@@ -24,9 +24,9 @@
       "Step 3: Verify chat window opens with smooth animation",
       "Step 4: Verify chat window is visible and interactive"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T02:24:29.296317Z"
   },
@@ -39,9 +39,9 @@
       "Step 3: Verify chat window closes with animation",
       "Step 4: Verify floating button becomes visible again"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T02:24:29.594162Z"
   },
@@ -173,8 +173,10 @@
       "Step 5: Verify email is accepted and stored"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:32:24.365921Z"
   },
   {
     "category": "functional",

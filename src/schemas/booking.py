@@ -1,6 +1,5 @@
 """Booking schemas for API validation."""
 from datetime import datetime
-from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, EmailStr, Field
@@ -51,18 +50,18 @@ class BookingResponse(BaseModel):
     id: UUID
     session_id: UUID
     expert_id: UUID
-    calendar_event_id: Optional[str] = None
+    calendar_event_id: str | None = None
     title: str
     start_time: datetime
     end_time: datetime
     timezone: str
-    meeting_link: Optional[str] = None
+    meeting_link: str | None = None
     expert_email: str
     client_email: str
     client_name: str
     status: str
-    confirmation_sent_at: Optional[datetime] = None
-    reminder_sent_at: Optional[datetime] = None
+    confirmation_sent_at: datetime | None = None
+    reminder_sent_at: datetime | None = None
     created_at: datetime
     updated_at: datetime
 
@@ -79,11 +78,11 @@ class BookingConfirmation(BaseModel):
     date_display: str
     time_display: str
     timezone: str
-    meeting_link: Optional[str] = None
-    calendar_invite_url: Optional[str] = None
+    meeting_link: str | None = None
+    calendar_invite_url: str | None = None
 
 
 class BookingCancelRequest(BaseModel):
     """Request schema for cancelling a booking."""
 
-    reason: Optional[str] = None
+    reason: str | None = None

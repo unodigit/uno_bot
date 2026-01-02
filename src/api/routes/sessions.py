@@ -128,17 +128,17 @@ async def get_session(
     response_model=MessageResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Send message to session",
-    description="Send a user message to the session",
+    description="Send a user message to the session and receive AI response",
 )
 async def send_message(
     session_id: uuid.UUID,
     message_create: MessageCreate,
     db: AsyncSession = Depends(get_db),
 ) -> MessageResponse:
-    """Send a message to a session.
+    """Send a message to a session and receive AI response.
 
-    Add a user message to the conversation session and update
-    the session's last activity timestamp.
+    Add a user message to the conversation session, generate an AI response,
+    and return the AI response message.
     """
     service = SessionService(db)
     session = await service.get_session(session_id)
@@ -156,20 +156,23 @@ async def send_message(
         )
 
     # Add user message
-    message = await service.add_message(
+    await service.add_message(
         session_id, message_create, MessageRole.USER
     )
 
     # Update session activity
     await service.update_session_activity(session)
 
+    # Generate and add AI response
+    ai_message = await service.generate_ai_response(session, message_create.content)
+
     return MessageResponse(
-        id=message.id,
-        session_id=message.session_id,
-        role=message.role,
-        content=message.content,
-        metadata=message.metadata,
-        created_at=message.created_at,
+        id=ai_message.id,
+        session_id=ai_message.session_id,
+        role=ai_message.role,
+        content=ai_message.content,
+        metadata=ai_message.metadata,
+        created_at=ai_message.created_at,
     )
 
 

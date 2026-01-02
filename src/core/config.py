@@ -1,7 +1,6 @@
 """Application configuration and settings."""
 from functools import lru_cache
 from pathlib import Path
-from typing import Optional
 
 from pydantic_settings import BaseSettings
 
@@ -32,23 +31,23 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
 
     # Anthropic AI
-    anthropic_api_key: Optional[str] = None
+    anthropic_api_key: str | None = None
     anthropic_model: str = "claude-sonnet-4-5-20250929"
 
     # Google Calendar
-    google_client_id: Optional[str] = None
-    google_client_secret: Optional[str] = None
+    google_client_id: str | None = None
+    google_client_secret: str | None = None
     google_redirect_uri: str = "http://localhost:8001/api/v1/auth/google/callback"
 
     # SendGrid
-    sendgrid_api_key: Optional[str] = None
+    sendgrid_api_key: str | None = None
     sendgrid_from_email: str = "noreply@unodigit.com"
 
     # AWS S3 / Cloudflare R2
     s3_bucket_name: str = "unobot-documents"
     s3_region: str = "us-east-1"
-    aws_access_key_id: Optional[str] = None
-    aws_secret_access_key: Optional[str] = None
+    aws_access_key_id: str | None = None
+    aws_secret_access_key: str | None = None
 
     # File paths
     base_dir: Path = Path(__file__).resolve().parent.parent.parent

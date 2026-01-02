@@ -58,7 +58,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         session_id: session.id,
         role: 'assistant',
         content: "👋 Hi there! I'm UnoBot, your AI business consultant. I can help you with:\n\n• AI Strategy & Planning\n• Custom Software Development\n• Data Intelligence Solutions\n\nWhat brings you here today?",
-        metadata: { type: 'welcome' },
+        meta_data: { type: 'welcome' },
         created_at: new Date().toISOString(),
       };
 
@@ -110,7 +110,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         session_id: sessionId,
         role: 'user',
         content,
-        metadata: {},
+        meta_data: {},
         created_at: new Date().toISOString(),
       };
 

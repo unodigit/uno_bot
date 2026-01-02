@@ -2,7 +2,6 @@
 import uuid
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 from sqlalchemy import DateTime, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import UUID
@@ -36,7 +35,7 @@ class Booking(Base):
     )
 
     # Google Calendar reference
-    calendar_event_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    calendar_event_id: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Meeting details
     title: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -45,7 +44,7 @@ class Booking(Base):
     timezone: Mapped[str] = mapped_column(String(100), default="UTC")
 
     # Meeting link
-    meeting_link: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    meeting_link: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Participant info
     expert_email: Mapped[str] = mapped_column(String(255), nullable=False)
@@ -58,10 +57,10 @@ class Booking(Base):
     )
 
     # Email tracking
-    confirmation_sent_at: Mapped[Optional[datetime]] = mapped_column(
+    confirmation_sent_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
-    reminder_sent_at: Mapped[Optional[datetime]] = mapped_column(
+    reminder_sent_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
 
