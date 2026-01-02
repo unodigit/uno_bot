@@ -4,9 +4,10 @@ Simple test for Feature 187: Decision maker identification is collected
 
 import pytest
 from sqlalchemy import select
-from src.core.database import get_db
+from src.core.database import AsyncSessionLocal
 from src.models import ConversationSession
 from src.services.session_service import SessionService
+from src.schemas.session import SessionCreate
 
 
 @pytest.mark.asyncio
@@ -14,13 +15,12 @@ async def test_decision_maker_detection_logic():
     """
     Test that decision maker keywords are detected correctly
     """
-    async with get_db() as db:
+    async with AsyncSessionLocal() as db:
         service = SessionService(db)
 
         # Create a test session
-        session = await service.create_session(
-            visitor_id="test-decision-maker-001"
-        )
+        session_create = SessionCreate(visitor_id="test-decision-maker-001")
+        session = await service.create_session(session_create)
 
         # Test positive decision maker phrases
         positive_phrases = [
@@ -45,6 +45,7 @@ async def test_decision_maker_detection_logic():
             is_decision_maker = qualification.get("is_decision_maker")
 
             print(f"Phrase: '{phrase}' -> is_decision_maker: {is_decision_maker}")
+            assert is_decision_maker is True
 
         print("✓ Positive decision maker phrases detected correctly")
 
@@ -54,13 +55,12 @@ async def test_non_decision_maker_detection_logic():
     """
     Test that non-decision maker phrases are detected correctly
     """
-    async with get_db() as db:
+    async with AsyncSessionLocal() as db:
         service = SessionService(db)
 
         # Create a test session
-        session = await service.create_session(
-            visitor_id="test-non-decision-maker-001"
-        )
+        session_create = SessionCreate(visitor_id="test-non-decision-maker-001")
+        session = await service.create_session(session_create)
 
         # Test negative decision maker phrases
         negative_phrases = [
@@ -95,17 +95,15 @@ async def test_lead_score_affected_by_decision_maker():
     """
     Test that being a decision maker affects lead score positively
     """
-    async with get_db() as db:
+    async with AsyncSessionLocal() as db:
         service = SessionService(db)
 
         # Create two sessions - one decision maker, one not
-        session_dm = await service.create_session(
-            visitor_id="test-dm-score-001"
-        )
+        session_dm_create = SessionCreate(visitor_id="test-dm-score-001")
+        session_dm = await service.create_session(session_dm_create)
 
-        session_non_dm = await service.create_session(
-            visitor_id="test-non-dm-score-001"
-        )
+        session_non_dm_create = SessionCreate(visitor_id="test-non-dm-score-001")
+        session_non_dm = await service.create_session(session_non_dm_create)
 
         # Provide basic info to both
         await service.extract_and_update_info(

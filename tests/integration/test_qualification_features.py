@@ -15,7 +15,7 @@ from src.main import app
 from src.core.database import Base, get_db
 from src.services.session_service import SessionService
 from src.schemas.session import SessionCreate, MessageCreate
-from src.models.session import SessionPhase
+from src.models.session import SessionPhase, MessageRole
 
 
 @pytest.fixture
@@ -64,29 +64,35 @@ async def test_feature_187_decision_maker_identification(test_db):
         # Simulate conversation to qualification phase
         await service.add_message(
             created_session.id,
-            MessageCreate(content="My name is John Doe", role="user")
+            MessageCreate(content="My name is John Doe"),
+            MessageRole.USER
         )
         await service.add_message(
             created_session.id,
-            MessageCreate(content="john@example.com", role="user")
+            MessageCreate(content="john@example.com"),
+            MessageRole.USER
         )
         await service.add_message(
             created_session.id,
-            MessageCreate(content="We need help with data analytics", role="user")
+            MessageCreate(content="We need help with data analytics"),
+            MessageRole.USER
         )
         await service.add_message(
             created_session.id,
-            MessageCreate(content="Healthcare industry", role="user")
+            MessageCreate(content="Healthcare industry"),
+            MessageRole.USER
         )
         await service.add_message(
             created_session.id,
-            MessageCreate(content="Budget is around $50,000", role="user")
+            MessageCreate(content="Budget is around $50,000"),
+            MessageRole.USER
         )
 
         # Provide decision maker info
         await service.add_message(
             created_session.id,
-            MessageCreate(content="I am the decision maker for this project", role="user")
+            MessageCreate(content="I am the decision maker for this project"),
+            MessageRole.USER
         )
 
         # Refresh session to get latest data
@@ -122,7 +128,8 @@ async def test_feature_187_non_decision_maker(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
@@ -155,7 +162,8 @@ async def test_feature_188_success_criteria_collection(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
@@ -189,7 +197,8 @@ async def test_feature_188_vague_success_criteria(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
@@ -219,7 +228,8 @@ async def test_feature_189_intent_detection_ai_strategy(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
@@ -250,7 +260,8 @@ async def test_feature_189_intent_detection_custom_dev(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
@@ -292,7 +303,8 @@ async def test_feature_190_context_retention_long_conversation(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
@@ -346,7 +358,8 @@ async def test_feature_190_context_references_earlier_info(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
@@ -384,7 +397,8 @@ async def test_lead_score_calculation_with_decision_maker(test_db):
         for msg in messages:
             await service.add_message(
                 created_session.id,
-                MessageCreate(content=msg, role="user")
+                MessageCreate(content=msg),
+            MessageRole.USER
             )
 
         await session.refresh(created_session)
