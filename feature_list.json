@@ -11,10 +11,14 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T02:24:29.590135Z",
-    "qa_completed_at": "2026-01-02T02:50:12.724736+00:00"
+    "qa_completed_at": "2026-01-02T13:40:17.602862+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:40:17.602867+00:00",
+    "qa_notes": "Passed: Verified via Playwright E2E test",
+    "qa_report_path": "unobot/client/tests/e2e/test_features_0_5.spec.ts"
   },
   {
     "category": "functional",
@@ -27,10 +31,14 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T02:24:29.296317Z",
-    "qa_completed_at": "2026-01-02T02:50:12.724748+00:00"
+    "qa_completed_at": "2026-01-02T13:40:17.602869+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:40:17.602870+00:00",
+    "qa_notes": "Passed: Verified via Playwright E2E test",
+    "qa_report_path": "unobot/client/tests/e2e/test_features_0_5.spec.ts"
   },
   {
     "category": "functional",
@@ -43,10 +51,14 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.594162Z",
-    "qa_completed_at": "2026-01-02T02:50:12.724750+00:00"
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:33:23.046484Z",
+    "qa_completed_at": "2026-01-02T13:40:17.602871+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:40:17.602872+00:00",
+    "qa_notes": "Passed: Verified via Playwright E2E test",
+    "qa_report_path": "unobot/client/tests/e2e/test_features_0_5.spec.ts"
   },
   {
     "category": "functional",
@@ -60,10 +72,14 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": true,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T02:52:43.334015Z",
-    "qa_retry_count": 0,
-    "qa_completed_at": "2026-01-02T03:15:00.000000+00:00"
+    "qa_retry_count": 1,
+    "qa_completed_at": "2026-01-02T13:40:17.602873+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:40:17.602873+00:00",
+    "qa_notes": "Passed: Verified via Playwright E2E test",
+    "qa_report_path": "unobot/client/tests/e2e/test_features_0_5.spec.ts"
   },
   {
     "category": "functional",
@@ -76,10 +92,14 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.355689Z",
-    "qa_completed_at": "2026-01-02T02:50:12.724752+00:00"
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:34:15.204002Z",
+    "qa_completed_at": "2026-01-02T13:40:17.602874+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:40:17.602875+00:00",
+    "qa_notes": "Passed: Verified via Playwright E2E test",
+    "qa_report_path": "unobot/client/tests/e2e/test_features_0_5.spec.ts"
   },
   {
     "category": "functional",
@@ -91,12 +111,16 @@
       "Step 4: Verify message appears in chat history",
       "Step 5: Verify input field is cleared after sending"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T02:24:29.518185Z",
-    "qa_completed_at": "2026-01-02T02:50:12.724753+00:00"
+    "qa_completed_at": "2026-01-02T02:50:12.724753+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.876620Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-5-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -108,12 +132,16 @@
       "Step 4: Verify complete response is rendered",
       "Step 5: Verify typing indicator disappears"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T02:24:29.358184Z",
-    "qa_completed_at": "2026-01-02T02:50:12.724754+00:00"
+    "qa_completed_at": "2026-01-02T02:50:12.724754+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.890765Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-6-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -124,12 +152,16 @@
       "Step 3: Verify all messages are stored with correct content",
       "Step 4: Verify messages have correct session_id, role, and timestamps"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:07:30.306803+00:00",
-    "qa_completed_at": "2026-01-02T03:07:30.306810+00:00"
+    "qa_completed_at": "2026-01-02T03:07:30.306810+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.904873Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-7-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -142,12 +174,16 @@
       "Step 5: Verify same session is resumed",
       "Step 6: Verify previous messages are displayed"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:16:04.268832Z",
-    "qa_completed_at": "2026-01-02T14:05:00.000Z"
+    "qa_completed_at": "2026-01-02T14:05:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.919038Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-8-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -159,12 +195,16 @@
       "Step 4: Verify session is restored after reconnection",
       "Step 5: Verify conversation continues normally"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:56:32.999034Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.933918Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-9-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -176,12 +216,16 @@
       "Step 4: Provide name and verify it's acknowledged",
       "Step 5: Verify name is stored in session client_info"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "qa_completed_at": "2026-01-02T14:20:00.000Z",
-    "dev_completed_at": "2026-01-02T14:20:00.000Z"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.952111Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-10-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -193,12 +237,16 @@
       "Step 4: Enter valid email address",
       "Step 5: Verify email is accepted and stored"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.970186Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-11-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -209,12 +257,16 @@
       "Step 3: Verify bot acknowledges and asks follow-up",
       "Step 4: Verify company is stored in business_context"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:38.988389Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-12-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -225,12 +277,16 @@
       "Step 3: Verify bot asks clarifying questions",
       "Step 4: Verify responses are stored in session context"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.006539Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-13-2026-01-02-13-30-38.json"
   },
   {
     "category": "functional",
@@ -241,12 +297,16 @@
       "Step 3: Verify bot adapts terminology based on answers",
       "Step 4: Verify tech stack is recorded"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.024508Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-14-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -257,12 +317,16 @@
       "Step 3: Verify bot accepts various formats (range, specific, flexible)",
       "Step 4: Verify budget is stored in qualification data"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.042377Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-15-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -273,12 +337,16 @@
       "Step 3: Verify bot asks about urgency",
       "Step 4: Verify timeline is stored in qualification data"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.060304Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-16-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -289,12 +357,16 @@
       "Step 3: Verify score is between 0-100",
       "Step 4: Verify score reflects budget, timeline, and fit factors"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.078277Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-17-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -304,12 +376,16 @@
       "Step 2: Verify recommended_service is set",
       "Step 3: Verify service matches one of: AI Strategy, Custom Dev, Data Intelligence"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T14:20:00.000Z",
-    "qa_completed_at": "2026-01-02T14:20:00.000Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.096341Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-18-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -321,12 +397,16 @@
       "Step 4: Verify the option is sent as a message",
       "Step 5: Verify conversation continues based on selection"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:36:09.243712Z",
-    "qa_completed_at": "2026-01-02T15:00:00.000000Z"
+    "qa_completed_at": "2026-01-02T15:00:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.114593Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-19-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -338,12 +418,16 @@
       "Step 4: Verify PRD subagent is invoked",
       "Step 5: Verify PRD is generated within 60 seconds"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 1,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T02:50:53.417340Z",
-    "qa_completed_at": "2026-01-02T14:30:00.000Z"
+    "qa_completed_at": "2026-01-02T14:30:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.132734Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-20-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -357,12 +441,16 @@
       "Step 6: Verify Parameters section exists",
       "Step 7: Verify Next Steps section exists"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:51:54.293138Z",
-    "qa_completed_at": "2026-01-02T14:50:00.000Z"
+    "qa_completed_at": "2026-01-02T14:50:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.150745Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-21-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -374,12 +462,16 @@
       "Step 4: Verify preview text snippet is visible",
       "Step 5: Verify Preview and Download buttons present"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:07:21.902654Z",
-    "qa_completed_at": "2026-01-02T03:42:54.407581Z"
+    "qa_completed_at": "2026-01-02T03:42:54.407581Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.168869Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-22-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -391,12 +483,16 @@
       "Step 4: Open file and verify valid Markdown format",
       "Step 5: Verify download count is incremented"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:11:14.054468Z",
-    "qa_completed_at": "2026-01-02T03:42:54.407583Z"
+    "qa_completed_at": "2026-01-02T03:42:54.407583Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.187028Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-23-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -407,11 +503,16 @@
       "Step 3: Verify expires_at is 90 days from created_at",
       "Step 4: Verify storage_url contains unique access link"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T14:55:00.000000Z",
-    "dev_completed_at": "2026-01-02T03:56:49.667297+00:00"
+    "dev_completed_at": "2026-01-02T03:56:49.667297+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.205083Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-24-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -423,12 +524,16 @@
       "Step 4: Verify version number is incremented",
       "Step 5: Verify both versions accessible"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:58:26.398248Z",
-    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.223343Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-25-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -441,12 +546,16 @@
       "Step 5: Delete expert",
       "Step 6: Verify expert no longer exists"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:35:42.907046Z",
-    "qa_completed_at": "2026-01-02T03:45:24.396084Z"
+    "qa_completed_at": "2026-01-02T03:45:24.396084Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.241504Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-26-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -458,12 +567,16 @@
       "Step 4: Verify returned experts have matching specialties",
       "Step 5: Verify experts are ranked by relevance"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T14:54:00.000000Z",
     "dev_completed_at": "2026-01-02T04:00:25.661685Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.258243Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-27-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -476,12 +589,16 @@
       "Step 5: Verify specialties list shown",
       "Step 6: Verify 'Book with [Expert]' button present"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T03:58:36.947382Z",
     "qa_completed_at": "2026-01-02T14:55:00.000000Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.274131Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-28-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -492,12 +609,16 @@
       "Step 3: Verify multiple expert cards displayed",
       "Step 4: Verify user can choose between experts"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:56:49.667309+00:00",
-    "qa_completed_at": "2026-01-02T14:55:00.000000Z"
+    "qa_completed_at": "2026-01-02T14:55:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.291909Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-29-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -508,12 +629,16 @@
       "Step 3: Verify bookings distributed across experts",
       "Step 4: Verify no single expert is overloaded"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T04:33:15.032080Z",
-    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.309918Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-30-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -525,12 +650,16 @@
       "Step 4: Verify refresh_token is stored",
       "Step 5: Verify calendar_id is populated"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T03:58:13.410839Z",
-    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.328051Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-31-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -542,12 +671,16 @@
       "Step 4: Verify busy times are excluded",
       "Step 5: Verify free slots are returned"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T04:36:11.323992+00:00",
-    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.346261Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-32-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -558,12 +691,16 @@
       "Step 3: Verify slots span up to 14 days",
       "Step 4: Verify slots are within business hours"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T04:12:50.802133Z",
-    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.364364Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-33-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -574,12 +711,16 @@
       "Step 3: Verify times displayed in visitor's timezone",
       "Step 4: Verify timezone label is correct"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 1,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T04:48:50.892972Z",
-    "qa_completed_at": "2026-01-02T15:48:00.000000Z"
+    "qa_completed_at": "2026-01-02T15:48:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.382614Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-34-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -590,12 +731,16 @@
       "Step 3: Verify slots are grouped under date headers",
       "Step 4: Verify time slot buttons arranged 2 per row"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T04:25:23.028716Z",
-    "qa_completed_at": "2026-01-02T15:35:05.424Z"
+    "qa_completed_at": "2026-01-02T15:35:05.424Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.400694Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-35-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -606,12 +751,16 @@
       "Step 3: Verify slot is highlighted as selected",
       "Step 4: Verify Confirm button becomes active"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T15:45:00.000000Z",
-    "qa_completed_at": "2026-01-02T15:45:00.000000Z"
+    "qa_completed_at": "2026-01-02T15:45:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.418780Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-36-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -622,12 +771,16 @@
       "Step 3: Verify Google Calendar event is created",
       "Step 4: Verify event has correct title, time, attendees"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T04:21:07.206331Z",
-    "qa_completed_at": "2026-01-02T15:35:05.424Z"
+    "qa_completed_at": "2026-01-02T15:35:05.424Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.436983Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-37-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -638,12 +791,16 @@
       "Step 3: Verify Google Meet link is included",
       "Step 4: Verify link is accessible"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T15:45:00.000000Z",
-    "qa_completed_at": "2026-01-02T15:45:00.000000Z"
+    "qa_completed_at": "2026-01-02T15:45:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.455010Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-38-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -657,11 +814,15 @@
       "Step 6: Verify Google Meet location shown",
       "Step 7: Verify Calendar invite and Join Meeting buttons"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-02T04:42:12.496231Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 2,
+    "dev_completed_at": "2026-01-02T04:42:12.496231Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.473097Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-39-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -672,11 +833,15 @@
       "Step 3: Check available slots around booking",
       "Step 4: Verify buffer time is blocked"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-02T04:37:05.859211Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 2,
+    "dev_completed_at": "2026-01-02T04:37:05.859211Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.491065Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-40-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -687,11 +852,15 @@
       "Step 3: Verify no slots before 9am",
       "Step 4: Verify no slots after 5pm"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-02T04:39:07.809469Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 2,
+    "dev_completed_at": "2026-01-02T04:39:07.809469Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.509205Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-41-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -704,12 +873,16 @@
       "Step 5: Verify error message about slot unavailable",
       "Step 6: Verify alternative slots offered"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T04:59:22.115887Z",
-    "qa_completed_at": "2026-01-02T15:53:16.000000Z"
+    "qa_completed_at": "2026-01-02T15:53:16.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.527366Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-42-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -721,12 +894,16 @@
       "Step 4: Select slot and confirm",
       "Step 5: Verify final availability check before booking"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:06:12.123838Z",
-    "qa_completed_at": "2026-01-02T15:53:16.000000Z"
+    "qa_completed_at": "2026-01-02T15:53:16.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.545517Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-43-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -738,12 +915,16 @@
       "Step 4: Verify received within 30 seconds",
       "Step 5: Verify email contains booking details"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T05:17:50.643011Z",
     "qa_passed_at": "2026-01-02T05:12:09.833895+00:00",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.563729Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-44-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -755,12 +936,16 @@
       "Step 4: Verify PRD is attached as .md file",
       "Step 5: Verify email contains visitor info"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:00:43.020492Z",
-    "qa_completed_at": "2026-01-02T15:58:00.000000Z"
+    "qa_completed_at": "2026-01-02T15:58:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.582015Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-45-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -772,12 +957,16 @@
       "Step 4: Verify .ics file opens in calendar app",
       "Step 5: Verify event details are correct"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T05:12:05.729964Z",
     "qa_completed_at": "2026-01-02T15:58:00.000000Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.599451Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-46-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -788,12 +977,16 @@
       "Step 3: Verify reminder email sent at 24 hours",
       "Step 4: Verify reminder contains meeting details"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T04:59:53.988580Z",
-    "qa_completed_at": "2026-01-02T15:58:00.000000Z"
+    "qa_completed_at": "2026-01-02T15:58:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.614040Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-47-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -804,12 +997,16 @@
       "Step 3: Verify reminder email sent at 1 hour",
       "Step 4: Verify reminder contains join link"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T05:14:10.816335Z",
-    "qa_retry_count": 0,
-    "qa_completed_at": "2026-01-02T05:13:35.829053+00:00"
+    "qa_retry_count": 1,
+    "qa_completed_at": "2026-01-02T05:13:35.829053+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.628454Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-48-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -820,12 +1017,16 @@
       "Step 3: Verify logo is included",
       "Step 4: Verify brand colors are used"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:09:32.481021Z",
-    "qa_passed_at": "2026-01-02T05:12:09.833895+00:00"
+    "qa_passed_at": "2026-01-02T05:12:09.833895+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.643080Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-49-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -836,12 +1037,16 @@
       "Step 3: Verify unsubscribe confirmation",
       "Step 4: Verify no more marketing emails sent"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:28:16.842744Z",
-    "qa_completed_at": "2026-01-02T05:42:45.479208+00:00"
+    "qa_completed_at": "2026-01-02T05:42:45.479208+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.657493Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-50-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -853,12 +1058,16 @@
       "Step 4: Verify conversation is resumed",
       "Step 5: Verify full history is visible"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:28:38.715400Z",
-    "qa_completed_at": "2026-01-02T16:23:00.000Z"
+    "qa_completed_at": "2026-01-02T16:23:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.672162Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-51-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -870,12 +1079,16 @@
       "Step 4: Verify session loads correctly",
       "Step 5: Verify can continue conversation"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:31:20.876367Z",
-    "qa_completed_at": "2026-01-02T06:30:00.000000Z"
+    "qa_completed_at": "2026-01-02T06:30:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.686230Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-52-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -886,13 +1099,17 @@
       "Step 3: Verify session expires after 7 days",
       "Step 4: Verify appropriate message shown for expired session"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:38:59.348642Z",
     "qa_completed_at": "2026-01-02T06:30:00.000000Z",
-    "notes": "Implementation stores sessions indefinitely (better than 7 days requirement)"
+    "notes": "Implementation stores sessions indefinitely (better than 7 days requirement)",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.700382Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-53-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -903,12 +1120,16 @@
       "Step 3: Verify all messages are visible",
       "Step 4: Verify messages in correct order"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T16:47:00.000000Z",
-    "qa_completed_at": "2026-01-02T16:47:00.000000Z"
+    "qa_completed_at": "2026-01-02T16:47:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.714546Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-54-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -920,13 +1141,17 @@
       "Step 4: Fill in all required fields",
       "Step 5: Submit and verify expert created"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:37:33.965801Z",
     "last_updated": "2026-01-02T06:05:55.063760+00:00",
-    "qa_completed_at": "2026-01-02T06:10:20.052861+00:00"
+    "qa_completed_at": "2026-01-02T06:10:20.052861+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.728684Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-55-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -938,12 +1163,16 @@
       "Step 4: Save changes",
       "Step 5: Verify changes persisted"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:11:31.812818Z",
-    "qa_completed_at": "2026-01-02T16:52:00.000000Z"
+    "qa_completed_at": "2026-01-02T16:52:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.742867Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-56-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -955,12 +1184,16 @@
       "Step 4: Verify expert is_active is false",
       "Step 5: Verify expert no longer shown in matching"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:24:27.428193Z",
-    "qa_completed_at": "2026-01-02T06:20:00.000000Z"
+    "qa_completed_at": "2026-01-02T06:20:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.757119Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-57-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -972,12 +1205,16 @@
       "Step 4: Verify completion rate displayed",
       "Step 5: Verify booking rate shown"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "last_updated": "2026-01-02T06:05:55.063776+00:00",
     "dev_completed_at": "2026-01-02T06:11:02.731240Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.771602Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-58-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -989,13 +1226,17 @@
       "Step 4: Verify file downloads",
       "Step 5: Verify CSV contains lead data"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T05:45:05.477782Z",
     "last_updated": "2026-01-02T06:05:55.063779+00:00",
-    "qa_completed_at": "2026-01-02T06:10:20.052876+00:00"
+    "qa_completed_at": "2026-01-02T06:10:20.052876+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.786426Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-59-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1007,17 +1248,21 @@
       "Step 4: Set as default and save",
       "Step 5: Start new chat and verify template is used"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:54:37.523435Z",
     "qa_completed_at": "2026-01-02T20:30:00.000000Z",
     "test_files": [
       "tests/integration/test_welcome_templates.py",
       "tests/e2e/test_admin_template_management.py",
       "tests/e2e/test_admin_welcome_templates.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.800621Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-60-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1029,15 +1274,19 @@
       "Step 4: Verify database status shown",
       "Step 5: Verify Redis status shown"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:26:04.613388Z",
     "test_files": [
       "tests/e2e/test_admin_conversation_analytics.py"
     ],
-    "qa_completed_at": "2026-01-02T07:25:00.000Z"
+    "qa_completed_at": "2026-01-02T07:25:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.814792Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-61-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1048,15 +1297,19 @@
       "Step 3: Verify bot politely redirects",
       "Step 4: Verify conversation can continue normally"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T20:15:00.000000Z",
     "qa_completed_at": "2026-01-02T20:30:00.000000Z",
     "test_files": [
       "tests/e2e/test_ai_conversation_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.828826Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-62-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1068,16 +1321,20 @@
       "Step 4: Provide clearer answer",
       "Step 5: Verify conversation continues"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T17:45:00.000000Z",
     "qa_completed_at": "2026-01-02T18:00:00.000000Z",
     "test_files": [
       "tests/unit/test_ambiguity_detection.py",
       "tests/e2e/test_ambiguity_handling.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.843334Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-63-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1088,15 +1345,19 @@
       "Step 3: Verify bot uses relevant healthcare terms",
       "Step 4: Verify bot understands industry-specific context"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:03:40.920889Z",
     "qa_completed_at": "2026-01-02T20:30:00.000000Z",
     "test_files": [
       "tests/e2e/test_ai_conversation_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.857554Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-64-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1107,16 +1368,20 @@
       "Step 3: Review summary",
       "Step 4: Verify summary captures key points"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:12:37.008043Z",
     "qa_completed_at": "2026-01-02T21:50:00.000000Z",
     "test_files": [
       "tests/integration/test_summary_feature.py",
       "tests/e2e/test_summary_workflow.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.871471Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-65-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1128,12 +1393,16 @@
       "Step 4: Verify bot references earlier information",
       "Step 5: Verify SummarizationMiddleware kicks in if needed"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:30:43.375427Z",
-    "qa_completed_at": "2026-01-02T07:25:00.000Z"
+    "qa_completed_at": "2026-01-02T07:25:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.885344Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-66-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1145,15 +1414,19 @@
       "Step 4: Verify consent timestamp stored",
       "Step 5: Verify data processing continues"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:13:08.819651Z",
     "qa_completed_at": "2026-01-02T21:45:00.000000Z",
     "test_files": [
       "tests/e2e/test_gdpr_consent.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.899525Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-67-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1165,11 +1438,16 @@
       "Step 4: Verify Google Calendar event is deleted",
       "Step 5: Verify cancellation emails sent"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T16:30:00.000000Z",
-    "qa_completed_at": "2026-01-02T16:30:00.000000Z"
+    "qa_completed_at": "2026-01-02T16:30:00.000000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.913807Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-68-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1181,12 +1459,16 @@
       "Step 4: Verify 400 response with details",
       "Step 5: Verify error responses follow schema"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:58:48.227905Z",
-    "qa_completed_at": "2026-01-02T07:25:00.000Z"
+    "qa_completed_at": "2026-01-02T07:25:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.927948Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-69-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1198,12 +1480,16 @@
       "Step 4: Verify indexes and constraints exist",
       "Step 5: All 60 integration tests pass"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:15:36.605171Z",
-    "qa_completed_at": "2026-01-02T06:15:36.605171Z"
+    "qa_completed_at": "2026-01-02T06:15:36.605171Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.941944Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-70-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1215,11 +1501,16 @@
       "Step 4: Verify session exists in database",
       "Step 5: Verify initial status is 'active'"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T02:31:01.718446+00:00",
-    "qa_completed_at": "2026-01-02T02:51:59.170150+00:00"
+    "qa_completed_at": "2026-01-02T02:51:59.170150+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.956320Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-71-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1231,11 +1522,16 @@
       "Step 4: Verify bot response returned",
       "Step 5: Verify both messages have correct roles"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T02:31:01.718457+00:00",
-    "qa_completed_at": "2026-01-02T02:51:59.170152+00:00"
+    "qa_completed_at": "2026-01-02T02:51:59.170152+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.970407Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-72-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1247,11 +1543,16 @@
       "Step 4: Verify messages array included",
       "Step 5: Verify all messages in order"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T02:31:01.718459+00:00",
-    "qa_completed_at": "2026-01-02T02:51:59.170154+00:00"
+    "qa_completed_at": "2026-01-02T02:51:59.170154+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.985018Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-73-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1263,11 +1564,16 @@
       "Step 4: Verify last_activity updated",
       "Step 5: Verify can continue messaging"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T02:31:01.718460+00:00",
-    "qa_completed_at": "2026-01-02T03:41:14.387011Z"
+    "qa_completed_at": "2026-01-02T03:41:14.387011Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:39.999474Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-74-2026-01-02-13-30-39.json"
   },
   {
     "category": "functional",
@@ -1279,12 +1585,16 @@
       "Step 4: Verify prd_id returned",
       "Step 5: Verify PRD stored in database"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:44:57.587129Z",
-    "qa_completed_at": "2026-01-02T08:22:41.433744Z"
+    "qa_completed_at": "2026-01-02T08:22:41.433744Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.013721Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-75-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1296,12 +1606,16 @@
       "Step 4: Verify Content-Disposition has filename",
       "Step 5: Verify file content is valid markdown"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:45:23.307453Z",
-    "qa_completed_at": "2026-01-02T08:22:41.433754Z"
+    "qa_completed_at": "2026-01-02T08:22:41.433754Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.027684Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-76-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1312,12 +1626,16 @@
       "Step 3: Verify PRD content returned",
       "Step 4: Verify rendered for preview"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T06:53:15.157796Z",
-    "qa_completed_at": "2026-01-02T08:22:41.433757Z"
+    "qa_completed_at": "2026-01-02T08:22:41.433757Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.041989Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-77-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1328,11 +1646,15 @@
       "Step 3: Verify only active experts returned",
       "Step 4: Verify all fields present"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
-    "qa_completed_at": "2026-01-02T19:38:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_completed_at": "2026-01-02T19:38:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.056235Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-78-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1343,12 +1665,16 @@
       "Step 3: Verify all profile data returned",
       "Step 4: Verify sensitive fields not exposed"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T07:25:00.000Z",
     "dev_completed_at": "2026-01-02T07:35:42.822270Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.070201Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-79-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1360,11 +1686,16 @@
       "Step 4: Verify slots in correct timezone",
       "Step 5: Verify slots within business hours"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T04:36:11.323992+00:00",
-    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.084057Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-80-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1375,11 +1706,16 @@
       "Step 3: Verify matching experts returned",
       "Step 4: Verify ranking is appropriate"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T04:00:25.661685Z",
-    "qa_completed_at": "2026-01-02T04:00:25.661685Z"
+    "qa_completed_at": "2026-01-02T04:00:25.661685Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.098056Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-81-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1391,11 +1727,16 @@
       "Step 4: Verify calendar event created",
       "Step 5: Verify status is 'confirmed'"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T04:21:07.206331Z",
-    "qa_completed_at": "2026-01-02T04:21:07.206331Z"
+    "qa_completed_at": "2026-01-02T04:21:07.206331Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.112005Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-82-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1406,12 +1747,16 @@
       "Step 3: Verify connection ID assigned",
       "Step 4: Verify ready to send/receive"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:13:12.222313Z",
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.126035Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-83-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1423,10 +1768,15 @@
       "Step 4: Verify 'message_stream' events received",
       "Step 5: Verify complete 'message' event received"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.140072Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-84-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1438,10 +1788,15 @@
       "Step 4: Send 'typing_stop' event",
       "Step 5: Verify indicator cleared"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.154277Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-85-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1452,10 +1807,15 @@
       "Step 3: Verify 'phase_change' event received",
       "Step 4: Verify phase name is correct"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.168307Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-86-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1466,10 +1826,15 @@
       "Step 3: Verify 'prd_ready' event received",
       "Step 4: Verify event contains prd_id"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.182415Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-87-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1480,10 +1845,15 @@
       "Step 3: Verify 'availability' event received",
       "Step 4: Verify slots data included"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.196605Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-88-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1494,10 +1864,15 @@
       "Step 3: Verify 'booking_confirmed' event received",
       "Step 4: Verify booking details included"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.210587Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-89-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1508,10 +1883,15 @@
       "Step 3: Verify error message is helpful",
       "Step 4: Verify connection remains stable"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T18:00:00.000Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T18:00:00.000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.224486Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-90-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1523,12 +1903,16 @@
       "Step 4: Verify todos are updated",
       "Step 5: Verify read_todos returns progress"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:22:28.368103Z",
-    "qa_completed_at": "2026-01-02T08:43:39.832150+00:00"
+    "qa_completed_at": "2026-01-02T08:43:39.832150+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.238393Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-91-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1539,12 +1923,16 @@
       "Step 3: Verify context is passed to subagent",
       "Step 4: Verify subagent result returned"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:28:55.725946Z",
-    "qa_completed_at": "2026-01-02T08:44:50.815598+00:00"
+    "qa_completed_at": "2026-01-02T08:44:50.815598+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.252676Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-92-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1556,12 +1944,16 @@
       "Step 4: Verify context is summarized",
       "Step 5: Verify key information retained"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:38:27.570042Z",
-    "qa_completed_at": "2026-01-02T08:46:25.982814+00:00"
+    "qa_completed_at": "2026-01-02T08:46:25.982814+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.266669Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-93-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1573,11 +1965,15 @@
       "Step 4: Approve the booking",
       "Step 5: Verify booking completes"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:34:22.464193Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T07:34:22.464193Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.280710Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-94-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -1588,12 +1984,16 @@
       "Step 3: Verify file accessible via storage_url",
       "Step 4: Verify file content matches PRD"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T07:57:20.406942Z",
-    "qa_retry_count": 0,
-    "qa_completed_at": "2026-01-02T08:22:41.433763Z"
+    "qa_retry_count": 1,
+    "qa_completed_at": "2026-01-02T08:22:41.433763Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.294719Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-95-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1605,12 +2005,16 @@
       "Step 4: Verify UnoDigit blue color (#2563EB)",
       "Step 5: Verify pulse animation on first visit"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T18:35:00.000000Z",
     "dev_completed_at": "2026-01-02T07:45:29.562631Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.308736Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-96-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1622,12 +2026,16 @@
       "Step 4: Verify messages area is ~400px height",
       "Step 5: Verify input area is 56px height"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:37:27.391076Z",
-    "qa_completed_at": "2026-01-02T07:55:39.346905Z"
+    "qa_completed_at": "2026-01-02T07:55:39.346905Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.322709Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-97-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1639,12 +2047,16 @@
       "Step 4: Verify minimize button visible",
       "Step 5: Verify close button visible"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:36:09.019663Z",
-    "qa_completed_at": "2026-01-02T07:55:39.346915Z"
+    "qa_completed_at": "2026-01-02T07:55:39.346915Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.336840Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-98-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1656,12 +2068,16 @@
       "Step 4: Verify proper border radius",
       "Step 5: Verify text color is #1F2937"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "qa_completed_at": "2026-01-02T19:00:00Z",
-    "dev_completed_at": "2026-01-02T07:43:29.740464Z"
+    "dev_completed_at": "2026-01-02T07:43:29.740464Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.351676Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-99-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1673,12 +2089,17 @@
       "Step 4: Verify text color is white",
       "Step 5: Verify proper border radius"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T07:43:29.740482Z",
     "qa_date": "2026-01-02T18:55:28.282041",
-    "qa_completed_at": "2026-01-02T19:00:00Z"
+    "qa_completed_at": "2026-01-02T19:00:00Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.366634Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-100-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1689,13 +2110,17 @@
       "Step 3: Verify animated dots pattern",
       "Step 4: Verify smooth animation timing"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T07:49:10.905952Z",
-    "qa_retry_count": 0,
+    "qa_retry_count": 1,
     "qa_date": "2026-01-02T18:55:28.282046",
-    "qa_completed_at": "2026-01-02T19:00:00Z"
+    "qa_completed_at": "2026-01-02T19:00:00Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.380921Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-101-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1706,12 +2131,16 @@
       "Step 3: Verify placeholder text",
       "Step 4: Verify focus state styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:45:50.258169Z",
-    "qa_completed_at": "2026-01-02T07:55:39.346922Z"
+    "qa_completed_at": "2026-01-02T07:55:39.346922Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.394942Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-102-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1723,15 +2152,19 @@
       "Step 4: Verify enabled state styling",
       "Step 5: Verify hover state"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T18:48:54.521621Z",
     "qa_completed_at": "2026-01-02T18:48:54.521625Z",
     "test_files": [
       "tests/e2e/test_button_styling.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.408923Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-103-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1743,14 +2176,19 @@
       "Step 4: Verify hover states",
       "Step 5: Verify selected state"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T18:48:54.521630Z",
     "qa_completed_at": "2026-01-02T18:48:54.521631Z",
     "test_files": [
       "tests/e2e/test_button_styling.py"
-    ]
+    ],
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.423011Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-104-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1762,12 +2200,16 @@
       "Step 4: Verify specialties list styling",
       "Step 5: Verify CTA button styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T19:00:00.000Z",
-    "qa_completed_at": "2026-01-02T19:00:00.000Z"
+    "qa_completed_at": "2026-01-02T19:00:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.437436Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-105-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1779,15 +2221,19 @@
       "Step 4: Verify preview text styling",
       "Step 5: Verify button row styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:46:15.434286Z",
     "qa_completed_at": "2026-01-02T08:04:56.785564+00:00",
     "test_files": [
       "tests/e2e/test_prd_preview_styling.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.451622Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-106-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1799,12 +2245,16 @@
       "Step 4: Verify time slots 2 per row",
       "Step 5: Verify confirm button styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:08:41.356209Z",
-    "qa_completed_at": "2026-01-02T19:20:00.000000Z"
+    "qa_completed_at": "2026-01-02T19:20:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.465595Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-107-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1816,12 +2266,16 @@
       "Step 4: Verify unselected slots styling",
       "Step 5: Verify transition animation"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:02:29.632037Z",
-    "qa_completed_at": "2026-01-02T19:20:00.000000Z"
+    "qa_completed_at": "2026-01-02T19:20:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.479589Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-108-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1833,15 +2287,19 @@
       "Step 4: Verify expert info styling",
       "Step 5: Verify button styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:00:32.349039Z",
     "qa_completed_at": "2026-01-02T08:07:04.213692+00:00",
     "test_files": [
       "tests/e2e/test_booking_confirmation_styling.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.493652Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-109-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1853,16 +2311,20 @@
       "Step 4: Verify Error: #EF4444 for errors",
       "Step 5: Verify text colors match spec"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:57:10.106014Z",
     "qa_completed_at": "2026-01-02T08:13:11.157327+00:00",
     "test_files": [
       "tests/e2e/test_design_system_colors.py"
     ],
-    "notes": "6/13 tests passing - core color palette verified"
+    "notes": "6/13 tests passing - core color palette verified",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.507738Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-110-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1873,12 +2335,16 @@
       "Step 3: Verify font sizes match spec",
       "Step 4: Verify font weights match spec"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T08:26:14.089398Z",
     "qa_completed_at": "2026-01-02T08:31:03.975410+00:00",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.521846Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-111-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1890,12 +2356,16 @@
       "Step 4: Verify MD: 16px spacing used",
       "Step 5: Verify LG: 24px spacing used"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T07:57:46.208798Z",
-    "qa_completed_at": "2026-01-02T19:23:22.021261Z"
+    "qa_completed_at": "2026-01-02T19:23:22.021261Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.535928Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-112-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1906,15 +2376,19 @@
       "Step 3: Verify 4px, 8px, 16px values used",
       "Step 4: Verify consistency"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:15:21.700843Z",
     "qa_completed_at": "2026-01-02T19:36:13.490872",
     "test_files": [
       "tests/e2e/test_design_system_border_radius.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.550040Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-113-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1925,12 +2399,16 @@
       "Step 3: Verify sm, md, lg shadow levels",
       "Step 4: Verify consistent application"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:08:50.688396Z",
-    "qa_completed_at": "2026-01-02T08:55:43.891043+00:00"
+    "qa_completed_at": "2026-01-02T08:55:43.891043+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.564095Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-114-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1941,12 +2419,16 @@
       "Step 3: Verify 150ms for fast transitions",
       "Step 4: Verify no janky animations"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T08:39:59.741312Z",
     "qa_completed_at": "2026-01-02T08:33:38.338269+00:00",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.578317Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-115-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1957,15 +2439,19 @@
       "Step 3: Verify smooth transition to content",
       "Step 4: Verify skeleton styling matches theme"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:22:13.914296Z",
     "qa_completed_at": "2026-01-02T08:55:23.628758+00:00",
     "test_files": [
       "tests/e2e/test_skeleton_loaders.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.592560Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-116-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1977,15 +2463,19 @@
       "Step 4: Verify badge styling (red dot)",
       "Step 5: Verify badge clears on open"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:25:53.091030Z",
     "qa_completed_at": "2026-01-02T08:37:54.131037+00:00",
     "test_files": [
       "tests/e2e/test_unread_badge.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.606590Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-117-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -1996,12 +2486,16 @@
       "Step 3: Verify chat takes 100% height",
       "Step 4: Verify proper mobile styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:26:51.426420Z",
-    "qa_completed_at": "2026-01-02T08:58:40.392599+00:00"
+    "qa_completed_at": "2026-01-02T08:58:40.392599+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.620650Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-118-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -2013,12 +2507,16 @@
       "Step 4: Test at 1920px viewport",
       "Step 5: Verify layout adapts at each"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T09:04:19.658584Z",
-    "qa_completed_at": "2026-01-02T20:00:00.000000Z"
+    "qa_completed_at": "2026-01-02T20:00:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.634653Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-119-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -2029,14 +2527,18 @@
       "Step 3: Verify adequate spacing between targets",
       "Step 4: Verify easy to tap without mistakes"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:22:42.566187Z",
     "test_files": [
       "tests/e2e/test_touch_targets_mobile.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.648728Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-120-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -2047,15 +2549,19 @@
       "Step 3: Verify professional layout",
       "Step 4: Verify brand colors used"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 1,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T08:16:00.543859Z",
     "qa_completed_at": "2026-01-02T20:40:00.000000Z",
     "test_files": [
       "tests/e2e/test_admin_dashboard_professional.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.662782Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-121-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -2066,12 +2572,16 @@
       "Step 3: Verify error message styling",
       "Step 4: Verify error color (#EF4444) used"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:23:53.171804Z",
-    "qa_completed_at": "2026-01-02T20:30:00Z"
+    "qa_completed_at": "2026-01-02T20:30:00Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.677403Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-122-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -2082,15 +2592,19 @@
       "Step 3: Verify success color (#10B981) used",
       "Step 4: Verify appropriate iconography"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 1,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T08:42:47.675673Z",
     "qa_completed_at": "2026-01-02T20:45:00.000000Z",
     "test_files": [
       "tests/e2e/test_success_states.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.691709Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-123-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -2101,15 +2615,19 @@
       "Step 3: Verify disabled state styling",
       "Step 4: Verify no layout shift"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:33:25.518313Z",
     "qa_completed_at": "2026-01-02T20:40:00Z",
     "test_files": [
       "tests/e2e/test_empty_states.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.706238Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-124-2026-01-02-13-30-40.json"
   },
   {
     "category": "style",
@@ -2120,15 +2638,19 @@
       "Step 3: Verify helpful iconography",
       "Step 4: Verify call to action if applicable"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:33:26.544040Z",
     "qa_completed_at": "2026-01-02T20:40:00Z",
     "test_files": [
       "tests/e2e/test_empty_states.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.721297Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-125-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2141,15 +2663,19 @@
       "Step 5: Verify Enter/Space work on buttons",
       "Step 6: Verify Escape closes chat"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:31:55.686654Z",
     "qa_completed_at": "2026-01-02T20:45:00Z",
     "test_files": [
       "tests/e2e/test_keyboard_navigation.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.735736Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-126-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2162,12 +2688,16 @@
       "Step 5: Verify messages are read correctly",
       "Step 6: Verify live region for new messages"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T19:45:00.000000Z",
-    "qa_completed_at": "2026-01-02T19:50:00.000000Z"
+    "qa_completed_at": "2026-01-02T19:50:00.000000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.750419Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-127-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2179,12 +2709,16 @@
       "Step 4: Verify focus returns to button",
       "Step 5: Verify no focus traps"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:44:59.750377Z",
-    "qa_completed_at": "2026-01-02T21:00:00Z"
+    "qa_completed_at": "2026-01-02T21:00:00Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.765117Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-128-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2195,12 +2729,16 @@
       "Step 3: Verify 3:1 ratio for large text",
       "Step 4: Check button text contrast"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T08:38:04.508025Z",
-    "qa_completed_at": "2026-01-02T21:00:00Z"
+    "qa_completed_at": "2026-01-02T21:00:00Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.779575Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-129-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2211,11 +2749,16 @@
       "Step 3: Verify aria-expanded on toggle",
       "Step 4: Verify aria-describedby on inputs"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T20:05:00Z",
-    "qa_completed_at": "2026-01-02T20:05:00Z"
+    "qa_completed_at": "2026-01-02T20:05:00Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.794082Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-130-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2227,15 +2770,19 @@
       "Step 4: Disable sound notifications",
       "Step 5: Receive message and verify no sound"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T21:00:00Z",
     "qa_completed_at": "2026-01-02T21:00:00Z",
     "test_files": [
       "tests/e2e/test_sound_notifications.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.811606Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-131-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2246,15 +2793,19 @@
       "Step 3: Configure for bottom-right",
       "Step 4: Verify widget appears in bottom-right"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T10:07:42.504175Z",
     "qa_completed_at": "2026-01-02T21:43:14.876690",
     "test_files": [
       "tests/e2e/test_widget_position.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.835446Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-132-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2265,15 +2816,19 @@
       "Step 3: Measure time until widget visible",
       "Step 4: Verify under 2000ms"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T09:36:02.485291Z",
     "qa_completed_at": "2026-01-02T10:00:14.252572+00:00",
     "test_files": [
       "tests/e2e/test_performance.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.852993Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-133-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2283,15 +2838,19 @@
       "Step 2: Measure time until fully open",
       "Step 3: Verify under 500ms"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T08:53:17.579058Z",
     "qa_completed_at": "2026-01-02T10:00:14.252574+00:00",
     "test_files": [
       "tests/e2e/test_performance.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.868341Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-134-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2301,15 +2860,19 @@
       "Step 2: Measure time until first response",
       "Step 3: Verify under 3000ms"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T08:59:30.001566Z",
     "qa_completed_at": "2026-01-02T10:00:14.252576+00:00",
     "test_files": [
       "tests/e2e/test_performance.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.883314Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-135-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2319,15 +2882,19 @@
       "Step 2: Measure latency between stream chunks",
       "Step 3: Verify average under 100ms"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T10:33:58.615700Z",
     "qa_completed_at": "2026-01-02T10:43:20.233517+00:00",
     "test_files": [
       "tests/e2e/test_pending_qa_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.898118Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-136-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2339,15 +2906,19 @@
       "Step 4: Verify response times acceptable",
       "Step 5: Verify no errors under load"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T09:42:14.471534Z",
     "qa_completed_at": "2026-01-02T09:56:04.061273+00:00",
     "test_files": [
       "tests/e2e/test_performance_and_reliability.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.912869Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-137-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2359,15 +2930,19 @@
       "Step 4: Send and receive messages",
       "Step 5: Verify functional despite slow connection"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T09:39:07.607513Z",
     "qa_completed_at": "2026-01-02T09:56:04.061284+00:00",
     "test_files": [
       "tests/e2e/test_performance_and_reliability.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.927485Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-138-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2378,10 +2953,15 @@
       "Step 3: Run production build",
       "Step 4: Verify successful build"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T10:43:00Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T10:43:00Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.942052Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-139-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2391,10 +2971,15 @@
       "Step 2: Verify no type errors",
       "Step 3: Verify all functions have type hints"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T10:46:00Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T10:46:00Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.956639Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-140-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2405,15 +2990,19 @@
       "Step 3: Verify all endpoints documented",
       "Step 4: Verify request/response schemas shown"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T09:47:05.173427Z",
     "qa_completed_at": "2026-01-02T09:56:04.061286+00:00",
     "test_files": [
       "tests/e2e/test_api_documentation.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.971142Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-141-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2424,15 +3013,19 @@
       "Step 3: Verify all schemas defined",
       "Step 4: Verify all endpoints included"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T09:42:13.504123Z",
     "qa_completed_at": "2026-01-02T09:56:04.061288+00:00",
     "test_files": [
       "tests/e2e/test_api_documentation.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.985559Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-142-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2442,12 +3035,17 @@
       "Step 2: Verify ReDoc UI loads",
       "Step 3: Verify documentation is readable"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "test_files": [
       "tests/e2e/test_api_documentation.py"
-    ]
+    ],
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:40.999906Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-143-2026-01-02-13-30-40.json"
   },
   {
     "category": "functional",
@@ -2458,15 +3056,19 @@
       "Step 3: Send request with wrong type",
       "Step 4: Verify appropriate error message"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T10:36:51.096526Z",
     "qa_completed_at": "2026-01-02T10:43:20.233526+00:00",
     "test_files": [
       "tests/e2e/test_pending_qa_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.014304Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-144-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2477,16 +3079,20 @@
       "Step 3: Verify no connection exhaustion",
       "Step 4: Verify proper connection release"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 2,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 3,
     "dev_completed_at": "2026-01-02T09:47:39.558160Z",
     "qa_completed_at": "2026-01-02T09:56:04.061289+00:00",
     "test_files": [
       "tests/e2e/test_api_documentation.py",
       "tests/e2e/test_performance_and_reliability.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.028818Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-145-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2498,12 +3104,16 @@
       "Step 4: Verify faster response",
       "Step 5: Verify cache TTL works"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T19:50:00.000Z",
-    "qa_completed_at": "2026-01-02T19:50:00.000Z"
+    "qa_completed_at": "2026-01-02T19:50:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.043354Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-146-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2514,15 +3124,19 @@
       "Step 3: Verify session data present",
       "Step 4: Verify TTL matches 7 days"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T10:49:02.915802Z",
     "qa_completed_at": "2026-01-02T10:59:04.825105+00:00",
     "test_files": [
       "tests/e2e/test_security_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.057782Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-147-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2533,15 +3147,19 @@
       "Step 3: Check database URL loaded",
       "Step 4: Check all required vars present"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T10:36:45.097251Z",
     "qa_completed_at": "2026-01-02T10:43:20.233528+00:00",
     "test_files": [
       "tests/e2e/test_pending_qa_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.072129Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-148-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2552,12 +3170,16 @@
       "Step 3: Make request from different origin",
       "Step 4: Verify appropriate behavior"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T19:50:00.000Z",
-    "qa_completed_at": "2026-01-02T19:50:00.000Z"
+    "qa_completed_at": "2026-01-02T19:50:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.086465Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-149-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2568,9 +3190,14 @@
       "Step 3: Verify 429 response returned",
       "Step 4: Wait and verify limit resets"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.100679Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-150-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2581,15 +3208,19 @@
       "Step 3: Verify no XSS execution",
       "Step 4: Test various XSS vectors"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T10:50:02.035066Z",
     "qa_completed_at": "2026-01-02T10:59:04.825114+00:00",
     "test_files": [
       "tests/e2e/test_security_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.114793Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-151-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2600,9 +3231,14 @@
       "Step 3: Verify no SQL injection possible",
       "Step 4: Test various injection vectors"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.129133Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-152-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2613,15 +3249,19 @@
       "Step 3: Verify no sensitive data logged",
       "Step 4: Verify proper log sanitization"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T10:48:49.366018Z",
     "qa_completed_at": "2026-01-02T10:59:04.825116+00:00",
     "test_files": [
       "tests/e2e/test_security_features.py"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.143952Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-153-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2632,9 +3272,14 @@
       "Step 3: Verify refresh_token is encrypted",
       "Step 4: Verify token not in logs"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.158562Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-154-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2645,9 +3290,14 @@
       "Step 3: Authenticate and retry",
       "Step 4: Verify access granted"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.173033Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-155-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2658,11 +3308,15 @@
       "Step 3: Verify expert matching tested",
       "Step 4: Verify PRD generation tested"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T11:03:32.611425Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T11:03:32.611425Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.187330Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-156-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2673,11 +3327,15 @@
       "Step 3: Verify database interactions tested",
       "Step 4: Verify proper test isolation"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T11:02:23.918775Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T11:02:23.918775Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.201538Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-157-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2688,9 +3346,14 @@
       "Step 3: Verify booking flow tested",
       "Step 4: Verify all tests pass"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.216156Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-158-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2701,12 +3364,16 @@
       "Step 3: Verify at least 80% coverage",
       "Step 4: Identify uncovered critical paths"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T13:19:51.317043Z",
     "qa_completed_at": "2026-01-03T00:20:00.000000Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.230310Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-159-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2717,11 +3384,15 @@
       "Step 3: Verify no linting errors",
       "Step 4: Verify code style consistent"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T12:41:43.004212Z"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T12:41:43.004212Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.244564Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-160-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2732,14 +3403,19 @@
       "Step 3: Verify status JSON returned",
       "Step 4: Verify includes DB/Redis status"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "test_files": [
       "tests/e2e/test_health_check.py"
     ],
     "dev_completed_at": "2026-01-02T09:57:00Z",
-    "qa_completed_at": "2026-01-02T09:58:00Z"
+    "qa_completed_at": "2026-01-02T09:58:00Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.258750Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-161-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2750,11 +3426,16 @@
       "Step 3: Verify no stack traces in production",
       "Step 4: Verify error codes are correct"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T12:41:39.364596+00:00",
-    "qa_completed_at": "2026-01-02T12:41:39.364602+00:00"
+    "qa_completed_at": "2026-01-02T12:41:39.364602+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.273023Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-162-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2765,17 +3446,21 @@
       "Step 3: Verify helpful error message shown",
       "Step 4: Verify retry mechanism exists"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:02:25.377551Z",
     "qa_completed_at": "2026-01-02T14:22:00+00:00",
     "test_files": [
       "tests/integration/test_error_handling.py::test_graceful_degradation_calendar_service_failure",
       "tests/integration/test_error_handling.py::test_graceful_degradation_email_service_failure",
       "tests/integration/test_error_handling.py::test_timezone_fallback_on_calendar_failure"
-    ]
+    ],
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.287216Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-163-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2787,12 +3472,16 @@
       "Step 4: Verify errors logged",
       "Step 5: Verify bookings logged"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:35:13.341115Z",
-    "qa_completed_at": "2026-01-02T12:41:39.364612+00:00"
+    "qa_completed_at": "2026-01-02T12:41:39.364612+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.301399Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-164-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2804,12 +3493,16 @@
       "Step 4: Verify servers start",
       "Step 5: Verify application accessible"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T11:41:32.674628Z",
-    "qa_completed_at": "2026-01-02T13:24:04.627896+00:00"
+    "qa_completed_at": "2026-01-02T13:24:04.627896+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.315560Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-165-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2820,11 +3513,16 @@
       "Step 3: Verify setup steps documented",
       "Step 4: Verify environment variables documented"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T12:57:49.604686+00:00",
-    "qa_completed_at": "2026-01-02T12:57:49.604691+00:00"
+    "qa_completed_at": "2026-01-02T12:57:49.604691+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.329752Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-166-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2835,12 +3533,16 @@
       "Step 3: Verify no sensitive data committed",
       "Step 4: Verify .gitignore is complete"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:25:00.826735Z",
-    "qa_verified_at": "2026-01-02T23:33:55.764197"
+    "qa_verified_at": "2026-01-02T23:33:55.764197",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.344750Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-167-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2851,12 +3553,16 @@
       "Step 3: Perform actions and check state",
       "Step 4: Verify state persists appropriately"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T13:20:02.651162Z",
     "qa_completed_at": "2026-01-02T13:01:12.503152+00:00",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.359136Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-168-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2867,13 +3573,17 @@
       "Step 3: Re-fetch and verify cache hit",
       "Step 4: Verify cache invalidation works"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:41:39.364613+00:00",
     "qa_completed_at": "2026-01-02T12:41:39.364617+00:00",
-    "notes": "QueryClient provider added, useExperts hook created"
+    "notes": "QueryClient provider added, useExperts hook created",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.373341Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-169-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2885,12 +3595,16 @@
       "Step 4: Verify message animations",
       "Step 5: Verify no janky motion"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:23:20.295754Z",
-    "qa_verified_at": "2026-01-02T23:33:55.764202"
+    "qa_verified_at": "2026-01-02T23:33:55.764202",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.387584Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-170-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2902,11 +3616,16 @@
       "Step 4: Verify lists render",
       "Step 5: Verify code blocks render"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "notes": "PRDPreview component with full markdown rendering",
-    "qa_completed_at": "2026-01-02T13:24:04.627911+00:00"
+    "qa_completed_at": "2026-01-02T13:24:04.627911+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.401895Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-171-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2917,13 +3636,16 @@
       "Step 3: Verify Escape closes dialogs",
       "Step 4: Verify ARIA attributes present"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:47:02.604753Z",
     "qa_completed_at": "2026-01-02T12:57:11.283903+00:00",
-    "qa_notes": "Created Radix UI Dialog component and test page. Verified accessibility features: ARIA attributes, focus trapping, keyboard navigation, and Escape key closing. 4/8 tests passing showing core accessibility works."
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.416428Z",
+    "qa_report_path": "unobot/qa-reports/feature-172-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2934,12 +3656,16 @@
       "Step 3: Verify icons are correctly sized",
       "Step 4: Verify icons match context"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:54:12.003341Z",
-    "qa_completed_at": "2026-01-02T12:56:57.236907+00:00"
+    "qa_completed_at": "2026-01-02T12:56:57.236907+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.430745Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-173-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2950,11 +3676,16 @@
       "Step 3: Verify change appears without refresh",
       "Step 4: Verify state preserved"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T12:59:48.149301+00:00",
-    "qa_completed_at": "2026-01-02T12:59:48.149306+00:00"
+    "qa_completed_at": "2026-01-02T12:59:48.149306+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.445021Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-174-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2965,12 +3696,16 @@
       "Step 3: Verify code splitting works",
       "Step 4: Verify assets are minified"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T12:57:00.791254Z",
     "qa_completed_at": "2026-01-02T12:50:35.577109Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.459255Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-175-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2981,13 +3716,17 @@
       "Step 3: Verify client reconnects",
       "Step 4: Verify session restored"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:58:59.249793Z",
     "qa_completed_at": "2026-01-02T13:10:36.979612+00:00",
-    "note": "WebSocket client in client/src/api/websocket.ts with reconnection logic"
+    "note": "WebSocket client in client/src/api/websocket.ts with reconnection logic",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.473477Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-176-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -2999,11 +3738,16 @@
       "Step 4: Delete records",
       "Step 5: Verify relationships work"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T12:53:33.609530Z",
-    "qa_completed_at": "2026-01-02T12:53:33.609537Z"
+    "qa_completed_at": "2026-01-02T12:53:33.609537Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.487779Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-177-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3014,11 +3758,16 @@
       "Step 3: Verify schema reverts",
       "Step 4: Verify data handling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-03T00:15:00.000000Z",
-    "dev_completed_at": "2026-01-03T00:15:00.000000Z"
+    "dev_completed_at": "2026-01-03T00:15:00.000000Z",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.502439Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-178-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3029,13 +3778,17 @@
       "Step 3: Verify API call succeeds",
       "Step 4: Verify email delivered"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:10:24.448840+00:00",
     "note": "Email service implemented in src/services/email_service.py",
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T13:11:43.040081Z"
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:11:43.040081Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.517102Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-179-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3047,13 +3800,17 @@
       "Step 4: Create calendar event",
       "Step 5: Verify event appears on calendar"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:10:24.448849+00:00",
     "note": "Calendar service implemented in src/services/calendar_service.py",
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T13:15:39.654177Z"
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:15:39.654177Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.531534Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-180-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3064,13 +3821,17 @@
       "Step 3: Verify Claude API is called",
       "Step 4: Verify response is received"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T13:06:12.767651Z",
     "qa_completed_at": "2026-01-02T13:10:24.448851+00:00",
-    "note": "AI service uses ChatAnthropic in src/services/ai_service.py"
+    "note": "AI service uses ChatAnthropic in src/services/ai_service.py",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.546134Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-181-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3081,11 +3842,17 @@
       "Step 3: Verify tools are registered",
       "Step 4: Verify subagents are available"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:10:24.448853+00:00",
-    "note": "DeepAgents service implemented in src/services/deepagents_service.py"
+    "note": "DeepAgents service implemented in src/services/deepagents_service.py",
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:25:29.736284Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.560541Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-182-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3098,13 +3865,17 @@
       "Step 5: Verify conversation resumes",
       "Step 6: Verify no messages lost"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:12:28.072356+00:00",
     "note": "WebSocket client has reconnection logic with 5 attempts and exponential backoff",
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T13:13:27.709495Z"
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:13:27.709495Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.575107Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-183-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3115,12 +3886,16 @@
       "Step 3: Verify fallback UI shown",
       "Step 4: Verify can recover"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T12:49:32.625483+00:00",
-    "qa_completed_at": "2026-01-02T12:49:32.625493+00:00"
+    "qa_completed_at": "2026-01-02T12:49:32.625493+00:00",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.589754Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-184-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3132,12 +3907,16 @@
       "Step 4: Verify URL is saved",
       "Step 5: Verify image displays"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_retry_count": 0,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_retry_count": 1,
     "dev_completed_at": "2026-01-02T13:13:47.048976Z",
-    "qa_completed_at": "2026-01-03T00:15:00.000Z"
+    "qa_completed_at": "2026-01-03T00:15:00.000Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.604516Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-185-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3148,11 +3927,16 @@
       "Step 3: Verify styling applies",
       "Step 4: Verify no unused CSS in build"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "dev_completed_at": "2026-01-02T12:59:48.149312+00:00",
-    "qa_completed_at": "2026-01-02T12:59:48.149313+00:00"
+    "qa_completed_at": "2026-01-02T12:59:48.149313+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.618847Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-186-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3163,11 +3947,16 @@
       "Step 3: Verify response stored",
       "Step 4: Verify affects lead score"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:10:24.448857+00:00",
-    "note": "Verified in session_service.py lines 547-557"
+    "note": "Verified in session_service.py lines 547-557",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.633235Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-187-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3178,13 +3967,17 @@
       "Step 3: Verify captured in context",
       "Step 4: Verify included in PRD"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:18:53.647963+00:00",
     "note": "Implemented in session_service.py with keyword matching",
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T13:22:26.627300Z"
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:22:26.627300Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.647601Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-188-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3195,11 +3988,16 @@
       "Step 3: Verify intent is detected",
       "Step 4: Verify conversation adapts"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:12:28.072365+00:00",
-    "note": "Keyword matching in session_service.py extracts challenges, industry, tech_stack, etc."
+    "note": "Keyword matching in session_service.py extracts challenges, industry, tech_stack, etc.",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.664644Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-189-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3210,11 +4008,16 @@
       "Step 3: Verify bot remembers context",
       "Step 4: Verify no context confusion"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:10:24.448859+00:00",
-    "note": "Session business_context and client_info persisted in database"
+    "note": "Session business_context and client_info persisted in database",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.680162Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-190-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3226,13 +4029,17 @@
       "Step 4: Verify recommendations are relevant",
       "Step 5: Verify technology suggestions appropriate"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:10:24.448860+00:00",
     "note": "PRD generation includes technical requirements section",
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T13:21:06.859590Z"
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T13:21:06.859590Z",
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.699721Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-191-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3243,11 +4050,16 @@
       "Step 3: Verify file picker opens",
       "Step 4: Verify acceptable file types"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:05:04.611626+00:00",
-    "note": "Input area with attachment button in ChatWindow.tsx"
+    "note": "Input area with attachment button in ChatWindow.tsx",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.716456Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-192-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3258,10 +4070,15 @@
       "Step 3: Verify error message styling",
       "Step 4: Verify icon if applicable"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536514+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536514+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.731202Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-193-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3272,10 +4089,15 @@
       "Step 3: Verify cursor not-allowed",
       "Step 4: Verify no hover effects"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536524+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536524+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.745789Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-194-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3285,10 +4107,15 @@
       "Step 2: Verify pressed state visible",
       "Step 3: Verify appropriate feedback"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536526+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536526+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.760415Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-195-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3299,10 +4126,15 @@
       "Step 3: Verify input alignment",
       "Step 4: Verify consistent spacing"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536527+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536527+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.775074Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-196-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3313,10 +4145,15 @@
       "Step 3: Verify row alternation if any",
       "Step 4: Verify hover states"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536529+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536529+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.789677Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-197-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3327,10 +4164,15 @@
       "Step 3: Verify dialog centering",
       "Step 4: Verify close button styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536530+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536530+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.804307Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-198-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3341,10 +4183,15 @@
       "Step 3: Trigger error notification",
       "Step 4: Verify red styling"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536531+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536531+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.818898Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-199-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3354,10 +4201,15 @@
       "Step 2: Verify custom scrollbar styling",
       "Step 3: Verify works on different browsers"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536533+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536533+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.833509Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-200-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3368,10 +4220,15 @@
       "Step 3: Verify no pixelation",
       "Step 4: Verify aspect ratio maintained"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536536+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536536+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.848278Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-201-2026-01-02-13-30-41.json"
   },
   {
     "category": "style",
@@ -3382,10 +4239,15 @@
       "Step 3: Verify consistent sizing",
       "Step 4: Verify color consistency"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:04:54.536537+00:00"
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
+    "qa_completed_at": "2026-01-02T13:04:54.536537+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.862961Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-202-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3396,12 +4258,17 @@
       "Step 3: Verify order of processing",
       "Step 4: Verify no middleware conflicts"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:11:57.843426+00:00",
     "note": "SubAgentMiddleware and FilesystemMiddleware configured in deepagents_service.py",
-    "dev_completed_at": "2026-01-02T13:11:57.843417+00:00"
+    "dev_completed_at": "2026-01-02T13:11:57.843417+00:00",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.877426Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-203-2026-01-02-13-30-41.json"
   },
   {
     "category": "functional",
@@ -3412,10 +4279,15 @@
       "Step 3: Verify cache hits occur",
       "Step 4: Compare token usage"
     ],
-    "passes": true,
-    "is_dev_done": true,
-    "is_qa_passed": true,
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false,
     "qa_completed_at": "2026-01-02T13:10:24.448865+00:00",
-    "note": "Cache service implemented with Redis in src/services/cache_service.py"
+    "note": "Cache service implemented with Redis in src/services/cache_service.py",
+    "qa_retry_count": 1,
+    "qa_validated": true,
+    "last_qa_run": "2026-01-02T13:30:41.892382Z",
+    "qa_notes": "Failed: One or more gates failed",
+    "qa_report_path": "unobot/qa-reports/feature-204-2026-01-02-13-30-41.json"
   }
 ]
