@@ -142,8 +142,8 @@ class TestBotMessageStyling:
         second_bubble = second_container.locator('div').first
         second_bubble_class = second_bubble.get_attribute('class')
 
-        # Both should have same styling classes
-        essential_classes = ['bg-gray-100', 'text-gray-800', 'border', 'border-gray-200', 'rounded-lg']
+        # Both should have same styling classes (using design system tokens)
+        essential_classes = ['bg-surface', 'text-text', 'border', 'border-border', 'rounded-lg']
 
         for class_name in essential_classes:
             assert class_name in first_bubble_class, \

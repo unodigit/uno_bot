@@ -1,0 +1,52 @@
+{
+  "test_date": "2026-01-02",
+  "application": "UnoBot",
+  "base_url": "http://localhost:5173",
+  "overall_status": "WARNING",
+  "total_tests": 6,
+  "passed_tests": 5,
+  "failed_tests": 0,
+  "warning_tests": 1,
+  "tests": [
+    {
+      "test_name": "Chat Widget Button Styling",
+      "status": "PASS",
+      "details": "All required styling classes are present in the component code",
+      "issues": []
+    },
+    {
+      "test_name": "Chat Window Dimensions",
+      "status": "PASS",
+      "details": "Chat window has correct dimensions (380px width) and positioning",
+      "issues": []
+    },
+    {
+      "test_name": "Chat Window Header",
+      "status": "PASS",
+      "details": "Header displays logo and controls correctly",
+      "issues": []
+    },
+    {
+      "test_name": "Responsive Design",
+      "status": "WARNING",
+      "details": "Chat window may not be fully responsive on mobile devices",
+      "issues": [
+        "Fixed width of 380px may be too large for mobile screens",
+        "No mobile-specific breakpoint classes found in code",
+        "Positioning may overlap with mobile UI elements"
+      ]
+    },
+    {
+      "test_name": "Design System Consistency",
+      "status": "PASS",
+      "details": "Chat widget follows the established design system",
+      "issues": []
+    },
+    {
+      "test_name": "Animation and Interaction",
+      "status": "PASS",
+      "details": "Smooth animations and interactions implemented",
+      "issues": []
+    }
+  ]
+}
