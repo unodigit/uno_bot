@@ -2806,9 +2806,10 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T11:41:32.674628Z"
+    "dev_completed_at": "2026-01-02T11:41:32.674628Z",
+    "qa_completed_at": "2026-01-02T13:24:04.627896+00:00"
   },
   {
     "category": "functional",
@@ -2903,8 +2904,9 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "notes": "PRDPreview component with full markdown rendering"
+    "is_qa_passed": true,
+    "notes": "PRDPreview component with full markdown rendering",
+    "qa_completed_at": "2026-01-02T13:24:04.627911+00:00"
   },
   {
     "category": "functional",
@@ -3180,7 +3182,9 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T13:18:53.647963+00:00",
-    "note": "Implemented in session_service.py with keyword matching"
+    "note": "Implemented in session_service.py with keyword matching",
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T13:22:26.627300Z"
   },
   {
     "category": "functional",
