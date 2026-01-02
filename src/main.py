@@ -262,13 +262,13 @@ async def handle_socket_message(sid: str, data: dict) -> None:
     async with AsyncSessionLocal() as db:
         try:
             # Send typing indicator
+            logger.info(f"Sending typing_start for session {session_id}")
             await sio.emit("typing_start", {"from": "bot"}, room=session_id)
 
             # Handle the message
+            logger.info(f"Calling handle_streaming_chat_message for session {session_id}")
             result = await handle_streaming_chat_message(session_id, content, db)
-
-            # Stop typing indicator
-            await sio.emit("typing_stop", {"from": "bot"}, room=session_id)
+            logger.info(f"handle_streaming_chat_message completed for session {session_id}")
 
             # Send the complete response
             await sio.emit("message", {

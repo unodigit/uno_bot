@@ -41,7 +41,7 @@ async def test_websocket_connection_establishes(client, sample_visitor_id: str):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -89,7 +89,7 @@ async def test_websocket_send_message(client, sample_visitor_id: str):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -138,7 +138,7 @@ async def test_websocket_typing_indicators(client, sample_visitor_id: str):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -178,7 +178,7 @@ async def test_websocket_phase_change(client, sample_visitor_id: str):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -227,7 +227,7 @@ async def test_websocket_prd_ready_event(client, sample_visitor_id: str):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -269,7 +269,7 @@ async def test_websocket_error_event(client):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -299,7 +299,7 @@ async def test_websocket_invalid_session_error(client):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -347,7 +347,7 @@ async def test_websocket_connection_stability(client, sample_visitor_id: str):
     try:
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -447,7 +447,7 @@ async def test_websocket_reconnection(client, sample_visitor_id: str):
         # Connect
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )
@@ -463,7 +463,7 @@ async def test_websocket_reconnection(client, sample_visitor_id: str):
         # Reconnect
         await sio.connect(
             "http://localhost:8000",
-            socketio_path="/ws/socket.io",
+            socketio_path="/ws",
             transports=["websocket"],
             wait_timeout=5,
         )

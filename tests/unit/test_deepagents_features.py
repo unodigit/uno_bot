@@ -37,7 +37,7 @@ def get_model():
         pytest.skip("ANTHROPIC_API_KEY not set")
 
     return ChatAnthropic(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-3-5-sonnet-20241022",
         api_key=SecretStr(api_key),
         temperature=0.1,
         max_tokens=1024,
@@ -63,7 +63,7 @@ class TestDeepAgentsFeatures:
         The agent has access to write_todos and read_todos tools.
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, FilesystemBackend
         from deepagents.middleware.subagents import SubAgent
 
         print("\n=== Feature 91: TodoListMiddleware Test ===")
@@ -72,8 +72,8 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=StateBackend(None),
-                routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
+                default=FilesystemBackend(root_dir=test_dir),
+                routes={}
             )
 
             # Create agent - create_deep_agent includes built-in TodoListMiddleware
@@ -128,7 +128,7 @@ class TestDeepAgentsFeatures:
         4: Verify subagent result returned
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, FilesystemBackend
         from deepagents.middleware.subagents import SubAgent
 
         print("\n=== Feature 92: Subagent Delegation Test ===")
@@ -137,8 +137,8 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=StateBackend(None),
-                routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
+                default=FilesystemBackend(root_dir=test_dir),
+                routes={}
             )
 
             # Define subagents as required by create_deep_agent
@@ -188,7 +188,7 @@ class TestDeepAgentsFeatures:
         5: Verify key information retained
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, FilesystemBackend
 
         print("\n=== Feature 93: SummarizationMiddleware Test ===")
 
@@ -196,8 +196,8 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=StateBackend(None),
-                routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
+                default=FilesystemBackend(root_dir=test_dir),
+                routes={}
             )
 
             # Create agent - create_deep_agent includes SummarizationMiddleware by default
@@ -245,7 +245,7 @@ class TestDeepAgentsFeatures:
         5: Verify booking completes
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, FilesystemBackend
 
         print("\n=== Feature 94: Human-in-the-loop Test ===")
 
@@ -253,8 +253,8 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=StateBackend(None),
-                routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
+                default=FilesystemBackend(root_dir=test_dir),
+                routes={}
             )
 
             # Define a booking tool with docstring
@@ -309,7 +309,7 @@ class TestDeepAgentsFeatures:
         4: Verify file content matches PRD
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, FilesystemBackend
         from deepagents.middleware import FilesystemMiddleware
         import os
 
@@ -322,8 +322,8 @@ class TestDeepAgentsFeatures:
             os.makedirs(prd_dir, exist_ok=True)
 
             backend = CompositeBackend(
-                default=StateBackend(None),
-                routes={"/prd/": FilesystemBackend(root_dir=prd_dir)}
+                default=FilesystemBackend(root_dir=prd_dir),
+                routes={}
             )
 
             # FilesystemMiddleware uses backend parameter

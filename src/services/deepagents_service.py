@@ -29,7 +29,9 @@ class DeepAgentsService:
         self.model_name: Optional[str] = None
 
         if self.api_key:
-            self.model = ChatAnthropic(
+            # Note: ChatAnthropic uses pydantic for parameter validation
+            # mypy doesn't understand this, so we use type: ignore
+            self.model = ChatAnthropic(  # type: ignore[call-arg]
                 model="claude-3-5-sonnet-20241022",
                 api_key=SecretStr(self.api_key),
                 temperature=0.7,

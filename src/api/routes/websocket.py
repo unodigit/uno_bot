@@ -152,9 +152,11 @@ async def handle_streaming_chat_message(
     message_id = str(ai_message.id)
 
     # Send streaming response chunks
+    logger.info(f"Starting streaming response for session {session_id}")
     async for chunk in session_service.ai_service.stream_response(
         content, conversation_history, context
     ):
+        logger.info(f"Received chunk: {chunk}")
         full_response += chunk
 
         # Send streaming event for each chunk
@@ -164,6 +166,9 @@ async def handle_streaming_chat_message(
             "is_complete": False,
             "message_id": message_id
         }, room=session_id)
+        logger.info(f"Sent streaming message chunk for session {session_id}")
+
+    logger.info(f"Streaming complete for session {session_id}, full response: {full_response}")
 
     # Update the message with complete content
     ai_message.content = full_response

@@ -207,6 +207,9 @@ export interface ChatState {
   soundNotificationsEnabled: boolean;
   // Widget position configuration
   widgetPosition: 'left' | 'right';
+  // GDPR Consent state
+  hasGivenConsent: boolean;
+  showConsentModal: boolean;
 }
 
 export interface ChatActions {
@@ -259,6 +262,10 @@ export interface ChatActions {
   // Widget position actions
   setWidgetPosition: (position: 'left' | 'right') => void;
   toggleWidgetPosition: () => void;
+  // Consent actions
+  checkConsent: () => Promise<void>;
+  acceptConsent: () => Promise<void>;
+  declineConsent: () => Promise<void>;
   // Note: The following methods are also available on the store but are not part of ChatActions
   // They are added for completeness: addMessage, clearError, setStreaming
 }
