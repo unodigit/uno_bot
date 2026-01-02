@@ -2,11 +2,12 @@
 import pytest
 from datetime import datetime, timedelta
 from uuid import uuid4
+from sqlalchemy import select
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from src.models.prd import PRDDocument
-from src.models.session import ConversationSession, Message
+from src.models.session import ConversationSession, Message, SessionStatus
 from src.services.cleanup_service import CleanupService
 
 

@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from src.models.prd import PRDDocument
-from src.models.session import ConversationSession, Message
+from src.models.session import ConversationSession, Message, SessionStatus
 
 
 class CleanupService:
@@ -34,8 +34,8 @@ class CleanupService:
             .where(
                 and_(
                     ConversationSession.status.in_([
-                        ConversationSession.status.COMPLETED.value,
-                        ConversationSession.status.ABANDONED.value
+                        SessionStatus.COMPLETED.value,
+                        SessionStatus.ABANDONED.value
                     ]),
                     ConversationSession.completed_at < cutoff_date
                 )
@@ -119,11 +119,11 @@ class CleanupService:
         cutoff_30_days = datetime.utcnow() - timedelta(days=30)
 
         for status, completed_at in sessions:
-            if status == ConversationSession.status.ACTIVE.value:
+            if status == SessionStatus.ACTIVE.value:
                 stats["active_sessions"] += 1
-            elif status == ConversationSession.status.COMPLETED.value:
+            elif status == SessionStatus.COMPLETED.value:
                 stats["completed_sessions"] += 1
-            elif status == ConversationSession.status.ABANDONED.value:
+            elif status == SessionStatus.ABANDONED.value:
                 stats["abandoned_sessions"] += 1
 
             if completed_at:
