@@ -61,12 +61,31 @@ async def validation_exception_handler(
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
     """Handle HTTP exceptions."""
+    # Handle both string and dict details
+    detail = exc.detail
+    details = None
+
+    if isinstance(detail, dict):
+        # Extract message for the main detail field
+        message = detail.get("message", str(detail))
+        # Store the full detail dict in debug_info
+        details = detail
+        detail = message
+    elif isinstance(detail, str):
+        detail = detail
+    else:
+        detail = str(detail)
+
     error_response = ErrorResponse(
         success=False,
-        detail=exc.detail,
+        detail=detail,
         error_code="INTERNAL_ERROR",
         path=str(request.url),
     )
+
+    # Add additional details if available
+    if details:
+        error_response.debug_info = details
 
     # Map status codes to error codes
     if exc.status_code == 404:
@@ -75,6 +94,8 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
         error_response.error_code = "BAD_REQUEST"
     elif exc.status_code == 409:
         error_response.error_code = "CONFLICT"
+    elif exc.status_code == 410:
+        error_response.error_code = "GONE"
     elif exc.status_code == 422:
         error_response.error_code = "VALIDATION_ERROR"
     elif exc.status_code == 429:
