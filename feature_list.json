@@ -261,7 +261,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T14:07:09.019921Z",
+    "dev_completed_at": "2026-01-02T14:11:41.317157Z",
     "qa_completed_at": "2026-01-02T14:03:40.888086Z",
     "qa_validated": true,
     "last_qa_run": "2026-01-02T14:03:40.888086Z",
@@ -398,15 +398,15 @@
       "Step 5: Verify conversation continues based on selection"
     ],
     "passes": false,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-02T03:36:09.243712Z",
+    "dev_completed_at": "2026-01-02T14:10:56.134757Z",
     "qa_completed_at": "2026-01-02T15:00:00.000000Z",
     "qa_validated": true,
     "last_qa_run": "2026-01-02T13:30:39.114593Z",
     "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "unobot/qa-reports/feature-19-2026-01-02-13-30-39.json"
+    "qa_report_path": "tests/e2e/test_chat_widget.py::TestChatWidget::test_quick_reply_buttons_appear_after_welcome"
   },
   {
     "category": "functional",
