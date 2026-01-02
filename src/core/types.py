@@ -39,7 +39,7 @@ class JSONType(TypeDecorator[Any]):
         # For SQLite, serialize to JSON string
         return json.dumps(value) if isinstance(value, (dict, list)) else value
 
-    def process_result_value(self, value: Optional[str], dialect: Dialect) -> Optional[Any]:
+    def process_result_value(self, value: Optional[str], dialect: Dialect) -> Optional[Union[str, dict[str, Any], list[Any]]]:
         """Convert database value to Python object."""
         if value is None:
             return None
@@ -47,7 +47,12 @@ class JSONType(TypeDecorator[Any]):
             return value
         # For SQLite, deserialize from JSON string
         try:
-            return json.loads(value) if isinstance(value, str) else value
+            if isinstance(value, str):
+                parsed = json.loads(value)
+                if isinstance(parsed, (dict, list)):
+                    return parsed
+                return value
+            return value
         except (json.JSONDecodeError, TypeError):
             return value
 
