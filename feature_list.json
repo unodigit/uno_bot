@@ -922,7 +922,8 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T05:37:33.965801Z",
-    "last_updated": "2026-01-02T06:05:55.063760+00:00"
+    "last_updated": "2026-01-02T06:05:55.063760+00:00",
+    "qa_completed_at": "2026-01-02T06:10:20.052861+00:00"
   },
   {
     "category": "functional",
@@ -968,9 +969,10 @@
       "Step 5: Verify booking rate shown"
     ],
     "passes": true,
-    "is_dev_done": false,
+    "is_dev_done": true,
     "is_qa_passed": true,
-    "last_updated": "2026-01-02T06:05:55.063776+00:00"
+    "last_updated": "2026-01-02T06:05:55.063776+00:00",
+    "dev_completed_at": "2026-01-02T06:10:20.052873+00:00"
   },
   {
     "category": "functional",
@@ -987,7 +989,8 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T05:45:05.477782Z",
-    "last_updated": "2026-01-02T06:05:55.063779+00:00"
+    "last_updated": "2026-01-02T06:05:55.063779+00:00",
+    "qa_completed_at": "2026-01-02T06:10:20.052876+00:00"
   },
   {
     "category": "functional",
