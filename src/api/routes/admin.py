@@ -1,12 +1,11 @@
 """Admin API routes for expert management and system administration."""
 from typing import List
+import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies import get_db
-from src.crud.expert import ExpertRepository
-from src.models.expert import Expert
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 from src.services.expert_service import ExpertService
 
@@ -48,7 +47,7 @@ async def create_expert_admin(
 
 @router.put("/experts/{expert_id}", response_model=ExpertResponse)
 async def update_expert_admin(
-    expert_id: str,
+    expert_id: uuid.UUID,
     expert_update: ExpertUpdate,
     db: AsyncSession = Depends(get_db)
 ) -> ExpertResponse:
@@ -74,7 +73,7 @@ async def update_expert_admin(
 
 @router.delete("/experts/{expert_id}")
 async def delete_expert_admin(
-    expert_id: str,
+    expert_id: uuid.UUID,
     db: AsyncSession = Depends(get_db)
 ):
     """Delete expert profile (admin only).
