@@ -2,6 +2,7 @@
 Admin API routes for expert management and system administration.
 """
 import uuid
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials
@@ -13,6 +14,7 @@ from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 from src.services.analytics_service import AnalyticsService
 from src.services.cleanup_service import CleanupService
 from src.services.expert_service import ExpertService
+from src.services.session_service import SessionService
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -497,4 +499,119 @@ async def get_cleanup_stats(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get cleanup stats: {str(e)}"
+        ) from e
+
+
+@router.get("/export/leads")
+async def export_leads(
+    min_lead_score: int = 50,
+    days_back: int = 30,
+    admin_data: dict = Depends(verify_admin_access),
+    db: AsyncSession = Depends(get_db)
+):
+    """Export lead data as JSON (for CSV conversion).
+
+    Returns lead data for sessions that qualify as potential leads based on:
+    - Lead score >= min_lead_score
+    - Sessions with bookings
+    - Sessions with PRDs
+
+    Args:
+        min_lead_score: Minimum lead score threshold (default: 50)
+        days_back: Look back period in days (default: 30)
+        admin_data: Admin authentication data
+        db: Database session
+
+    Returns:
+        List of lead data dictionaries
+    """
+    try:
+        service = SessionService(db)
+        leads = await service.get_lead_data(min_lead_score=min_lead_score, days_back=days_back)
+
+        return {
+            "leads": leads,
+            "count": len(leads),
+            "filters": {
+                "min_lead_score": min_lead_score,
+                "days_back": days_back
+            },
+            "export_info": {
+                "message": "Use /api/v1/admin/export/leads/csv for CSV format",
+                "csv_endpoint": "/api/v1/admin/export/leads/csv"
+            }
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to export leads: {str(e)}"
+        ) from e
+
+
+@router.get("/export/leads/csv")
+async def export_leads_csv(
+    min_lead_score: int = 50,
+    days_back: int = 30,
+    admin_data: dict = Depends(verify_admin_access),
+    db: AsyncSession = Depends(get_db)
+):
+    """Export lead data as CSV.
+
+    Returns a CSV file with lead data for sessions that qualify as potential leads.
+
+    Args:
+        min_lead_score: Minimum lead score threshold (default: 50)
+        days_back: Look back period in days (default: 30)
+        admin_data: Admin authentication data
+        db: Database session
+
+    Returns:
+        CSV file download
+    """
+    try:
+        service = SessionService(db)
+        leads = await service.get_lead_data(min_lead_score=min_lead_score, days_back=days_back)
+
+        # Generate CSV content
+        headers = [
+            "Visitor ID", "Session ID", "Created At", "Status", "Current Phase",
+            "Lead Score", "Recommended Service", "Has Booking", "Has PRD",
+            "Matched Expert", "Source URL", "Business Context"
+        ]
+
+        csv_lines = [",".join(headers)]
+
+        for lead in leads:
+            row = [
+                lead.get("visitor_id", ""),
+                lead.get("session_id", ""),
+                lead.get("created_at", ""),
+                lead.get("status", ""),
+                lead.get("current_phase", ""),
+                str(lead.get("lead_score", "")),
+                lead.get("recommended_service", ""),
+                "Yes" if lead.get("has_booking") else "No",
+                "Yes" if lead.get("has_prd") else "No",
+                lead.get("matched_expert", ""),
+                lead.get("source_url", ""),
+                f'"{lead.get("business_context", "")}"'.replace('"', '""'),
+            ]
+            # Escape commas in values
+            row = [f'"{str(v).replace(chr(34), chr(34)*2)}"' for v in row]
+            csv_lines.append(",".join(row))
+
+        csv_content = "\n".join(csv_lines)
+
+        from fastapi.responses import Response
+        return Response(
+            content=csv_content,
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f'attachment; filename="leads_{datetime.utcnow().strftime("%Y%m%d_%H%M%S")}.csv"'
+            }
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to export leads as CSV: {str(e)}"
         ) from e

@@ -73,8 +73,10 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
   const [addingExpert, setAddingExpert] = useState(false)
   const [savingExpert, setSavingExpert] = useState(false)
   const [exporting, setExporting] = useState(false)
-  const [activeTab, setActiveTab] = useState<'experts' | 'templates'>('experts')
+  const [exportingLeads, setExportingLeads] = useState(false)
+  const [activeTab, setActiveTab] = useState<'experts' | 'templates' | 'leads'>('experts')
   const [addingTemplate, setAddingTemplate] = useState(false)
+  const [leads, setLeads] = useState<any[]>([])
   const [editingTemplate, setEditingTemplate] = useState<WelcomeTemplate | null>(null)
   const [savingTemplate, setSavingTemplate] = useState(false)
   const [newTemplate, setNewTemplate] = useState({ name: '', content: '', description: '', target_industry: '', is_default: false, is_active: true })
@@ -83,6 +85,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
     fetchExperts()
     fetchAnalytics()
     fetchTemplates()
+    fetchLeads()
   }, [])
 
   const fetchExperts = async () => {
@@ -115,6 +118,40 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
       setTemplates(data)
     } catch (error) {
       console.error('Failed to fetch templates:', error)
+    }
+  }
+
+  const fetchLeads = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/admin/export/leads`)
+      const data = await response.json()
+      setLeads(data.leads || [])
+    } catch (error) {
+      console.error('Failed to fetch leads:', error)
+    }
+  }
+
+  const handleExportLeadsCSV = async () => {
+    try {
+      setExportingLeads(true)
+      const response = await fetch(`${API_BASE_URL}/api/v1/admin/export/leads/csv`)
+
+      if (!response.ok) {
+        throw new Error('Failed to export leads')
+      }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `leads_${new Date().toISOString().split('T')[0]}.csv`
+      a.click()
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Failed to export leads:', error)
+      alert('Failed to export leads. Please try again.')
+    } finally {
+      setExportingLeads(false)
     }
   }
 
@@ -416,6 +453,12 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
                   Add Template
                 </Button>
               )}
+              {activeTab === 'leads' && (
+                <Button onClick={handleExportLeadsCSV} disabled={exportingLeads} className="flex items-center gap-2">
+                  <Download className="w-4 h-4" />
+                  {exportingLeads ? 'Exporting...' : 'Export Leads CSV'}
+                </Button>
+              )}
             </div>
           </div>
           {/* Tab Navigation */}
@@ -435,6 +478,14 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
             >
               <Type className="w-4 h-4" />
               Welcome Templates
+            </Button>
+            <Button
+              variant={activeTab === 'leads' ? 'primary' : 'outline'}
+              onClick={() => setActiveTab('leads')}
+              className="flex items-center gap-2"
+            >
+              <Activity className="w-4 h-4" />
+              Leads
             </Button>
           </div>
         </div>

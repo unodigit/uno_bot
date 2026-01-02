@@ -971,6 +971,60 @@ class SessionService:
         import random
         return random.choice(messages)
 
+    async def get_lead_data(self, min_lead_score: int = 50, days_back: int = 30) -> list[dict[str, Any]]:
+        """Get lead data for export.
+
+        Returns sessions that are potential leads based on:
+        - Lead score >= min_lead_score
+        - Sessions with bookings
+        - Sessions with PRDs
+
+        Args:
+            min_lead_score: Minimum lead score threshold
+            days_back: Look back period in days
+
+        Returns:
+            List of lead data dictionaries
+        """
+        cutoff_date = datetime.utcnow() - timedelta(days=days_back)
+
+        # Get sessions that qualify as leads
+        result = await self.db.execute(
+            select(ConversationSession)
+            .where(
+                ConversationSession.created_at >= cutoff_date
+            )
+            .order_by(ConversationSession.created_at.desc())
+        )
+        sessions = result.scalars().all()
+
+        leads = []
+        for session in sessions:
+            # Check if session qualifies as a lead
+            is_lead = (
+                (session.lead_score is not None and session.lead_score >= min_lead_score) or
+                (session.booking_id is not None) or
+                (session.prd_id is not None)
+            )
+
+            if is_lead:
+                leads.append({
+                    "visitor_id": session.visitor_id,
+                    "session_id": str(session.id),
+                    "created_at": session.created_at.isoformat() if session.created_at else None,
+                    "status": session.status,
+                    "current_phase": session.current_phase,
+                    "lead_score": session.lead_score,
+                    "recommended_service": session.recommended_service,
+                    "has_booking": session.booking_id is not None,
+                    "has_prd": session.prd_id is not None,
+                    "matched_expert": str(session.matched_expert_id) if session.matched_expert_id else None,
+                    "source_url": session.source_url,
+                    "business_context": str(session.business_context) if session.business_context else None,
+                })
+
+        return leads
+
     async def _generate_streaming_response(
         self, user_message: str, conversation_history: list[dict], context: dict
     ) -> str:

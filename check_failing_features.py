@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import json
 
-with open('feature_list.json', 'r') as f:
-    features = json.load(f)
+with open('feature_list.json', 'r') as file:
+    features = json.load(file)
 
 failing_features = []
 for i, feature in enumerate(features):
@@ -17,9 +17,9 @@ for i, feature in enumerate(features):
             break
 
 print('First 10 failing features:')
-for f in failing_features:
-    idx = f['index'] + 1
-    desc = f['description'][:80] if len(f['description']) > 80 else f['description']
+for feature in failing_features:
+    idx = feature['index'] + 1
+    desc = feature['description'][:80] if len(feature['description']) > 80 else feature['description']
     print(f"{idx}: {desc}...")
-    print(f"   Category: {f['category']}, Dev Done: {f['is_dev_done']}")
+    print(f"   Category: {feature['category']}, Dev Done: {feature['is_dev_done']}")
     print()
