@@ -199,40 +199,254 @@ Your role is to conduct a structured business discovery conversation to qualify 
   3. Offer to help with their business needs
   4. Example: "I appreciate your interest, but I'm focused on helping businesses with digital transformation. Let's get back to understanding your business challenges - what industry are you in?"
 
-**Industry-Specific Terminology:**
-- Adapt your language based on the user's industry:
-  - **Healthcare**: Use terms like "patient data," "HIPAA compliance," "clinical workflows," "healthcare systems"
-  - **Finance**: Use terms like "financial data," "compliance," "risk management," "transaction processing"
-  - **Retail/E-commerce**: Use terms like "customer experience," "inventory management," "conversion rates," "omnichannel"
-  - **Manufacturing**: Use terms like "supply chain," "operational efficiency," "IoT," "automation"
-  - **Technology/SaaS**: Use terms like "scalability," "APIs," "cloud infrastructure," "user acquisition"
-  - **General/Other**: Use standard business terminology
+**Industry-Specific Terminology Adaptation:**
 
-**Example Flow:**
-User: "Hi, I need help"
-Bot: "🎉 Welcome! I'm UnoBot from UnoDigit. What's your name?"
+IMPORTANT: You MUST adapt your language based on the user's industry to demonstrate understanding and expertise. This is CRITICAL for building trust and providing relevant solutions.
 
-User: "I'm John"
-Bot: "Nice to meet you, John! What's your email address?"
+**How to Adapt:**
+1. **Detect the Industry**: Identify the user's industry from their responses and context
+2. **Use Industry-Specific Terms**: Incorporate relevant terminology naturally in your responses
+3. **Reference Industry Challenges**: Mention common challenges and solutions specific to their sector
+4. **Show Domain Knowledge**: Use examples and analogies that make sense in their industry context
 
-User: "john@example.com"
-Bot: "Thanks, John! What business challenge are you looking to solve?"
+**Industry Terminology Guide:**
 
-User: "We need to improve our data analytics"
-Bot: "Great! What industry are you in, and what's your company name?"
+**🏥 Healthcare Industry:**
+- Key terms: "patient data," "HIPAA compliance," "clinical workflows," "healthcare systems," "electronic health records (EHR)," "patient outcomes," "medical imaging," "telehealth"
+- Example: "I understand you need to improve patient data management. HIPAA compliance is crucial for protecting sensitive health information while enhancing clinical workflows."
 
-Current context:
+**💰 Finance Industry:**
+- Key terms: "financial data," "compliance," "risk management," "transaction processing," "fraud detection," "regulatory requirements," "financial reporting," "audit trails"
+- Example: "For your financial data processing needs, implementing robust risk management and compliance frameworks will be essential for secure transaction processing."
+
+**🛒 Retail/E-commerce Industry:**
+- Key terms: "customer experience," "inventory management," "conversion rates," "omnichannel," "point of sale (POS)," "supply chain optimization," "customer journey," "personalization"
+- Example: "Improving customer experience through better inventory management and personalized recommendations can significantly boost your conversion rates across all omnichannel touchpoints."
+
+**🏭 Manufacturing Industry:**
+- Key terms: "supply chain," "operational efficiency," "IoT," "automation," "predictive maintenance," "quality control," "production optimization," "asset management"
+- Example: "Implementing IoT sensors for predictive maintenance and automation can dramatically improve your operational efficiency and supply chain management."
+
+**💻 Technology/SaaS Industry:**
+- Key terms: "scalability," "APIs," "cloud infrastructure," "user acquisition," "software architecture," "DevOps," "microservices," "user retention"
+- Example: "For your SaaS platform, focusing on scalable cloud infrastructure and robust API design will support your user acquisition goals while ensuring high user retention."
+
+**🏢 General Business/Other Industries:**
+- Use standard business terminology: "business processes," "competitive advantage," "ROI," "stakeholder management," "project management," "strategic planning"
+- Example: "Streamlining your business processes can provide a significant competitive advantage and improve your overall ROI."
+
+**Current User Context:**
 """
         if context:
+            # Build industry-specific adaptation section
+            industry_adaptation = self._get_industry_adaptation(context)
+            if industry_adaptation:
+                base_prompt += f"\n{industry_adaptation}\n\n"
+
             if context.get("business_context"):
-                base_prompt += f"\nBusiness Context: {context['business_context']}"
+                base_prompt += f"Business Context: {context['business_context']}"
             if context.get("client_info"):
                 base_prompt += f"\nClient Info: {context['client_info']}"
 
         return base_prompt
 
+    def _get_industry_adaptation(self, context: dict[str, Any]) -> str:
+        """Generate industry-specific adaptation context for the current conversation."""
+        business_context = context.get("business_context", {})
+        client_info = context.get("client_info", {})
+
+        # Detect industry from business context
+        industry = business_context.get("industry", "").lower().strip()
+        challenges = business_context.get("challenges", "").lower() if business_context.get("challenges") else ""
+        company_name = client_info.get("company", "")
+
+        # Industry detection logic
+        detected_industry = self._detect_industry(industry, challenges, company_name)
+
+        if not detected_industry:
+            return ""
+
+        # Generate adaptation based on detected industry
+        adaptation = f"""**Industry Context: {detected_industry.upper()} SECTOR**
+**User's Industry**: {detected_industry.title()}
+
+You are currently conversing with a client in the {detected_industry.lower()} industry. ADAPT YOUR LANGUAGE AND APPROACH ACCORDINGLY.
+
+**Key Focus Areas for {detected_industry.title()}:**
+"""
+
+        if detected_industry == "Healthcare":
+            adaptation += """- Patient data management and HIPAA compliance
+- Clinical workflow optimization
+- Healthcare system integration
+- Electronic health records (EHR) modernization
+- Telehealth and remote patient monitoring
+- Medical imaging and diagnostic systems
+
+**Use Healthcare-Specific Language:**
+- Refer to "patients" and "care providers" instead of generic "users"
+- Mention "clinical workflows" and "healthcare compliance"
+- Discuss "patient outcomes" and "care quality"
+- Reference "medical data" and "healthcare regulations"
+
+**Example Healthcare Response:**
+"I understand you're looking to improve patient data management. In healthcare, HIPAA compliance is crucial for protecting sensitive patient information while enhancing clinical workflows. Are you dealing with electronic health records integration challenges?"
+
+"""
+        elif detected_industry == "Finance":
+            adaptation += """- Financial data security and compliance
+- Risk management and fraud detection
+- Transaction processing optimization
+- Regulatory reporting and audit trails
+- Customer financial data protection
+- Financial system scalability
+
+**Use Finance-Specific Language:**
+- Refer to "financial transactions" and "compliance frameworks"
+- Mention "risk assessment" and "fraud prevention"
+- Discuss "regulatory requirements" and "audit trails"
+- Reference "financial reporting" and "transaction volumes"
+
+**Example Finance Response:**
+"Based on your financial data processing needs, implementing robust risk management and compliance frameworks will be essential for secure transaction processing. Are you looking to improve fraud detection capabilities?"
+
+"""
+        elif detected_industry == "Retail" or detected_industry == "E-commerce":
+            adaptation += """- Customer experience optimization
+- Inventory and supply chain management
+- Conversion rate improvement
+- Omnichannel integration
+- Point of sale (POS) systems
+- Customer journey personalization
+
+**Use Retail-Specific Language:**
+- Refer to "customers" and "shopping experience"
+- Mention "conversion rates" and "inventory turnover"
+- Discuss "omnichannel strategy" and "customer retention"
+- Reference "point of sale" and "supply chain efficiency"
+
+**Example Retail Response:**
+"Improving customer experience through better inventory management and personalized recommendations can significantly boost your conversion rates across all omnichannel touchpoints. Are you looking to optimize your inventory tracking systems?"
+
+"""
+        elif detected_industry == "Manufacturing":
+            adaptation += """- Supply chain optimization
+- Operational efficiency improvements
+- IoT and automation integration
+- Predictive maintenance systems
+- Quality control and production optimization
+- Asset management and monitoring
+
+**Use Manufacturing-Specific Language:**
+- Refer to "production lines" and "operational efficiency"
+- Mention "supply chain management" and "predictive maintenance"
+- Discuss "automation" and "IoT sensors"
+- Reference "manufacturing processes" and "asset utilization"
+
+**Example Manufacturing Response:**
+"Implementing IoT sensors for predictive maintenance and automation can dramatically improve your operational efficiency and supply chain management. Are you looking to optimize your production monitoring systems?"
+
+"""
+        elif detected_industry == "Technology" or detected_industry == "SaaS":
+            adaptation += """- Software scalability and architecture
+- API integration and development
+- Cloud infrastructure optimization
+- User acquisition and retention
+- Software development lifecycle
+- DevOps and deployment automation
+
+**Use Technology-Specific Language:**
+- Refer to "software architecture" and "API integration"
+- Mention "cloud infrastructure" and "scalability"
+- Discuss "user acquisition" and "retention rates"
+- Reference "DevOps" and "microservices"
+
+**Example Technology Response:**
+"For your SaaS platform, focusing on scalable cloud infrastructure and robust API design will support your user acquisition goals while ensuring high user retention. Are you looking to optimize your current technology stack?"
+
+"""
+        else:
+            # General business adaptation
+            adaptation += f"""- Business process optimization
+- Competitive advantage strategies
+- Return on investment (ROI) improvement
+- Stakeholder management
+- Strategic planning and execution
+- Operational efficiency
+
+**Use General Business Language:**
+- Refer to "business processes" and "competitive advantage"
+- Mention "ROI" and "stakeholder value"
+- Discuss "strategic planning" and "operational efficiency"
+- Reference "business goals" and "project management"
+
+**Example General Business Response:**
+"Streamlining your business processes can provide a significant competitive advantage and improve your overall ROI. Are you looking to optimize specific business workflows or implement new management systems?"
+
+"""
+
+        return adaptation
+
+    def _detect_industry(self, declared_industry: str, challenges: str, company_name: str) -> str | None:
+        """Detect the industry based on various context clues."""
+        declared_industry = declared_industry.lower().strip()
+
+        # Industry keywords mapping
+        industry_keywords = {
+            "Healthcare": [
+                "healthcare", "health", "medical", "hospital", "clinic", "doctor", "patient",
+                "pharma", "pharmaceutical", "biotech", "biotechnology", "health tech", "ehr",
+                "electronic health", "telehealth", "medical device", "health insurance"
+            ],
+            "Finance": [
+                "finance", "financial", "bank", "banking", "insurance", "investment", "trading",
+                "stock", "equity", "fintech", "financial services", "wealth management",
+                "asset management", "payment", "transaction", "compliance", "risk management"
+            ],
+            "Retail": [
+                "retail", "store", "shop", "e-commerce", "ecommerce", "online store",
+                "consumer goods", "merchandise", "point of sale", "pos", "inventory"
+            ],
+            "E-commerce": [
+                "e-commerce", "ecommerce", "online retail", "digital commerce", "shopify",
+                "amazon", "ebay", "online marketplace", "digital storefront"
+            ],
+            "Manufacturing": [
+                "manufacturing", "factory", "production", "industrial", "supply chain", "logistics",
+                "warehouse", "inventory management", "production line", "assembly", "materials",
+                "industrial automation", "smart factory", "iiot"
+            ],
+            "Technology": [
+                "technology", "tech", "software", "saas", "cloud", "it", "information technology",
+                "startup", "startup", "app", "application", "web development", "software development",
+                "devops", "engineering", "data science", "ai", "artificial intelligence"
+            ]
+        }
+
+        # Check declared industry first
+        for industry, keywords in industry_keywords.items():
+            for keyword in keywords:
+                if keyword in declared_industry:
+                    return industry
+
+        # Check challenges for industry clues
+        if challenges:
+            for industry, keywords in industry_keywords.items():
+                for keyword in keywords:
+                    if keyword in challenges:
+                        return industry
+
+        # Check company name for industry clues
+        if company_name:
+            company_lower = company_name.lower()
+            for industry, keywords in industry_keywords.items():
+                for keyword in keywords:
+                    if keyword in company_lower:
+                        return industry
+
+        return None
+
     def _fallback_response(self, user_message: str, context: dict[str, Any] | None) -> str:
-        """Generate a fallback response when AI service is unavailable."""
         # Initialize context if not provided
         if context is None:
             context = {"client_info": {}, "business_context": {}, "qualification": {}}
