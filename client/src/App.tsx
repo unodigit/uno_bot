@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChatWidget } from './components/ChatWidget'
 import { useChatStore } from './stores/chatStore'
 import AdminPage from './pages/AdminPage'
+import { DialogDemo } from './pages/DialogDemo'
 import ErrorBoundary from './components/ErrorBoundary'
 
 function Home() {
@@ -41,6 +42,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/dialog-demo" element={<DialogDemo />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>
