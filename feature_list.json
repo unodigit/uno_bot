@@ -397,16 +397,16 @@
       "Step 4: Verify the option is sent as a message",
       "Step 5: Verify conversation continues based on selection"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-02T14:10:56.134757Z",
-    "qa_completed_at": "2026-01-02T15:00:00.000000Z",
+    "dev_completed_at": "2026-01-02T14:13:06.575902Z",
+    "qa_completed_at": "2026-01-02T14:14:17.955510+00:00",
     "qa_validated": true,
-    "last_qa_run": "2026-01-02T13:30:39.114593Z",
-    "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "tests/e2e/test_chat_widget.py::TestChatWidget::test_quick_reply_buttons_appear_after_welcome"
+    "last_qa_run": "2026-01-02T14:14:17.955515+00:00",
+    "qa_notes": "Passed: All 6 E2E tests verified via Playwright",
+    "qa_report_path": "client/tests/e2e/test_feature_19_quick_replies.spec.ts"
   },
   {
     "category": "functional",
