@@ -134,6 +134,8 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSend()
+    } else if (e.key === 'Escape') {
+      onClose()
     }
   }
 
@@ -790,7 +792,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         </div>
 
         {/* Generate PRD Button */}
-        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && (
+        {!isStreaming && !isLoading && messages.some(m => m.role === 'user') && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="prd-actions">
             <button
               onClick={handleGeneratePRD}
@@ -815,7 +817,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Match Experts Button */}
-        {!isStreaming && !isLoading && messages.length > 0 && !isMatchingExperts && matchedExperts.length === 0 && (
+        {!isStreaming && !isLoading && messages.some(m => m.role === 'user') && !isMatchingExperts && matchedExperts.length === 0 && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="expert-actions">
             <button
               onClick={handleMatchExperts}
@@ -840,7 +842,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Quick Reply Buttons */}
-        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && matchedExperts.length === 0 && (
+        {!isStreaming && !isLoading && messages.some(m => m.role === 'user') && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && matchedExperts.length === 0 && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="quick-replies">
             <div className="flex flex-wrap gap-2 mb-2">
               {getQuickReplies(currentPhase, { clientInfo, businessContext, qualification }).map((reply, idx) => (
@@ -872,18 +874,23 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Input Area */}
-        <div className="h-20 border-t border-border bg-white px-3 flex items-center gap-2 rounded-b-lg">
+        <div className="h-24 border-t border-border bg-white px-3 flex items-center gap-2 rounded-b-lg">
           <input
             ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                onClose()
+              }
+            }}
             placeholder={isStreaming ? 'Bot is typing...' : 'Type your message...'}
             aria-label="Type your message"
             aria-describedby="input-instruction"
             aria-disabled={isStreaming || isLoading}
-            className="flex-1 h-14 px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
+            className="flex-1 h-16 px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
             disabled={isStreaming || isLoading}
             data-testid="message-input"
             tabIndex={1}
@@ -898,7 +905,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             aria-label={inputValue.trim() ? `Send message${isStreaming ? ' (disabled - bot is typing)' : ''}` : 'Send message (disabled - empty message)'}
             aria-describedby="send-button-status"
             className={twMerge(
-              'h-14 w-14 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
+              'h-16 w-16 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
               'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
               // Enabled state
               (!inputValue.trim() || isStreaming || isLoading)

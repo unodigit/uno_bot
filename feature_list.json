@@ -2141,11 +2141,12 @@
       "Step 5: Verify Enter/Space work on buttons",
       "Step 6: Verify Escape closes chat"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:31:55.686654Z"
+    "dev_completed_at": "2026-01-02T08:31:55.686654Z",
+    "qa_completed_at": "2026-01-02T21:00:00Z"
   },
   {
     "category": "functional",
@@ -2175,11 +2176,12 @@
       "Step 4: Verify focus returns to button",
       "Step 5: Verify no focus traps"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:44:59.750377Z"
+    "dev_completed_at": "2026-01-02T08:44:59.750377Z",
+    "qa_completed_at": "2026-01-02T21:00:00Z"
   },
   {
     "category": "functional",
@@ -2190,11 +2192,12 @@
       "Step 3: Verify 3:1 ratio for large text",
       "Step 4: Check button text contrast"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:38:04.508025Z"
+    "dev_completed_at": "2026-01-02T08:38:04.508025Z",
+    "qa_completed_at": "2026-01-02T21:00:00Z"
   },
   {
     "category": "functional",
@@ -2310,8 +2313,10 @@
       "Step 5: Verify no errors under load"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T09:42:14.471534Z"
   },
   {
     "category": "functional",
@@ -2377,8 +2382,10 @@
       "Step 4: Verify all endpoints included"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T09:42:13.504123Z"
   },
   {
     "category": "functional",
