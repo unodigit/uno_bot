@@ -53,8 +53,8 @@ class TestMultipleExpertOptions:
         page.get_by_test_id("send-button").click()
         page.wait_for_timeout(1000)
 
-        # Describe business challenges (AI Strategy service)
-        input_field.fill("We need help with AI strategy and planning for our digital transformation")
+        # Describe business challenges (AI Strategy service) - use exact keywords
+        input_field.fill("We need help with AI/ML and data strategy")
         page.get_by_test_id("send-button").click()
         page.wait_for_timeout(2000)
 
