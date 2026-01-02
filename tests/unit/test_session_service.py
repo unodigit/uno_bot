@@ -31,7 +31,8 @@ async def test_create_session(db_session: AsyncSession, sample_visitor_id: str):
     # Check welcome message was created
     assert len(session.messages) == 1
     assert session.messages[0].role == MessageRole.ASSISTANT
-    assert "Hello" in session.messages[0].content
+    assert "UnoBot" in session.messages[0].content
+    assert "name" in session.messages[0].content.lower()
 
 
 @pytest.mark.asyncio

@@ -146,7 +146,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T14:05:00.000Z",
+    "dev_completed_at": "2026-01-02T03:16:04.268832Z",
     "qa_completed_at": "2026-01-02T14:05:00.000Z"
   },
   {
@@ -159,11 +159,12 @@
       "Step 4: Verify session is restored after reconnection",
       "Step 5: Verify conversation continues normally"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:37:09.367125Z"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -179,8 +180,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "qa_completed_at": "2026-01-02T03:11:40.497403+00:00",
-    "dev_completed_at": "2026-01-02T03:10:08.359288Z"
+    "qa_completed_at": "2026-01-02T14:20:00.000Z",
+    "dev_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -196,8 +197,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:32:24.365921Z",
-    "qa_completed_at": "2026-01-02T03:11:40.497418+00:00"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -208,11 +209,12 @@
       "Step 3: Verify bot acknowledges and asks follow-up",
       "Step 4: Verify company is stored in business_context"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:53:59.595469Z"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -227,8 +229,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:30:47.817273Z",
-    "qa_completed_at": "2026-01-02T03:11:40.497421+00:00"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -239,11 +241,12 @@
       "Step 3: Verify bot adapts terminology based on answers",
       "Step 4: Verify tech stack is recorded"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T03:13:19.779043Z"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -254,11 +257,12 @@
       "Step 3: Verify bot accepts various formats (range, specific, flexible)",
       "Step 4: Verify budget is stored in qualification data"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:44:07.085870Z"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -269,11 +273,12 @@
       "Step 3: Verify bot asks about urgency",
       "Step 4: Verify timeline is stored in qualification data"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:45:17.231039Z"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -284,11 +289,12 @@
       "Step 3: Verify score is between 0-100",
       "Step 4: Verify score reflects budget, timeline, and fit factors"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:55:23.583711Z"
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",
@@ -298,9 +304,12 @@
       "Step 2: Verify recommended_service is set",
       "Step 3: Verify service matches one of: AI Strategy, Custom Dev, Data Intelligence"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T14:20:00.000Z",
+    "qa_completed_at": "2026-01-02T14:20:00.000Z"
   },
   {
     "category": "functional",

@@ -56,6 +56,10 @@ export interface ChatState {
   isStreaming: boolean;
   error: string | null;
   visitorId: string | null;
+  currentPhase: string;
+  clientInfo: Record<string, any>;
+  businessContext: Record<string, any>;
+  qualification: Record<string, any>;
 }
 
 export interface ChatActions {

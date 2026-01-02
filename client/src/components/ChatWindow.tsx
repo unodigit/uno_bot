@@ -9,6 +9,20 @@ interface ChatWindowProps {
   onMinimize?: () => void
 }
 
+// Phase-based quick reply options
+const getQuickReplies = (phase: string, context: any): string[] => {
+  switch (phase) {
+    case 'greeting':
+      return ['Hi!', 'Hello', "I'm interested", 'Need help'];
+    case 'discovery':
+      return ['Email: test@example.com', 'I work at Acme Corp', 'Tech industry', 'Healthcare'];
+    case 'qualification':
+      return ['Budget: $25k-$100k', 'Budget: Under $25k', 'Timeline: 1-3 months', 'Timeline: Urgent'];
+    default:
+      return ['Yes', 'No', 'Tell me more', 'Next'];
+  }
+}
+
 export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -22,6 +36,10 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     createSession,
     sendMessage,
     clearError,
+    currentPhase,
+    clientInfo,
+    businessContext,
+    qualification,
   } = useChatStore()
 
   // Create session on mount if not exists
@@ -175,6 +193,24 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
           <div ref={messagesEndRef} />
         </div>
+
+        {/* Quick Reply Buttons */}
+        {!isStreaming && !isLoading && messages.length > 0 && (
+          <div className="px-3 pb-2 bg-white border-t border-border" data-testid="quick-replies">
+            <div className="flex flex-wrap gap-2 mb-2">
+              {getQuickReplies(currentPhase, { clientInfo, businessContext, qualification }).map((reply, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => sendMessage(reply)}
+                  className="px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors border border-gray-300"
+                  disabled={isStreaming || isLoading}
+                >
+                  {reply}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Input Area */}
         <div className="h-14 border-t border-border bg-white p-3 flex items-center gap-2 rounded-b-lg">

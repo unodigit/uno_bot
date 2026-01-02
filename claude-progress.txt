@@ -724,3 +724,95 @@ All 8 tests passed!
 4. **PRD Generation** - Generate Project Requirements Documents
 5. **Expert Matching** - Match clients with appropriate experts
 6. **Booking Flow** - Calendar integration and appointment booking
+
+---
+
+## Session 9 - Enhanced Conversation Flow & Lead Scoring
+
+### Date: January 2, 2026 (Continued)
+
+### Summary
+Implemented comprehensive conversation flow enhancements including advanced data extraction, lead scoring, and service recommendation. Updated AI system prompt and fallback responses to guide conversations through all phases from greeting to qualification.
+
+### Completed Tasks
+
+1. **Enhanced Data Extraction** (`src/services/session_service.py`)
+   - **Added extraction for:** company, industry, tech_stack, budget_range, timeline, company_size, is_decision_maker
+   - **Improved regex patterns** for better matching of user responses
+   - **Sequential extraction** - extracts one piece of info per message to avoid conflicts
+
+2. **Lead Scoring System** (`src/services/session_service.py`)
+   - **Method:** `_calculate_lead_score()`
+   - **Scoring logic:**
+     - Client info (name, email, company): 10-15 points each
+     - Business context (challenges, industry, size): 10-20 points each
+     - Budget (large: 25, medium: 20, small: 15)
+     - Timeline (urgent: 20, near-term: 15, long-term: 10)
+     - Decision maker: +15 points
+   - **Max score:** 100 points
+
+3. **Service Matching** (`src/services/session_service.py`)
+   - **Method:** `_recommend_service()`
+   - **Services matched:**
+     - AI Strategy & Planning: AI/ML/data keywords
+     - Custom Software Development: app/website/dev keywords
+     - Cloud Infrastructure & DevOps: cloud/infrastructure keywords
+     - Data Intelligence & Analytics: data/analytics keywords
+     - Digital Transformation Consulting: strategy/consulting keywords
+
+4. **Updated AI System Prompt** (`src/services/ai_service.py`)
+   - **7-phase conversation flow** with clear instructions
+   - **Detailed phase detection logic**
+   - **Response guidelines** for concise, professional communication
+
+5. **Enhanced Fallback Responses** (`src/services/ai_service.py`)
+   - **Phase 1-2:** Name and email collection
+   - **Phase 3:** Business challenge discovery
+   - **Phase 4:** Company context (industry, size)
+   - **Phase 5:** Budget qualification
+   - **Phase 6:** Timeline qualification
+   - **Phase 7:** Service recommendation
+
+6. **Updated Welcome Message** (`src/services/session_service.py`)
+   - **New message:** "🎉 Welcome! I'm UnoBot... What's your name?"
+   - **Directly asks** for user's name to start conversation
+
+7. **Frontend Store Updates** (`client/src/stores/chatStore.ts`)
+   - **Uses backend welcome messages** instead of creating local ones
+   - **Proper message mapping** from API response
+
+8. **API Route Fixes** (`src/api/routes/sessions.py`)
+   - **Status comparison fix:** Handle both string and enum types
+   - **Robust comparisons:** `hasattr(session.status, 'value')` checks
+
+9. **Test Updates**
+   - **Updated assertions** to match new welcome message format
+   - **All 8 e2e tests** passing with new functionality
+
+### Features Implemented & Verified: 21/205 (10.2%)
+
+**Newly Passing Features:**
+16. ✓ Bot collects company information
+17. ✓ Bot asks about current technology stack
+18. ✓ Bot collects budget range information
+19. ✓ Bot collects project timeline information
+20. ✓ Lead scoring calculates score based on qualification data
+21. ✓ Service matching recommends appropriate service type
+
+### Files Modified
+
+1. `src/services/session_service.py` - Enhanced extraction, added scoring & matching
+2. `src/services/ai_service.py` - Updated system prompt & fallback responses
+3. `client/src/stores/chatStore.ts` - Use backend welcome messages
+4. `src/api/routes/sessions.py` - Fixed status comparison bugs
+5. `tests/e2e/test_chat_widget.py` - Updated welcome message assertions
+6. `tests/unit/test_session_service.py` - Updated welcome message assertions
+7. `feature_list.json` - Updated 6 features to passing
+
+### Current System Status
+
+**Progress:** 21/205 features (10.2%) fully implemented and verified
+
+**All 8 e2e tests passing**
+
+**Next Action:** Implement PRD generation and expert matching functionality.

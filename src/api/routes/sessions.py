@@ -153,10 +153,12 @@ async def send_message(
             detail=f"Session {session_id} not found",
         )
 
-    if session.status != "active":
+    # Check if session is active (handle both string and enum)
+    status_value = session.status.value if hasattr(session.status, 'value') else session.status
+    if status_value != "active":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Cannot send message to {session.status} session",
+            detail=f"Cannot send message to {status_value} session",
         )
 
     # Add user message
@@ -205,7 +207,9 @@ async def resume_session_path(
             detail=f"Session {session_id} not found",
         )
 
-    if session.status == "completed":
+    # Check if session is completed (handle both string and enum)
+    status_value = session.status.value if hasattr(session.status, 'value') else session.status
+    if status_value == "completed":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot resume a completed session",
@@ -276,7 +280,9 @@ async def resume_session(
             detail=f"Session {resume_request.session_id} not found",
         )
 
-    if session.status == "completed":
+    # Check if session is completed (handle both string and enum)
+    status_value = session.status.value if hasattr(session.status, 'value') else session.status
+    if status_value == "completed":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot resume a completed session",

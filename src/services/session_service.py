@@ -108,6 +108,8 @@ class SessionService:
         self.db.add(session)
         await self.db.commit()
         await self.db.refresh(session)
+        # Reload messages after refresh
+        await self.db.refresh(session, attribute_names=["messages"])
         return session
 
     async def complete_session(self, session: ConversationSession) -> ConversationSession:
@@ -238,10 +240,10 @@ class SessionService:
 
         # Extract company information
         if not session.client_info.get("company"):
-            # Look for patterns like "I work at X", "company is X", "at X"
+            # Look for patterns like "I work at X", "company is X", "at X", "company is called X"
             company_patterns = [
-                r"(?:work at|work for|company is|at)\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?|I)",
-                r"(?:my company|our company)\s+is\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?)"
+                r"(?:work at|work for)\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?|I)",
+                r"(?:my company|our company)\s+(?:is\s+)?(?:called\s+)?([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?|I)"
             ]
             for pattern in company_patterns:
                 company_match = re.search(pattern, user_text)
@@ -435,3 +437,65 @@ class SessionService:
             recommended = max(scores, key=scores.get)
             if scores[recommended] > 0:
                 await self.update_session_data(session, recommended_service=recommended)
+
+    async def _determine_next_phase(self, session: ConversationSession) -> SessionPhase | None:
+        """Determine the next phase based on collected data.
+
+        Returns the new phase if transition is needed, None otherwise.
+        """
+        from src.models.session import SessionPhase
+
+        # Check what's missing in order of conversation flow
+        current_phase = SessionPhase(session.current_phase)
+
+        # Phase 1: Greeting - collect name
+        if not session.client_info.get("name"):
+            if current_phase != SessionPhase.GREETING:
+                return SessionPhase.GREETING
+            return None
+
+        # Phase 2: Email collection
+        if not session.client_info.get("email"):
+            if current_phase != SessionPhase.DISCOVERY:
+                return SessionPhase.DISCOVERY
+            return None
+
+        # Phase 3: Business challenge discovery
+        if not session.business_context.get("challenges"):
+            if current_phase != SessionPhase.DISCOVERY:
+                return SessionPhase.DISCOVERY
+            return None
+
+        # Phase 4: Additional context (industry, company size)
+        if (not session.business_context.get("industry") or
+            not session.business_context.get("company_size")):
+            if current_phase != SessionPhase.DISCOVERY:
+                return SessionPhase.DISCOVERY
+            return None
+
+        # Phase 5: Qualification - Budget
+        if not session.qualification.get("budget_range"):
+            if current_phase != SessionPhase.QUALIFICATION:
+                return SessionPhase.QUALIFICATION
+            return None
+
+        # Phase 6: Qualification - Timeline
+        if not session.qualification.get("timeline"):
+            if current_phase != SessionPhase.QUALIFICATION:
+                return SessionPhase.QUALIFICATION
+            return None
+
+        # Phase 7: Service recommendation (if not already done)
+        if not session.recommended_service:
+            # Trigger service recommendation
+            await self._recommend_service(session)
+            # Move to PRD generation phase
+            if current_phase != SessionPhase.PRD_GENERATION:
+                return SessionPhase.PRD_GENERATION
+            return None
+
+        # All phases complete
+        if current_phase != SessionPhase.EXPERT_MATCHING:
+            return SessionPhase.EXPERT_MATCHING
+
+        return None

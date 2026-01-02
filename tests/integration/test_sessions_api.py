@@ -3,8 +3,6 @@ import uuid
 
 import pytest
 
-from src.core.database import get_db
-
 
 @pytest.mark.asyncio
 async def test_create_session_endpoint(client, sample_visitor_id: str):
@@ -114,21 +112,15 @@ async def test_send_message_to_nonexistent_session(client):
 
 
 @pytest.mark.asyncio
-async def test_send_message_to_completed_session(client, sample_visitor_id: str):
+async def test_send_message_to_completed_session(client, db_session, sample_visitor_id: str):
     """Test POST /api/v1/sessions/{id}/messages fails for completed session."""
 
     from src.services.session_service import SessionService
-
-    # We need to manually complete a session for this test
-    # Using the test client's dependency override
-    db_gen = get_db()
-    db = await anext(db_gen)
-
-    service = SessionService(db)
-    session_create = {"visitor_id": sample_visitor_id}
     from src.schemas.session import SessionCreate
 
-    session = await service.create_session(SessionCreate(**session_create))
+    # Use the same db_session that the client uses
+    service = SessionService(db_session)
+    session = await service.create_session(SessionCreate(visitor_id=sample_visitor_id))
     await service.complete_session(session)
 
     # Try to send message
@@ -142,19 +134,17 @@ async def test_send_message_to_completed_session(client, sample_visitor_id: str)
 
 
 @pytest.mark.asyncio
-async def test_resume_session_endpoint(client, sample_visitor_id: str):
+async def test_resume_session_endpoint(client, db_session, sample_visitor_id: str):
     """Test POST /api/v1/sessions/{id}/resume resumes a session."""
     from src.schemas.session import SessionCreate
     from src.services.session_service import SessionService
 
-    # Create and abandon a session
-    db_gen = get_db()
-    db = await anext(db_gen)
-    service = SessionService(db)
+    # Use the same db_session that the client uses
+    service = SessionService(db_session)
     session = await service.create_session(SessionCreate(visitor_id=sample_visitor_id))
     session.status = "abandoned"
-    db.add(session)
-    await db.commit()
+    db_session.add(session)
+    await db_session.commit()
 
     # Resume the session
     response = await client.post(
@@ -204,7 +194,7 @@ async def test_session_message_order(client, sample_visitor_id: str):
     data = response.json()
 
     messages = data["messages"]
-    assert len(messages) == 3  # Welcome + 2 user messages
+    assert len(messages) == 5  # Welcome + 2 user messages + 2 AI responses
 
     # Check timestamps are in order
     timestamps = [msg["created_at"] for msg in messages]
