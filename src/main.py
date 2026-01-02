@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> None:
     """Application lifespan events."""
     # Startup
     logger.info("Starting UnoBot API...")
@@ -81,7 +81,7 @@ app.mount("/static", StaticFiles(directory=settings.base_dir / "src" / "static")
 
 
 @app.get("/", tags=["root"])
-async def root():
+async def root() -> dict[str, str]:
     """Root endpoint with API information."""
     return {
         "name": settings.app_name,

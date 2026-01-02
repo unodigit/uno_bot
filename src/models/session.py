@@ -125,8 +125,8 @@ class Message(Base):
     role: Mapped[str] = mapped_column(String(50), nullable=False)
     content: Mapped[str] = mapped_column(Text, nullable=False)
 
-    # Metadata for special messages (quick replies, cards, etc.)
-    metadata: Mapped[dict] = mapped_column(JSONB, default=dict)
+    # Meta for special messages (quick replies, cards, etc.)
+    meta: Mapped[dict] = mapped_column(JSONB, default=dict)
 
     # Timestamp
     created_at: Mapped[datetime] = mapped_column(

@@ -71,6 +71,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ duration: 0.2 }}
         className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+        data-testid="chat-window"
       >
         {/* Header */}
         <div className="h-12 bg-primary text-white flex items-center justify-between px-4 rounded-t-lg">
@@ -86,6 +87,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 onClick={onMinimize}
                 className="p-1 hover:bg-white/20 rounded transition-colors"
                 aria-label="Minimize"
+                data-testid="minimize-button"
               >
                 <Minimize2 className="w-4 h-4" />
               </button>
@@ -94,6 +96,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               onClick={onClose}
               className="p-1 hover:bg-white/20 rounded transition-colors"
               aria-label="Close chat"
+              data-testid="close-button"
             >
               <X className="w-4 h-4" />
             </button>
@@ -109,7 +112,10 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+        <div
+          className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50"
+          data-testid="messages-container"
+        >
           {messages.length === 0 && !isLoading && (
             <div className="flex justify-center items-center h-full text-text-muted text-sm">
               <div className="text-center">
@@ -126,6 +132,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 'flex w-full',
                 message.role === 'user' ? 'justify-end' : 'justify-start'
               )}
+              data-testid={`message-${message.role}`}
             >
               <div
                 className={twMerge(
@@ -148,7 +155,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
           {/* Typing Indicator */}
           {isStreaming && (
-            <div className="flex justify-start">
+            <div className="flex justify-start" data-testid="typing-indicator">
               <div className="bg-white border border-border rounded-lg px-3 py-2 shadow-sm">
                 <div className="flex space-x-1">
                   <div className="w-2 h-2 bg-text-muted rounded-full animate-bounce" />
@@ -161,7 +168,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
           {/* Loading State */}
           {isLoading && messages.length === 0 && (
-            <div className="flex justify-center items-center h-full">
+            <div className="flex justify-center items-center h-full" data-testid="loading-indicator">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
           )}
@@ -179,12 +186,14 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             placeholder={isStreaming ? 'Bot is typing...' : 'Type your message...'}
             className="flex-1 h-full px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
             disabled={isStreaming || isLoading}
+            data-testid="message-input"
           />
           <button
             onClick={handleSend}
             disabled={!inputValue.trim() || isStreaming || isLoading}
             className="h-full px-4 bg-primary hover:bg-primary-dark disabled:bg-opacity-50 disabled:cursor-not-allowed text-white rounded-md transition-colors flex items-center justify-center"
             aria-label="Send message"
+            data-testid="send-button"
           >
             <Send className="w-4 h-4" />
           </button>

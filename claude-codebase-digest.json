@@ -1,0 +1,256 @@
+{
+  "generated_at": "2026-01-02T02:23:28.618287Z",
+  "project_dir": "unobot",
+  "structure": {
+    "directories": [
+      {
+        "name": "docs",
+        "path": "docs",
+        "depth": 2,
+        "subdirectories": [
+          {
+            "name": "api",
+            "path": "docs/api",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 0,
+            "key_files": []
+          }
+        ],
+        "file_count": 0,
+        "key_files": []
+      },
+      {
+        "name": "scripts",
+        "path": "scripts",
+        "depth": 1,
+        "subdirectories": [],
+        "file_count": 1,
+        "key_files": []
+      },
+      {
+        "name": "src",
+        "path": "src",
+        "depth": 3,
+        "subdirectories": [
+          {
+            "name": "api",
+            "path": "src/api",
+            "depth": 3,
+            "subdirectories": [
+              {
+                "name": "routes",
+                "path": "src/api/routes",
+                "depth": 3,
+                "subdirectories": [],
+                "file_count": 1,
+                "key_files": []
+              }
+            ],
+            "file_count": 2,
+            "key_files": []
+          },
+          {
+            "name": "core",
+            "path": "src/core",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 3,
+            "key_files": [
+              "config.py"
+            ]
+          },
+          {
+            "name": "models",
+            "path": "src/models",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 5,
+            "key_files": []
+          },
+          {
+            "name": "schemas",
+            "path": "src/schemas",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 5,
+            "key_files": []
+          },
+          {
+            "name": "services",
+            "path": "src/services",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 1,
+            "key_files": []
+          },
+          {
+            "name": "static",
+            "path": "src/static",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 0,
+            "key_files": []
+          },
+          {
+            "name": "templates",
+            "path": "src/templates",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 0,
+            "key_files": []
+          },
+          {
+            "name": "utils",
+            "path": "src/utils",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 1,
+            "key_files": []
+          }
+        ],
+        "file_count": 2,
+        "key_files": [
+          "main.py"
+        ]
+      },
+      {
+        "name": "tests",
+        "path": "tests",
+        "depth": 2,
+        "subdirectories": [
+          {
+            "name": "e2e",
+            "path": "tests/e2e",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 1,
+            "key_files": []
+          },
+          {
+            "name": "fixtures",
+            "path": "tests/fixtures",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 1,
+            "key_files": []
+          },
+          {
+            "name": "integration",
+            "path": "tests/integration",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 1,
+            "key_files": []
+          },
+          {
+            "name": "unit",
+            "path": "tests/unit",
+            "depth": 2,
+            "subdirectories": [],
+            "file_count": 1,
+            "key_files": []
+          }
+        ],
+        "file_count": 2,
+        "key_files": []
+      }
+    ],
+    "root_files": [
+      {
+        "name": ".gitignore",
+        "size": 1100,
+        "type": "other"
+      },
+      {
+        "name": "README.md",
+        "size": 6484,
+        "type": "markdown"
+      },
+      {
+        "name": "app_spec.txt",
+        "size": 24831,
+        "type": "text"
+      },
+      {
+        "name": "claude-progress.txt",
+        "size": 5597,
+        "type": "text"
+      },
+      {
+        "name": "feature_list.json",
+        "size": 82420,
+        "type": "config"
+      },
+      {
+        "name": "init.sh",
+        "size": 7840,
+        "type": "shell"
+      },
+      {
+        "name": "pyproject.toml",
+        "size": 2057,
+        "type": "other"
+      }
+    ],
+    "depth": 3
+  },
+  "components": {
+    "components": [],
+    "services": [],
+    "utilities": [],
+    "routes": [],
+    "models": [
+      {
+        "name": "prd",
+        "path": "src/models/prd.py"
+      },
+      {
+        "name": "booking",
+        "path": "src/models/booking.py"
+      },
+      {
+        "name": "session",
+        "path": "src/models/session.py"
+      },
+      {
+        "name": "expert",
+        "path": "src/models/expert.py"
+      },
+      {
+        "name": "__init__",
+        "path": "src/models/__init__.py"
+      }
+    ],
+    "hooks": []
+  },
+  "file_stats": {
+    "python": {
+      "count": 26,
+      "total_size": 33874
+    },
+    "config": {
+      "count": 3,
+      "total_size": 85469
+    }
+  },
+  "recent_changes": {
+    "available": true,
+    "recent_commits": [
+      {
+        "hash": "26e08de",
+        "message": "Add claude-progress.txt with session summary"
+      },
+      {
+        "hash": "bc31eed",
+        "message": "Initial setup: feature_list.json, init.sh, and project structure"
+      }
+    ],
+    "files_changed_recently": []
+  },
+  "dependencies": {
+    "npm": [],
+    "python": []
+  },
+  "estimated_tokens": 1406
+}

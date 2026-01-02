@@ -1,4 +1,5 @@
 """Expert model for UnoDigit professionals."""
+import json
 import uuid
 from datetime import datetime
 from typing import List, Optional
@@ -8,6 +9,13 @@ from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.core.database import Base
+from src.core.config import settings
+
+# SQLite compatibility: use Text for JSON fields when not using PostgreSQL
+if "sqlite" in settings.database_url:
+    JSONType = Text
+else:
+    JSONType = JSONB
 
 
 class Expert(Base):
@@ -25,10 +33,10 @@ class Expert(Base):
     role: Mapped[str] = mapped_column(String(255), nullable=False)
     bio: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
-    # JSONB fields for flexible data
-    specialties: Mapped[List[str]] = mapped_column(JSONB, default=list)
-    services: Mapped[List[str]] = mapped_column(JSONB, default=list)
-    availability: Mapped[dict] = mapped_column(JSONB, default=dict)
+    # JSON fields for flexible data (SQLite compatible)
+    specialties: Mapped[List[str]] = mapped_column(JSONType, default=list)
+    services: Mapped[List[str]] = mapped_column(JSONType, default=list)
+    availability: Mapped[dict] = mapped_column(JSONType, default=dict)
 
     # OAuth tokens (encrypted)
     refresh_token: Mapped[Optional[str]] = mapped_column(Text, nullable=True)

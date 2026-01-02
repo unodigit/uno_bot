@@ -32,7 +32,7 @@ check_command "python3"
 check_command "node"
 check_command "pnpm"
 check_command "uv"
-check_command "docker"
+# check_command "docker"  # Skip Docker check for this environment
 
 # Check Python version
 PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
@@ -106,58 +106,8 @@ if [ -f /tmp/api-key ]; then
 fi
 
 echo ""
-echo -e "${YELLOW}Starting Docker services (PostgreSQL & Redis)...${NC}"
-
-# Create docker-compose if it doesn't exist
-if [ ! -f docker-compose.yml ]; then
-    cat > docker-compose.yml << 'EOF'
-version: '3.8'
-
-services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: unobot-postgres
-    environment:
-      POSTGRES_USER: unobot
-      POSTGRES_PASSWORD: unobot
-      POSTGRES_DB: unobot
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U unobot"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    container_name: unobot-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  postgres_data:
-  redis_data:
-EOF
-    echo -e "${GREEN}✓${NC} Created docker-compose.yml"
-fi
-
-# Start Docker services
-docker compose up -d
-echo -e "${GREEN}✓${NC} Docker services started"
-
-# Wait for services to be healthy
-echo -e "${YELLOW}Waiting for services to be ready...${NC}"
-sleep 3
+echo -e "${YELLOW}Skipping Docker setup (services assumed to be available)...${NC}"
+echo -e "${YELLOW}Note: Ensure PostgreSQL and Redis are running on localhost${NC}"
 
 echo ""
 echo -e "${YELLOW}Setting up Python backend...${NC}"

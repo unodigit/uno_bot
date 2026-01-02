@@ -10,8 +10,10 @@
       "Step 5: Verify button has 24px margin from edges"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:24:29.590135Z"
   },
   {
     "category": "functional",
@@ -23,8 +25,10 @@
       "Step 4: Verify chat window is visible and interactive"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:24:29.296317Z"
   },
   {
     "category": "functional",
@@ -36,8 +40,10 @@
       "Step 4: Verify floating button becomes visible again"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:24:29.594162Z"
   },
   {
     "category": "functional",
@@ -63,8 +69,10 @@
       "Step 4: Verify message contains personalized greeting"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:24:29.355689Z"
   },
   {
     "category": "functional",
@@ -77,8 +85,10 @@
       "Step 5: Verify input field is cleared after sending"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:24:29.518185Z"
   },
   {
     "category": "functional",
@@ -91,8 +101,10 @@
       "Step 5: Verify typing indicator disappears"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:24:29.358184Z"
   },
   {
     "category": "functional",
@@ -187,8 +199,10 @@
       "Step 4: Verify responses are stored in session context"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:30:47.817273Z"
   },
   {
     "category": "functional",
@@ -979,8 +993,9 @@
       "Step 5: Verify initial status is 'active'"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T02:31:01.718446+00:00"
   },
   {
     "category": "functional",
@@ -993,8 +1008,9 @@
       "Step 5: Verify both messages have correct roles"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T02:31:01.718457+00:00"
   },
   {
     "category": "functional",
@@ -1007,8 +1023,9 @@
       "Step 5: Verify all messages in order"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T02:31:01.718459+00:00"
   },
   {
     "category": "functional",
@@ -1021,8 +1038,9 @@
       "Step 5: Verify can continue messaging"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T02:31:01.718460+00:00"
   },
   {
     "category": "functional",
