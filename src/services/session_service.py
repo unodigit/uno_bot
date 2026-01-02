@@ -681,32 +681,30 @@ class SessionService:
         name = session.client_info.get("name", "there")
 
         # Get context about what we're asking
-        current_phase = session.current_phase
-
         clarification_messages = {
             "uncertainty": [
                 f"I understand you're not completely sure, {name}. Could you help me understand a bit better?",
-                f"No problem if you're uncertain! Could you give me more details about what you're thinking?",
+                "No problem if you're uncertain! Could you give me more details about what you're thinking?",
                 f"That's totally fine, {name}. Could you tell me a bit more so I can help you better?"
             ],
             "lack_of_knowledge": [
                 f"No worries at all, {name}! I'm here to help. Could you tell me what you do know about this?",
-                f"That's completely okay! Could you share any details you might have?",
+                "That's completely okay! Could you share any details you might have?",
                 f"Thanks for being honest, {name}. Could you tell me more about your situation?"
             ],
             "guessing": [
                 f"Thanks for sharing, {name}. Could you give me more specific details?",
-                f"I appreciate your input! Could you tell me more about what you're looking for?",
+                "I appreciate your input! Could you tell me more about what you're looking for?",
                 f"Thanks for that, {name}. Could you provide a bit more detail?"
             ],
             "non_specific": [
                 f"I'd love to help, {name}! Could you be more specific about what you're looking for?",
-                f"Thanks for sharing! Could you give me more details about what you need?",
+                "Thanks for sharing! Could you give me more details about what you need?",
                 f"I understand, {name}. Could you tell me more specifically about your needs?"
             ],
             "minimal_response": [
                 f"Thanks, {name}! Could you tell me a bit more about that?",
-                f"I appreciate your response! Could you elaborate a bit more?",
+                "I appreciate your response! Could you elaborate a bit more?",
                 f"Thanks for that, {name}. Could you give me more context?"
             ],
             "hesitation": [
@@ -716,13 +714,13 @@ class SessionService:
             ],
             "too_short": [
                 f"Thanks, {name}! Could you give me a bit more detail?",
-                f"I appreciate your response! Could you elaborate a bit more?",
+                "I appreciate your response! Could you elaborate a bit more?",
                 f"Thanks for that, {name}. Could you tell me more?"
             ],
             "missing_email_format": [
                 f"Thanks, {name}! Could you please provide your email address?",
-                f"I need your email to send you information. Could you share it with me?",
-                f"Could you provide your email address so I can follow up with you?"
+                "I need your email to send you information. Could you share it with me?",
+                "Could you provide your email address so I can follow up with you?"
             ]
         }
 
@@ -730,7 +728,7 @@ class SessionService:
         messages = clarification_messages.get(reason, [
             f"Thanks, {name}! Could you give me more details about that?",
             f"I want to make sure I understand correctly, {name}. Could you tell me more?",
-            f"Thanks for sharing! Could you elaborate a bit more?"
+            "Thanks for sharing! Could you elaborate a bit more?"
         ])
 
         # Pick a random message from the options

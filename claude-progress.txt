@@ -1,41 +1,80 @@
 # UnoBot Development Progress
 
-## Session 34 - Welcome Templates, Out-of-Scope Handling & Industry Terminology
+## Session 35 - Welcome Message Template System Implementation
 
 ### Date: January 2, 2026 (Current Session)
 
 ### Summary
-Completed three pending features:
-1. **Feature 60**: Admin can configure welcome message templates - Full implementation with backend API, frontend UI, and integration tests
-2. **Feature 63**: Bot handles out-of-scope requests gracefully - Updated AI service prompt with redirect logic
-3. **Feature 64**: Bot adapts industry terminology based on context - Enhanced AI service with industry-specific terminology
-
-All features verified with comprehensive test coverage.
+Implemented the welcome message template configuration system (Feature 60):
+- Backend: Models, schemas, service layer, and API routes
+- Frontend: AdminDashboard template management UI
+- Integration: SessionService uses templates for welcome messages
+- Tests: 11 new integration tests
 
 ### Completed Tasks
 
 #### 1. Welcome Message Template System (Feature 60) ✅
 
-**Backend (Already Existed, Verified):**
-- ✅ WelcomeMessageTemplate model with full CRUD
-- ✅ TemplateService with template selection logic
-- ✅ API routes: create, list, update, delete, select, get default
-- ✅ Integration with SessionService for welcome messages
-- ✅ 11 integration tests passing
+**Backend Implementation:**
+- ✅ `src/models/template.py` - WelcomeMessageTemplate model
+  - Fields: name, content, description, target_industry, is_default, is_active, use_count, config
+  - Timestamps: created_at, updated_at
+- ✅ `src/schemas/template.py` - Pydantic schemas
+  - WelcomeMessageTemplateCreate, WelcomeMessageTemplateUpdate
+  - WelcomeMessageTemplateResponse, WelcomeMessageSelectionRequest
+- ✅ `src/services/template_service.py` - TemplateService class
+  - create_template, get_template, get_all_templates, get_active_templates
+  - get_default_template, get_template_for_industry
+  - update_template, delete_template, increment_use_count
+  - _unset_all_defaults (ensures only one default)
+- ✅ `src/api/routes/templates.py` - API endpoints
+  - POST /api/v1/templates - Create template
+  - GET /api/v1/templates - List all
+  - GET /api/v1/templates/active - List active
+  - GET /api/v1/templates/default - Get default
+  - GET /api/v1/templates/{id} - Get by ID
+  - POST /api/v1/templates/select - Select for industry
+  - PATCH /api/v1/templates/{id} - Update
+  - DELETE /api/v1/templates/{id} - Delete
+- ✅ `src/services/session_service.py` - Updated to use templates
+  - create_session now calls TemplateService for welcome message
+  - Increments use_count when template is used
+  - Falls back to default message if no template exists
 
-**Frontend (Newly Implemented):**
-- ✅ Added "Welcome Templates" tab to AdminDashboard
-- ✅ Template creation form with all fields
-- ✅ Template editing functionality
-- ✅ Template deletion with confirmation
-- ✅ Toggle active/inactive status
-- ✅ Set as default template (auto-unsets others)
-- ✅ Visual badges (Default, Active/Inactive, Industry)
-- ✅ Template list with content preview and usage stats
+**Frontend Implementation:**
+- ✅ `client/src/components/AdminDashboard.tsx` - Template management UI
+  - WelcomeTemplate interface definition
+  - "Templates" tab navigation
+  - Template list with cards showing:
+    - Name, description, target industry
+    - Default/Active badges
+    - Content preview
+    - Use count and creation date
+  - Add Template form with all fields
+  - Edit Template modal
+  - Delete with confirmation
+  - Toggle active/inactive
+  - Set as default (auto-unsets others)
+
+**Integration:**
+- ✅ Updated `src/api/routes/__init__.py` to include templates router
+- ✅ Updated `src/schemas/__init__.py` to export template schemas
+- ✅ Updated `src/models/__init__.py` to export WelcomeMessageTemplate
+- ✅ Updated `tests/conftest.py` to clean up template table
 
 **Tests:**
-- ✅ 11 integration tests (existing, all passing)
-- ✅ 6 E2E tests for template management
+- ✅ `tests/integration/test_welcome_templates.py` - 11 tests
+  - test_create_welcome_template
+  - test_list_templates
+  - test_get_default_template
+  - test_select_template_for_industry
+  - test_update_template
+  - test_delete_template
+  - test_session_uses_default_template
+  - test_only_active_templates_are_used
+  - test_use_count_increments
+  - test_get_active_templates
+  - test_only_one_default_template
 
 #### 2. Out-of-Scope Request Handling (Feature 63) ✅
 

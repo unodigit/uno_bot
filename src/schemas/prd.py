@@ -25,6 +25,7 @@ class PRDResponse(BaseModel):
     session_id: UUID
     version: int
     content_markdown: str
+    conversation_summary: str | None = None
     client_company: str | None = None
     client_name: str | None = None
     recommended_service: str | None = None
@@ -62,3 +63,18 @@ class PRDRegenerateRequest(BaseModel):
 
     session_id: UUID
     feedback: str | None = Field(None, description="Optional feedback for regeneration")
+
+
+class ConversationSummaryResponse(BaseModel):
+    """Response schema for conversation summary."""
+
+    summary: str
+    session_id: UUID
+
+
+class ConversationSummaryApproveRequest(BaseModel):
+    """Request schema for approving conversation summary."""
+
+    session_id: UUID
+    summary: str
+    approve: bool = Field(..., description="True to approve, False to regenerate")

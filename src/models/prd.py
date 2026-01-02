@@ -32,6 +32,7 @@ class PRDDocument(Base):
 
     # Content
     content_markdown: Mapped[str] = mapped_column(Text, nullable=False)
+    conversation_summary: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Client info for PRD
     client_company: Mapped[str | None] = mapped_column(String(255), nullable=True)

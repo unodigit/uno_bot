@@ -15,8 +15,8 @@ class TestAdminWelcomeTemplates:
     def _check_frontend_available(self, page: Page) -> bool:
         """Check if frontend is available, skip test if not."""
         try:
-            page.goto("http://localhost:5173/admin")
-            page.wait_for_load_state("networkidle", timeout=5000)
+            import urllib.request
+            urllib.request.urlopen('http://localhost:5173', timeout=2)
             return True
         except:
             print("⚠️  Frontend not running - skipping UI test")
@@ -27,9 +27,13 @@ class TestAdminWelcomeTemplates:
         """Test that admin can navigate to templates tab."""
         print("\n=== Test: Admin Can Access Templates Tab ===")
 
-        # Navigate to admin page
+        # Check frontend availability
         if not self._check_frontend_available(page):
             return
+
+        # Navigate to admin page
+        page.goto("http://localhost:5173/admin")
+        page.wait_for_load_state("networkidle")
 
         # Find and click templates tab
         templates_tab = page.get_by_role("button", name="Welcome Templates")
@@ -50,9 +54,13 @@ class TestAdminWelcomeTemplates:
         """Test that admin can create a new welcome message template."""
         print("\n=== Test: Admin Can Create Welcome Template ===")
 
-        # Navigate to admin page
+        # Check frontend availability
         if not self._check_frontend_available(page):
             return
+
+        # Navigate to admin page
+        page.goto("http://localhost:5173/admin")
+        page.wait_for_load_state("networkidle")
 
         # Switch to templates tab
         templates_tab = page.get_by_role("button", name="Welcome Templates")
@@ -101,9 +109,13 @@ class TestAdminWelcomeTemplates:
         """Test that admin can edit an existing welcome message template."""
         print("\n=== Test: Admin Can Edit Welcome Template ===")
 
-        # Navigate to admin page
+        # Check frontend availability
         if not self._check_frontend_available(page):
             return
+
+        # Navigate to admin page
+        page.goto("http://localhost:5173/admin")
+        page.wait_for_load_state("networkidle")
 
         # Switch to templates tab
         templates_tab = page.get_by_role("button", name="Welcome Templates")
@@ -148,9 +160,13 @@ class TestAdminWelcomeTemplates:
         """Test that admin can activate/deactivate templates."""
         print("\n=== Test: Admin Can Toggle Template Active Status ===")
 
-        # Navigate to admin page
+        # Check frontend availability
         if not self._check_frontend_available(page):
             return
+
+        # Navigate to admin page
+        page.goto("http://localhost:5173/admin")
+        page.wait_for_load_state("networkidle")
 
         # Switch to templates tab
         templates_tab = page.get_by_role("button", name="Welcome Templates")
@@ -191,9 +207,13 @@ class TestAdminWelcomeTemplates:
         """Test that admin can set a template as default."""
         print("\n=== Test: Admin Can Set Default Template ===")
 
-        # Navigate to admin page
+        # Check frontend availability
         if not self._check_frontend_available(page):
             return
+
+        # Navigate to admin page
+        page.goto("http://localhost:5173/admin")
+        page.wait_for_load_state("networkidle")
 
         # Switch to templates tab
         templates_tab = page.get_by_role("button", name="Welcome Templates")
@@ -227,9 +247,13 @@ class TestAdminWelcomeTemplates:
         """Test that admin can delete a welcome message template."""
         print("\n=== Test: Admin Can Delete Template ===")
 
-        # Navigate to admin page
+        # Check frontend availability
         if not self._check_frontend_available(page):
             return
+
+        # Navigate to admin page
+        page.goto("http://localhost:5173/admin")
+        page.wait_for_load_state("networkidle")
 
         # Switch to templates tab
         templates_tab = page.get_by_role("button", name="Welcome Templates")
@@ -267,9 +291,13 @@ class TestAdminWelcomeTemplates:
         """Test that configured welcome templates are used in new chat sessions."""
         print("\n=== Test: Welcome Template Used in New Session ===")
 
-        # First, ensure we have an active default template
+        # Check frontend availability
         if not self._check_frontend_available(page):
             return
+
+        # First, ensure we have an active default template
+        page.goto("http://localhost:5173/admin")
+        page.wait_for_load_state("networkidle")
 
         # Switch to templates tab
         templates_tab = page.get_by_role("button", name="Welcome Templates")

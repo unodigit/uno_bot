@@ -225,7 +225,7 @@ This helps me match you with the right solutions!"""
 
         # Phase 6: Qualification - Timeline
         if not qualification.get("timeline"):
-            return f"""Perfect! And what's your timeline for this project?\n\n• Urgent: Within 1 month\n• Near-term: 1-3 months\n• Long-term: 3+ months"""
+            return """Perfect! And what's your timeline for this project?\n\n• Urgent: Within 1 month\n• Near-term: 1-3 months\n• Long-term: 3+ months"""
 
         # Phase 7: Service Recommendation
         return f"""Excellent! I've gathered all the information I need. Based on your needs, I recommend:\n\n**{business_context.get('industry', 'Your')} Industry Solutions**\n\nLet me connect you with one of our experts who specializes in this area. Would you like to see available appointment times?"""
