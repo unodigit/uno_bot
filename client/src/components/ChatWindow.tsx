@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus, ArrowLeft, Calendar, Check, XCircle, RefreshCw, Settings, Volume2, VolumeX } from 'lucide-react'
+import { X, Send, Minimize2, Download, FileText, UserPlus, Check, XCircle, RefreshCw, Settings, Volume2, VolumeX } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import { twMerge } from 'tailwind-merge'
 import { ExpertMatchList } from './ExpertCard'
@@ -15,7 +15,7 @@ interface ChatWindowProps {
 }
 
 // Phase-based quick reply options
-const getQuickReplies = (phase: string, context: any): string[] => {
+const getQuickReplies = (phase: string): string[] => {
   switch (phase) {
     case 'greeting':
       return ['Hi!', 'Hello', "I'm interested", 'Need help'];
@@ -622,14 +622,26 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             <span className="font-semibold text-sm">UnoBot</span>
           </div>
           <div className="flex items-center gap-2">
+            {/* Settings Button */}
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]"
+              aria-label="Open settings"
+              aria-expanded={showSettings}
+              data-testid="settings-button"
+              tabIndex={3}
+            >
+              <Settings className="w-4 h-4" />
+            </button>
             {onMinimize && (
               <>
                 <button
                   onClick={onMinimize}
-                  className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Minimize chat window"
+                  className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]"
+                  aria-label="Minimize chat window"
                   aria-describedby="minimize-instruction"
                   data-testid="minimize-button"
-                  tabIndex={3}
+                  tabIndex={4}
                 >
                   <Minimize2 className="w-4 h-4" />
                 </button>
@@ -644,7 +656,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               aria-label="Close chat window"
               aria-describedby="close-instruction"
               data-testid="close-button"
-              tabIndex={4}
+              tabIndex={5}
             >
               <X className="w-4 h-4" />
             </button>
@@ -653,6 +665,62 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
           </div>
         </div>
+
+        {/* Settings Panel */}
+        {showSettings && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="bg-gray-50 border-b border-border px-4 py-3"
+            data-testid="settings-panel"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold text-gray-700">Settings</span>
+              <button
+                onClick={() => setShowSettings(false)}
+                className="text-xs text-gray-500 hover:text-gray-700 min-h-[32px]"
+                aria-label="Close settings"
+              >
+                Close
+              </button>
+            </div>
+            <div className="flex items-center justify-between py-2 border-t border-gray-200 mt-2">
+              <div className="flex items-center gap-2">
+                {soundNotificationsEnabled ? (
+                  <Volume2 className="w-4 h-4 text-primary" />
+                ) : (
+                  <VolumeX className="w-4 h-4 text-gray-400" />
+                )}
+                <span className="text-sm text-gray-700">Sound Notifications</span>
+              </div>
+              <button
+                onClick={toggleSoundNotifications}
+                className={twMerge(
+                  'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
+                  soundNotificationsEnabled ? 'bg-primary' : 'bg-gray-300'
+                )}
+                role="switch"
+                aria-checked={soundNotificationsEnabled}
+                aria-label="Toggle sound notifications"
+                data-testid="sound-toggle"
+              >
+                <span
+                  className={twMerge(
+                    'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
+                    soundNotificationsEnabled ? 'translate-x-6' : 'translate-x-1'
+                  )}
+                />
+              </button>
+            </div>
+            <div className="text-xs text-gray-500 mt-2">
+              {soundNotificationsEnabled
+                ? 'Sounds enabled for new messages, bookings, and PRD generation'
+                : 'Sounds disabled'}
+            </div>
+          </motion.div>
+        )}
 
         {/* PRD Preview Card */}
         {prdPreview && (
@@ -882,7 +950,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         {!isStreaming && !isLoading && messages.some(m => m.role === 'user') && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && matchedExperts.length === 0 && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="quick-replies">
             <div className="flex flex-wrap gap-2 mb-2">
-              {getQuickReplies(currentPhase, { clientInfo, businessContext, qualification }).map((reply, idx) => (
+              {getQuickReplies(currentPhase).map((reply, idx) => (
                 <button
                   key={idx}
                   onClick={() => sendMessage(reply)}

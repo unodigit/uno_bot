@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { User, Mail, Calendar, Clock, ArrowLeft, Loader2, AlertCircle } from 'lucide-react'
+import { User, Mail, Calendar, Clock, Loader2, AlertCircle } from 'lucide-react'
 import { TimeSlot } from './CalendarPicker'
 import { MatchedExpert } from '../types'
 
