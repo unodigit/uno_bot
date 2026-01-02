@@ -201,10 +201,10 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
     try {
       setExporting(true)
       const response = await fetch(`${API_BASE_URL}/api/v1/admin/experts`)
-      const data = await response.json()
+      const data = (await response.json()) as Expert[]
 
       const headers = ['Name', 'Email', 'Role', 'Active', 'Specialties', 'Services']
-      const rows = data.map((expert: any) => [
+      const rows = data.map((expert: Expert) => [
         expert.name,
         expert.email,
         expert.role,
@@ -244,7 +244,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
   })
 
   const totalExperts = experts.length
-  const activeExperts = experts.filter((e: any) => e.is_active).length
+  const activeExperts = experts.filter((e: Expert) => e.is_active).length
   const inactiveExperts = totalExperts - activeExperts
 
   // Template Management Functions
@@ -266,7 +266,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
         throw new Error('Failed to create template')
       }
 
-      const created = await response.json()
+      const created = (await response.json()) as WelcomeTemplate
       setTemplates(prev => [created, ...prev])
       setAddingTemplate(false)
     } catch (error) {
@@ -304,7 +304,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
         throw new Error('Failed to update template')
       }
 
-      const updated = await response.json()
+      const updated = (await response.json()) as WelcomeTemplate
       setTemplates(prev => prev.map(t => t.id === editingTemplate.id ? updated : t))
       setEditingTemplate(null)
     } catch (error) {

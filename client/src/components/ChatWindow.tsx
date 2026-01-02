@@ -79,6 +79,9 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     confirmBooking,
     cancelBooking,
     resetBookingFlow,
+    // Sound notifications
+    playNotificationSound,
+    soundNotificationsEnabled,
   } = useChatStore()
 
   // Create session on mount if not exists
@@ -103,6 +106,38 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Track previous message count for notification sounds
+  const prevMessageCountRef = useRef(messages.length)
+
+  // Play notification sounds when new messages arrive
+  useEffect(() => {
+    const prevCount = prevMessageCountRef.current
+    const currentCount = messages.length
+
+    // Only play sound if messages increased (new message arrived)
+    if (currentCount > prevCount && soundNotificationsEnabled) {
+      // Get the latest message
+      const latestMessage = messages[messages.length - 1]
+
+      // Only play sound for assistant messages (bot responses)
+      if (latestMessage && latestMessage.role === 'assistant') {
+        // Check message metadata for special types
+        const metaType = latestMessage.meta_data?.type
+
+        if (metaType === 'booking_confirmed') {
+          playNotificationSound('booking')
+        } else if (metaType === 'prd_generated') {
+          playNotificationSound('prd')
+        } else {
+          playNotificationSound('message')
+        }
+      }
+    }
+
+    // Update ref
+    prevMessageCountRef.current = currentCount
+  }, [messages, playNotificationSound, soundNotificationsEnabled])
 
   const handleSend = async () => {
     if (!inputValue.trim() || isStreaming) return

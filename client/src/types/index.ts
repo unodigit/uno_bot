@@ -203,6 +203,8 @@ export interface ChatState {
   // WebSocket state
   isWebSocketConnected: boolean;
   isTyping: boolean;
+  // Sound notifications state
+  soundNotificationsEnabled: boolean;
 }
 
 export interface ChatActions {
@@ -246,6 +248,10 @@ export interface ChatActions {
     client_email: string;
   }) => void;
   isWebSocketAvailable: () => boolean;
+  // Sound notification actions
+  toggleSoundNotifications: () => void;
+  setSoundNotificationsEnabled: (enabled: boolean) => void;
+  playNotificationSound: (type?: 'message' | 'booking' | 'prd') => void;
   // Note: The following methods are also available on the store but are not part of ChatActions
   // They are added for completeness: addMessage, clearError, setStreaming
 }

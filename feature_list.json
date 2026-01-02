@@ -2673,9 +2673,14 @@
       "Step 3: Verify status JSON returned",
       "Step 4: Verify includes DB/Redis status"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "test_files": [
+      "tests/e2e/test_health_check.py"
+    ],
+    "dev_completed_at": "2026-01-02T09:57:00Z",
+    "qa_completed_at": "2026-01-02T09:58:00Z"
   },
   {
     "category": "functional",
