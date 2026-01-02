@@ -100,5 +100,15 @@ class SessionResumeRequest(BaseModel):
     session_id: UUID | None = Field(None, description="Session ID to resume (required for body-based resume)")
 
 
+class SessionUpdateRequest(BaseModel):
+    """Request schema for updating session data."""
+
+    client_info: dict[str, Any] | None = Field(None, description="Client information to update")
+    business_context: dict[str, Any] | None = Field(None, description="Business context to update")
+    qualification: dict[str, Any] | None = Field(None, description="Qualification data to update")
+    lead_score: int | None = Field(None, description="Lead score to set")
+    recommended_service: str | None = Field(None, description="Recommended service to set")
+
+
 # Update forward reference
 SessionResponse.model_rebuild()

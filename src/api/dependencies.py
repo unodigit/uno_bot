@@ -1,10 +1,14 @@
 """FastAPI dependencies for API routes."""
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
+
+
+# User type for authentication (stub - no auth in current implementation)
+User = Any
 
 
 async def get_session_id(x_session_id: Annotated[str | None, Header()] = None) -> str | None:
@@ -22,6 +26,11 @@ async def require_session_id(
             detail="Session ID is required",
         )
     return session_id
+
+
+async def get_current_user() -> User:
+    """Stub for authentication - returns None (no auth in current implementation)."""
+    return None
 
 
 # Type aliases for dependency injection

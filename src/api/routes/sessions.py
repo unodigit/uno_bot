@@ -13,6 +13,7 @@ from src.schemas.session import (
     SessionCreate,
     SessionResponse,
     SessionResumeRequest,
+    SessionUpdateRequest,
 )
 from src.services.expert_service import ExpertService
 from src.services.session_service import SessionService
@@ -382,10 +383,12 @@ async def match_expert(
     # Auto-select top expert if available
     if scored_experts:
         top_expert = scored_experts[0][0]
-        await session_service.update_session_data(
-            session,
-            {"matched_expert_id": top_expert.id}
-        )
+        # Update session with matched expert (using client_info to store it temporarily)
+        # Note: matched_expert_id is a direct column, so we need to update it differently
+        session.matched_expert_id = top_expert.id
+        db.add(session)
+        await db.commit()
+        await db.refresh(session)
 
     return ExpertMatchResponse(
         experts=experts,
@@ -401,7 +404,7 @@ async def match_expert(
 )
 async def update_session(
     session_id: uuid.UUID,
-    updates: dict,
+    updates: SessionUpdateRequest,
     db: AsyncSession = Depends(get_db),
 ) -> SessionResponse:
     """Update session metadata.
@@ -418,8 +421,15 @@ async def update_session(
             detail=f"Session {session_id} not found",
         )
 
-    # Update session with provided data
-    updated_session = await service.update_session_data(session, updates)
+    # Update session with provided data using keyword arguments
+    updated_session = await service.update_session_data(
+        session,
+        client_info=updates.client_info,
+        business_context=updates.business_context,
+        qualification=updates.qualification,
+        lead_score=updates.lead_score,
+        recommended_service=updates.recommended_service,
+    )
 
     return SessionResponse(
         id=updated_session.id,

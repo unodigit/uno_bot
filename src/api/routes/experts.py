@@ -1,7 +1,7 @@
 """Expert API routes for CRUD operations."""
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
@@ -12,8 +12,12 @@ from src.schemas.expert import (
     ExpertPublicResponse,
     ExpertResponse,
     ExpertUpdate,
+    GoogleOAuthRequest,
+    GoogleOAuthResponse,
+    GoogleOAuthCallbackRequest,
 )
 from src.services.expert_service import ExpertService
+from src.services.calendar_service import CalendarService
 
 router = APIRouter()
 
@@ -220,11 +224,13 @@ async def match_experts(
         experts.append(ExpertPublicResponse(
             id=expert.id,
             name=expert.name,
+            email=expert.email,
+            photo_url=expert.photo_url,
             role=expert.role,
             bio=expert.bio,
-            photo_url=expert.photo_url,
             specialties=expert.specialties,
             services=expert.services,
+            is_active=expert.is_active,
         ))
         match_scores.append(score)
 
@@ -232,3 +238,141 @@ async def match_experts(
         experts=experts,
         match_scores=match_scores,
     )
+
+
+@router.post(
+    "/{expert_id}/connect_calendar",
+    response_model=GoogleOAuthResponse,
+    summary="Initiate Google Calendar OAuth flow",
+    description="Start Google Calendar OAuth flow for an expert",
+)
+async def connect_calendar(
+    expert_id: uuid.UUID,
+    request: Request,
+    db: AsyncSession = Depends(get_db),
+) -> GoogleOAuthResponse:
+    """Initiate Google Calendar OAuth flow for an expert.
+
+    Args:
+        expert_id: Expert UUID
+        request: FastAPI request object
+        db: Database session
+
+    Returns:
+        OAuth URL for redirecting the user to Google's consent screen
+    """
+    expert_service = ExpertService(db)
+    calendar_service = CalendarService()
+
+    # Verify expert exists
+    expert = await expert_service.get_expert(expert_id)
+    if not expert:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Expert {expert_id} not found",
+        )
+
+    try:
+        # Create OAuth flow
+        flow = calendar_service.create_oauth_flow()
+
+        # Generate authorization URL
+        authorization_url, state = flow.authorization_url(
+            access_type='offline',
+            include_granted_scopes='true',
+            prompt='consent'  # Force consent to get refresh token
+        )
+
+        return GoogleOAuthResponse(
+            success=True,
+            message=authorization_url,
+            calendar_id=None
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to initiate OAuth flow: {str(e)}"
+        )
+
+
+@router.get(
+    "/calendar/callback",
+    response_model=GoogleOAuthResponse,
+    summary="Handle Google OAuth callback",
+    description="Handle Google OAuth callback and store credentials",
+)
+async def oauth_callback(
+    request: Request,
+    code: str,
+    state: str | None = None,
+    expert_id: uuid.UUID | None = None,
+    db: AsyncSession = Depends(get_db),
+) -> GoogleOAuthResponse:
+    """Handle Google OAuth callback and store credentials.
+
+    Args:
+        request: FastAPI request object
+        code: Authorization code from Google
+        state: State parameter from OAuth flow
+        expert_id: Expert UUID (can be passed as query param)
+        db: Database session
+
+    Returns:
+        Success status and calendar ID
+    """
+    if not code:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Authorization code is required"
+        )
+
+    calendar_service = CalendarService()
+
+    try:
+        # Create OAuth flow
+        flow = calendar_service.create_oauth_flow()
+
+        # Exchange authorization code for credentials
+        flow.fetch_token(code=code)
+
+        # Get credentials
+        credentials = flow.credentials
+
+        # Store refresh token
+        if credentials.refresh_token:
+            if expert_id:
+                expert_service = ExpertService(db)
+                expert = await expert_service.get_expert(expert_id)
+                if not expert:
+                    raise HTTPException(
+                        status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"Expert {expert_id} not found",
+                    )
+
+                # Update expert with refresh token and calendar ID
+                await expert_service.update_expert(expert, ExpertUpdate(
+                    refresh_token=credentials.refresh_token,
+                    calendar_id=credentials.client_id  # Store client_id as calendar_id for now
+                ))
+
+                return GoogleOAuthResponse(
+                    success=True,
+                    calendar_id=str(expert_id),  # Return expert_id as calendar_id
+                    message="Calendar connected successfully"
+                )
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Expert ID is required"
+                )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No refresh token received"
+            )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"OAuth callback failed: {str(e)}"
+        )

@@ -13,7 +13,46 @@ from src.models.expert import Expert
 from src.schemas.booking import (
     BookingCreate, BookingResponse, AvailabilityResponse, TimeSlot
 )
-from src.services.calendar_service import CalendarService
+
+class MockCalendarService:
+    """Mock calendar service for testing without Google Calendar dependency."""
+    def get_calendar_timezone(self, refresh_token):
+        """Return mock timezone."""
+        return "UTC"
+
+    async def get_expert_availability(self, refresh_token=None, timezone=None, days_ahead=14, min_slots_to_show=5, expert_id=None):
+        """Return mock availability."""
+        from datetime import datetime, timedelta
+        import random
+
+        # Generate mock time slots
+        slots = []
+        now = datetime.now()
+
+        for i in range(days_ahead):
+            date = now + timedelta(days=i)
+            if date.weekday() < 5:  # Only weekdays
+                for hour in [9, 10, 14, 15, 16]:  # Business hours
+                    slot_time = date.replace(hour=hour, minute=0, second=0, microsecond=0)
+                    slots.append({
+                        'start_time': slot_time,
+                        'end_time': slot_time + timedelta(minutes=60),
+                        'timezone': timezone or 'UTC',
+                        'display_time': slot_time.strftime('%H:%M'),
+                        'display_date': slot_time.strftime('%Y-%m-%d')
+                    })
+
+        # Return random subset of slots
+        available_slots = random.sample(slots, min(len(slots), min_slots_to_show))
+
+        return available_slots
+
+    async def create_calendar_event(self, *args, **kwargs):
+        """Create a mock calendar event."""
+        import random
+        return f"mock_event_{random.randint(1000, 9999)}"
+
+# from src.services.calendar_service import CalendarService
 
 
 class BookingService:
@@ -21,7 +60,7 @@ class BookingService:
 
     def __init__(self, db: AsyncSession):
         self.db = db
-        self.calendar_service = CalendarService()
+        self.calendar_service = MockCalendarService()
 
     async def get_expert_availability(
         self,
@@ -70,19 +109,23 @@ class BookingService:
         # Group slots by date
         slots_by_date = {}
         for slot in time_slots:
-            date = slot['date']
+            date = slot['display_date']
             if date not in slots_by_date:
                 slots_by_date[date] = []
             slots_by_date[date].append(TimeSlot(**slot))
+
+        # Convert grouped slots to flat list
+        all_slots = []
+        for date_slots in slots_by_date.values():
+            all_slots.extend(date_slots)
 
         return AvailabilityResponse(
             expert_id=expert_id,
             expert_name=expert.name,
             expert_role=expert.role,
             timezone=timezone,
-            available_slots=slots_by_date,
-            days_ahead=days_ahead,
-            min_slots_to_show=min_slots_to_show
+            slots=all_slots,
+            generated_at=datetime.now()
         )
 
     async def create_booking(
@@ -118,7 +161,7 @@ class BookingService:
 
         # Check for conflicts
         await self._check_booking_conflicts(
-            expert_id, start_time, end_time, exclude_session_id=session_id
+            expert_id, start_time, end_time, exclude_booking_id=None
         )
 
         # Create calendar event

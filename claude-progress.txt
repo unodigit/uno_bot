@@ -1325,3 +1325,72 @@ Implemented PRD storage_url, version tracking, and expert matching API endpoints
 
 ### Features: 29/205 (14.1%) dev complete
 ### Files Modified: 11 files
+
+---
+
+## Session 14 - PRD Version Tracking Bug Fix & Test Validation
+
+### Date: January 2, 2026 (Current Session)
+
+### Summary
+Fixed critical async database loading bug in PRD service that was causing test failures. Updated tests to use proper fixtures and verified all PRD version tracking functionality works correctly.
+
+### Root Cause Analysis
+The `generate_prd()` and `regenerate_prd()` methods were using `session.messages` which triggers SQLAlchemy lazy loading. In async context, this causes `MissingGreenlet` error because lazy loading requires async context that `hasattr()` and direct attribute access don't provide.
+
+### Bug Fix
+**Before (Broken):**
+```python
+if not hasattr(session, 'messages') or not session.messages:
+    # Load messages from database
+    ...
+else:
+    messages = session.messages  # ❌ Triggers async lazy load
+```
+
+**After (Fixed):**
+```python
+# Always load messages explicitly
+result = await self.db.execute(
+    select(Message)
+    .where(Message.session_id == session.id)
+    .order_by(Message.created_at)
+)
+messages = list(result.scalars().all())  # ✅ Explicit async query
+```
+
+### Completed Tasks
+1. **Fixed async lazy loading bug** in `src/services/prd_service.py`
+   - `generate_prd()` - Now uses explicit database query
+   - `regenerate_prd()` - Now uses explicit database query
+
+2. **Updated test file** `tests/integration/test_prd_version_tracking.py`
+   - Changed from `AsyncSessionLocal` to `db_session` fixture
+   - Properly uses test database with in-memory SQLite
+
+3. **Verified all PRD tests pass**
+   - `test_prd_version_tracking` ✅
+   - `test_prd_regeneration_without_feedback` ✅
+   - `test_multiple_prd_regenerations` ✅
+
+### Test Results
+```
+tests/integration/test_prd_version_tracking.py::test_prd_version_tracking PASSED
+tests/integration/test_prd_version_tracking.py::test_prd_regeneration_without_feedback PASSED
+tests/integration/test_prd_version_tracking.py::test_multiple_prd_regenerations PASSED
+```
+
+### Files Modified
+1. `src/services/prd_service.py` - Fixed async message loading in both methods
+2. `tests/integration/test_prd_version_tracking.py` - Updated to use proper test fixtures
+
+### Progress Update
+- **38/205 features passing** (18.5%)
+- **41/205 dev complete** (20.0%)
+- **PRD version tracking: FIXED & VERIFIED** ✅
+
+### Key Learnings
+1. SQLAlchemy async sessions require explicit queries for relationships
+2. `hasattr()` on relationship attributes triggers lazy loading
+3. Always use `select()` with explicit joins/queries in async context
+4. Test fixtures provide proper database isolation for integration tests

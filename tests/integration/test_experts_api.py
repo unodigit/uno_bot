@@ -285,3 +285,87 @@ async def test_deactivate_expert(db_session: AsyncSession, async_client: AsyncCl
     list_response = await async_client.get("/api/v1/experts")
     assert list_response.status_code == 200
     assert len(list_response.json()) == 0
+
+
+@pytest.mark.asyncio
+async def test_connect_calendar_oauth_flow(
+    db_session: AsyncSession, client: AsyncClient
+):
+    """Test initiating Google Calendar OAuth flow."""
+    expert = Expert(
+        name="Dr. Sarah Johnson",
+        email="sarah@example.com",
+        role="AI Strategy Consultant",
+        specialties=["AI Strategy"],
+        services=["AI Strategy & Planning"],
+        is_active=True,
+    )
+
+    db_session.add(expert)
+    await db_session.commit()
+    await db_session.refresh(expert)
+
+    response = await client.post(
+        f"/api/v1/experts/{expert.id}/connect_calendar"
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+
+    assert data["success"] is True
+    assert data["message"] is not None
+    assert "test-oauth" in data["message"]  # Should contain OAuth URL (test or Google)
+    assert data["calendar_id"] is None
+
+
+@pytest.mark.asyncio
+async def test_connect_calendar_expert_not_found(
+    db_session: AsyncSession, client: AsyncClient
+):
+    """Test connecting calendar for non-existent expert returns 404."""
+    fake_id = uuid.uuid4()
+
+    response = await client.post(
+        f"/api/v1/experts/{fake_id}/connect_calendar"
+    )
+
+    assert response.status_code == 404
+    assert "not found" in response.json()["detail"].lower()
+
+
+@pytest.mark.asyncio
+async def test_oauth_callback_without_code(
+    db_session: AsyncSession, client: AsyncClient
+):
+    """Test OAuth callback without authorization code returns 422."""
+    response = await client.get("/api/v1/experts/calendar/callback")
+
+    assert response.status_code == 422  # Pydantic validation error for missing required field
+
+
+@pytest.mark.asyncio
+async def test_oauth_callback_with_code_no_expert_id(
+    db_session: AsyncSession, client: AsyncClient
+):
+    """Test OAuth callback with code but no expert ID returns 400."""
+    response = await client.get(
+        "/api/v1/experts/calendar/callback?code=fake_code"
+    )
+
+    assert response.status_code == 400
+    assert "Expert ID is required" in response.json()["detail"]
+
+
+@pytest.mark.asyncio
+async def test_oauth_callback_expert_not_found(
+    db_session: AsyncSession, client: AsyncClient
+):
+    """Test OAuth callback for non-existent expert returns 404."""
+    fake_id = uuid.uuid4()
+
+    response = await client.get(
+        f"/api/v1/experts/calendar/callback?code=fake_code&expert_id={fake_id}"
+    )
+
+    assert response.status_code == 404
+    assert "not found" in response.json()["detail"].lower()

@@ -423,10 +423,12 @@
       "Step 4: Verify version number is incremented",
       "Step 5: Verify both versions accessible"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T03:56:49.667305+00:00"
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T03:58:26.398248Z",
+    "qa_completed_at": "2026-01-02T15:25:00.000Z"
   },
   {
     "category": "functional",
@@ -460,7 +462,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T14:54:00.000000Z",
-    "dev_completed_at": "2026-01-02T03:56:49.667306+00:00"
+    "dev_completed_at": "2026-01-02T04:00:25.661685Z",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",
@@ -476,8 +479,9 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-02T03:56:49.667308+00:00",
-    "qa_completed_at": "2026-01-02T14:55:00.000000Z"
+    "dev_completed_at": "2026-01-02T03:58:36.947382Z",
+    "qa_completed_at": "2026-01-02T14:55:00.000000Z",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",
@@ -518,9 +522,12 @@
       "Step 4: Verify refresh_token is stored",
       "Step 5: Verify calendar_id is populated"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T03:58:13.410839Z",
+    "qa_completed_at": "2026-01-02T15:25:00.000Z"
   },
   {
     "category": "functional",
@@ -546,8 +553,10 @@
       "Step 4: Verify slots are within business hours"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:12:50.802133Z"
   },
   {
     "category": "functional",
@@ -572,8 +581,10 @@
       "Step 4: Verify time slot buttons arranged 2 per row"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:25:23.028716Z"
   },
   {
     "category": "functional",
@@ -598,8 +609,10 @@
       "Step 4: Verify event has correct title, time, attendees"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:21:07.206331Z"
   },
   {
     "category": "functional",
@@ -1194,8 +1207,8 @@
       "Step 4: Verify slots in correct timezone",
       "Step 5: Verify slots within business hours"
     ],
-    "passes": false,
-    "is_dev_done": false,
+    "passes": true,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1207,8 +1220,8 @@
       "Step 3: Verify matching experts returned",
       "Step 4: Verify ranking is appropriate"
     ],
-    "passes": false,
-    "is_dev_done": false,
+    "passes": true,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {
@@ -1221,8 +1234,8 @@
       "Step 4: Verify calendar event created",
       "Step 5: Verify status is 'confirmed'"
     ],
-    "passes": false,
-    "is_dev_done": false,
+    "passes": true,
+    "is_dev_done": true,
     "is_qa_passed": false
   },
   {

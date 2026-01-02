@@ -96,3 +96,24 @@ class ExpertMatchResponse(BaseModel):
 
     experts: list[ExpertPublicResponse]
     match_scores: list[float]
+
+
+class GoogleOAuthRequest(BaseModel):
+    """Request schema for Google OAuth flow."""
+
+    expert_id: UUID
+
+
+class GoogleOAuthCallbackRequest(BaseModel):
+    """Request schema for Google OAuth callback."""
+
+    code: str
+    state: str | None = None
+
+
+class GoogleOAuthResponse(BaseModel):
+    """Response schema for Google OAuth operations."""
+
+    success: bool
+    calendar_id: str | None = None
+    message: str | None = None

@@ -1,11 +1,13 @@
 """Expert service for business logic."""
 import uuid
 from collections import defaultdict
+from datetime import datetime, timedelta
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.expert import Expert
+from src.models.booking import Booking
 from src.schemas.expert import ExpertCreate, ExpertUpdate
 
 
@@ -45,6 +47,7 @@ class ExpertService:
         service_type: str | None = None,
         specialties: list[str] | None = None,
         business_context: dict | None = None,
+        workload_balancing: bool = True,
     ) -> list[tuple[Expert, float]]:
         """Match experts based on service type, specialties, and business context.
 
@@ -52,6 +55,7 @@ class ExpertService:
             service_type: The recommended service type (e.g., "AI Strategy & Planning")
             specialties: List of required specialties
             business_context: Additional business context for matching
+            workload_balancing: Whether to factor in expert workload (active bookings)
 
         Returns:
             List of (expert, score) tuples sorted by score descending
@@ -62,6 +66,11 @@ class ExpertService:
         if not experts:
             return []
 
+        # Get workload counts for all experts
+        workload_map = {}
+        if workload_balancing:
+            workload_map = await self._get_expert_workload_counts()
+
         # Calculate match scores for each expert
         scored_experts = []
         for expert in experts:
@@ -69,12 +78,70 @@ class ExpertService:
                 expert, service_type, specialties, business_context
             )
             if score > 0:  # Only include experts with positive scores
+                # Apply workload penalty if enabled
+                if workload_balancing:
+                    workload_penalty = self._calculate_workload_penalty(
+                        expert.id, workload_map
+                    )
+                    score = score * workload_penalty
                 scored_experts.append((expert, score))
 
         # Sort by score descending
         scored_experts.sort(key=lambda x: x[1], reverse=True)
 
         return scored_experts
+
+    async def _get_expert_workload_counts(self) -> dict[uuid.UUID, int]:
+        """Get count of active bookings for each expert.
+
+        Returns:
+            Dictionary mapping expert_id to number of active bookings
+        """
+        # Count bookings that are confirmed and in the future (active workload)
+        future_bookings = select(
+            Booking.expert_id,
+            func.count(Booking.id).label('booking_count')
+        ).where(
+            Booking.status == 'confirmed'
+        ).where(
+            Booking.start_time >= datetime.utcnow()
+        ).group_by(
+            Booking.expert_id
+        )
+
+        result = await self.db.execute(future_bookings)
+        workload_map = {row[0]: row[1] for row in result.all()}
+
+        return workload_map
+
+    def _calculate_workload_penalty(self, expert_id: uuid.UUID, workload_map: dict[uuid.UUID, int]) -> float:
+        """Calculate workload penalty based on active bookings.
+
+        Args:
+            expert_id: The expert's ID
+            workload_map: Dictionary of expert_id to booking count
+
+        Returns:
+            Penalty multiplier between 0.5 and 1.0
+        """
+        workload = workload_map.get(expert_id, 0)
+
+        # Penalty tiers:
+        # 0 bookings: 1.0 (no penalty)
+        # 1-2 bookings: 0.95 (minimal penalty)
+        # 3-4 bookings: 0.9 (light penalty)
+        # 5-6 bookings: 0.8 (moderate penalty)
+        # 7+ bookings: 0.7 (heavy penalty)
+        if workload == 0:
+            return 1.0
+        elif workload <= 2:
+            return 0.95
+        elif workload <= 4:
+            return 0.9
+        elif workload <= 6:
+            return 0.8
+        else:
+            return 0.7
 
     def _calculate_match_score(
         self,

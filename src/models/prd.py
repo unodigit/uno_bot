@@ -41,7 +41,9 @@ class PRDDocument(Base):
     recommended_service: Mapped[str | None] = mapped_column(
         String(100), nullable=True
     )
-    matched_expert: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    matched_expert_id: Mapped[uuid.UUID | None] = mapped_column(
+        UUIDType, ForeignKey("experts.id"), nullable=True
+    )
 
     # Storage
     storage_url: Mapped[str | None] = mapped_column(Text, nullable=True)

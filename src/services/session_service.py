@@ -138,8 +138,11 @@ class SessionService:
         qualification: dict[str, Any] | None = None,
         lead_score: int | None = None,
         recommended_service: str | None = None,
-    ) -> None:
-        """Update session data fields."""
+    ) -> ConversationSession:
+        """Update session data fields.
+
+        Returns the updated session.
+        """
         if client_info:
             session.client_info = {**session.client_info, **client_info}
         if business_context:
@@ -154,6 +157,7 @@ class SessionService:
         self.db.add(session)
         await self.db.commit()
         await self.db.refresh(session)
+        return session
 
     async def generate_ai_response(
         self, session: ConversationSession, user_message: str
@@ -517,44 +521,11 @@ class SessionService:
 
     async def _generate_prd_for_session(self, session: ConversationSession) -> None:
         """Generate a PRD for the session."""
-        from src.models.prd import PRDDocument
-        from src.services.ai_service import AIService
+        from src.services.prd_service import PRDService
 
-        # Get AI service
-        ai_service = AIService()
-
-        # Generate PRD content
-        conversation_history = []
-        for msg in session.messages:
-            conversation_history.append({
-                "role": msg.role,
-                "content": msg.content
-            })
-
-        prd_content = await ai_service.generate_prd(
-            business_context=session.business_context,
-            client_info=session.client_info,
-            conversation_history=conversation_history
-        )
-
-        # Create PRD document
-        prd = PRDDocument(
-            session_id=session.id,
-            content_markdown=prd_content,
-            client_company=session.client_info.get("company"),
-            client_name=session.client_info.get("name"),
-            recommended_service=session.recommended_service,
-            matched_expert=session.matched_expert_id,
-            storage_url=f"/api/v1/prd/{session.id}/download"
-        )
-
-        self.db.add(prd)
-        await self.db.commit()
-        await self.db.refresh(prd)
-
-        # Update session with PRD ID
-        session.prd_id = prd.id
-        await self.db.commit()
+        # Use PRDService for consistent PRD generation
+        prd_service = PRDService(self.db)
+        await prd_service.generate_prd(session)
 
     async def match_experts_for_session(self, session: ConversationSession) -> list[dict[str, Any]]:
         """Match experts to a session based on business context and recommended service.

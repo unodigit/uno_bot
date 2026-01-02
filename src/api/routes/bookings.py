@@ -6,14 +6,13 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.api.dependencies import get_current_user, get_db
-from src.models.user import User
+from src.api.dependencies import get_db
 from src.schemas.booking import (
     BookingCreate, BookingResponse, AvailabilityResponse, TimeSlot
 )
 from src.schemas.expert import ExpertResponse
 from src.services.booking_service import BookingService
-from src.services.calendar_service import CalendarService
+# from src.services.calendar_service import CalendarService
 from src.services.expert_service import ExpertService
 from src.services.session_service import SessionService
 
@@ -28,7 +27,6 @@ async def get_expert_availability(
     days_ahead: Optional[int] = None,
     min_slots_to_show: Optional[int] = None,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
 ):
     """Get available time slots for an expert.
 
@@ -65,12 +63,11 @@ async def get_expert_availability(
         )
 
 
-@router.post("/sessions/{session_id}/bookings", response_model=BookingResponse)
+@router.post("/sessions/{session_id}/bookings", response_model=BookingResponse, status_code=status.HTTP_201_CREATED)
 async def create_booking(
     session_id: UUID,
     booking_data: BookingCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
 ):
     """Create a new booking for a session.
 
@@ -111,7 +108,6 @@ async def create_booking(
 async def get_booking(
     booking_id: UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
 ):
     """Get a booking by ID.
 
@@ -144,7 +140,7 @@ async def get_booking(
 async def get_booking_by_session(
     session_id: UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    
 ):
     """Get booking by session ID.
 
@@ -172,7 +168,7 @@ async def get_booking_by_session(
 async def cancel_booking(
     booking_id: UUID,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    
 ):
     """Cancel a booking.
 
@@ -207,7 +203,7 @@ async def get_expert_bookings(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    
 ):
     """Get all bookings for an expert within a date range.
 

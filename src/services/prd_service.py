@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from src.models.prd import PRDDocument
-from src.models.session import ConversationSession
+from src.models.session import ConversationSession, Message
 from src.services.ai_service import AIService
 
 
@@ -33,9 +33,16 @@ class PRDService:
             if existing_prd:
                 return existing_prd
 
-        # Build conversation history
+        # Build conversation history - always load messages explicitly
+        result = await self.db.execute(
+            select(Message)
+            .where(Message.session_id == session.id)
+            .order_by(Message.created_at)
+        )
+        messages = list(result.scalars().all())
+
         conversation_history = []
-        for msg in session.messages:
+        for msg in messages:
             conversation_history.append({
                 "role": msg.role,
                 "content": msg.content
@@ -55,7 +62,7 @@ class PRDService:
             client_company=session.client_info.get("company"),
             client_name=session.client_info.get("name"),
             recommended_service=session.recommended_service,
-            matched_expert=session.matched_expert_id,
+            matched_expert_id=session.matched_expert_id,
         )
 
         self.db.add(prd)
@@ -135,9 +142,16 @@ class PRDService:
             if existing_prd:
                 existing_version = existing_prd.version
 
-        # Build conversation history
+        # Build conversation history - always load messages explicitly
+        result = await self.db.execute(
+            select(Message)
+            .where(Message.session_id == session.id)
+            .order_by(Message.created_at)
+        )
+        messages = list(result.scalars().all())
+
         conversation_history = []
-        for msg in session.messages:
+        for msg in messages:
             conversation_history.append({
                 "role": msg.role,
                 "content": msg.content
@@ -158,11 +172,16 @@ class PRDService:
             client_company=session.client_info.get("company"),
             client_name=session.client_info.get("name"),
             recommended_service=session.recommended_service,
-            matched_expert=session.matched_expert_id,
-            storage_url=f"/api/v1/prd/{session.id}/download",
+            matched_expert_id=session.matched_expert_id,
             version=existing_version + 1
         )
 
+        self.db.add(new_prd)
+        await self.db.commit()
+        await self.db.refresh(new_prd)
+
+        # Update storage_url with unique PRD ID (after we have the prd.id)
+        new_prd.storage_url = f"/api/v1/prd/{new_prd.id}/download"
         self.db.add(new_prd)
         await self.db.commit()
         await self.db.refresh(new_prd)
