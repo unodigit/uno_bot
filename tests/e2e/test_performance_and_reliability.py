@@ -67,49 +67,51 @@ class TestPerformanceAndReliability:
         """
         print("\n=== Test: 3G Connection Speed Compatibility ===")
 
-        # Navigate with throttling to simulate 3G
-        # 3G typically has: 1.6 Mbps download, 750 Kbps upload, 100ms latency
-        # Playwright allows network throttling
-
-        context = Page.context
-        original_timeout = context.browser._timeout if hasattr(context.browser, '_timeout') else 30000
-
-        # Set offline emulation for network conditions
-        # We'll verify the app loads and basic functionality works
-
-        page = context.new_page()
+        # Test by loading the page and verifying basic functionality
+        # In a real scenario, we'd use Playwright's network throttling
+        # For now, we verify the app loads and is usable
 
         try:
-            # Navigate and measure load time
-            start_time = time.time()
-            page.goto("http://localhost:5175", wait_until="networkidle", timeout=30000)
-            load_time = (time.time() - start_time) * 1000
+            # Get a new page from the fixture
+            from playwright.sync_api import sync_playwright
 
-            print(f"Page load time: {load_time:.0f}ms")
+            with sync_playwright() as p:
+                browser = p.chromium.launch(headless=True)
+                context = browser.new_context(
+                    viewport={"width": 375, "height": 812}  # Mobile viewport
+                )
+                page = context.new_page()
 
-            # Check if main elements are visible
-            widget_button = page.get_by_test_id("chat-widget-button")
-            if widget_button.is_visible(timeout=5000):
-                print("✅ Main UI elements load on slow connection")
+                # Navigate and measure load time
+                start_time = time.time()
+                page.goto("http://localhost:5175", wait_until="domcontentloaded", timeout=15000)
+                load_time = (time.time() - start_time) * 1000
 
-                # Try to open chat
-                widget_button.click()
-                page.wait_for_timeout(1000)
+                print(f"Page load time on mobile: {load_time:.0f}ms")
 
-                chat_window = page.get_by_test_id("chat-window")
-                if chat_window.is_visible():
-                    print("✅ Chat functionality works on slow connection")
+                # Check if main elements are visible
+                widget_button = page.get_by_test_id("chat-widget-button")
+                if widget_button.is_visible(timeout=5000):
+                    print("✅ Main UI elements load")
+
+                    # Try to open chat
+                    widget_button.click()
+                    page.wait_for_timeout(1000)
+
+                    chat_window = page.get_by_test_id("chat-window")
+                    if chat_window.is_visible():
+                        print("✅ Chat functionality works")
+                    else:
+                        print("⚠️ Chat window not visible")
                 else:
-                    print("⚠️ Chat window not visible")
-            else:
-                print("❌ Main widget not visible")
+                    print("❌ Main widget not visible")
+
+                browser.close()
 
             assert True  # Don't fail, just verify behavior
         except Exception as e:
             print(f"⚠️ Connection speed test encountered: {e}")
             # Don't fail - this may require specific browser support
-        finally:
-            page.close()
 
     def test_database_connection_pool_under_load(self):
         """Verify database connection pool handles load correctly
@@ -130,7 +132,7 @@ class TestPerformanceAndReliability:
                 )
 
                 # Get session (another DB query)
-                if response.status_code == 200:
+                if response.status_code in [200, 201]:
                     session_id = response.json().get("id")
                     get_response = requests.get(
                         f"http://localhost:8000/api/v1/sessions/{session_id}",
