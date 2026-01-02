@@ -196,7 +196,12 @@ def test_timezone_detection(page: Page):
     # The component uses Intl.DateTimeFormat().resolvedOptions().timeZone
 
     # Verify timezone is displayed (should be visible in the header)
-    timezone_element = page.locator('text=UTC').or_(page.locator('text=America/')).or_(page.locator('text=Europe/')).or_(page.locator('text=Asia/'))
+    # Playwright browser may use different timezones (UTC, America/, Europe/, Asia/, Australia/)
+    timezone_element = page.locator('text=UTC').or_(
+        page.locator('text=America/')).or_(
+        page.locator('text=Europe/')).or_(
+        page.locator('text=Asia/')).or_(
+        page.locator('text=Australia/'))
     expect(timezone_element).to_be_visible()
 
     print("✓ Timezone detection test passed")
