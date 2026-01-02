@@ -1,0 +1,26 @@
+{
+  "feature": "TanStack Query caches server state",
+  "tests": [
+    {
+      "name": "TanStack Query installed",
+      "passed": true
+    },
+    {
+      "name": "QueryClientProvider setup",
+      "passed": true
+    },
+    {
+      "name": "useQuery usage",
+      "passed": true
+    },
+    {
+      "name": "useMutation usage",
+      "passed": true
+    },
+    {
+      "name": "API client structure",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

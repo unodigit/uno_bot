@@ -1,4 +1,5 @@
 """Security utilities and middleware for UnoBot API."""
+import base64
 import hashlib
 import hmac
 import logging
@@ -7,6 +8,7 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Any
 
+from cryptography.fernet import Fernet
 from fastapi import Depends, Header, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -164,7 +166,8 @@ def validate_sql_input(text: str) -> bool:
 
     # Common SQL injection patterns
     sql_patterns = [
-        r'(?i)\b(OR|AND)\s+\d+\s*=\s*\d+',  # tautologies
+        r'(?i)\b(OR|AND)\s+\d+\s*=\s*\d+',  # tautologies: OR 1=1
+        r'(?i)\b(OR|AND)\s+[\'"]?\w+[\'"]?\s*=\s*[\'"]?\w+[\'"]?',  # OR '1'='1'
         r'(?i)\bUNION\s+ALL\s+SELECT',      # union attacks
         r'(?i)\bDROP\s+(TABLE|DATABASE)',   # drop statements
         r'(?i)\bDELETE\s+FROM',             # delete statements
@@ -303,6 +306,51 @@ class TokenManager:
         except ValueError:
             pass
 
+        return None
+
+
+# OAuth Token Encryption using Fernet (symmetric encryption)
+# This is used for storing OAuth refresh tokens securely in the database
+def get_fernet_cipher() -> Fernet:
+    """Get Fernet cipher using the secret key."""
+    # Derive a key from the secret key (Fernet requires 32-byte URL-safe base64 key)
+    secret = settings.secret_key.encode('utf-8')
+    # Use SHA256 to create a 32-byte key, then base64 encode it
+    key = base64.urlsafe_b64encode(hashlib.sha256(secret).digest())
+    return Fernet(key)
+
+
+def encrypt_oauth_token(token: str) -> str:
+    """Encrypt OAuth token for secure storage.
+
+    Args:
+        token: OAuth token to encrypt
+
+    Returns:
+        Encrypted token as string
+    """
+    if not token:
+        return ""
+    cipher = get_fernet_cipher()
+    return cipher.encrypt(token.encode('utf-8')).decode('utf-8')
+
+
+def decrypt_oauth_token(encrypted_token: str) -> str | None:
+    """Decrypt OAuth token from storage.
+
+    Args:
+        encrypted_token: Encrypted token from database
+
+    Returns:
+        Decrypted token or None if decryption fails
+    """
+    if not encrypted_token:
+        return None
+    try:
+        cipher = get_fernet_cipher()
+        return cipher.decrypt(encrypted_token.encode('utf-8')).decode('utf-8')
+    except Exception as e:
+        logger.warning(f"Failed to decrypt OAuth token: {e}")
         return None
 
 
@@ -512,6 +560,8 @@ __all__ = [
     "sign_data",
     "verify_signature",
     "TokenManager",
+    "encrypt_oauth_token",
+    "decrypt_oauth_token",
     "AdminSecurity",
     "get_api_key",
     "require_admin_auth",

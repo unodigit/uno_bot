@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 
 from src.api.dependencies import get_db
+from src.core.security import require_admin_auth
 from src.schemas.monitoring import SystemMetricsResponse, HealthStatusResponse, EndpointMetricsResponse
 from src.services.monitoring_service import MonitoringService, get_monitoring_service
 
@@ -14,6 +15,7 @@ router = APIRouter()
 
 @router.get("/metrics", response_model=SystemMetricsResponse, tags=["monitoring"])
 async def get_system_metrics(
+    admin_data: dict = Depends(require_admin_auth),
     monitoring_service: MonitoringService = Depends(get_monitoring_service)
 ):
     """Get current system metrics and performance data."""
@@ -52,6 +54,7 @@ async def get_system_metrics(
 
 @router.get("/metrics/endpoints", response_model=EndpointMetricsResponse, tags=["monitoring"])
 async def get_endpoint_metrics(
+    admin_data: dict = Depends(require_admin_auth),
     monitoring_service: MonitoringService = Depends(get_monitoring_service)
 ):
     """Get metrics per endpoint."""
@@ -67,6 +70,7 @@ async def get_endpoint_metrics(
 
 @router.get("/health", response_model=HealthStatusResponse, tags=["monitoring"])
 async def get_health_status(
+    admin_data: dict = Depends(require_admin_auth),
     monitoring_service: MonitoringService = Depends(get_monitoring_service),
     db: AsyncSession = Depends(get_db)
 ):
@@ -99,6 +103,7 @@ async def get_health_status(
 
 @router.get("/health/detailed", response_model=HealthStatusResponse, tags=["monitoring"])
 async def get_detailed_health_status(
+    admin_data: dict = Depends(require_admin_auth),
     monitoring_service: MonitoringService = Depends(get_monitoring_service),
     db: AsyncSession = Depends(get_db)
 ):
@@ -171,6 +176,7 @@ async def get_detailed_health_status(
 
 @router.get("/metrics/summary", response_model=SystemMetricsResponse, tags=["monitoring"])
 async def get_metrics_summary(
+    admin_data: dict = Depends(require_admin_auth),
     monitoring_service: MonitoringService = Depends(get_monitoring_service)
 ):
     """Get a summary of key metrics for dashboard display."""

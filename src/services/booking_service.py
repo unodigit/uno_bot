@@ -7,6 +7,7 @@ from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from src.core.security import decrypt_oauth_token
 from src.models.booking import Booking
 from src.models.expert import Expert
 from src.models.session import ConversationSession
@@ -53,11 +54,14 @@ class BookingService:
         if not expert:
             raise ValueError(f"Expert not found: {expert_id}")
 
+        # Decrypt OAuth token
+        decrypted_token = decrypt_oauth_token(expert.refresh_token or '') if expert.refresh_token else ''
+
         # Get calendar timezone if not provided
         if not timezone:
             try:
                 timezone = await self.calendar_service.get_calendar_timezone(
-                    expert.refresh_token or ''
+                    decrypted_token
                 )
             except Exception:
                 timezone = 'UTC'
@@ -68,7 +72,7 @@ class BookingService:
 
         # Get availability from Google Calendar
         time_slots = await self.calendar_service.get_expert_availability(
-            refresh_token=expert.refresh_token or '',
+            refresh_token=decrypted_token,
             timezone=timezone,
             days_ahead=days_ahead,
             min_slots_to_show=min_slots_to_show

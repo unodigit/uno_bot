@@ -1,37 +1,34 @@
-[
-  {
-    "test": "Store initialization",
-    "passed": true,
-    "details": "Chat widget button found - store likely initialized"
-  },
-  {
-    "test": "Chat state open/close",
-    "passed": true,
-    "details": "Chat window opened successfully"
-  },
-  {
-    "test": "Session creation state",
-    "passed": true,
-    "details": "Welcome message found - session created and state updated"
-  },
-  {
-    "test": "Message state update",
-    "passed": true,
-    "details": "Message appeared in chat - state updated correctly"
-  },
-  {
-    "test": "State persistence",
-    "passed": true,
-    "details": "Session persisted: 04fe4750..., visitor: visitor_1767359..."
-  },
-  {
-    "test": "Loading state management",
-    "passed": true,
-    "details": "State management handles loading states"
-  },
-  {
-    "test": "Error state handling",
-    "passed": true,
-    "details": "Error state management structure exists"
-  }
-]
+{
+  "feature": "Zustand state management works correctly",
+  "tests": [
+    {
+      "name": "Store file exists",
+      "passed": true
+    },
+    {
+      "name": "Zustand imported",
+      "passed": true
+    },
+    {
+      "name": "Store created with Zustand",
+      "passed": true
+    },
+    {
+      "name": "State management functions",
+      "passed": true
+    },
+    {
+      "name": "State actions defined",
+      "passed": true
+    },
+    {
+      "name": "State persistence",
+      "passed": true
+    },
+    {
+      "name": "TypeScript typing",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

@@ -5,9 +5,21 @@ import uuid
 from datetime import datetime
 from typing import Any
 
-from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, FilesystemBackend
-from deepagents.middleware.subagents import SubAgent
+# Check if DeepAgents is available
+try:
+    from deepagents import create_deep_agent
+    from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend
+    from deepagents.middleware.subagents import SubAgent
+    DEEPAGENTS_AVAILABLE = True
+except ImportError:
+    # Fallback for when DeepAgents is not installed
+    DEEPAGENTS_AVAILABLE = False
+    create_deep_agent = None  # type: ignore[assignment]
+    CompositeBackend = None  # type: ignore[assignment]
+    FilesystemBackend = None  # type: ignore[assignment]
+    StateBackend = None  # type: ignore[assignment]
+    SubAgent = None  # type: ignore[assignment]
+
 from langchain_anthropic import ChatAnthropic
 from pydantic import SecretStr
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,6 +39,12 @@ class DeepAgentsService:
         from typing import Optional
         self.model: Optional[ChatAnthropic] = None
         self.model_name: Optional[str] = None
+        self.agent: Any = None
+
+        # Check if DeepAgents is available
+        if not DEEPAGENTS_AVAILABLE:
+            print("⚠️  DeepAgents not available - using fallback mode")
+            return
 
         if self.api_key:
             # Note: ChatAnthropic uses pydantic for parameter validation
@@ -47,7 +65,6 @@ class DeepAgentsService:
                 print(f"⚠️  DeepAgents creation failed: {e}")
                 self.agent = None
         else:
-            self.agent = None
             print("⚠️  DeepAgents not initialized - no API key configured")
 
     def _create_deep_agents(self):

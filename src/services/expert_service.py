@@ -6,6 +6,7 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.security import decrypt_oauth_token, encrypt_oauth_token
 from src.models.booking import Booking
 from src.models.expert import Expert
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
@@ -358,7 +359,7 @@ class ExpertService:
         if expert_update.calendar_id is not None:
             expert.calendar_id = expert_update.calendar_id
         if expert_update.refresh_token is not None:
-            expert.refresh_token = expert_update.refresh_token
+            expert.refresh_token = encrypt_oauth_token(expert_update.refresh_token)
 
         self.db.add(expert)
         await self.db.commit()

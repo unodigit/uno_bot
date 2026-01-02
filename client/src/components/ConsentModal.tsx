@@ -43,6 +43,7 @@ export function ConsentModal({ isOpen, onAccept, onDecline }: ConsentModalProps)
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={handleDecline} // Click outside to decline
+          data-testid="consent-modal-overlay"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -50,6 +51,7 @@ export function ConsentModal({ isOpen, onAccept, onDecline }: ConsentModalProps)
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
+            data-testid="consent-modal"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">

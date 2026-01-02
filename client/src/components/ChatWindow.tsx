@@ -129,7 +129,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       if (inputRef.current) {
         inputRef.current.focus()
       }
-    }, 100)
+    }, 200)
     return () => clearTimeout(timer)
   }, [])
 
