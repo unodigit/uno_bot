@@ -187,6 +187,14 @@ class ApiClient {
   }
 
   /**
+   * Generate a session resume URL that can be used in emails
+   */
+  generateSessionResumeUrl(sessionId: string): string {
+    const currentUrl = window.location.origin
+    return `${currentUrl}?session_id=${encodeURIComponent(sessionId)}`
+  }
+
+  /**
    * Health check
    * GET /api/v1/health
    */

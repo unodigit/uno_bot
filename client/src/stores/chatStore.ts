@@ -314,6 +314,15 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     set({ matchedExperts: [] });
   },
 
+  /**
+   * Generate a session resume URL for email links
+   */
+  generateSessionResumeUrl: (): string | null => {
+    const { sessionId } = get();
+    if (!sessionId) return null;
+    return api.generateSessionResumeUrl(sessionId);
+  },
+
   // Booking flow actions
   startBookingFlow: (expert: MatchedExpert) => {
     set({
