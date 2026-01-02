@@ -1,0 +1,52 @@
+{
+  "health": {
+    "status": "success",
+    "status_code": 200,
+    "response": {
+      "status": "operational",
+      "version": "1.0.0",
+      "timestamp": "2026-01-02T13:52:39.054167",
+      "database": "healthy",
+      "redis": "unavailable"
+    },
+    "message": "Health check passed - operational"
+  },
+  "api_docs": {
+    "status": "success",
+    "status_code": 200,
+    "message": "API docs accessible"
+  },
+  "websocket": {
+    "status": "success",
+    "message": "WebSocket endpoint accessible (Socket.IO protocol active)"
+  },
+  "frontend": {
+    "port_5173": {
+      "status": "success",
+      "status_code": 200,
+      "message": "Frontend accessible on port 5173"
+    },
+    "port_5174": {
+      "status": "success",
+      "status_code": 200,
+      "message": "Frontend accessible on port 5174"
+    },
+    "port_5175": {
+      "status": "success",
+      "status_code": 200,
+      "message": "Frontend accessible on port 5175"
+    },
+    "port_5176": {
+      "status": "success",
+      "status_code": 200,
+      "message": "Frontend accessible on port 5176"
+    }
+  },
+  "summary": {
+    "overall_status": "operational",
+    "total_tests": 7,
+    "passed_tests": 7,
+    "failed_tests": 0,
+    "timestamp": "2026-01-03T00:52:39.064348"
+  }
+}

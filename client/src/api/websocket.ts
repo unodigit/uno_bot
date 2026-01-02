@@ -341,6 +341,5 @@ export class WebSocketClient {
   }
 }
 
-// Export singleton instance and class
+// Export singleton instance
 export const wsClient = new WebSocketClient();
-export { WebSocketClient };

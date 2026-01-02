@@ -347,9 +347,20 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // Fetch the updated session to get the bot response
       const updatedSession = await api.getSession(sessionId);
 
-      // Update messages and session data with the full conversation history
+      // Add assistant message to UI (append to existing messages)
+      const assistantMessage: Message = {
+        id: `assistant_${Date.now()}`,
+        session_id: sessionId,
+        role: 'assistant',
+        content: updatedSession.messages[updatedSession.messages.length - 1]?.content || '',
+        meta_data: {},
+        created_at: new Date().toISOString(),
+      };
+
+      addMessage(assistantMessage);
+
+      // Update session state without replacing messages array
       set({
-        messages: updatedSession.messages,
         isStreaming: false,
         currentPhase: updatedSession.current_phase || 'greeting',
         clientInfo: updatedSession.client_info || {},

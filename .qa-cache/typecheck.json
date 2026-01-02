@@ -1,0 +1,2727 @@
+{
+  "content_hash": "3f57610d94267a4c8578b023779dd0c9d26daf5c8d258bb1717eab1f184a5c15",
+  "cached_at": "2026-01-02T13:25:46.117125Z",
+  "result": {
+    "passed": false,
+    "duration_seconds": 13.55,
+    "tool": "mypy",
+    "tool_version": "mypy=mypy 1.19.0 (compiled: yes)",
+    "errors": [
+      {
+        "file": "tests/e2e/test_input_sanitization.py",
+        "line": 13,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_api_documentation.py",
+        "line": 8,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "test_streaming.py",
+        "line": 1,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "test_chat_widget_functional_updated.py",
+        "line": 6,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "test_chat_widget_functional.py",
+        "line": 7,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "test_basic.py",
+        "line": 1,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "test_api.py",
+        "line": 2,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "check_failing_features.py",
+        "line": 20,
+        "column": 0,
+        "message": "Incompatible types in assignment (expression has type \"dict[str, Any]\", variable has type \"TextIOWrapper[_WrappedBuffer]\")",
+        "rule": "assignment",
+        "severity": "error"
+      },
+      {
+        "file": "check_failing_features.py",
+        "line": 21,
+        "column": 13,
+        "message": "Value of type \"TextIOWrapper[_WrappedBuffer]\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "check_failing_features.py",
+        "line": 22,
+        "column": 10,
+        "message": "Value of type \"TextIOWrapper[_WrappedBuffer]\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "chat_widget_styling_analyzer.py",
+        "line": 23,
+        "column": 91,
+        "message": "Incompatible default for argument \"issues\" (default has type \"None\", argument has type \"list[str]\")",
+        "rule": "assignment",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_vite_and_tailwind.py",
+        "line": 73,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_health_check.py",
+        "line": 13,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_redis_session_storage.py",
+        "line": 14,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_features.py",
+        "line": 169,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "test_touch_debug.py",
+        "line": 26,
+        "column": 22,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 26,
+        "column": 57,
+        "message": "Function \"builtins.any\" is not valid as a type",
+        "rule": "valid-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 32,
+        "column": 54,
+        "message": "Function \"builtins.any\" is not valid as a type",
+        "rule": "valid-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 36,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 37,
+        "column": 8,
+        "message": "Returning Any from function declared to return any?",
+        "rule": "no-any-return",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 46,
+        "column": 24,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 57,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 69,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 76,
+        "column": 20,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 87,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 105,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 127,
+        "column": 29,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 144,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 153,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 160,
+        "column": 23,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_user_message_styling.py",
+        "line": 169,
+        "column": 26,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 19,
+        "column": 82,
+        "message": "Function \"builtins.any\" is not valid as a type",
+        "rule": "valid-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 39,
+        "column": 15,
+        "message": "any? has no attribute \"is_visible\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 47,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 59,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 73,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 87,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 99,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 118,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 132,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 150,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typing_indicator_styling.py",
+        "line": 175,
+        "column": 26,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 27,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 28,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 29,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 30,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 33,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 34,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 35,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 36,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 58,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 59,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 60,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 61,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 83,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 84,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 107,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 108,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 109,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 110,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 144,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 145,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 148,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 149,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 186,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 187,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 223,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 224,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 320,
+        "column": 25,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 349,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 350,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 351,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 352,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 356,
+        "column": 29,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 357,
+        "column": 32,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 386,
+        "column": 19,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 387,
+        "column": 16,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 388,
+        "column": 19,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 389,
+        "column": 16,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 439,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 441,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 454,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 466,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 476,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 478,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 490,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 507,
+        "column": 45,
+        "message": "Incompatible types (expression has type \"object\", TypedDict item \"width\" has type \"int\")",
+        "rule": "typeddict-item",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 507,
+        "column": 74,
+        "message": "Incompatible types (expression has type \"object\", TypedDict item \"height\" has type \"int\")",
+        "rule": "typeddict-item",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 515,
+        "column": 19,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 531,
+        "column": 19,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 533,
+        "column": 19,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 551,
+        "column": 21,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 552,
+        "column": 22,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 553,
+        "column": 20,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 566,
+        "column": 21,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 567,
+        "column": 22,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 568,
+        "column": 20,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 579,
+        "column": 21,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 580,
+        "column": 22,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 581,
+        "column": 20,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 585,
+        "column": 21,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 586,
+        "column": 22,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 587,
+        "column": 20,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 600,
+        "column": 21,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 601,
+        "column": 22,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_touch_targets_mobile.py",
+        "line": 602,
+        "column": 20,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 29,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 41,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 61,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 93,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 125,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 148,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 169,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 212,
+        "column": 23,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 241,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 282,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 294,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 323,
+        "column": 23,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 349,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 360,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 380,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 396,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_shadow_levels_styling.py",
+        "line": 429,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_responsive_breakpoints.py",
+        "line": 297,
+        "column": 45,
+        "message": "Incompatible types (expression has type \"object\", TypedDict item \"width\" has type \"int\")",
+        "rule": "typeddict-item",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_responsive_breakpoints.py",
+        "line": 297,
+        "column": 76,
+        "message": "Incompatible types (expression has type \"object\", TypedDict item \"height\" has type \"int\")",
+        "rule": "typeddict-item",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 88,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 89,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 90,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 97,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 98,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 105,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 118,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 119,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 120,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 121,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 128,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 135,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 144,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 145,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 146,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 153,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 157,
+        "column": 28,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 158,
+        "column": 21,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 171,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_prd_preview_styling.py",
+        "line": 187,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_performance_and_reliability.py",
+        "line": 12,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 27,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 36,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 37,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 57,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 66,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 67,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 87,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 88,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 100,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 101,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 121,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 141,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 142,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 149,
+        "column": 19,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 150,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 151,
+        "column": 19,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 152,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 175,
+        "column": 35,
+        "message": "Argument 1 to \"set_viewport_size\" of \"Page\" has incompatible type \"dict[str, int]\"; expected \"ViewportSize\"",
+        "rule": "arg-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 182,
+        "column": 23,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 186,
+        "column": 23,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 253,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 254,
+        "column": 12,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 285,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 289,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 313,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 314,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_mobile_fullscreen_mode.py",
+        "line": 321,
+        "column": 15,
+        "message": "Value of type \"FloatRect | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 37,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 46,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 56,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 74,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 116,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 137,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 155,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 169,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_design_system_colors.py",
+        "line": 191,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 115,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 116,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 117,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 118,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 124,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 125,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 130,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 131,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 161,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 162,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 163,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 164,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 165,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 166,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 192,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 193,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 194,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 195,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 196,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 197,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 198,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 224,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 225,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 226,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 227,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 260,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 261,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 266,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 267,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 273,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 274,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 275,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 276,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 277,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 305,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 306,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 307,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 340,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 341,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_calendar_picker_styling.py",
+        "line": 342,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 26,
+        "column": 56,
+        "message": "Function \"builtins.any\" is not valid as a type",
+        "rule": "valid-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 32,
+        "column": 53,
+        "message": "Function \"builtins.any\" is not valid as a type",
+        "rule": "valid-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 36,
+        "column": 17,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 37,
+        "column": 8,
+        "message": "Returning Any from function declared to return any?",
+        "rule": "no-any-return",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 46,
+        "column": 24,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 57,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 69,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 76,
+        "column": 20,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 88,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 111,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 133,
+        "column": 29,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 150,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 159,
+        "column": 23,
+        "message": "any? has no attribute \"get_attribute\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 166,
+        "column": 23,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_bot_message_styling.py",
+        "line": 175,
+        "column": 26,
+        "message": "any? has no attribute \"locator\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 118,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 128,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 134,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 135,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 141,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 151,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 157,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 173,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 177,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 187,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 188,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 189,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_booking_confirmation_styling.py",
+        "line": 195,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_admin_conversation_analytics.py",
+        "line": 238,
+        "column": 45,
+        "message": "Incompatible types (expression has type \"object\", TypedDict item \"width\" has type \"int\")",
+        "rule": "typeddict-item",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_admin_conversation_analytics.py",
+        "line": 238,
+        "column": 74,
+        "message": "Incompatible types (expression has type \"object\", TypedDict item \"height\" has type \"int\")",
+        "rule": "typeddict-item",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 47,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 48,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 49,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 55,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 56,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 57,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 62,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 63,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 76,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 77,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 78,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 79,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 98,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 100,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 101,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 102,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 105,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 106,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 107,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 111,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 112,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 113,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 114,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 115,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 121,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 122,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 123,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 233,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 234,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 266,
+        "column": 11,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 277,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 310,
+        "column": 19,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_expert_card_styling.py",
+        "line": 316,
+        "column": 15,
+        "message": "Unsupported right operand type for in (\"str | None\")",
+        "rule": "operator",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_chat_widget_styling.py",
+        "line": 23,
+        "column": 18,
+        "message": "Value of type \"ViewportSize | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_chat_widget_styling.py",
+        "line": 24,
+        "column": 17,
+        "message": "Value of type \"ViewportSize | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_chat_widget_styling.py",
+        "line": 57,
+        "column": 18,
+        "message": "Value of type \"ViewportSize | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "client/tests/e2e/test_chat_widget_styling.py",
+        "line": 58,
+        "column": 17,
+        "message": "Value of type \"ViewportSize | None\" is not indexable",
+        "rule": "index",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typography_compliance.py",
+        "line": 101,
+        "column": 32,
+        "message": "Argument 1 to \"locator\" of \"Page\" has incompatible type \"Sequence[str]\"; expected \"str\"",
+        "rule": "arg-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_typography_compliance.py",
+        "line": 250,
+        "column": 31,
+        "message": "Argument 1 to \"set_viewport_size\" of \"Page\" has incompatible type \"dict[str, int]\"; expected \"ViewportSize\"",
+        "rule": "arg-type",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_pending_qa_features.py",
+        "line": 12,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_booking_availability.py",
+        "line": 454,
+        "column": 1,
+        "message": "Name \"test_double_booking_prevention\" already defined on line 298",
+        "rule": "no-redef",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_booking_availability.py",
+        "line": 532,
+        "column": 1,
+        "message": "Name \"test_overlapping_booking_prevention\" already defined on line 376",
+        "rule": "no-redef",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_calendar_oauth.py",
+        "line": 68,
+        "column": 11,
+        "message": "Item \"None\" of \"Expert | None\" has no attribute \"refresh_token\"",
+        "rule": "union-attr",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_calendar_oauth.py",
+        "line": 69,
+        "column": 11,
+        "message": "Item \"None\" of \"Expert | None\" has no attribute \"calendar_id\"",
+        "rule": "union-attr",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_sensitive_data_logging.py",
+        "line": 16,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      },
+      {
+        "file": "src/api/routes/uploads.py",
+        "line": 71,
+        "column": 32,
+        "message": "Argument 1 to \"is_allowed_file_type\" has incompatible type \"str | None\"; expected \"str\"",
+        "rule": "arg-type",
+        "severity": "error"
+      },
+      {
+        "file": "src/api/routes/uploads.py",
+        "line": 71,
+        "column": 51,
+        "message": "Argument 2 to \"is_allowed_file_type\" has incompatible type \"str | None\"; expected \"str\"",
+        "rule": "arg-type",
+        "severity": "error"
+      },
+      {
+        "file": "src/api/routes/uploads.py",
+        "line": 87,
+        "column": 35,
+        "message": "Argument 1 to \"get_file_extension\" has incompatible type \"str | None\"; expected \"str\"",
+        "rule": "arg-type",
+        "severity": "error"
+      },
+      {
+        "file": "src/services/booking_service.py",
+        "line": 329,
+        "column": -1,
+        "message": "Unused \"type: ignore\" comment",
+        "rule": "unused-ignore",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 42,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 42,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 67,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 67,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 70,
+        "column": 21,
+        "message": "Missing named argument \"meta_data\" for \"MessageCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 85,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 85,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 102,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 102,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 120,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 120,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 133,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 133,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 145,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 145,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 170,
+        "column": 21,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 170,
+        "column": 21,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 176,
+        "column": 8,
+        "message": "Missing named argument \"meta_data\" for \"MessageCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/unit/test_session_service.py",
+        "line": 181,
+        "column": 8,
+        "message": "Missing named argument \"meta_data\" for \"MessageCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_summary_feature.py",
+        "line": 216,
+        "column": 11,
+        "message": "\"ConversationSession\" has no attribute \"conversation_summary\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_sessions_api.py",
+        "line": 123,
+        "column": 43,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_sessions_api.py",
+        "line": 123,
+        "column": 43,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_sessions_api.py",
+        "line": 144,
+        "column": 43,
+        "message": "Missing named argument \"source_url\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_sessions_api.py",
+        "line": 144,
+        "column": 43,
+        "message": "Missing named argument \"user_agent\" for \"SessionCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "tests/integration/test_prd_version_tracking.py",
+        "line": 181,
+        "column": 16,
+        "message": "\"ConversationSession\" has no attribute \"version\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "src/api/routes/__init__.py",
+        "line": 50,
+        "column": -1,
+        "message": "Unused \"type: ignore\" comment",
+        "rule": "unused-ignore",
+        "severity": "error"
+      },
+      {
+        "file": "src/api/routes/__init__.py",
+        "line": 111,
+        "column": -1,
+        "message": "Unused \"type: ignore\" comment",
+        "rule": "unused-ignore",
+        "severity": "error"
+      },
+      {
+        "file": "src/api/routes/__init__.py",
+        "line": 111,
+        "column": 34,
+        "message": "No overload variant of \"int\" matches argument type \"object\"",
+        "rule": "call-overload",
+        "severity": "error"
+      },
+      {
+        "file": "src/api/routes/websocket.py",
+        "line": 163,
+        "column": 8,
+        "message": "Missing named argument \"meta_data\" for \"MessageCreate\"",
+        "rule": "call-arg",
+        "severity": "error"
+      },
+      {
+        "file": "src/main.py",
+        "line": 26,
+        "column": 4,
+        "message": "All conditional function variants must have identical signatures",
+        "rule": "misc",
+        "severity": "error"
+      },
+      {
+        "file": "src/main.py",
+        "line": 27,
+        "column": -1,
+        "message": "Unused \"type: ignore\" comment",
+        "rule": "unused-ignore",
+        "severity": "error"
+      },
+      {
+        "file": "tests/conftest.py",
+        "line": 56,
+        "column": 30,
+        "message": "\"FromClause\" has no attribute \"delete\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/conftest.py",
+        "line": 57,
+        "column": 30,
+        "message": "\"FromClause\" has no attribute \"delete\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/conftest.py",
+        "line": 58,
+        "column": 30,
+        "message": "\"FromClause\" has no attribute \"delete\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/conftest.py",
+        "line": 59,
+        "column": 30,
+        "message": "\"FromClause\" has no attribute \"delete\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/conftest.py",
+        "line": 60,
+        "column": 30,
+        "message": "\"FromClause\" has no attribute \"delete\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/conftest.py",
+        "line": 61,
+        "column": 30,
+        "message": "\"FromClause\" has no attribute \"delete\"",
+        "rule": "attr-defined",
+        "severity": "error"
+      },
+      {
+        "file": "tests/e2e/test_websocket_features.py",
+        "line": 430,
+        "column": 0,
+        "message": "Library stubs not installed for \"requests\"",
+        "rule": "import-untyped",
+        "severity": "error"
+      }
+    ],
+    "from_cache": false,
+    "cache_hit": false,
+    "files_checked": 239
+  }
+}
