@@ -44,7 +44,8 @@ async def check_redis_health() -> str:
     try:
         import redis
         client = redis.Redis.from_url(settings.redis_url, socket_connect_timeout=2)
-        if client: client.ping()
+        if client:
+            client.ping()  # type: ignore[no-untyped-call]
         return "healthy"
     except redis.exceptions.ConnectionError:
         return "unavailable"

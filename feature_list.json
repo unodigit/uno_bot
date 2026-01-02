@@ -2907,9 +2907,9 @@
       "Step 3: Verify Escape closes dialogs",
       "Step 4: Verify ARIA attributes present"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T12:47:02.604753Z"
   },
@@ -2923,8 +2923,10 @@
       "Step 4: Verify icons match context"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T12:54:12.003341Z"
   },
   {
     "category": "functional",

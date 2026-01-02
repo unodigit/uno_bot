@@ -230,7 +230,7 @@ class SessionService:
             session_id=session_id,
             role=role,
             content=sanitized_content,
-            meta_data=message_create.metadata or {},
+            meta_data=message_create.meta_data or {},
             created_at=datetime.utcnow(),
         )
         self.db.add(message)

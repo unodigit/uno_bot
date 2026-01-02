@@ -60,7 +60,7 @@ async def handle_streaming_chat_message(
     # Add user message to database
     user_message = await session_service.add_message(
         uuid.UUID(session_id),
-        MessageCreate(content=content),
+        MessageCreate(content=content)  # type: ignore[call-arg],
         MessageRole.USER
     )
 
@@ -92,7 +92,7 @@ async def handle_streaming_chat_message(
             uuid.UUID(session_id),
             MessageCreate(content=clarification_response),
             MessageRole.ASSISTANT,
-            metadata={"type": "clarification", "ambiguous_reason": ambiguity_check["reason"]}
+            meta_data={"type": "clarification", "ambiguous_reason": ambiguity_check["reason"]}
         )
 
         # Get updated session data
@@ -309,7 +309,7 @@ async def handle_get_availability(
         raise ValueError(f"Expert {expert_id} not found")
 
     # Get availability
-    slots = await calendar_service.get_availability(
+    slots = await calendar_service.get_expert_availability(
         expert_id=expert_id,
         timezone=timezone,
         days_ahead=14,

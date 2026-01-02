@@ -76,7 +76,7 @@ class MessageCreate(BaseModel):
     """Request schema for sending a message."""
 
     content: str = Field(..., min_length=1, max_length=10000)
-    metadata: dict[str, Any] | None = Field(None, alias="meta_data")
+    meta_data: dict[str, Any] | None = Field(None)
 
 
 class MessageResponse(BaseModel):
