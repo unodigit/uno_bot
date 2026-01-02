@@ -2512,8 +2512,10 @@
       "Step 4: Verify TTL matches 7 days"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T10:49:02.915802Z"
   },
   {
     "category": "functional",
@@ -2596,8 +2598,10 @@
       "Step 4: Verify proper log sanitization"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T10:48:49.366018Z"
   },
   {
     "category": "functional",

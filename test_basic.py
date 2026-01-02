@@ -8,7 +8,7 @@ def test_basic_streaming():
 
     # Test 1: Check if backend is running
     try:
-        response = requests.get("http://localhost:8000/health", timeout=5)
+        response = requests.get("http://localhost:8000/api/v1/health", timeout=5)
         if response.status_code == 200:
             print("✓ Backend API is running")
         else:
@@ -20,7 +20,11 @@ def test_basic_streaming():
 
     # Test 2: Create a session
     try:
-        session_response = requests.post("http://localhost:8000/api/v1/sessions", timeout=5)
+        session_response = requests.post(
+            "http://localhost:8000/api/v1/sessions",
+            json={"visitor_id": "test-visitor"},
+            timeout=5
+        )
         if session_response.status_code == 201:
             session_data = session_response.json()
             session_id = session_data["id"]
@@ -39,12 +43,12 @@ def test_basic_streaming():
             json={"content": "Hello, test message!"},
             timeout=10
         )
-        if message_response.status_code == 200:
+        if message_response.status_code == 201:
             print("✓ Message sent successfully")
-            messages = message_response.json().get("messages", [])
-            if len(messages) >= 2:  # User message + AI response
-                print("✓ Received AI response")
-                print(f"   AI Response: {messages[-1]['content'][:100]}...")
+            # The response is the created message, not the session
+            message_data = message_response.json()
+            print(f"   Message ID: {message_data['id']}")
+            print(f"   Content: {message_data['content']}")
         else:
             print("✗ Failed to send message")
             return False

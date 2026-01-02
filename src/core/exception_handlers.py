@@ -1,6 +1,6 @@
 """Exception handlers for the UnoBot API."""
 import logging
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from fastapi import Request, Response
 from fastapi.exceptions import RequestValidationError
@@ -28,6 +28,15 @@ from src.schemas.error import (
 
 logger = logging.getLogger(__name__)
 
+# Type alias for all possible error response types
+ErrorResponseUnion = Union[
+    ValidationErrorResponse,
+    BadRequestErrorResponse,
+    NotFoundErrorResponse,
+    ConflictErrorResponse,
+    InternalServerError,
+]
+
 
 async def validation_exception_handler(
     request: Request, exc: RequestValidationError
@@ -45,7 +54,7 @@ async def validation_exception_handler(
             }
         )
 
-    error_response = ValidationErrorResponse(
+    error_response: ValidationErrorResponse = ValidationErrorResponse(
         success=False,
         detail="Validation failed",
         error_code="VALIDATION_ERROR",
@@ -67,6 +76,7 @@ async def validation_exception_handler(
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
     """Handle HTTP exceptions."""
+    error_response: ErrorResponseUnion
     if exc.status_code == 404:
         error_response = NotFoundErrorResponse(
             success=False,
@@ -104,6 +114,7 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
 
 async def unobot_exception_handler(request: Request, exc: UnoBotError) -> JSONResponse:
     """Handle custom UnoBot exceptions."""
+    error_response: ErrorResponseUnion
     if isinstance(exc, NotFoundError):
         error_response = NotFoundErrorResponse(
             success=False,
@@ -150,6 +161,8 @@ async def database_exception_handler(request: Request, exc: SQLAlchemyError) -> 
     logger.error(f"Database error: {exc}")
 
     # Check for specific database error types
+    error_response: ErrorResponseUnion
+    status_code: int
     if isinstance(exc, IntegrityError):
         error_response = ConflictErrorResponse(
             success=False,
@@ -183,7 +196,7 @@ async def external_service_exception_handler(request: Request, exc: Exception) -
     """Handle external service exceptions (Google Calendar, SendGrid, etc.)."""
     logger.error(f"External service error: {exc}")
 
-    error_response = InternalServerError(
+    error_response: InternalServerError = InternalServerError(
         success=False,
         detail="External service temporarily unavailable",
         error_code="EXTERNAL_SERVICE_ERROR",
@@ -202,7 +215,7 @@ async def external_service_exception_handler(request: Request, exc: Exception) -
     )
 
 
-def register_exception_handlers(app):
+def register_exception_handlers(app) -> None:
     """Register all exception handlers with the FastAPI app."""
     app.add_exception_handler(RequestValidationError, validation_exception_handler)
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)

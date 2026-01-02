@@ -238,7 +238,7 @@ class ExpertService:
 
         return min(score, 100.0)  # Ensure max score is 100
 
-    def _extract_keywords(self, business_context: dict) -> list[str]:
+    def _extract_keywords(self, business_context: dict[str, Any]) -> list[str]:
         """Extract keywords from business context.
 
         Args:

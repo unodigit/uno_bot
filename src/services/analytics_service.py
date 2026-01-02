@@ -383,7 +383,7 @@ class AnalyticsService:
 
         return distribution
 
-    async def _get_phase_completion_rates(self, start_date: datetime, end_date: datetime) -> Dict:
+    async def _get_phase_completion_rates(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
         """Get completion rates for each conversation phase."""
         result = await self.db.execute(
             select(
@@ -410,7 +410,7 @@ class AnalyticsService:
 
         return completion_rates
 
-    async def _get_daily_metrics(self, start_date: datetime, end_date: datetime) -> List[Dict]:
+    async def _get_daily_metrics(self, start_date: datetime, end_date: datetime) -> List[Dict[str, Any]]:
         """Get daily metrics for trend analysis."""
         # This would require more complex date grouping
         # For now, return empty list
@@ -488,7 +488,7 @@ class AnalyticsService:
         avg_lead_time = result.scalar_one()
         return float(avg_lead_time) if avg_lead_time else 0.0
 
-    async def _get_booking_time_distribution(self, start_date: datetime, end_date: datetime) -> Dict:
+    async def _get_booking_time_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
         """Get booking time distribution by hour."""
         # Extract hour from start_time and count
         result = await self.db.execute(
@@ -511,7 +511,7 @@ class AnalyticsService:
 
         return distribution
 
-    async def _get_booking_day_distribution(self, start_date: datetime, end_date: datetime) -> Dict:
+    async def _get_booking_day_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
         """Get booking day distribution."""
         # Extract day of week from start_time and count
         result = await self.db.execute(
