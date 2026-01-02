@@ -15,6 +15,7 @@ from src.models.session import (
     SessionStatus,
 )
 from src.schemas.session import MessageCreate, SessionCreate
+from src.services.ai_service import AIService
 
 
 class SessionService:
@@ -22,6 +23,7 @@ class SessionService:
 
     def __init__(self, db: AsyncSession):
         self.db = db
+        self.ai_service = AIService()
 
     async def create_session(self, session_create: SessionCreate) -> ConversationSession:
         """Create a new conversation session."""
@@ -41,7 +43,7 @@ class SessionService:
         welcome_message = Message(
             session_id=session.id,
             role=MessageRole.ASSISTANT,
-            content="Hello! I'm UnoBot, your AI business consultant. I can help you explore our services, understand your needs, and connect you with the right expert. How can I help you today?",
+            content="Hello\! I'm UnoBot, your AI business consultant. I can help you explore our services, understand your needs, and connect you with the right expert. How can I help you today?",
             metadata={"type": "welcome"},
             created_at=datetime.utcnow(),
         )
@@ -143,3 +145,43 @@ class SessionService:
         self.db.add(session)
         await self.db.commit()
         await self.db.refresh(session)
+
+    async def generate_ai_response(
+        self, session: ConversationSession, user_message: str
+    ) -> Message:
+        """Generate AI response and add it to the session."""
+        # Build conversation history
+        conversation_history = []
+        for msg in session.messages:
+            conversation_history.append({
+                "role": msg.role,
+                "content": msg.content,
+            })
+
+        # Build context
+        context = {
+            "business_context": session.business_context,
+            "client_info": session.client_info,
+            "qualification": session.qualification,
+        }
+
+        # Generate AI response
+        ai_content = await self.ai_service.generate_response(
+            user_message=user_message,
+            conversation_history=conversation_history,
+            context=context,
+        )
+
+        # Create and save AI message
+        ai_message = Message(
+            session_id=session.id,
+            role=MessageRole.ASSISTANT,
+            content=ai_content,
+            metadata={},
+            created_at=datetime.utcnow(),
+        )
+        self.db.add(ai_message)
+        await self.db.commit()
+        await self.db.refresh(ai_message)
+
+        return ai_message

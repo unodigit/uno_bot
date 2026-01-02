@@ -8,7 +8,16 @@ from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import INET, JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from src.core.config import settings
 from src.core.database import Base
+
+# SQLite compatibility
+if "sqlite" in settings.database_url:
+    JSONType = Text
+    INETType = String
+else:
+    JSONType = JSONB
+    INETType = INET
 
 
 class SessionStatus(str, Enum):
@@ -56,13 +65,13 @@ class ConversationSession(Base):
     )
 
     # Client information
-    client_info: Mapped[dict] = mapped_column(JSONB, default=dict)
+    client_info: Mapped[dict] = mapped_column(JSONType, default=dict)
 
     # Business context
-    business_context: Mapped[dict] = mapped_column(JSONB, default=dict)
+    business_context: Mapped[dict] = mapped_column(JSONType, default=dict)
 
     # Qualification data
-    qualification: Mapped[dict] = mapped_column(JSONB, default=dict)
+    qualification: Mapped[dict] = mapped_column(JSONType, default=dict)
 
     # Lead scoring
     lead_score: Mapped[Optional[int]] = mapped_column(
@@ -88,7 +97,7 @@ class ConversationSession(Base):
     # Tracking
     source_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     user_agent: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    ip_address: Mapped[Optional[str]] = mapped_column(INET, nullable=True)
+    ip_address: Mapped[Optional[str]] = mapped_column(INETType, nullable=True)
 
     # Timestamps
     started_at: Mapped[datetime] = mapped_column(
@@ -126,7 +135,7 @@ class Message(Base):
     content: Mapped[str] = mapped_column(Text, nullable=False)
 
     # Meta for special messages (quick replies, cards, etc.)
-    meta: Mapped[dict] = mapped_column(JSONB, default=dict)
+    meta: Mapped[dict] = mapped_column(JSONType, default=dict)
 
     # Timestamp
     created_at: Mapped[datetime] = mapped_column(
