@@ -7,6 +7,7 @@ from typing import Any
 
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend
+from deepagents.middleware.subagents import SubAgent
 from langchain_anthropic import ChatAnthropic
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -62,8 +63,7 @@ class DeepAgentsService:
             self._tool_determine_next_phase,
         ]
 
-        # Define subagents - note: create_deep_agent expects 'system_prompt' not 'prompt'
-        from deepagents.middleware.subagents import SubAgent
+        # Define subagents using SubAgent TypedDict
         subagents = [
             SubAgent(
                 name="discovery-agent",
@@ -94,12 +94,12 @@ class DeepAgentsService:
                 - Adapt questioning based on user responses
                 - Use industry-appropriate terminology
                 - Validate information as you go""",
-                "tools": [self._tool_extract_info, self._tool_calculate_lead_score],
-            },
-            {
-                "name": "prd-agent",
-                "description": "Generates Project Requirements Documents from conversation",
-                "prompt": """You are a technical writer who creates professional Project Requirements Documents (PRDs).
+                tools=[self._tool_extract_info, self._tool_calculate_lead_score],
+            ),
+            SubAgent(
+                name="prd-agent",
+                description="Generates Project Requirements Documents from conversation",
+                system_prompt="""You are a technical writer who creates professional Project Requirements Documents (PRDs).
                 Your role is to:
                 1. Analyze conversation history and extract key requirements
                 2. Structure information into a comprehensive PRD
@@ -118,12 +118,12 @@ class DeepAgentsService:
 
                 Use clear, professional language. Include specific details from the conversation.
                 Provide actionable recommendations based on the client's needs and industry.""",
-                "tools": [self._tool_write_file, self._tool_format_markdown],
-            },
-            {
-                "name": "booking-agent",
-                "description": "Handles calendar integration and meeting scheduling",
-                "prompt": """You manage appointment scheduling with experts.
+                tools=[self._tool_write_file, self._tool_format_markdown],
+            ),
+            SubAgent(
+                name="booking-agent",
+                description="Handles calendar integration and meeting scheduling",
+                system_prompt="""You manage appointment scheduling with experts.
                 Your role is to:
                 1. Fetch expert availability from calendar systems
                 2. Present available time slots to users
@@ -141,8 +141,8 @@ class DeepAgentsService:
 
                 Use clear, friendly language. Always provide timezone information.
                 Handle conflicts gracefully and suggest alternatives.""",
-                "tools": [self._tool_get_availability, self._tool_create_calendar_event, self._tool_send_email],
-            }
+                tools=[self._tool_get_availability, self._tool_create_calendar_event, self._tool_send_email],
+            )
         ]
 
         # Configure middleware
@@ -161,10 +161,11 @@ class DeepAgentsService:
         # Configure CompositeBackend with StateBackend and FilesystemBackend
         # StateBackend for conversation state (ephemeral)
         # FilesystemBackend for PRD storage (persistent)
+        # Note: StateBackend requires a runtime parameter, using None for default
         backend = CompositeBackend(
-            default=StateBackend(),
+            default=StateBackend(None),
             routes={
-                "/prd/": FilesystemBackend(base_dir=prd_storage_dir)
+                "/prd/": FilesystemBackend(root_dir=prd_storage_dir)
             }
         )
 
@@ -300,14 +301,14 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
     def _tool_match_expert(self, service_type: str, business_context: dict[str, Any]) -> list[dict[str, Any]]:
         """Match experts to client needs based on service type and context."""
         # Get matching experts with scores
-        scored_experts = self.db.execute(  # type: ignore[call-overload]
+        result = self.db.execute(  # type: ignore[call-overload]
             "SELECT * FROM experts WHERE services @> :service_type AND is_active = true",
             {"service_type": [service_type]}
-        ).fetchall()
+        )
 
         # Simple scoring based on service match
         expert_matches = []
-        for expert in scored_experts:
+        for expert in result.fetchall():
             match_score = 80  # Base score for service match
 
             # Bonus for industry expertise
@@ -546,10 +547,9 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
 
             # Create the input for DeepAgents
             agent_input = {
-                "user_message": user_message,
-                "session_context": session_context,
-                "conversation_history": conversation_history,
-                "current_time": datetime.utcnow().isoformat()
+                "messages": [
+                    {"role": "user", "content": user_message}
+                ]
             }
 
             # Process with DeepAgents

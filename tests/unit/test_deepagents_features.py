@@ -63,7 +63,8 @@ class TestDeepAgentsFeatures:
         The agent has access to write_todos and read_todos tools.
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
+        from deepagents.middleware.subagents import SubAgent
 
         print("\n=== Feature 91: TodoListMiddleware Test ===")
 
@@ -71,7 +72,7 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=FilesystemBackend(root_dir=test_dir),
+                default=StateBackend(None),
                 routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
             )
 
@@ -127,7 +128,7 @@ class TestDeepAgentsFeatures:
         4: Verify subagent result returned
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
         from deepagents.middleware.subagents import SubAgent
 
         print("\n=== Feature 92: Subagent Delegation Test ===")
@@ -136,7 +137,7 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=FilesystemBackend(root_dir=test_dir),
+                default=StateBackend(None),
                 routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
             )
 
@@ -145,7 +146,7 @@ class TestDeepAgentsFeatures:
                 SubAgent(
                     name="test-subagent",
                     description="Handles specific tasks",
-                    prompt="You are a specialized assistant. Always respond with 'SUBAGENT: ' prefix.",
+                    system_prompt="You are a specialized assistant. Always respond with 'SUBAGENT: ' prefix.",
                     tools=[]
                 )
             ]
@@ -187,8 +188,7 @@ class TestDeepAgentsFeatures:
         5: Verify key information retained
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, FilesystemBackend
-        from langchain.agents.middleware import SummarizationMiddleware
+        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
 
         print("\n=== Feature 93: SummarizationMiddleware Test ===")
 
@@ -196,14 +196,11 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=FilesystemBackend(root_dir=test_dir),
+                default=StateBackend(None),
                 routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
             )
 
-            # Create agent with SummarizationMiddleware
-            # Use low threshold for testing (5 messages)
-            # Note: create_deep_agent already includes SummarizationMiddleware by default
-            # We just need to configure it properly
+            # Create agent - create_deep_agent includes SummarizationMiddleware by default
             agent = create_deep_agent(
                 model=model,
                 tools=[],
@@ -248,7 +245,7 @@ class TestDeepAgentsFeatures:
         5: Verify booking completes
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
 
         print("\n=== Feature 94: Human-in-the-loop Test ===")
 
@@ -256,12 +253,13 @@ class TestDeepAgentsFeatures:
 
         with tempfile.TemporaryDirectory() as test_dir:
             backend = CompositeBackend(
-                default=FilesystemBackend(root_dir=test_dir),
+                default=StateBackend(None),
                 routes={"/prd/": FilesystemBackend(root_dir=test_dir)}
             )
 
-            # Define a booking tool
+            # Define a booking tool with docstring
             def create_booking(start_time: str, end_time: str, title: str) -> dict:
+                """Create a calendar booking."""
                 return {
                     "booking_id": str(uuid.uuid4()),
                     "status": "confirmed",
@@ -311,8 +309,9 @@ class TestDeepAgentsFeatures:
         4: Verify file content matches PRD
         """
         from deepagents import create_deep_agent
-        from deepagents.backends import CompositeBackend, FilesystemBackend
+        from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
         from deepagents.middleware import FilesystemMiddleware
+        import os
 
         print("\n=== Feature 95: FilesystemBackend Test ===")
 
@@ -323,7 +322,7 @@ class TestDeepAgentsFeatures:
             os.makedirs(prd_dir, exist_ok=True)
 
             backend = CompositeBackend(
-                default=FilesystemBackend(root_dir=test_dir),
+                default=StateBackend(None),
                 routes={"/prd/": FilesystemBackend(root_dir=prd_dir)}
             )
 
