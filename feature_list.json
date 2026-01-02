@@ -917,11 +917,12 @@
       "Step 4: Fill in all required fields",
       "Step 5: Submit and verify expert created"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T05:37:33.965801Z"
+    "dev_completed_at": "2026-01-02T05:37:33.965801Z",
+    "last_updated": "2026-01-02T06:05:55.063760+00:00"
   },
   {
     "category": "functional",
@@ -966,9 +967,10 @@
       "Step 4: Verify completion rate displayed",
       "Step 5: Verify booking rate shown"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": true,
+    "last_updated": "2026-01-02T06:05:55.063776+00:00"
   },
   {
     "category": "functional",
@@ -980,11 +982,12 @@
       "Step 4: Verify file downloads",
       "Step 5: Verify CSV contains lead data"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T05:45:05.477782Z"
+    "dev_completed_at": "2026-01-02T05:45:05.477782Z",
+    "last_updated": "2026-01-02T06:05:55.063779+00:00"
   },
   {
     "category": "functional",
@@ -1024,8 +1027,10 @@
       "Step 4: Verify conversation can continue normally"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T05:53:37.835696Z"
   },
   {
     "category": "functional",

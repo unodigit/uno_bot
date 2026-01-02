@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # Server
     backend_port: int = 8001
     frontend_port: int = 5173
-    allowed_origins: str = "http://localhost:5173,http://localhost:3000"
+    allowed_origins: str = "http://localhost:5173,http://localhost:5180,http://localhost:3000"
 
     # Database
     database_url: str = "sqlite+aiosqlite:///./unobot.db"
