@@ -29,6 +29,7 @@ class EmailService:
         meeting_link: Optional[str] = None,
         prd_url: Optional[str] = None,
         booking_id: Optional[str] = None,
+        session_id: Optional[str] = None,
     ) -> bool:
         """Send booking confirmation email to client.
 
@@ -112,6 +113,17 @@ class EmailService:
                             <li>Join the meeting using the link above</li>
                         </ul>
                     </div>
+
+                    <!-- Session Resume Link -->
+                    {f'''
+                    <div style="margin: 20px 0; padding: 15px; background: #fff7ed; border: 1px solid #fdba74; border-radius: 6px;">
+                        <p style="margin: 0 0 10px 0; font-weight: 600; color: #c2410c;">Continue Your Conversation</p>
+                        <p style="margin: 0 0 10px 0; color: #c2410c; font-size: 14px;">
+                            If you need to continue our conversation or access your Project Requirements Document,
+                        </p>
+                        <a href="https://your-domain.com?session_id={session_id}" style="display: inline-block; background: #c2410c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600;">Resume Chat Session</a>
+                    </div>
+                    ''' if session_id else ''}
 
                     <!-- Footer -->
                     <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px;">
