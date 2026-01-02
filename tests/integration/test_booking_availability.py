@@ -293,3 +293,159 @@ async def test_booking_has_correct_time_and_timezone(db_session: AsyncSession, c
 
     # Verify timezone is stored
     assert booking["timezone"] == "America/New_York"
+
+
+@pytest.mark.asyncio
+async def test_double_booking_prevention(db_session: AsyncSession, client: AsyncClient):
+    """Test that double-booking prevention works correctly.
+
+    Feature: Double-booking prevention works correctly
+    """
+    # Create expert
+    unique_id = uuid4().hex[:8]
+    expert = Expert(
+        name=f"Test Expert {unique_id}",
+        email=f"expert_{unique_id}@test.com",
+        role="Consultant",
+        specialties=["AI Strategy"],
+        services=["AI Strategy & Planning"],
+        is_active=True,
+    )
+    db_session.add(expert)
+    await db_session.commit()
+    await db_session.refresh(expert)
+
+    # Create first session
+    session1 = ConversationSession(
+        visitor_id=f"test_visitor_1_{unique_id}",
+        source_url="http://test.com",
+        user_agent="test",
+    )
+    db_session.add(session1)
+    await db_session.commit()
+    await db_session.refresh(session1)
+
+    # Create first booking
+    now = datetime.utcnow()
+    start_time = now + timedelta(days=2, hours=2)
+    end_time = start_time + timedelta(hours=1)
+
+    booking_data1 = {
+        "expert_id": str(expert.id),
+        "start_time": start_time.isoformat(),
+        "end_time": end_time.isoformat(),
+        "client_name": "Client One",
+        "client_email": f"client1_{unique_id}@test.com",
+    }
+
+    response1 = await client.post(
+        f"/api/v1/bookings/sessions/{session1.id}/bookings",
+        json=booking_data1
+    )
+    assert response1.status_code == 201
+
+    # Create second session
+    session2 = ConversationSession(
+        visitor_id=f"test_visitor_2_{unique_id}",
+        source_url="http://test.com",
+        user_agent="test",
+    )
+    db_session.add(session2)
+    await db_session.commit()
+    await db_session.refresh(session2)
+
+    # Try to create second booking for the SAME time slot
+    booking_data2 = {
+        "expert_id": str(expert.id),
+        "start_time": start_time.isoformat(),
+        "end_time": end_time.isoformat(),
+        "client_name": "Client Two",
+        "client_email": f"client2_{unique_id}@test.com",
+    }
+
+    response2 = await client.post(
+        f"/api/v1/bookings/sessions/{session2.id}/bookings",
+        json=booking_data2
+    )
+
+    # Should fail with 400 Bad Request
+    assert response2.status_code == 400
+    assert "already booked" in response2.json()["detail"].lower()
+
+
+@pytest.mark.asyncio
+async def test_overlapping_booking_prevention(db_session: AsyncSession, client: AsyncClient):
+    """Test that overlapping time slots are also prevented."""
+    # Create expert
+    unique_id = uuid4().hex[:8]
+    expert = Expert(
+        name=f"Test Expert {unique_id}",
+        email=f"expert_{unique_id}@test.com",
+        role="Consultant",
+        specialties=["AI Strategy"],
+        services=["AI Strategy & Planning"],
+        is_active=True,
+    )
+    db_session.add(expert)
+    await db_session.commit()
+    await db_session.refresh(expert)
+
+    # Create first session
+    session1 = ConversationSession(
+        visitor_id=f"test_visitor_1_{unique_id}",
+        source_url="http://test.com",
+        user_agent="test",
+    )
+    db_session.add(session1)
+    await db_session.commit()
+    await db_session.refresh(session1)
+
+    # Create first booking: 10:00-11:00
+    now = datetime.utcnow()
+    start_time1 = now + timedelta(days=2, hours=3)
+    end_time1 = start_time1 + timedelta(hours=1)
+
+    booking_data1 = {
+        "expert_id": str(expert.id),
+        "start_time": start_time1.isoformat(),
+        "end_time": end_time1.isoformat(),
+        "client_name": "Client One",
+        "client_email": f"client1_{unique_id}@test.com",
+    }
+
+    response1 = await client.post(
+        f"/api/v1/bookings/sessions/{session1.id}/bookings",
+        json=booking_data1
+    )
+    assert response1.status_code == 201
+
+    # Create second session
+    session2 = ConversationSession(
+        visitor_id=f"test_visitor_2_{unique_id}",
+        source_url="http://test.com",
+        user_agent="test",
+    )
+    db_session.add(session2)
+    await db_session.commit()
+    await db_session.refresh(session2)
+
+    # Try to create overlapping booking: 10:30-11:30 (overlaps with 10:00-11:00)
+    start_time2 = start_time1 + timedelta(minutes=30)
+    end_time2 = start_time2 + timedelta(hours=1)
+
+    booking_data2 = {
+        "expert_id": str(expert.id),
+        "start_time": start_time2.isoformat(),
+        "end_time": end_time2.isoformat(),
+        "client_name": "Client Two",
+        "client_email": f"client2_{unique_id}@test.com",
+    }
+
+    response2 = await client.post(
+        f"/api/v1/bookings/sessions/{session2.id}/bookings",
+        json=booking_data2
+    )
+
+    # Should fail
+    assert response2.status_code == 400
+    assert "already booked" in response2.json()["detail"].lower()

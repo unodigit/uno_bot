@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { Calendar, Clock, User, Mail, Link as LinkIcon, CheckCircle2, ExternalLink } from 'lucide-react'
+import { Calendar, Clock, User, Mail, Link as LinkIcon, CheckCircle2, ExternalLink, X } from 'lucide-react'
 import { TimeSlot } from './CalendarPicker'
 
 export interface BookingData {
@@ -17,9 +17,11 @@ export interface BookingData {
 interface BookingConfirmationProps {
   booking: BookingData
   onDone: () => void
+  onCancel: () => void
+  isCancelling: boolean
 }
 
-export function BookingConfirmation({ booking, onDone }: BookingConfirmationProps) {
+export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }: BookingConfirmationProps) {
   const startTime = new Date(booking.start_time)
   const endTime = new Date(booking.end_time)
 
@@ -133,13 +135,33 @@ export function BookingConfirmation({ booking, onDone }: BookingConfirmationProp
         </ul>
       </div>
 
-      {/* Done Button */}
-      <button
-        onClick={onDone}
-        className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
-      >
-        Done
-      </button>
+      {/* Action Buttons */}
+      <div className="space-y-2">
+        <button
+          onClick={onDone}
+          className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
+        >
+          Done
+        </button>
+
+        <button
+          onClick={onCancel}
+          disabled={isCancelling}
+          className="w-full py-2 bg-white border border-red-300 text-red-600 hover:bg-red-50 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+        >
+          {isCancelling ? (
+            <>
+              <span className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></span>
+              Cancelling...
+            </>
+          ) : (
+            <>
+              <X className="w-4 h-4" />
+              Cancel Booking
+            </>
+          )}
+        </button>
+      </div>
     </motion.div>
   )
 }

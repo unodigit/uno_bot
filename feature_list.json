@@ -704,11 +704,12 @@
       "Step 5: Verify error message about slot unavailable",
       "Step 6: Verify alternative slots offered"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T04:59:22.115887Z"
+    "dev_completed_at": "2026-01-02T04:59:22.115887Z",
+    "qa_completed_at": "2026-01-02T15:53:16.000000Z"
   },
   {
     "category": "functional",
@@ -720,9 +721,12 @@
       "Step 4: Select slot and confirm",
       "Step 5: Verify final availability check before booking"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T15:53:16.000000Z",
+    "qa_completed_at": "2026-01-02T15:53:16.000000Z"
   },
   {
     "category": "functional",
@@ -749,8 +753,10 @@
       "Step 5: Verify email contains visitor info"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T05:00:43.020492Z"
   },
   {
     "category": "functional",
@@ -776,8 +782,10 @@
       "Step 4: Verify reminder contains meeting details"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:59:53.988580Z"
   },
   {
     "category": "functional",

@@ -272,11 +272,35 @@ class BookingService:
             self.db.add(booking)
             await self.db.commit()
 
-            # Update calendar event (optional - could delete or mark as cancelled)
+            # Get expert for notification
+            expert = await self._get_expert(booking.expert_id)
+            expert_name = expert.name if expert else "Expert"
+
+            # Send cancellation email to client
+            try:
+                await self.email_service.send_cancellation_email(
+                    client_email=booking.client_email,
+                    client_name=booking.client_name,
+                    expert_name=expert_name,
+                    start_time=booking.start_time,
+                    end_time=booking.end_time,
+                    timezone=booking.timezone
+                )
+            except Exception as e:
+                print(f"Warning: Failed to send cancellation email: {e}")
+
+            # Update calendar event (delete or mark as cancelled)
             # For now, we'll just update the status in our system
+            # In production, you might want to delete the calendar event:
+            # if booking.calendar_event_id and expert:
+            #     await self.calendar_service.delete_calendar_event(
+            #         refresh_token=expert.refresh_token,
+            #         event_id=booking.calendar_event_id
+            #     )
 
             return True
-        except Exception:
+        except Exception as e:
+            print(f"Error cancelling booking: {e}")
             return False
 
     async def get_expert_bookings(

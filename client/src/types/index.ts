@@ -172,11 +172,12 @@ export interface ChatState {
   matchedExperts: MatchedExpert[];
   isMatchingExperts: boolean;
   // Booking flow state
-  bookingState: 'idle' | 'selecting_expert' | 'selecting_time' | 'confirming' | 'completed';
+  bookingState: 'idle' | 'selecting_expert' | 'selecting_time' | 'confirming' | 'completed' | 'cancelled';
   selectedExpert: MatchedExpert | null;
   selectedTimeSlot: TimeSlot | null;
   createdBooking: BookingResponse | null;
   isCreatingBooking: boolean;
+  isCancellingBooking: boolean;
 }
 
 export interface ChatActions {
@@ -197,6 +198,7 @@ export interface ChatActions {
   startBookingFlow: (expert: MatchedExpert) => void;
   selectTimeSlot: (slot: TimeSlot) => Promise<void>;
   confirmBooking: (clientName: string, clientEmail: string) => Promise<void>;
+  cancelBooking: (reason?: string) => Promise<void>;
   resetBookingFlow: () => void;
 }
 

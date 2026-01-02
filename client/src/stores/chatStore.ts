@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert, TimeSlot, BookingCreateRequest } from '../types';
+import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert, TimeSlot, BookingCreateRequest, BookingResponse } from '../types';
 import { api } from '../api/client';
 
 // Generate visitor ID
@@ -35,6 +35,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   selectedTimeSlot: null,
   createdBooking: null,
   isCreatingBooking: false,
+  isCancellingBooking: false,
 
   // Actions
   openChat: () => {
@@ -415,7 +416,46 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       selectedTimeSlot: null,
       createdBooking: null,
       isCreatingBooking: false,
+      isCancellingBooking: false,
       error: null,
     });
+  },
+
+  cancelBooking: async (reason?: string) => {
+    try {
+      const { createdBooking, sessionId } = get();
+
+      if (!createdBooking) {
+        throw new Error('No booking to cancel');
+      }
+
+      set({ isCancellingBooking: true, error: null });
+
+      // Call API to cancel booking
+      await api.cancelBooking(createdBooking.id, reason);
+
+      // Add message to chat
+      const cancelMessage: Message = {
+        id: `cancel_${Date.now()}`,
+        session_id: sessionId || '',
+        role: 'assistant',
+        content: `❌ Booking cancelled.\\n\\nYour appointment with ${createdBooking.client_name} has been cancelled.\\n\\nIf you need to book again, you can start a new booking flow.`,
+        meta_data: { type: 'booking_cancelled', booking_id: createdBooking.id },
+        created_at: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        messages: [...state.messages, cancelMessage],
+        bookingState: 'cancelled',
+        isCancellingBooking: false,
+        createdBooking: null,
+      }));
+    } catch (error) {
+      set({
+        isCancellingBooking: false,
+        error: error instanceof Error ? error.message : 'Failed to cancel booking',
+      });
+      console.error('Booking cancellation error:', error);
+    }
   },
 }));

@@ -492,3 +492,110 @@ END:VCALENDAR"""
         except Exception as e:
             print(f"Error sending expert notification: {e}")
             return False
+
+    async def send_cancellation_email(
+        self,
+        client_email: str,
+        client_name: str,
+        expert_name: str,
+        start_time: datetime,
+        end_time: datetime,
+        timezone: str,
+    ) -> bool:
+        """Send cancellation confirmation email.
+
+        Args:
+            client_email: Client's email address
+            client_name: Client's name
+            expert_name: Expert's name
+            start_time: Original booking start time
+            end_time: Original booking end time
+            timezone: Timezone for the booking
+
+        Returns:
+            True if email sent successfully, False otherwise
+        """
+        subject = f"❌ Booking Cancelled - Consultation with {expert_name}"
+
+        # Format date and time
+        date_str = start_time.strftime('%A, %B %d, %Y')
+        start_time_str = start_time.strftime('%I:%M %p')
+
+        # Build email body
+        body = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
+                    <h1 style="margin: 0; font-size: 24px;">Booking Cancelled</h1>
+                </div>
+
+                <!-- Content -->
+                <div style="padding: 30px; background: #f9fafb; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+                    <p style="margin: 0 0 20px 0;">Hi {client_name},</p>
+
+                    <p style="margin: 0 0 20px 0;">Your consultation appointment with <strong>{expert_name}</strong> has been cancelled.</p>
+
+                    <!-- Original Appointment Details -->
+                    <div style="background: white; padding: 15px; border-radius: 6px; border: 1px solid #e5e7eb; margin-bottom: 20px;">
+                        <div style="font-weight: bold; font-size: 16px; color: #111827; margin-bottom: 5px;">Original Appointment</div>
+                        <div style="background: #fee2e2; padding: 10px; border-radius: 4px; margin-top: 10px;">
+                            <div style="font-weight: 600; color: #991b1b; margin-bottom: 5px;">📅 {date_str}</div>
+                            <div style="color: #991b1b;">⏰ {start_time_str} ({timezone})</div>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div style="margin: 20px 0; padding: 15px; background: #fef3c7; border: 1px solid #fcd34d; border-radius: 6px;">
+                        <p style="margin: 0 0 10px 0; font-weight: 600; color: #92400e;">What's Next?</p>
+                        <ul style="margin: 0; padding-left: 20px; color: #92400e; font-size: 14px;">
+                            <li style="margin-bottom: 5px;">If you need to reschedule, please visit our website or contact us</li>
+                            <li>Your calendar event has been removed (if applicable)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer -->
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 12px;">
+                        <p style="margin: 0;">UnoBot - AI Business Consultant</p>
+                        <p style="margin: 5px 0 0 0;">Powered by UnoDigit</p>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        # In development/test mode, log the email
+        if self.environment in ["test", "development"]:
+            print(f"\\n{'='*60}")
+            print(f"CANCELLATION EMAIL - Development Mode")
+            print(f"{'='*60}")
+            print(f"To: {client_email}")
+            print(f"Subject: {subject}")
+            print(f"{'='*60}\\n")
+            return True
+
+        # Production: Send via SendGrid
+        try:
+            from sendgrid import SendGridAPIClient
+            from sendgrid.helpers.mail import Mail
+
+            message = Mail(
+                from_email=self.from_email,
+                to_emails=client_email,
+                subject=subject,
+                html_content=body
+            )
+
+            sg = SendGridAPIClient(self.api_key)
+            response = sg.send(message)
+
+            return response.status_code == 202
+
+        except ImportError:
+            print("SendGrid not installed. Install with: pip install sendgrid")
+            return False
+        except Exception as e:
+            print(f"Error sending cancellation email: {e}")
+            return False

@@ -163,6 +163,30 @@ class ApiClient {
   }
 
   /**
+   * Cancel a booking
+   * DELETE /api/v1/bookings/{booking_id}
+   */
+  async cancelBooking(bookingId: string, reason?: string): Promise<{ message: string }> {
+    const endpoint = `/api/v1/bookings/${bookingId}`;
+    const body = reason ? { reason } : {};
+
+    const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const error: ApiError = await response.json();
+      throw new Error(error.detail || `HTTP ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  /**
    * Health check
    * GET /api/v1/health
    */

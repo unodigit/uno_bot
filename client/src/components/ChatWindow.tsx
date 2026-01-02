@@ -62,10 +62,12 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     selectedTimeSlot,
     createdBooking,
     isCreatingBooking,
+    isCancellingBooking,
     // Booking flow actions
     startBookingFlow,
     selectTimeSlot,
     confirmBooking,
+    cancelBooking,
     resetBookingFlow,
   } = useChatStore()
 
@@ -337,7 +339,63 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 client_email: createdBooking.client_email,
               }}
               onDone={handleBookingDone}
+              onCancel={cancelBooking}
+              isCancelling={isCancellingBooking}
             />
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
+  // Cancelled booking view
+  if (bookingState === 'cancelled') {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ duration: 0.2 }}
+          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          data-testid="chat-window"
+        >
+          {/* Header */}
+          <div className="h-12 bg-gray-700 text-white flex items-center justify-between px-4 rounded-t-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold">UD</span>
+              </div>
+              <span className="font-semibold text-sm">Booking Cancelled</span>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-white/20 rounded transition-colors"
+              aria-label="Close chat"
+              data-testid="close-button"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+              <X className="w-8 h-8 text-red-600" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Booking Cancelled</h3>
+            <p className="text-sm text-gray-600 mb-6">
+              Your appointment has been successfully cancelled.
+            </p>
+            <button
+              onClick={() => {
+                resetBookingFlow()
+                clearMatchedExperts()
+              }}
+              className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
+            >
+              Start New Booking
+            </button>
           </div>
         </motion.div>
       </AnimatePresence>
