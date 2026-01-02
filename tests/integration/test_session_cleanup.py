@@ -57,12 +57,14 @@ async def test_session_cleanup_endpoint():
         async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
             # First, create an admin token
             token_response = await client.post(
-                "/api/v1/admin/auth/token?username=admin&password=password123"
+                "/api/v1/admin/auth/token",
+                params={"username": "admin", "password": "password123"}
             )
             assert token_response.status_code == 200
             admin_token = token_response.json()["token"]
 
             # Test cleanup endpoint with admin token
+            # max_age_days is a query parameter, X-Admin-Token is a header
             cleanup_response = await client.post(
                 "/api/v1/admin/cleanup/sessions?max_age_days=7",
                 headers={"X-Admin-Token": admin_token}
@@ -113,7 +115,8 @@ async def test_cleanup_stats_endpoint():
         async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
             # Create admin token
             token_response = await client.post(
-                "/api/v1/admin/auth/token?username=admin&password=password123"
+                "/api/v1/admin/auth/token",
+                params={"username": "admin", "password": "password123"}
             )
             assert token_response.status_code == 200
             admin_token = token_response.json()["token"]

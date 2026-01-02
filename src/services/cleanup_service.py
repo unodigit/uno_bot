@@ -102,7 +102,7 @@ class CleanupService:
         # Count sessions by status
         result = await self.db.execute(
             select(ConversationSession.status, ConversationSession.completed_at)
-            .order_by(ConversationSession.created_at)  # type: ignore[attr-defined]
+            .order_by(ConversationSession.started_at)
         )
         sessions = result.fetchall()
 
