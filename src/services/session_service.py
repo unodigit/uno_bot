@@ -16,6 +16,7 @@ from src.models.session import (
 )
 from src.schemas.session import MessageCreate, SessionCreate
 from src.services.ai_service import AIService
+from src.services.expert_service import ExpertService
 
 
 class SessionService:
@@ -554,3 +555,48 @@ class SessionService:
         # Update session with PRD ID
         session.prd_id = prd.id
         await self.db.commit()
+
+    async def match_experts_for_session(self, session: ConversationSession) -> list[dict[str, Any]]:
+        """Match experts to a session based on business context and recommended service.
+
+        Args:
+            session: The conversation session
+
+        Returns:
+            List of matched experts with their scores and basic info
+        """
+        expert_service = ExpertService(self.db)
+
+        # Get matching experts
+        matched_experts = await expert_service.match_experts(
+            service_type=session.recommended_service,
+            business_context=session.business_context,
+        )
+
+        # Convert to serializable format
+        results = []
+        for expert, score in matched_experts:
+            results.append({
+                "id": str(expert.id),
+                "name": expert.name,
+                "email": expert.email,
+                "role": expert.role,
+                "bio": expert.bio,
+                "photo_url": expert.photo_url,
+                "specialties": expert.specialties,
+                "services": expert.services,
+                "match_score": round(score, 1),
+            })
+
+        # Update session with first matched expert if available
+        if results and not session.matched_expert_id:
+            try:
+                import uuid
+                session.matched_expert_id = uuid.UUID(results[0]["id"])
+                self.db.add(session)
+                await self.db.commit()
+            except Exception:
+                # If UUID conversion fails, just continue without updating
+                pass
+
+        return results

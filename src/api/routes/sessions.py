@@ -391,3 +391,63 @@ async def match_expert(
         experts=experts,
         match_scores=scores,
     )
+
+
+@router.patch(
+    "/{session_id}",
+    response_model=SessionResponse,
+    summary="Update session data",
+    description="Update session metadata (business context, qualification, etc.)",
+)
+async def update_session(
+    session_id: uuid.UUID,
+    updates: dict,
+    db: AsyncSession = Depends(get_db),
+) -> SessionResponse:
+    """Update session metadata.
+
+    Allows partial updates to session fields like business_context,
+    qualification, recommended_service, etc.
+    """
+    service = SessionService(db)
+    session = await service.get_session(session_id)
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Session {session_id} not found",
+        )
+
+    # Update session with provided data
+    updated_session = await service.update_session_data(session, updates)
+
+    return SessionResponse(
+        id=updated_session.id,
+        visitor_id=updated_session.visitor_id,
+        status=updated_session.status,
+        current_phase=updated_session.current_phase,
+        source_url=updated_session.source_url,
+        user_agent=updated_session.user_agent,
+        client_info=updated_session.client_info,
+        business_context=updated_session.business_context,
+        qualification=updated_session.qualification,
+        lead_score=updated_session.lead_score,
+        recommended_service=updated_session.recommended_service,
+        matched_expert_id=updated_session.matched_expert_id,
+        prd_id=updated_session.prd_id,
+        booking_id=updated_session.booking_id,
+        started_at=updated_session.started_at,
+        last_activity=updated_session.last_activity,
+        completed_at=updated_session.completed_at,
+        messages=[
+            MessageResponse(
+                id=msg.id,
+                session_id=msg.session_id,
+                role=msg.role,
+                content=msg.content,
+                meta_data=msg.meta_data,
+                created_at=msg.created_at,
+            )
+            for msg in updated_session.messages
+        ],
+    )

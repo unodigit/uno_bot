@@ -7,6 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.database import get_db
 from src.schemas.expert import (
     ExpertCreate,
+    ExpertMatchRequest,
+    ExpertMatchResponse,
     ExpertPublicResponse,
     ExpertResponse,
     ExpertUpdate,
@@ -188,3 +190,45 @@ async def delete_expert(
         )
 
     await service.delete_expert(expert)
+
+
+@router.post(
+    "/match",
+    response_model=ExpertMatchResponse,
+    summary="Match experts to requirements",
+    description="Find and rank experts based on service type, specialties, and business context",
+)
+async def match_experts(
+    request: ExpertMatchRequest,
+    db: AsyncSession = Depends(get_db),
+) -> ExpertMatchResponse:
+    """Match experts to project requirements.
+
+    Returns a list of experts ranked by relevance to the specified
+    service type, specialties, and business context.
+    """
+    service = ExpertService(db)
+    matched_experts = await service.match_experts(
+        service_type=request.service_type,
+        specialties=request.specialties,
+    )
+
+    # Convert to response format
+    experts = []
+    match_scores = []
+    for expert, score in matched_experts:
+        experts.append(ExpertPublicResponse(
+            id=expert.id,
+            name=expert.name,
+            role=expert.role,
+            bio=expert.bio,
+            photo_url=expert.photo_url,
+            specialties=expert.specialties,
+            services=expert.services,
+        ))
+        match_scores.append(score)
+
+    return ExpertMatchResponse(
+        experts=experts,
+        match_scores=match_scores,
+    )

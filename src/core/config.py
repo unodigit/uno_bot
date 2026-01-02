@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
     # Anthropic AI
     anthropic_api_key: str | None = None
-    anthropic_model: str = "claude-sonnet-4-5-20250929"
+    anthropic_model: str = "claude-sonnet-4-20250514"
 
     # Google Calendar
     google_client_id: str | None = None

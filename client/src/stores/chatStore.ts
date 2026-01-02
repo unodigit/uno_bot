@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatStore, Message, CreateSessionRequest, PRDPreview } from '../types';
+import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert } from '../types';
 import { api } from '../api/client';
 
 // Generate visitor ID
@@ -27,6 +27,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   qualification: {},
   prdPreview: null,
   isGeneratingPRD: false,
+  matchedExperts: [],
+  isMatchingExperts: false,
 
   // Actions
   openChat: () => {
@@ -260,5 +262,48 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   clearPRDPreview: () => {
     set({ prdPreview: null });
+  },
+
+  matchExperts: async () => {
+    try {
+      const { sessionId } = get();
+      if (!sessionId) {
+        throw new Error('No session available');
+      }
+
+      set({ isMatchingExperts: true, error: null });
+
+      // Call expert matching API
+      const response = await api.matchExperts(sessionId);
+
+      // Transform response to MatchedExpert format
+      const matchedExperts: MatchedExpert[] = response.experts.map((expert, index) => ({
+        id: expert.id,
+        name: expert.name,
+        email: expert.email,
+        role: expert.role,
+        bio: expert.bio,
+        photo_url: expert.photo_url,
+        specialties: expert.specialties,
+        services: expert.services,
+        match_score: response.match_scores[index] || 0,
+      }));
+
+      set({
+        matchedExperts,
+        isMatchingExperts: false,
+      });
+
+    } catch (error) {
+      set({
+        isMatchingExperts: false,
+        error: error instanceof Error ? error.message : 'Failed to match experts'
+      });
+      console.error('Expert matching error:', error);
+    }
+  },
+
+  clearMatchedExperts: () => {
+    set({ matchedExperts: [] });
   },
 }));

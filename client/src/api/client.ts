@@ -4,7 +4,7 @@
  * Handles all HTTP communication with the UnoBot backend API.
  */
 
-import { Session, Message, CreateSessionRequest, SendMessageRequest, PRDResponse, PRDPreview } from '../types';
+import { Session, Message, CreateSessionRequest, SendMessageRequest, PRDResponse, PRDPreview, ExpertMatchResponse } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -135,6 +135,14 @@ class ApiClient {
     }
 
     return response.blob();
+  }
+
+  /**
+   * Match experts to a session
+   * POST /api/v1/sessions/{session_id}/match-expert
+   */
+  async matchExperts(sessionId: string): Promise<ExpertMatchResponse> {
+    return this.post<ExpertMatchResponse>(`/api/v1/sessions/${sessionId}/match-expert`, {});
   }
 
   /**

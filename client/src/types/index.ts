@@ -80,6 +80,36 @@ export interface PRDRegenerateRequest {
   feedback?: string;
 }
 
+// Expert Types
+export interface Expert {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  bio: string | null;
+  photo_url: string | null;
+  specialties: string[];
+  services: string[];
+  is_active: boolean;
+}
+
+export interface ExpertMatchResponse {
+  experts: Expert[];
+  match_scores: number[];
+}
+
+export interface MatchedExpert {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  bio: string | null;
+  photo_url: string | null;
+  specialties: string[];
+  services: string[];
+  match_score: number;
+}
+
 // Chat UI Types
 export interface ChatState {
   isOpen: boolean;
@@ -95,6 +125,8 @@ export interface ChatState {
   qualification: Record<string, any>;
   prdPreview: PRDPreview | null;
   isGeneratingPRD: boolean;
+  matchedExperts: MatchedExpert[];
+  isMatchingExperts: boolean;
 }
 
 export interface ChatActions {
@@ -109,6 +141,8 @@ export interface ChatActions {
   generatePRD: () => Promise<void>;
   downloadPRD: (prdId: string) => Promise<void>;
   clearPRDPreview: () => void;
+  matchExperts: () => Promise<void>;
+  clearMatchedExperts: () => void;
 }
 
 export type ChatStore = ChatState & ChatActions;

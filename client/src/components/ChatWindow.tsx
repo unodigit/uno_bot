@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink } from 'lucide-react'
+import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import { twMerge } from 'tailwind-merge'
+import { ExpertMatchList } from './ExpertCard'
 
 interface ChatWindowProps {
   onClose: () => void
@@ -13,11 +14,13 @@ interface ChatWindowProps {
 const getQuickReplies = (phase: string, context: any): string[] => {
   switch (phase) {
     case 'greeting':
-      return ['Hi!', 'Hello', "I'm interested", 'Need help'];
+      return ['Hi!', 'Hello', \"I'm interested\", 'Need help'];
     case 'discovery':
       return ['Email: test@example.com', 'I work at Acme Corp', 'Tech industry', 'Healthcare'];
     case 'qualification':
       return ['Budget: $25k-$100k', 'Budget: Under $25k', 'Timeline: 1-3 months', 'Timeline: Urgent'];
+    case 'expert_matching':
+      return ['Match Experts', 'Show me experts', 'Get recommendations'];
     default:
       return ['Yes', 'No', 'Tell me more', 'Next'];
   }
@@ -45,6 +48,10 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     generatePRD,
     downloadPRD,
     clearPRDPreview,
+    matchedExperts,
+    isMatchingExperts,
+    matchExperts,
+    clearMatchedExperts,
   } = useChatStore()
 
   // Create session on mount if not exists
@@ -71,6 +78,11 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         await generatePRD()
         // Add user message
         await sendMessage(content)
+      } else if (content.toLowerCase().includes('match') || content.toLowerCase().includes('expert') || content.toLowerCase().includes('recommend')) {
+        // Trigger expert matching
+        await matchExperts()
+        // Also send the message for conversation history
+        await sendMessage(content)
       } else {
         await sendMessage(content)
       }
@@ -94,6 +106,19 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     }
   }
 
+  const handleMatchExperts = async () => {
+    try {
+      await matchExperts()
+    } catch (err) {
+      console.error('Failed to match experts:', err)
+    }
+  }
+
+  const handleSelectExpert = (expert: any) => {
+    // Send a message about selecting the expert
+    sendMessage(`I'd like to work with ${expert.name} (${expert.role})`)
+  }
+
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString([], {
       hour: '2-digit',
@@ -108,6 +133,15 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       clientInfo?.name &&
       businessContext?.challenges &&
       !isGeneratingPRD
+    )
+  }
+
+  // Check if session has enough data for expert matching
+  const canMatchExperts = () => {
+    return (
+      sessionId &&
+      businessContext?.challenges &&
+      !isMatchingExperts
     )
   }
 
@@ -192,6 +226,33 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
               <span className="text-xs text-blue-700">Generating PRD...</span>
             </div>
+          </div>
+        )}
+
+        {/* Expert Matching Indicator */}
+        {isMatchingExperts && (
+          <div className="mx-3 mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg" data-testid="expert-matching">
+            <div className="flex items-center gap-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
+              <span className="text-xs text-purple-700">Finding the right experts...</span>
+            </div>
+          </div>
+        )}
+
+        {/* Expert Match List */}
+        {matchedExperts.length > 0 && !isMatchingExperts && (
+          <div className="mx-3 mt-3 overflow-y-auto max-h-[180px]" data-testid="expert-match-container">
+            <ExpertMatchList
+              experts={matchedExperts}
+              onSelect={handleSelectExpert}
+              showActions={true}
+            />
+            <button
+              onClick={clearMatchedExperts}
+              className="mt-2 text-xs text-gray-500 hover:text-gray-700 underline w-full text-center"
+            >
+              Hide experts
+            </button>
           </div>
         )}
 
@@ -293,8 +354,33 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           </div>
         )}
 
+        {/* Match Experts Button */}
+        {!isStreaming && !isLoading && messages.length > 0 && !isMatchingExperts && matchedExperts.length === 0 && (
+          <div className="px-3 pb-2 bg-white border-t border-border" data-testid="expert-actions">
+            <button
+              onClick={handleMatchExperts}
+              disabled={!canMatchExperts()}
+              className={twMerge(
+                'w-full py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                canMatchExperts()
+                  ? 'bg-purple-600 hover:bg-purple-700 text-white'
+                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+              )}
+              data-testid="match-experts-button"
+            >
+              <UserPlus className="w-4 h-4" />
+              Match Experts
+            </button>
+            {!canMatchExperts() && (
+              <div className="text-[10px] text-gray-500 mt-1 text-center">
+                Share your business challenges to find matching experts
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Quick Reply Buttons */}
-        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && (
+        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && matchedExperts.length === 0 && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="quick-replies">
             <div className="flex flex-wrap gap-2 mb-2">
               {getQuickReplies(currentPhase, { clientInfo, businessContext, qualification }).map((reply, idx) => (
