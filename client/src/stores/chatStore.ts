@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatStore, Message, CreateSessionRequest } from '../types';
+import { ChatStore, Message, CreateSessionRequest, PRDPreview } from '../types';
 import { api } from '../api/client';
 
 // Generate visitor ID
@@ -25,6 +25,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   clientInfo: {},
   businessContext: {},
   qualification: {},
+  prdPreview: null,
+  isGeneratingPRD: false,
 
   // Actions
   openChat: () => {
@@ -192,5 +194,71 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   setStreaming: (isStreaming: boolean) => {
     set({ isStreaming });
+  },
+
+  generatePRD: async () => {
+    try {
+      const { sessionId } = get();
+      if (!sessionId) {
+        throw new Error('No session available');
+      }
+
+      set({ isGeneratingPRD: true, error: null });
+
+      // Generate PRD
+      const prdResponse = await api.generatePRD(sessionId);
+
+      // Get preview
+      const preview = await api.getPRDPreview(prdResponse.id);
+
+      set({
+        prdPreview: preview,
+        isGeneratingPRD: false,
+      });
+
+      // Add a message to the chat indicating PRD was generated
+      const prdMessage: Message = {
+        id: `prd_${Date.now()}`,
+        session_id: sessionId,
+        role: 'assistant',
+        content: `📄 Project Requirements Document generated!\n\n**${preview.filename}**\n\nPreview: ${preview.preview_text}\n\nUse the download button to save the full PRD.`,
+        meta_data: { type: 'prd_generated', prd_id: prdResponse.id },
+        created_at: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        messages: [...state.messages, prdMessage],
+      }));
+
+    } catch (error) {
+      set({
+        isGeneratingPRD: false,
+        error: error instanceof Error ? error.message : 'Failed to generate PRD'
+      });
+      console.error('PRD generation error:', error);
+    }
+  },
+
+  downloadPRD: async (prdId: string) => {
+    try {
+      const blob = await api.downloadPRD(prdId);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PRD_${new Date().toISOString().split('T')[0]}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Failed to download PRD'
+      });
+      console.error('PRD download error:', error);
+    }
+  },
+
+  clearPRDPreview: () => {
+    set({ prdPreview: null });
   },
 }));

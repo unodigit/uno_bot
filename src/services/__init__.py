@@ -10,6 +10,7 @@ This module contains:
 - BookingService: Calendar integration and appointment booking
 - EmailService: SendGrid email notifications
 """
+from src.services.prd_service import PRDService
 from src.services.session_service import SessionService
 
-__all__ = ["SessionService"]
+__all__ = ["SessionService", "PRDService"]

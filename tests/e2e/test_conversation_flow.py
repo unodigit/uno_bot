@@ -16,7 +16,7 @@ def test_conversation_collects_user_information(page: Page):
     page.wait_for_selector('text=Welcome')
 
     # Test 1: Send name
-    chat_input = page.locator('[data-testid="chat-input"]')
+    chat_input = page.locator('[data-testid="message-input"]')
     send_button = page.locator('[data-testid="send-button"]')
 
     chat_input.fill("My name is John Doe")
@@ -39,7 +39,7 @@ def test_lead_scoring_and_service_matching(page: Page):
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 
-    chat_input = page.locator('[data-testid="chat-input"]')
+    chat_input = page.locator('[data-testid="message-input"]')
     send_button = page.locator('[data-testid="send-button"]')
 
     # Complete discovery phase
@@ -66,7 +66,7 @@ def test_conversation_phase_transitions(page: Page):
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 
-    chat_input = page.locator('[data-testid="chat-input"]')
+    chat_input = page.locator('[data-testid="message-input"]')
     send_button = page.locator('[data-testid="send-button"]')
 
     # Phase 1: Greeting (get name)

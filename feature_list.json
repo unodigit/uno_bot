@@ -357,9 +357,10 @@
       "Step 6: Verify Parameters section exists",
       "Step 7: Verify Next Steps section exists"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false
+    "is_qa_passed": true,
+    "qa_completed_at": "2026-01-02T03:42:54.407573Z"
   },
   {
     "category": "functional",
@@ -371,11 +372,12 @@
       "Step 4: Verify preview text snippet is visible",
       "Step 5: Verify Preview and Download buttons present"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T03:07:21.902654Z"
+    "dev_completed_at": "2026-01-02T03:07:21.902654Z",
+    "qa_completed_at": "2026-01-02T03:42:54.407581Z"
   },
   {
     "category": "functional",
@@ -387,11 +389,12 @@
       "Step 4: Open file and verify valid Markdown format",
       "Step 5: Verify download count is incremented"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T03:11:14.054468Z"
+    "dev_completed_at": "2026-01-02T03:11:14.054468Z",
+    "qa_completed_at": "2026-01-02T03:42:54.407583Z"
   },
   {
     "category": "functional",
@@ -431,11 +434,12 @@
       "Step 5: Delete expert",
       "Step 6: Verify expert no longer exists"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T03:35:42.907046Z"
+    "dev_completed_at": "2026-01-02T03:35:42.907046Z",
+    "qa_completed_at": "2026-01-02T03:45:24.396084Z"
   },
   {
     "category": "functional",
@@ -1095,10 +1099,11 @@
       "Step 4: Verify last_activity updated",
       "Step 5: Verify can continue messaging"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T02:31:01.718460+00:00"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T02:31:01.718460+00:00",
+    "qa_completed_at": "2026-01-02T03:41:14.387011Z"
   },
   {
     "category": "functional",

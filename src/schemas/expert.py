@@ -34,6 +34,7 @@ class ExpertCreate(ExpertBase):
 
     calendar_id: str | None = None
     availability: dict[str, Any] | None = None
+    is_active: bool | None = True
 
 
 class ExpertUpdate(BaseModel):
@@ -49,6 +50,7 @@ class ExpertUpdate(BaseModel):
     calendar_id: str | None = None
     availability: dict[str, Any] | None = None
     is_active: bool | None = None
+    refresh_token: str | None = None
 
 
 class ExpertResponse(ExpertBase):
@@ -70,11 +72,13 @@ class ExpertPublicResponse(BaseModel):
 
     id: UUID
     name: str
+    email: str
     role: str
     bio: str | None = None
     photo_url: str | None = None
     specialties: list[str]
     services: list[str]
+    is_active: bool
 
     class Config:
         from_attributes = True

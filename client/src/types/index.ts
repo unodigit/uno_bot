@@ -47,6 +47,39 @@ export interface SendMessageRequest {
 
 export interface MessageResponse extends Message {}
 
+// PRD Types
+export interface PRDResponse {
+  id: string;
+  session_id: string;
+  version: number;
+  content_markdown: string;
+  client_company: string | null;
+  client_name: string | null;
+  recommended_service: string | null;
+  matched_expert: string | null;
+  storage_url: string | null;
+  download_count: number;
+  created_at: string;
+  expires_at: string;
+}
+
+export interface PRDPreview {
+  id: string;
+  filename: string;
+  preview_text: string;
+  version: number;
+  created_at: string;
+}
+
+export interface PRDGenerateRequest {
+  session_id: string;
+}
+
+export interface PRDRegenerateRequest {
+  session_id: string;
+  feedback?: string;
+}
+
 // Chat UI Types
 export interface ChatState {
   isOpen: boolean;
@@ -60,6 +93,8 @@ export interface ChatState {
   clientInfo: Record<string, any>;
   businessContext: Record<string, any>;
   qualification: Record<string, any>;
+  prdPreview: PRDPreview | null;
+  isGeneratingPRD: boolean;
 }
 
 export interface ChatActions {
@@ -71,6 +106,9 @@ export interface ChatActions {
   addMessage: (message: Message) => void;
   clearError: () => void;
   setStreaming: (isStreaming: boolean) => void;
+  generatePRD: () => Promise<void>;
+  downloadPRD: (prdId: string) => Promise<void>;
+  clearPRDPreview: () => void;
 }
 
 export type ChatStore = ChatState & ChatActions;

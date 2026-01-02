@@ -4,9 +4,9 @@
  * Handles all HTTP communication with the UnoBot backend API.
  */
 
-import { Session, Message, CreateSessionRequest, SendMessageRequest } from '../types';
+import { Session, Message, CreateSessionRequest, SendMessageRequest, PRDResponse, PRDPreview } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 /**
  * API error response
@@ -94,6 +94,47 @@ class ApiClient {
    */
   async resumeSession(sessionId: string): Promise<Session> {
     return this.post<Session>(`/api/v1/sessions/${sessionId}/resume`, {});
+  }
+
+  /**
+   * Generate a PRD for a session
+   * POST /api/v1/prd/generate
+   */
+  async generatePRD(sessionId: string): Promise<PRDResponse> {
+    return this.post<PRDResponse>('/api/v1/prd/generate', { session_id: sessionId });
+  }
+
+  /**
+   * Get PRD by session ID
+   * GET /api/v1/prd/session/{session_id}
+   */
+  async getPRDBySession(sessionId: string): Promise<PRDResponse> {
+    return this.get<PRDResponse>(`/api/v1/prd/session/${sessionId}`);
+  }
+
+  /**
+   * Get PRD preview
+   * GET /api/v1/prd/{prd_id}/preview
+   */
+  async getPRDPreview(prdId: string): Promise<PRDPreview> {
+    return this.get<PRDPreview>(`/api/v1/prd/${prdId}/preview`);
+  }
+
+  /**
+   * Download PRD as markdown file
+   * GET /api/v1/prd/{prd_id}/download
+   */
+  async downloadPRD(prdId: string): Promise<Blob> {
+    const response = await fetch(`${this.baseUrl}/api/v1/prd/${prdId}/download`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      const error: ApiError = await response.json();
+      throw new Error(error.detail || `HTTP ${response.status}`);
+    }
+
+    return response.blob();
   }
 
   /**

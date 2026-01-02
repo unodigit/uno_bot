@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Minimize2, MessageSquare } from 'lucide-react'
+import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import { twMerge } from 'tailwind-merge'
 
@@ -40,6 +40,11 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     clientInfo,
     businessContext,
     qualification,
+    prdPreview,
+    isGeneratingPRD,
+    generatePRD,
+    downloadPRD,
+    clearPRDPreview,
   } = useChatStore()
 
   // Create session on mount if not exists
@@ -61,7 +66,14 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     setInputValue('')
 
     try {
-      await sendMessage(content)
+      // Check if this is a special PRD generation request
+      if (content === 'Generate PRD') {
+        await generatePRD()
+        // Add user message
+        await sendMessage(content)
+      } else {
+        await sendMessage(content)
+      }
     } catch (err) {
       console.error('Failed to send message:', err)
     }
@@ -74,11 +86,29 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     }
   }
 
+  const handleGeneratePRD = async () => {
+    try {
+      await generatePRD()
+    } catch (err) {
+      console.error('Failed to generate PRD:', err)
+    }
+  }
+
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  // Check if session has enough data for PRD generation
+  const canGeneratePRD = () => {
+    return (
+      sessionId &&
+      clientInfo?.name &&
+      businessContext?.challenges &&
+      !isGeneratingPRD
+    )
   }
 
   return (
@@ -120,6 +150,50 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </button>
           </div>
         </div>
+
+        {/* PRD Preview Card */}
+        {prdPreview && (
+          <div className="mx-3 mt-3 p-3 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg shadow-sm" data-testid="prd-preview-card">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                <FileText className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="text-sm font-semibold text-gray-900">PRD Generated!</h4>
+                  <button
+                    onClick={clearPRDPreview}
+                    className="text-xs text-blue-600 hover:text-blue-800 underline"
+                  >
+                    Hide
+                  </button>
+                </div>
+                <p className="text-xs text-gray-600 mb-2 line-clamp-2">{prdPreview.preview_text}</p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => prdPreview.id && downloadPRD(prdPreview.id)}
+                    className="flex items-center gap-1 px-2 py-1 bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors"
+                    data-testid="download-prd-button"
+                  >
+                    <Download className="w-3 h-3" />
+                    Download
+                  </button>
+                  <span className="text-xs text-gray-500">{prdPreview.filename}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* PRD Generation Indicator */}
+        {isGeneratingPRD && (
+          <div className="mx-3 mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg" data-testid="prd-generating">
+            <div className="flex items-center gap-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+              <span className="text-xs text-blue-700">Generating PRD...</span>
+            </div>
+          </div>
+        )}
 
         {/* Error Banner */}
         {error && (
@@ -194,8 +268,33 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           <div ref={messagesEndRef} />
         </div>
 
+        {/* Generate PRD Button */}
+        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && (
+          <div className="px-3 pb-2 bg-white border-t border-border" data-testid="prd-actions">
+            <button
+              onClick={handleGeneratePRD}
+              disabled={!canGeneratePRD()}
+              className={twMerge(
+                'w-full py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                canGeneratePRD()
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                  : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+              )}
+              data-testid="generate-prd-button"
+            >
+              <FileText className="w-4 h-4" />
+              Generate PRD
+            </button>
+            {!canGeneratePRD() && (
+              <div className="text-[10px] text-gray-500 mt-1 text-center">
+                Complete the conversation to enable PRD generation
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Quick Reply Buttons */}
-        {!isStreaming && !isLoading && messages.length > 0 && (
+        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="quick-replies">
             <div className="flex flex-wrap gap-2 mb-2">
               {getQuickReplies(currentPhase, { clientInfo, businessContext, qualification }).map((reply, idx) => (
