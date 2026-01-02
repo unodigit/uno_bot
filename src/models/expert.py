@@ -1,6 +1,7 @@
 """Expert model for UnoDigit professionals."""
 import uuid
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import Boolean, DateTime, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -27,7 +28,7 @@ class Expert(Base):
     # JSON fields for flexible data
     specialties: Mapped[list[str]] = mapped_column(JSONType, default=list)
     services: Mapped[list[str]] = mapped_column(JSONType, default=list)
-    availability: Mapped[dict] = mapped_column(JSONType, default=dict)
+    availability: Mapped[dict[str, Any]] = mapped_column(JSONType, default=dict)
 
     # OAuth tokens (encrypted)
     refresh_token: Mapped[str | None] = mapped_column(Text, nullable=True)
