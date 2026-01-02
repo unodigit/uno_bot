@@ -4,7 +4,6 @@ This test suite verifies that success states display correctly with
 proper styling, colors (#10B981), and iconography.
 """
 
-import pytest
 from playwright.sync_api import Page, expect
 
 
@@ -238,7 +237,7 @@ class TestSuccessStatesDisplay:
         total = len(results)
         percentage = (passed / total) * 100
 
-        print(f"\n--- Summary ---")
+        print("\n--- Summary ---")
         print(f"Passed: {passed}/{total} ({percentage:.0f}%)")
 
         # Overall assessment - at least 2/5 should pass (success states exist in different places)

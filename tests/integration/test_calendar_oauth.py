@@ -1,6 +1,5 @@
 """Integration tests for Google Calendar OAuth functionality."""
 import uuid
-from datetime import datetime, timedelta
 
 import pytest
 from httpx import AsyncClient

@@ -4,8 +4,7 @@ Tests that all interactive elements have appropriate touch target sizes
 for mobile devices following WCAG 2.1 AA guidelines (minimum 44x44px).
 """
 
-import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class TestTouchTargetsMobile:

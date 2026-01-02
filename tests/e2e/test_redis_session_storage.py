@@ -7,12 +7,11 @@ Tests that session data is properly stored and retrieved from Redis:
 - Session data matches database content
 """
 
-import pytest
-import requests
-import redis
 import json
-import time
-from datetime import datetime, timedelta
+
+import pytest
+import redis
+import requests
 
 
 class TestRedisSessionStorage:
@@ -230,7 +229,7 @@ class TestRedisSessionStorage:
             assert api_source_url == redis_source_url, "Source URLs don't match"
             assert api_user_agent == redis_user_agent, "User agents don't match"
 
-            print(f"✅ Session data matches between API and Redis")
+            print("✅ Session data matches between API and Redis")
         else:
             print(f"❌ Session data not found in Redis: {redis_key}")
             pytest.fail("Session data should be retrievable from Redis")

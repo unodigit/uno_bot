@@ -1,6 +1,6 @@
 """Playwright fixtures for E2E testing."""
 import pytest
-from playwright.sync_api import Browser, BrowserContext, Page, sync_playwright
+from playwright.sync_api import Browser, BrowserContext, sync_playwright
 
 
 @pytest.fixture(scope="session")

@@ -11,18 +11,9 @@ This test file verifies all WebSocket functionality:
 - Feature 90: WebSocket error event handles failures gracefully
 """
 
-import asyncio
-import json
-import uuid
-from typing import Dict, Any
 
 import pytest
 from playwright.sync_api import Page, expect
-
-from src.core.database import AsyncSessionLocal
-from src.models.expert import Expert
-from src.services.expert_service import ExpertService
-
 
 # Frontend URL
 FRONTEND_URL = "http://localhost:5173"
@@ -384,12 +375,12 @@ class TestWebSocketIntegration:
     async def test_websocket_handlers_exist(self):
         """Verify all WebSocket handlers are properly defined."""
         from src.api.routes.websocket import (
-            handle_chat_message,
-            handle_generate_prd,
-            handle_match_experts,
-            handle_get_availability,
-            handle_create_booking,
             WebSocketManager,
+            handle_chat_message,
+            handle_create_booking,
+            handle_generate_prd,
+            handle_get_availability,
+            handle_match_experts,
         )
 
         # Verify handlers exist

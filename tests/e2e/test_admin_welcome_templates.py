@@ -4,9 +4,7 @@ This test suite verifies the admin dashboard welcome message template functional
 including creating, editing, activating, and setting default templates.
 """
 
-import pytest
 from playwright.sync_api import Page, expect
-import time
 
 
 class TestAdminWelcomeTemplates:

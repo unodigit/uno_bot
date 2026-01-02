@@ -6,11 +6,10 @@ Tests that the application handles:
 - Database connection pool under load (Feature #145)
 """
 
-import pytest
-from playwright.sync_api import Page, expect
-import requests
-import time
 import concurrent.futures
+import time
+
+import requests
 
 
 class TestPerformanceAndReliability:
@@ -193,7 +192,7 @@ class TestPerformanceAndReliability:
 
         passed = sum(results.values())
         total = len(results)
-        print(f"\n--- Summary ---")
+        print("\n--- Summary ---")
         print(f"Passed: {passed}/{total}")
 
         assert passed >= 2, f"Performance/reliability should have at least 2/3 criteria met. Got {passed}/{total}"

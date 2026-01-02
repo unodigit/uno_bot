@@ -5,9 +5,7 @@ This test suite verifies:
 2. Industry-specific terminology adaptation
 """
 
-import pytest
 from playwright.sync_api import Page, expect
-import time
 
 
 class TestAIConversationFeatures:

@@ -55,7 +55,7 @@ class CalendarService:
         """Get Google credentials from stored refresh token."""
         try:
             creds = Credentials(
-                None,  # type: ignore[no-untyped-call]
+                None,
                 refresh_token=refresh_token,
                 token_uri='https://oauth2.googleapis.com/token',
                 client_id=self.google_client_id,
@@ -63,7 +63,7 @@ class CalendarService:
             )
 
             # Refresh the token
-            creds.refresh(Request())  # type: ignore[no-untyped-call]
+            creds.refresh(Request())
             return creds
         except RefreshError as e:
             print(f"Error refreshing credentials: {e}")

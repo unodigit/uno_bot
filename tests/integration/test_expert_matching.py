@@ -6,8 +6,8 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy import select
 
-from src.schemas.expert import ExpertCreate
 from src.models.booking import Booking
+from src.schemas.expert import ExpertCreate
 
 
 @pytest.mark.asyncio
@@ -180,7 +180,6 @@ async def test_expert_workload_balancing_distributes_leads_evenly(
     Feature: Expert workload balancing distributes leads evenly
     """
     from src.services.expert_service import ExpertService
-    from src.models.expert import Expert
 
     service = ExpertService(db_session)
 
@@ -275,9 +274,8 @@ async def test_workload_penalty_increases_with_more_bookings(
     db_session
 ):
     """Test that workload penalty decreases as expert bookings increase."""
-    from src.services.expert_service import ExpertService
-    from src.models.expert import Expert
     from src.schemas.expert import ExpertCreate
+    from src.services.expert_service import ExpertService
 
     service = ExpertService(db_session)
 

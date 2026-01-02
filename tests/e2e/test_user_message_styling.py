@@ -1,5 +1,4 @@
 """E2E tests for user message bubble styling."""
-import pytest
 from playwright.sync_api import Page
 
 # Frontend URL

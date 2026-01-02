@@ -1,6 +1,10 @@
 import pytest
 from playwright.sync_api import Page
-from tests.e2e.test_utils import wait_for_element, assert_style_property, verify_component_exists
+
+from tests.e2e.test_utils import (
+    wait_for_element,
+)
+
 
 def test_typography_font_family_compliance(page: Page):
     """Test that all text uses Inter font family as specified in design system."""

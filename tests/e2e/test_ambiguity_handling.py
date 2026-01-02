@@ -5,7 +5,6 @@ and asks for clarification before continuing the conversation.
 """
 
 import pytest
-import pytest_asyncio
 from playwright.sync_api import Page, expect
 
 

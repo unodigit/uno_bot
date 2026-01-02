@@ -4,9 +4,7 @@ This test suite verifies the admin dashboard has a professional appearance
 with consistent styling, professional layout, and brand colors.
 """
 
-import pytest
 from playwright.sync_api import Page, expect
-import time
 
 
 class TestAdminDashboardProfessionalAppearance:
@@ -64,7 +62,7 @@ class TestAdminDashboardProfessionalAppearance:
         all_buttons = page.get_by_role("button", name="All")
         active_buttons = page.get_by_role("button", name="Active")
         inactive_buttons = page.get_by_role("button", name="Inactive")
-        
+
         if all_buttons.count() > 0:
             print("✅ Filter buttons exist")
 
@@ -198,7 +196,7 @@ class TestAdminDashboardProfessionalAppearance:
         total = len(results)
         percentage = (passed / total) * 100
 
-        print(f"\n--- Summary ---")
+        print("\n--- Summary ---")
         print(f"Passed: {passed}/{total} ({percentage:.0f}%)")
 
         # Overall assessment - at least 4/6 should pass

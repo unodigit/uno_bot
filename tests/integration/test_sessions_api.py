@@ -115,8 +115,8 @@ async def test_send_message_to_nonexistent_session(client):
 async def test_send_message_to_completed_session(client, db_session, sample_visitor_id: str):
     """Test POST /api/v1/sessions/{id}/messages fails for completed session."""
 
-    from src.services.session_service import SessionService
     from src.schemas.session import SessionCreate
+    from src.services.session_service import SessionService
 
     # Use the same db_session that the client uses
     service = SessionService(db_session)

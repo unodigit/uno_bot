@@ -1,4 +1,5 @@
 """Session and message service layer for business logic."""
+import logging
 import uuid
 from datetime import datetime
 from typing import Any
@@ -25,6 +26,8 @@ from src.services.cache_service import (
 from src.services.expert_service import ExpertService
 from src.services.template_service import TemplateService
 
+logger = logging.getLogger(__name__)
+
 
 class SessionService:
     """Service for managing conversation sessions and messages."""
@@ -38,8 +41,10 @@ class SessionService:
         """Create a new conversation session with sanitized inputs."""
         # Sanitize string inputs
         sanitized_visitor_id = sanitize_input(session_create.visitor_id)
-        sanitized_source_url = sanitize_input(session_create.source_url)
-        sanitized_user_agent = sanitize_input(session_create.user_agent)
+        sanitized_source_url = sanitize_input(session_create.source_url) if session_create.source_url else None
+        sanitized_user_agent = sanitize_input(session_create.user_agent) if session_create.user_agent else None
+
+        logger.info(f"Creating new session for visitor {sanitized_visitor_id}")
 
         session = ConversationSession(
             visitor_id=sanitized_visitor_id,
@@ -78,6 +83,8 @@ class SessionService:
         )
         self.db.add(welcome_message)
         await self.db.commit()
+
+        logger.info(f"Session created successfully: {session.id}")
 
         # Refresh and eagerly load messages
         await self.db.refresh(session)
@@ -633,7 +640,7 @@ class SessionService:
 
         # Get max score
         if scores:
-            recommended = max(scores, key=scores.get)
+            recommended = max(scores.items(), key=lambda x: x[1])[0]
             if scores[recommended] > 0:
                 await self.update_session_data(session, recommended_service=recommended)
 
@@ -752,7 +759,8 @@ class SessionService:
         if results and not session.matched_expert_id:
             try:
                 import uuid
-                session.matched_expert_id = uuid.UUID(results[0]["id"])
+                expert_id_str = str(results[0]["id"])
+                session.matched_expert_id = uuid.UUID(expert_id_str)
                 self.db.add(session)
                 await self.db.commit()
             except Exception:

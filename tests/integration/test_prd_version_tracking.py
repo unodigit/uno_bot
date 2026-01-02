@@ -1,8 +1,7 @@
 """Test PRD version tracking functionality."""
-import pytest
 import uuid
-from datetime import datetime
 
+import pytest
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 

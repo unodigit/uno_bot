@@ -3,8 +3,8 @@
 Tests for Feature:
 - 125: Bot supports 20+ message conversations
 """
+
 import pytest
-import asyncio
 
 
 @pytest.mark.asyncio

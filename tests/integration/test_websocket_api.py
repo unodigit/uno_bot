@@ -10,9 +10,10 @@ Tests for Features:
 - 137: WebSocket booking_confirmed event triggers correctly
 - 138: WebSocket error event handles failures gracefully
 """
-import uuid
-import pytest
 import asyncio
+import uuid
+
+import pytest
 from socketio import AsyncClient
 
 

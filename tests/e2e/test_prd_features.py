@@ -1,7 +1,8 @@
 """E2E tests for PRD generation, preview, and download functionality."""
 import asyncio
+
 import pytest
-from playwright.async_api import async_playwright, Page, Browser, BrowserContext
+from playwright.async_api import async_playwright
 
 
 @pytest.fixture(scope="session")
@@ -168,7 +169,7 @@ async def test_prd_download_button_works():
                 import requests
                 try:
                     response = requests.post(
-                        f"http://localhost:8001/api/v1/prd/generate",
+                        "http://localhost:8001/api/v1/prd/generate",
                         params={"session_id": session_id},
                         timeout=10
                     )

@@ -2,8 +2,7 @@
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import ConfigDict
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -63,10 +62,7 @@ class Settings(BaseSettings):
     availability_days_ahead: int = 14
     min_slots_to_show: int = 5
 
-    model_config = ConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
+    model_config = SettingsConfigDict(
         extra="ignore",
     )
 

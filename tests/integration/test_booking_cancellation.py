@@ -1,15 +1,15 @@
 """Integration tests for booking cancellation functionality."""
-import pytest
 from datetime import datetime, timedelta
-from uuid import uuid4, UUID
+from uuid import UUID, uuid4
 
+import pytest
 from httpx import AsyncClient
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.models.booking import Booking
 from src.models.expert import Expert
 from src.models.session import ConversationSession
-from src.models.booking import Booking
 
 
 @pytest.mark.asyncio

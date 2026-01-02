@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle, AlertCircle, Info } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
@@ -10,13 +10,15 @@ export interface ToastProps {
   message: string
   type?: ToastType
   duration?: number
-  onClose: (id: string) => void
+  onClose?: (id: string) => void
 }
 
 export function Toast({ id, message, type = 'info', duration = 5000, onClose }: ToastProps) {
   useEffect(() => {
-    const timer = setTimeout(() => onClose(id), duration)
-    return () => clearTimeout(timer)
+    if (onClose) {
+      const timer = setTimeout(() => onClose(id), duration)
+      return () => clearTimeout(timer)
+    }
   }, [id, duration, onClose])
 
   const getIcon = () => {
@@ -61,13 +63,15 @@ export function Toast({ id, message, type = 'info', duration = 5000, onClose }: 
       <div className="flex items-start gap-3 flex-1">
         <div className="mt-0.5">{getIcon()}</div>
         <div className="flex-1 text-sm font-medium text-text">{message}</div>
-        <button
-          onClick={() => onClose(id)}
-          className="p-1 hover:bg-black/5 rounded transition-colors"
-          aria-label="Close notification"
-        >
-          <X className="w-4 h-4 text-text-muted" />
-        </button>
+        {onClose && (
+          <button
+            onClick={() => onClose(id)}
+            className="p-1 hover:bg-black/5 rounded transition-colors"
+            aria-label="Close notification"
+          >
+            <X className="w-4 h-4 text-text-muted" />
+          </button>
+        )}
       </div>
     </motion.div>
   )
@@ -92,9 +96,17 @@ export function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
   )
 }
 
+// Internal toast type for state (onClose is added by container)
+interface InternalToast {
+  id: string
+  message: string
+  type: ToastType
+  duration: number
+}
+
 // Hook for showing toasts
 export function useToast() {
-  const [toasts, setToasts] = useState<ToastProps[]>([])
+  const [toasts, setToasts] = useState<InternalToast[]>([])
 
   const showToast = (message: string, type: ToastType = 'info', duration = 5000) => {
     const id = `toast-${Date.now()}-${Math.random()}`
@@ -105,5 +117,11 @@ export function useToast() {
     setToasts((prev) => prev.filter((t) => t.id !== id))
   }
 
-  return { toasts, showToast, dismissToast }
+  // Convert internal toasts to ToastProps for rendering
+  const toastProps: ToastProps[] = toasts.map(t => ({
+    ...t,
+    onClose: dismissToast
+  }))
+
+  return { toasts: toastProps, showToast, dismissToast }
 }

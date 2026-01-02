@@ -9,12 +9,11 @@ Tests that sensitive data is not logged in plain text:
 - Message content is not logged with sensitive data
 """
 
-import pytest
-import requests
 import logging
 import re
 from io import StringIO
-from typing import Dict, Any
+
+import requests
 
 
 class TestSensitiveDataLogging:

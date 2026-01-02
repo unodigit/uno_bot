@@ -4,6 +4,7 @@ Tests for Feature:
 - 126: API returns proper error codes for invalid requests
 """
 import uuid
+
 import pytest
 
 
@@ -306,7 +307,8 @@ async def test_graceful_degradation_calendar_service_failure(client, sample_visi
     3. Verify helpful error message shown
     4. Verify retry mechanism exists
     """
-    from unittest.mock import patch, AsyncMock
+    from unittest.mock import AsyncMock, patch
+
     from src.services.calendar_service import CalendarService
 
     # Create session
@@ -359,11 +361,11 @@ async def test_graceful_degradation_email_service_failure(client, sample_visitor
 
     Feature: Graceful degradation when external services fail
     """
-    from unittest.mock import patch, AsyncMock
-    from src.services.email_service import EmailService
-    from src.models.expert import Expert
-    from src.models.session import ConversationSession
     from datetime import datetime, timedelta
+    from unittest.mock import AsyncMock, patch
+
+    from src.models.expert import Expert
+    from src.services.email_service import EmailService
 
     # Create expert directly in DB
     expert = Expert(
@@ -430,7 +432,8 @@ async def test_timezone_fallback_on_calendar_failure(client, sample_visitor_id: 
 
     Feature: Graceful degradation when external services fail
     """
-    from unittest.mock import patch, AsyncMock
+    from unittest.mock import AsyncMock, patch
+
     from src.services.calendar_service import CalendarService
 
     # Create expert with calendar

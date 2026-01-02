@@ -19,6 +19,8 @@ export default {
         },
         border: '#E5E7EB',
         error: '#EF4444',
+        success: '#10B981',
+        warning: '#F59E0B',
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
@@ -62,11 +64,64 @@ export default {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.8' },
         },
+        'toast-slide-in': {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        'toast-slide-out': {
+          '0%': { transform: 'translateY(0)', opacity: '1' },
+          '100%': { transform: 'translateY(100%)', opacity: '0' },
+        },
       },
       animation: {
         'pulse-subtle': 'pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'toast-in': 'toast-slide-in 0.3s ease-out forwards',
+        'toast-out': 'toast-slide-out 0.3s ease-in forwards',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Custom scrollbar plugin for consistent styling
+    function({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-thin': {
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#9CA3AF transparent',
+        },
+        '.scrollbar-thin::-webkit-scrollbar': {
+          width: '6px',
+          height: '6px',
+        },
+        '.scrollbar-thin::-webkit-scrollbar-track': {
+          background: 'transparent',
+        },
+        '.scrollbar-thin::-webkit-scrollbar-thumb': {
+          backgroundColor: '#9CA3AF',
+          borderRadius: '3px',
+        },
+        '.scrollbar-thin::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#6B7280',
+        },
+        // Custom scrollbar for chat messages (primary color)
+        '.scrollbar-primary': {
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#2563EB transparent',
+        },
+        '.scrollbar-primary::-webkit-scrollbar': {
+          width: '6px',
+          height: '6px',
+        },
+        '.scrollbar-primary::-webkit-scrollbar-track': {
+          background: 'transparent',
+        },
+        '.scrollbar-primary::-webkit-scrollbar-thumb': {
+          backgroundColor: '#2563EB',
+          borderRadius: '3px',
+        },
+        '.scrollbar-primary::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#1D4ED8',
+        },
+      });
+    },
+  ],
 }

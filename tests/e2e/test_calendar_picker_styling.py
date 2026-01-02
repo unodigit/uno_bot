@@ -3,7 +3,6 @@ E2E tests for Calendar Picker Styling (Feature 108)
 Tests the calendar picker layout and time slot selection styling
 """
 
-import pytest
 from playwright.sync_api import Page, expect
 
 

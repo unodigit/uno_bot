@@ -6,7 +6,7 @@ Tests that color contrast meets WCAG 2.1 AA standards:
 - UI components: 3:1 contrast ratio
 """
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class TestColorContrast:

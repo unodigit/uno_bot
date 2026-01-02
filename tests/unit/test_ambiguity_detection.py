@@ -1,11 +1,12 @@
 """Unit tests for ambiguity detection in session service."""
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock
 from datetime import datetime
+from unittest.mock import AsyncMock, MagicMock
 
-from src.services.session_service import SessionService
+import pytest
+
 from src.models.session import ConversationSession, MessageRole
+from src.services.session_service import SessionService
 
 
 class TestAmbiguityDetection:

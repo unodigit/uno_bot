@@ -8,10 +8,9 @@ Tests that all user inputs are properly sanitized to prevent XSS attacks:
 - SQL injection prevention
 """
 
-import pytest
-import requests
 import re
-from typing import Dict, Any
+
+import requests
 
 
 class TestInputSanitization:

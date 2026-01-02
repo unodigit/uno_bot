@@ -75,7 +75,11 @@ Format as a clear, professional summary (3-5 bullet points)."""
                 SystemMessage(content="You are an expert at summarizing business discovery conversations. Create concise, professional summaries."),
                 HumanMessage(content=prompt)
             ])
-            return response.content
+            content = response.content
+            # Ensure content is a string
+            if isinstance(content, list):
+                return str(content)
+            return str(content)
         except Exception:
             return self._fallback_summary(session)
 

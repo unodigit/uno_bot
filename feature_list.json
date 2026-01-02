@@ -2714,9 +2714,11 @@
       "Step 3: Verify no linting errors",
       "Step 4: Verify code style consistent"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T12:41:43.004212Z"
   },
   {
     "category": "functional",
@@ -2745,9 +2747,11 @@
       "Step 3: Verify no stack traces in production",
       "Step 4: Verify error codes are correct"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T12:41:39.364596+00:00",
+    "qa_completed_at": "2026-01-02T12:41:39.364602+00:00"
   },
   {
     "category": "functional",
@@ -2780,9 +2784,12 @@
       "Step 4: Verify errors logged",
       "Step 5: Verify bookings logged"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T12:35:13.341115Z",
+    "qa_completed_at": "2026-01-02T12:41:39.364612+00:00"
   },
   {
     "category": "functional",
@@ -2851,11 +2858,12 @@
       "Step 3: Re-fetch and verify cache hit",
       "Step 4: Verify cache invalidation works"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T12:30:02.496939Z"
+    "dev_completed_at": "2026-01-02T12:41:39.364613+00:00",
+    "qa_completed_at": "2026-01-02T12:41:39.364617+00:00"
   },
   {
     "category": "functional",

@@ -3,10 +3,10 @@
 Tests for Feature:
 - 130: GET /api/v1/experts returns list of active experts
 """
-import uuid
 import pytest
-from src.services.expert_service import ExpertService
+
 from src.schemas.expert import ExpertCreate
+from src.services.expert_service import ExpertService
 
 
 @pytest.mark.asyncio

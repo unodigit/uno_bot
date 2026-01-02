@@ -24,6 +24,9 @@ async def validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
     """Handle Pydantic validation errors."""
+    # Log validation error
+    logger.warning(f"Validation error on {request.method} {request.url.path}: {len(exc.errors())} errors")
+
     # Extract field-level errors
     field_errors: list[ValidationErrorDetail] = []
     for error in exc.errors():

@@ -1,9 +1,7 @@
 """Integration tests for email notification functionality."""
-import pytest
 from datetime import datetime, timedelta
-from unittest.mock import AsyncMock, patch
 
-from sqlalchemy.ext.asyncio import AsyncSession
+import pytest
 
 from src.services.email_service import EmailService
 

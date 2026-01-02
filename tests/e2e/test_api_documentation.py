@@ -5,8 +5,6 @@ Tests that API documentation is properly generated and accessible:
 - OpenAPI spec available at /openapi.json
 """
 
-import pytest
-from playwright.sync_api import Page, expect
 import requests
 
 
@@ -43,13 +41,12 @@ class TestAPIDocumentation:
             assert response.status_code == 200, f"Expected 200, got {response.status_code}"
 
             # Verify it's valid JSON
-            import json
             spec = response.json()
             assert "openapi" in spec
             assert "paths" in spec
             assert "info" in spec
 
-            print(f"✅ OpenAPI spec available at /openapi.json")
+            print("✅ OpenAPI spec available at /openapi.json")
             print(f"   Version: {spec.get('openapi', 'N/A')}")
             print(f"   Title: {spec.get('info', {}).get('title', 'N/A')}")
             print(f"   Endpoints: {len(spec.get('paths', {}))}")
@@ -140,7 +137,7 @@ class TestAPIDocumentation:
         # Summary
         passed = sum(results.values())
         total = len(results)
-        print(f"\n--- Summary ---")
+        print("\n--- Summary ---")
         print(f"Passed: {passed}/{total}")
 
         assert passed >= 2, f"API documentation should have at least 2/3 criteria met. Got {passed}/{total}"

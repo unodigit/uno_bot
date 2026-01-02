@@ -3,7 +3,6 @@ E2E tests for accessibility features in the chat widget.
 Tests screen reader support, keyboard navigation, and ARIA labels.
 """
 
-import pytest
 from playwright.sync_api import Page, expect
 
 

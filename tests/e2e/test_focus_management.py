@@ -6,7 +6,7 @@ Tests that focus management works correctly:
 - No focus traps
 """
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class TestFocusManagement:

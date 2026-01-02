@@ -785,7 +785,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   <h4 className="text-sm font-semibold text-gray-900">PRD Generated!</h4>
                   <button
                     onClick={clearPRDPreview}
-                    className="text-xs text-blue-600 hover:text-blue-800 underline min-h-[32px]"
+                    className="text-xs text-blue-600 hover:text-blue-800 underline min-h-[32px] active:scale-95 transition-transform"
                   >
                     Hide
                   </button>
@@ -839,7 +839,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
         {/* Expert Match List */}
         {matchedExperts.length > 0 && !isMatchingExperts && (
-          <div className="mx-3 mt-3 overflow-y-auto max-h-[180px]" data-testid="expert-match-container">
+          <div className="mx-3 mt-3 overflow-y-auto max-h-[180px] scrollbar-thin" data-testid="expert-match-container">
             <ExpertMatchList
               experts={matchedExperts}
               onSelect={handleSelectExpert}
@@ -848,7 +848,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             />
             <button
               onClick={clearMatchedExperts}
-              className="mt-2 text-xs text-gray-500 hover:text-gray-700 underline w-full text-center min-h-[32px]"
+              className="mt-2 text-xs text-gray-500 hover:text-gray-700 underline w-full text-center min-h-[32px] active:scale-95 transition-transform"
             >
               Hide experts
             </button>
@@ -865,7 +865,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
         {/* Messages Area */}
         <div
-          className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 min-h-[350px]"
+          className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 min-h-[350px] scrollbar-primary"
           data-testid="messages-container"
           role="log"
           aria-live="polite"
@@ -954,7 +954,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               onClick={handleGeneratePRD}
               disabled={!canGeneratePRD()}
               className={twMerge(
-                'w-full py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                'w-full py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium active:scale-95',
                 canGeneratePRD()
                   ? 'bg-blue-600 hover:bg-blue-700 text-white'
                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'
@@ -979,7 +979,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               onClick={handleMatchExperts}
               disabled={!canMatchExperts()}
               className={twMerge(
-                'w-full py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                'w-full py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium active:scale-95',
                 canMatchExperts()
                   ? 'bg-purple-600 hover:bg-purple-700 text-white'
                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'

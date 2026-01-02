@@ -1,6 +1,6 @@
 """E2E tests for transition animations compliance with design system."""
-import pytest
 import time
+
 from playwright.sync_api import Page, expect
 
 

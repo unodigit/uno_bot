@@ -6,14 +6,12 @@ Tests that verify:
 - Feature #154: Sensitive data is not logged
 """
 
-import pytest
 import json
-import time
 import logging
-import requests
 from io import StringIO
-from src.core.security import sanitize_input, validate_sql_input, mask_sensitive_data
+
 from src.core.config import settings
+from src.core.security import mask_sensitive_data, sanitize_input, validate_sql_input
 
 
 class TestSecurityFeatures:
@@ -216,8 +214,9 @@ class TestSecurityFeatures:
 
         # Check if Redis is actually available (optional - may not be running in test env)
         try:
-            import redis
             import asyncio
+
+            import redis
 
             # Try to connect to Redis
             try:

@@ -3,7 +3,6 @@ E2E tests for responsive breakpoints.
 Tests that the chat widget and window adapt correctly at different viewport sizes.
 """
 
-import pytest
 from playwright.sync_api import Page, expect
 
 

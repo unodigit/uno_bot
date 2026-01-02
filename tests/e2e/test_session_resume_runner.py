@@ -6,11 +6,10 @@ This script runs the comprehensive session resume via email link tests
 and generates a detailed test report.
 """
 
+import json
 import subprocess
 import sys
 import time
-from pathlib import Path
-import json
 
 
 def run_test_suite():

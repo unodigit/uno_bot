@@ -4,10 +4,9 @@ This test suite verifies the admin dashboard conversation analytics functionalit
 including metrics display, data accuracy, and UI behavior.
 """
 
+
 import pytest
 from playwright.sync_api import Page, expect
-import time
-from datetime import datetime
 
 
 class TestAdminConversationAnalytics:
@@ -113,19 +112,19 @@ class TestAdminConversationAnalytics:
                 print(f"✓ Total Sessions: {total_sessions_text}")
 
             # Check for completion rate
-            completion_rate_value = analytics_card.locator("text=Completion Rate").locator("..").locator("text=/[0-9]+\.[0-9]+%/")
+            completion_rate_value = analytics_card.locator("text=Completion Rate").locator("..").locator(r"text=/[0-9]+\.[0-9]+%/")
             if completion_rate_value.is_visible():
                 completion_rate_text = completion_rate_value.inner_text()
                 print(f"✓ Completion Rate: {completion_rate_text}")
 
             # Check for PRD conversion rate
-            prd_conversion_value = analytics_card.locator("text=PRD Conversion").locator("..").locator("text=/[0-9]+\.[0-9]+%/")
+            prd_conversion_value = analytics_card.locator("text=PRD Conversion").locator("..").locator(r"text=/[0-9]+\.[0-9]+%/")
             if prd_conversion_value.is_visible():
                 prd_conversion_text = prd_conversion_value.inner_text()
                 print(f"✓ PRD Conversion Rate: {prd_conversion_text}")
 
             # Check for booking conversion rate
-            booking_conversion_value = analytics_card.locator("text=Booking Conversion").locator("..").locator("text=/[0-9]+\.[0-9]+%/")
+            booking_conversion_value = analytics_card.locator("text=Booking Conversion").locator("..").locator(r"text=/[0-9]+\.[0-9]+%/")
             if booking_conversion_value.is_visible():
                 booking_conversion_text = booking_conversion_value.inner_text()
                 print(f"✓ Booking Conversion Rate: {booking_conversion_text}")
@@ -399,7 +398,7 @@ class TestAdminConversationAnalytics:
                 print(f"✗ {component_name}: Missing or not visible")
 
         # Log results
-        print(f"\n=== Test Results ===")
+        print("\n=== Test Results ===")
         print(f"Components Verified: {len(verified_components)}/{len(components_to_verify)}")
         print(f"Success Rate: {(len(verified_components)/len(components_to_verify))*100:.1f}%")
 
@@ -448,7 +447,7 @@ class TestAdminConversationAnalytics:
 
         # Try to get the metric value
         try:
-            metric_value = metric_label.locator("..").locator("text=/[0-9]+(\.[0-9]+)?(%|min)?/")
+            metric_value = metric_label.locator("..").locator(r"text=/[0-9]+(\.[0-9]+)?(%|min)?/")
             if metric_value.is_visible():
                 value_text = metric_value.inner_text()
                 print(f"✓ {metric_name} value: {value_text}")

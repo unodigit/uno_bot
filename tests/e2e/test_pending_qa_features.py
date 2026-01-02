@@ -6,12 +6,11 @@ Tests that verify:
 - Feature #149: Environment variables are properly loaded
 """
 
-import pytest
 import json
 import time
-import asyncio
-from playwright.sync_api import sync_playwright
+
 import requests
+
 from src.core.config import settings
 
 
@@ -44,7 +43,7 @@ class TestPendingQAFeatures:
         # Test 3: Verify Anthropic API key
         assert settings.anthropic_api_key is not None, "ANTHROPIC_API_KEY not loaded"
         assert len(settings.anthropic_api_key) > 20, "ANTHROPIC_API_KEY too short"
-        print("✓ ANTHROPIC_API_KEY loaded (length: {})".format(len(settings.anthropic_api_key)))
+        print(f"✓ ANTHROPIC_API_KEY loaded (length: {len(settings.anthropic_api_key)})")
 
         # Test 4: Verify other required variables
         assert settings.secret_key is not None, "SECRET_KEY not loaded"
@@ -86,7 +85,7 @@ class TestPendingQAFeatures:
         assert "validation" in str(data).lower() or "required" in str(data).lower(), \
             f"Expected validation error, got: {data}"
 
-        print(f"✓ Returns 422 for missing fields")
+        print("✓ Returns 422 for missing fields")
         print(f"  Response: {json.dumps(data, indent=2)[:200]}...")
         return True
 
@@ -111,7 +110,7 @@ class TestPendingQAFeatures:
         assert "string" in str(data).lower() or "type" in str(data).lower(), \
             f"Expected type error, got: {data}"
 
-        print(f"✓ Returns 422 for wrong types")
+        print("✓ Returns 422 for wrong types")
         print(f"  Response: {json.dumps(data, indent=2)[:200]}...")
         return True
 
@@ -136,7 +135,7 @@ class TestPendingQAFeatures:
         assert "id" in data, "Response should contain session ID"
         assert data["visitor_id"] == "test-visitor-123", "Visitor ID mismatch"
 
-        print(f"✓ Valid request accepted (201)")
+        print("✓ Valid request accepted (201)")
         print(f"  Session ID: {data['id']}")
         return True
 

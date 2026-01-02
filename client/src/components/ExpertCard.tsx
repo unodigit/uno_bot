@@ -107,7 +107,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
               {onSelect && (
                 <button
                   onClick={() => onSelect(expert as MatchedExpert)}
-                  className="px-3 py-2 min-h-[44px] border border-border text-text text-xs rounded hover:bg-surface transition-colors"
+                  className="px-3 py-2 min-h-[44px] border border-border text-text text-xs rounded hover:bg-surface transition-colors active:scale-95"
                   data-testid={`select-expert-${index}`}
                   aria-label={`Select ${expert.name} for consultation`}
                 >
@@ -116,7 +116,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
               )}
               <a
                 href={`mailto:${expert.email}?subject=Consultation Request`}
-                className="px-3 py-2 min-h-[44px] border border-border text-text text-xs rounded hover:bg-surface transition-colors"
+                className="px-3 py-2 min-h-[44px] border border-border text-text text-xs rounded hover:bg-surface transition-colors active:scale-95"
                 data-testid={`contact-expert-${index}`}
                 aria-label={`Contact ${expert.name} via email`}
               >
@@ -132,7 +132,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
             {onEdit && (
               <button
                 onClick={() => onEdit(expert as Expert)}
-                className="p-1.5 bg-white border border-border rounded hover:bg-surface transition-colors"
+                className="p-1.5 bg-white border border-border rounded hover:bg-surface transition-colors active:scale-95"
                 data-testid={`edit-expert-${index}`}
                 title="Edit"
               >
@@ -143,7 +143,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
             {onDelete && (
               <button
                 onClick={() => onDelete(expert.id)}
-                className="p-1.5 bg-white border border-error text-error rounded hover:bg-red-50 transition-colors"
+                className="p-1.5 bg-white border border-error text-error rounded hover:bg-red-50 transition-colors active:scale-95"
                 data-testid={`delete-expert-${index}`}
                 title="Delete"
               >

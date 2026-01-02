@@ -1,5 +1,4 @@
 """E2E tests for admin welcome message template management functionality."""
-import pytest
 from playwright.sync_api import Page, expect
 
 

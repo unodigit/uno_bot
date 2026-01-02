@@ -13,10 +13,9 @@ Steps:
 """
 
 import subprocess
-import pytest
-import json
 from pathlib import Path
-from typing import Dict, List, Tuple
+
+import pytest
 
 
 class TestMypyTypeChecking:
@@ -28,7 +27,7 @@ class TestMypyTypeChecking:
         return Path(__file__).parent.parent.parent
 
     @pytest.fixture
-    def backend_source_files(self, project_root: Path) -> List[Path]:
+    def backend_source_files(self, project_root: Path) -> list[Path]:
         """Get list of backend Python source files to check."""
         src_dir = project_root / "src"
         files = []
@@ -123,7 +122,7 @@ class TestMypyTypeChecking:
         assert len(core_errors) == 0, f"Core files have {len(core_errors)} type errors:\n" + "\n".join(core_errors)
         print("✅ All core backend files pass mypy type checking")
 
-    def test_all_functions_have_type_hints(self, backend_source_files: List[Path]):
+    def test_all_functions_have_type_hints(self, backend_source_files: list[Path]):
         """Verify core backend functions have type hints.
 
         Feature #141: Verify all functions have type hints
@@ -220,7 +219,7 @@ class TestMypyTypeChecking:
             assert hint_ratio >= 0.8, f"Only {hint_ratio:.1%} of core functions have type hints"
             print(f"✅ {hint_ratio:.1%} of core functions have type hints")
 
-    def test_type_consistency_in_core_files(self, backend_source_files: List[Path]):
+    def test_type_consistency_in_core_files(self, backend_source_files: list[Path]):
         """Verify type consistency in core backend files.
 
         Feature #141: Verify type consistency across the codebase

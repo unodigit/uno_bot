@@ -6,11 +6,8 @@ Tests for Features:
 - 129: GET /api/v1/prd/{id}/preview returns PRD preview
 """
 import uuid
+
 import pytest
-from src.services.session_service import SessionService
-from src.schemas.session import SessionCreate
-from src.services.expert_service import ExpertService
-from src.schemas.expert import ExpertCreate
 
 
 @pytest.mark.asyncio
@@ -55,7 +52,7 @@ async def test_prd_generation_with_complete_session(client, sample_visitor_id: s
     assert "content_markdown" in data
     assert len(data["content_markdown"]) > 0
     assert data["client_name"] == "John Doe"
-    assert data["client_company"] == "Techcorp"  # title() converts TechCorp -> Techcorp
+    assert data["client_company"] == "TechCorp"  # Original casing is preserved
     assert data["storage_url"] == f"/api/v1/prd/{data['id']}/download"
     assert data["download_count"] == 0
 

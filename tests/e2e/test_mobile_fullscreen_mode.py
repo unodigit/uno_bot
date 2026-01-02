@@ -1,7 +1,6 @@
 """E2E tests for mobile full-screen mode feature."""
 
-import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class TestMobileFullscreenMode:

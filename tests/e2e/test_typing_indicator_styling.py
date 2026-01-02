@@ -1,5 +1,4 @@
 """E2E tests for typing indicator styling and animation."""
-import pytest
 from playwright.sync_api import Page
 
 # Frontend URL

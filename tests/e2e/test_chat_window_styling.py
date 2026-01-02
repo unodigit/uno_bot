@@ -10,9 +10,9 @@ Tests Features:
 - Feature 107: Input field has correct styling
 """
 
-import pytest
-from playwright.sync_api import Page, expect
 import time
+
+from playwright.sync_api import Page, expect
 
 
 class TestChatWindowDimensions:

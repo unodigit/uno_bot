@@ -6,7 +6,7 @@ Verifies that all UI elements use the correct border radius values from the desi
 """
 
 import pytest
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 
 class TestBorderRadiusButtons:

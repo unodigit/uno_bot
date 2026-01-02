@@ -1,4 +1,5 @@
 """Booking service for appointment scheduling and management."""
+import logging
 import uuid
 from datetime import datetime, timedelta
 
@@ -17,6 +18,8 @@ from src.schemas.booking import (
 from src.services.calendar_service import CalendarService
 from src.services.email_service import EmailService
 from src.services.prd_service import PRDService
+
+logger = logging.getLogger(__name__)
 
 
 class BookingService:
@@ -121,13 +124,17 @@ class BookingService:
         Returns:
             Created booking response
         """
+        logger.info(f"Creating booking: session={session_id}, expert={expert_id}, client={client_name}")
+
         # Get session and expert
         session = await self._get_session(session_id)
         if not session:
+            logger.error(f"Session not found: {session_id}")
             raise ValueError(f"Session not found: {session_id}")
 
         expert = await self._get_expert(expert_id)
         if not expert:
+            logger.error(f"Expert not found: {expert_id}")
             raise ValueError(f"Expert not found: {expert_id}")
 
         # Check for conflicts
@@ -179,6 +186,8 @@ class BookingService:
         self.db.add(booking)
         await self.db.commit()
         await self.db.refresh(booking)
+
+        logger.info(f"Booking created successfully: {booking.id} for {client_name} with {expert.name}")
 
         # Update session with booking ID
         session.booking_id = booking.id

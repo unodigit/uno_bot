@@ -7,6 +7,31 @@
     @apply bg-white text-text;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
+
+  /* Custom scrollbar for the entire application */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #9CA3AF;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #6B7280;
+  }
+
+  /* Firefox scrollbar styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #9CA3AF transparent;
+  }
 }
 
 @layer components {
@@ -20,5 +45,158 @@
 
   .btn-secondary {
     @apply bg-surface text-text hover:bg-gray-200;
+  }
+
+  /* Error state styling */
+  .input-error {
+    @apply border-error focus:border-error focus:ring-error/20;
+  }
+
+  .input-disabled {
+    @apply bg-gray-100 text-gray-400 cursor-not-allowed;
+  }
+
+  /* Active/pressed state feedback */
+  .btn-active {
+    @apply active:scale-95 active:opacity-90;
+  }
+
+  /* Toast notification styling */
+  .toast {
+    @apply fixed bottom-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-50 min-w-[300px];
+  }
+
+  .toast-success {
+    @apply border-success/20 bg-success/5;
+  }
+
+  .toast-error {
+    @apply border-error/20 bg-error/5;
+  }
+
+  .toast-info {
+    @apply border-primary/20 bg-primary/5;
+  }
+
+  /* Modal/dialog styling */
+  .modal-overlay {
+    @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex items-center justify-center p-4;
+  }
+
+  .modal-content {
+    @apply bg-white rounded-lg shadow-xl max-w-lg w-full p-6 relative;
+  }
+
+  /* Table styling */
+  .table-container {
+    @apply overflow-x-auto rounded-lg border border-border;
+  }
+
+  .table {
+    @apply w-full text-sm;
+  }
+
+  .table th {
+    @apply bg-surface text-left font-semibold px-4 py-3 text-text;
+  }
+
+  .table td {
+    @apply px-4 py-3 border-t border-border text-text;
+  }
+
+  .table tr:hover {
+    @apply bg-surface/50;
+  }
+
+  /* Form layout consistency */
+  .form-group {
+    @apply space-y-2;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-text mb-1;
+  }
+
+  .form-input {
+    @apply w-full px-3 py-2 min-h-[44px] border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors;
+  }
+
+  .form-input-error {
+    @apply border-error focus:border-error focus:ring-error/20;
+  }
+
+  .form-input-disabled {
+    @apply bg-gray-100 text-gray-400 cursor-not-allowed;
+  }
+
+  /* Logo sizing utilities */
+  .logo-sm {
+    @apply w-6 h-6;
+  }
+
+  .logo-md {
+    @apply w-8 h-8;
+  }
+
+  .logo-lg {
+    @apply w-12 h-12;
+  }
+
+  .logo-xl {
+    @apply w-16 h-16;
+  }
+
+  /* Icon consistency */
+  .icon-sm {
+    @apply w-3 h-3;
+  }
+
+  .icon-md {
+    @apply w-4 h-4;
+  }
+
+  .icon-lg {
+    @apply w-6 h-6;
+  }
+
+  /* Badge styling */
+  .badge {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .badge-success {
+    @apply bg-success/10 text-success;
+  }
+
+  .badge-error {
+    @apply bg-error/10 text-error;
+  }
+
+  .badge-warning {
+    @apply bg-warning/10 text-warning;
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  /* Empty state */
+  .empty-state {
+    @apply flex flex-col items-center justify-center py-12 text-center text-text-muted;
+  }
+
+  /* Success state */
+  .success-state {
+    @apply flex flex-col items-center justify-center py-8 text-center;
+  }
+
+  /* Error state */
+  .error-state {
+    @apply flex flex-col items-center justify-center py-8 text-center text-error;
   }
 }

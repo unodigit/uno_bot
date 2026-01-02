@@ -57,10 +57,28 @@ class SecureLogFilter(logging.Filter):
 
 
 # Configure logging
+log_level = logging.DEBUG if settings.debug else logging.INFO
+log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Create logs directory if it doesn't exist
+settings.logs_dir.mkdir(parents=True, exist_ok=True)
+
+# Configure root logger
 logging.basicConfig(
-    level=logging.DEBUG if settings.debug else logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=log_level,
+    format=log_format,
+    handlers=[
+        # Console handler
+        logging.StreamHandler(),
+        # File handler for all logs
+        logging.FileHandler(settings.logs_dir / "backend.log"),
+    ]
 )
+
+# Reduce verbosity of third-party loggers
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
+logging.getLogger("sqlalchemy.pool").setLevel(logging.WARNING)
+logging.getLogger("aiosqlite").setLevel(logging.WARNING)
 
 # Add secure filter to all loggers
 secure_filter = SecureLogFilter()
@@ -69,6 +87,11 @@ for name in logging.root.manager.loggerDict:
     logger_instance.addFilter(secure_filter)
 
 logger = logging.getLogger(__name__)
+
+# Log important events at startup
+logger.info(f"Starting {settings.app_name} v{settings.app_version}")
+logger.info(f"Environment: {settings.environment}")
+logger.info(f"Log level: {logging.getLevelName(log_level)}")
 
 
 @asynccontextmanager

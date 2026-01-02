@@ -7,9 +7,10 @@ Tests that the health check endpoint returns proper status:
 - API version and timestamp
 """
 
+from datetime import datetime
+
 import pytest
 import requests
-from datetime import datetime
 
 
 class TestHealthCheck:
@@ -56,7 +57,7 @@ class TestHealthCheck:
         assert data["redis"] in ["healthy", "unavailable", "unhealthy"], \
             f"Invalid redis status: {data['redis']}"
 
-        print(f"✅ Status values are valid:")
+        print("✅ Status values are valid:")
         print(f"   - Overall: {data['status']}")
         print(f"   - Database: {data['database']}")
         print(f"   - Redis: {data['redis']}")
@@ -188,7 +189,7 @@ class TestHealthCheck:
 
         passed = sum(results.values())
         total = len(results)
-        print(f"\n--- Summary ---")
+        print("\n--- Summary ---")
         print(f"Passed: {passed}/{total}")
 
         assert passed == total, f"All health check criteria should pass. Got {passed}/{total}"

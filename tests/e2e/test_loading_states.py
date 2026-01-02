@@ -385,13 +385,13 @@ class TestLoadingStates:
         pulses = page.locator('[class*="animate-pulse"]').count()
         bounces = page.locator('[class*="animate-bounce"]').count()
 
-        print(f"\n1. Animation Types Found:")
+        print("\n1. Animation Types Found:")
         print(f"   - Spinners (animate-spin): {spinners}")
         print(f"   - Pulses (animate-pulse): {pulses}")
         print(f"   - Bounces (animate-bounce): {bounces}")
 
         # 2. Check for test IDs
-        print(f"\n2. Loading Indicator Test IDs:")
+        print("\n2. Loading Indicator Test IDs:")
         test_ids = ["loading-indicator", "typing-indicator", "prd-generating",
                     "expert-matching", "summary-generating"]
         for tid in test_ids:
@@ -399,7 +399,7 @@ class TestLoadingStates:
             print(f"   - {tid}: {'✓' if visible else '○'}")
 
         # 3. Verify design system compliance
-        print(f"\n3. Design System Compliance:")
+        print("\n3. Design System Compliance:")
         all_spinners = page.locator('[class*="animate-spin"]')
         for i in range(min(all_spinners.count(), 3)):
             classes = all_spinners.nth(i).get_attribute("class") or ""
@@ -409,7 +409,7 @@ class TestLoadingStates:
 
         # 4. Summary
         total_animations = spinners + pulses + bounces
-        print(f"\n4. Summary:")
+        print("\n4. Summary:")
         print(f"   Total animation elements: {total_animations}")
         print(f"   Implementation status: {'✓ Complete' if total_animations > 0 else '○ Not visible'}")
 

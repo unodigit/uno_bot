@@ -1,7 +1,6 @@
 """E2E tests for session resume via email link functionality."""
 from playwright.sync_api import Page, expect
 
-
 FRONTEND_URL = "http://localhost:5173"
 
 
@@ -274,7 +273,7 @@ class TestSessionResumeEmail:
             msg_text = msg_element.inner_text()
             if "John Smith" in msg_text or "john" in msg_text.lower():
                 client_name_found = True
-                print(f"✓ Client name found in resumed session: 'John Smith'")
+                print("✓ Client name found in resumed session: 'John Smith'")
                 break
 
         assert client_name_found, "Client information should be preserved in resumed session"
@@ -285,7 +284,7 @@ class TestSessionResumeEmail:
             msg_text = msg_element.inner_text()
             if "healthcare" in msg_text.lower() or "patient analytics" in msg_text.lower():
                 business_context_found = True
-                print(f"✓ Business context found in resumed session")
+                print("✓ Business context found in resumed session")
                 break
 
         assert business_context_found, "Business context should be preserved in resumed session"
@@ -354,7 +353,7 @@ class TestSessionResumeEmail:
             msg_text = msg_element.inner_text()
             if "Welcome" in msg_text or "UnoBot" in msg_text:
                 welcome_found = True
-                print(f"✓ Welcome message found in resumed session")
+                print("✓ Welcome message found in resumed session")
                 break
 
         assert welcome_found, "Welcome message should be preserved in resumed session"

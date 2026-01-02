@@ -173,7 +173,7 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
               <p className="text-xs text-text-muted mt-1">Try checking back later</p>
             </div>
           ) : (
-            <div className="space-y-4 max-h-[320px] overflow-y-auto pr-2">
+            <div className="space-y-4 max-h-[320px] overflow-y-auto pr-2 scrollbar-thin">
               {dates.map((date) => (
                 <div key={date} className="space-y-2">
                   <div className="text-xs font-semibold text-text bg-surface px-2 py-1 rounded border border-border">

@@ -1,6 +1,6 @@
 """End-to-end tests for Booking Flow functionality."""
 import re
-import pytest
+
 from playwright.sync_api import Page, expect
 
 # Frontend URL

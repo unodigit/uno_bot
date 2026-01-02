@@ -3,7 +3,6 @@ E2E tests for Design System Spacing (Feature #113)
 Tests that spacing tokens (xs, sm, md, lg, xl) are used correctly
 """
 
-import pytest
 from playwright.sync_api import Page, expect
 
 
@@ -39,7 +38,7 @@ class TestDesignSystemSpacing:
     def test_sm_8px_spacing_used(self, page: Page, base_url: str):
         """Verify SM spacing (8px) is used correctly"""
         # Check component source code for sm spacing usage
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Tailwind sm spacing classes: p-2, px-2, py-2, m-2, mt-2, gap-2, space-y-2, space-x-2
             assert 'px-2' in content or 'py-2' in content or 'mt-2' in content or 'gap-2' in content or 'space-y-2' in content, \
@@ -48,7 +47,7 @@ class TestDesignSystemSpacing:
     def test_md_16px_spacing_used(self, page: Page, base_url: str):
         """Verify MD spacing (16px) is used correctly"""
         # Check component source code for md spacing usage
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Tailwind md spacing classes: p-4, px-4, py-4, m-4, mt-4, gap-4, space-y-4, space-x-4
             assert 'px-3' in content or 'py-3' in content or 'm-3' in content or 'p-3' in content or 'gap-2' in content or 'space-y-2' in content, \
@@ -57,7 +56,7 @@ class TestDesignSystemSpacing:
     def test_lg_24px_spacing_used(self, page: Page, base_url: str):
         """Verify LG spacing (24px) is used correctly"""
         # Check component source code for lg spacing usage
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Tailwind lg spacing classes: p-6, px-6, py-6, m-6, mt-6, gap-6, space-y-6, space-x-6
             assert 'mb-3' in content or 'mt-3' in content or 'gap-2' in content or 'space-y-2' in content, \
@@ -66,7 +65,7 @@ class TestDesignSystemSpacing:
     def test_xl_32px_spacing_used(self, page: Page, base_url: str):
         """Verify XL spacing (32px) is used correctly"""
         # Check component source code for xl spacing usage
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Tailwind xl spacing classes: p-8, px-8, py-8, m-8, mt-8, gap-8, space-y-8, space-x-8
             has_xl = 'gap-4' in content or 'space-y-4' in content or 'p-6' in content or 'm-6' in content
@@ -74,7 +73,7 @@ class TestDesignSystemSpacing:
 
     def test_consistent_spacing_on_buttons(self, page: Page, base_url: str):
         """Verify buttons have consistent padding"""
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Buttons should have consistent padding like px-3 py-2 or px-4 py-2
             assert 'px-3 py-2' in content or 'px-4 py-2' in content, \
@@ -82,7 +81,7 @@ class TestDesignSystemSpacing:
 
     def test_consistent_spacing_on_cards(self, page: Page, base_url: str):
         """Verify cards have consistent padding"""
-        with open('client/src/components/ExpertCard.tsx', 'r') as f:
+        with open('client/src/components/ExpertCard.tsx') as f:
             content = f.read()
             # Cards should have padding like p-3, p-4, or p-6
             assert 'p-3' in content or 'p-4' in content or 'p-6' in content, \
@@ -90,7 +89,7 @@ class TestDesignSystemSpacing:
 
     def test_spacing_between_sections(self, page: Page, base_url: str):
         """Verify sections have consistent margin between them"""
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Sections should have margin like mb-2, mb-3, mb-4, or space-y-2, space-y-3
             assert 'mb-2' in content or 'mb-3' in content or 'mb-4' in content or 'space-y-2' in content or 'space-y-3' in content, \
@@ -98,7 +97,7 @@ class TestDesignSystemSpacing:
 
     def test_input_field_spacing(self, page: Page, base_url: str):
         """Verify input fields have proper padding"""
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Input fields should have padding like px-3 py-2
             assert 'px-3' in content and 'py-2' in content, \
@@ -106,7 +105,7 @@ class TestDesignSystemSpacing:
 
     def test_flex_gap_spacing(self, page: Page, base_url: str):
         """Verify flex gaps are used instead of margins where appropriate"""
-        with open('client/src/components/ExpertCard.tsx', 'r') as f:
+        with open('client/src/components/ExpertCard.tsx') as f:
             content = f.read()
             # Flexbox layouts should use gap-1, gap-2, gap-3, or gap-4
             assert 'gap-1' in content or 'gap-2' in content or 'gap-3' in content or 'gap-4' in content, \
@@ -114,7 +113,7 @@ class TestDesignSystemSpacing:
 
     def test_no_hardcoded_spacing_values(self, page: Page, base_url: str):
         """Verify no hardcoded spacing values in JSX"""
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Should not have hardcoded pixel values like style={{ padding: '10px' }}
             assert 'style={{' not in content or 'padding:' not in content or 'margin:' not in content, \
@@ -131,7 +130,7 @@ class TestDesignSystemSpacing:
 
         for component_path in components_to_check:
             try:
-                with open(component_path, 'r') as f:
+                with open(component_path) as f:
                     content = f.read()
                     # Should have spacing classes like p-1 (4px), p-2 (8px), p-3 (12px), p-4 (16px), p-5 (20px), p-6 (24px)
                     # or gap-1, gap-2, gap-3, gap-4, gap-5, gap-6
@@ -147,7 +146,7 @@ class TestDesignSystemSpacing:
     def test_responsive_spacing(self, page: Page, base_url: str):
         """Verify responsive spacing prefixes are used where needed"""
         # This checks if components use responsive spacing like sm:p-4, lg:p-6, etc.
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Should have some responsive spacing considerations
             # For now, we just verify the component uses spacing classes
@@ -170,7 +169,7 @@ class TestDesignSystemSpacing:
 
     def test_message_spacing(self, page: Page, base_url: str):
         """Verify messages have proper spacing between them"""
-        with open('client/src/components/ChatWindow.tsx', 'r') as f:
+        with open('client/src/components/ChatWindow.tsx') as f:
             content = f.read()
             # Messages should have spacing like space-y-2, space-y-3, or mb-2, mb-3
             has_message_spacing = 'space-y-' in content or 'mb-2' in content or 'mb-3' in content
