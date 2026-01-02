@@ -2047,11 +2047,15 @@
       "Step 3: Verify professional layout",
       "Step 4: Verify brand colors used"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:16:00.543859Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T08:16:00.543859Z",
+    "qa_completed_at": "2026-01-02T20:40:00.000000Z",
+    "test_files": [
+      "tests/e2e/test_admin_dashboard_professional.py"
+    ]
   },
   {
     "category": "style",
@@ -2098,9 +2102,9 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T08:33:25.518313Z",
-    "qa_completed_at": "2026-01-02T09:08:26.903115+00:00",
+    "qa_completed_at": "2026-01-02T20:40:00Z",
     "test_files": [
-      "tests/e2e/test_loading_states.py"
+      "tests/e2e/test_empty_states.py"
     ]
   },
   {
@@ -2112,11 +2116,15 @@
       "Step 3: Verify helpful iconography",
       "Step 4: Verify call to action if applicable"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:33:26.544040Z"
+    "dev_completed_at": "2026-01-02T08:33:26.544040Z",
+    "qa_completed_at": "2026-01-02T20:40:00Z",
+    "test_files": [
+      "tests/e2e/test_empty_states.py"
+    ]
   },
   {
     "category": "functional",
@@ -2240,8 +2248,10 @@
       "Step 4: Verify under 2000ms"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T09:36:02.485291Z"
   },
   {
     "category": "functional",

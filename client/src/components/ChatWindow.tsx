@@ -872,7 +872,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Input Area */}
-        <div className="h-16 border-t border-border bg-white p-3 flex items-center gap-2 rounded-b-lg">
+        <div className="h-20 border-t border-border bg-white px-3 flex items-center gap-2 rounded-b-lg">
           <input
             ref={inputRef}
             type="text"
@@ -883,7 +883,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             aria-label="Type your message"
             aria-describedby="input-instruction"
             aria-disabled={isStreaming || isLoading}
-            className="flex-1 h-12 px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
+            className="flex-1 h-14 px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
             disabled={isStreaming || isLoading}
             data-testid="message-input"
             tabIndex={1}
@@ -898,7 +898,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             aria-label={inputValue.trim() ? `Send message${isStreaming ? ' (disabled - bot is typing)' : ''}` : 'Send message (disabled - empty message)'}
             aria-describedby="send-button-status"
             className={twMerge(
-              'h-12 w-12 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
+              'h-14 w-14 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
               'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
               // Enabled state
               (!inputValue.trim() || isStreaming || isLoading)
