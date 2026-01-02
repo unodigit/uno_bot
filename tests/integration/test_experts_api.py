@@ -1,5 +1,6 @@
 """Integration tests for Expert CRUD operations."""
 import uuid
+from uuid import uuid4
 
 import pytest
 from httpx import AsyncClient
@@ -123,7 +124,7 @@ async def test_get_expert_not_found(db_session: AsyncSession, client: AsyncClien
     """Test getting a non-existent expert returns 404."""
     fake_id = uuid.uuid4()
 
-    response = await async_client.get(f"/api/v1/experts/{fake_id}")
+    response = await client.get(f"/api/v1/experts/{fake_id}")
 
     assert response.status_code == 404
     assert "not found" in response.json()["detail"].lower()
@@ -134,7 +135,7 @@ async def test_update_expert(db_session: AsyncSession, client: AsyncClient):
     """Test updating an expert."""
     expert = Expert(
         name="Dr. Sarah Johnson",
-        email="sarah@example.com",
+        email="sarah.update@example.com",
         role="AI Strategy Consultant",
         specialties=["AI Strategy"],
         services=["AI Strategy & Planning"],
@@ -151,7 +152,7 @@ async def test_update_expert(db_session: AsyncSession, client: AsyncClient):
         "specialties": ["AI Strategy", "Deep Learning"],
     }
 
-    response = await async_client.put(
+    response = await client.put(
         f"/api/v1/experts/{expert.id}", json=update_data
     )
 
@@ -163,28 +164,28 @@ async def test_update_expert(db_session: AsyncSession, client: AsyncClient):
     assert data["bio"] == "AI expert with 15 years experience and a PhD"
     assert data["specialties"] == ["AI Strategy", "Deep Learning"]
     # Original email should remain unchanged
-    assert data["email"] == "sarah@example.com"
+    assert data["email"] == "sarah.update@example.com"
 
 
 @pytest.mark.asyncio
 async def test_update_expert_not_found(
-    db_session: AsyncSession, async_client: AsyncClient
+    db_session: AsyncSession, client: AsyncClient
 ):
     """Test updating a non-existent expert returns 404."""
     fake_id = uuid.uuid4()
     update_data = {"name": "New Name"}
 
-    response = await async_client.put(f"/api/v1/experts/{fake_id}", json=update_data)
+    response = await client.put(f"/api/v1/experts/{fake_id}", json=update_data)
 
     assert response.status_code == 404
 
 
 @pytest.mark.asyncio
-async def test_delete_expert(db_session: AsyncSession, async_client: AsyncClient):
+async def test_delete_expert(db_session: AsyncSession, client: AsyncClient):
     """Test deleting an expert."""
     expert = Expert(
         name="Dr. Sarah Johnson",
-        email="sarah@example.com",
+        email="sarah.delete@example.com",
         role="AI Strategy Consultant",
         specialties=["AI Strategy"],
         services=["AI Strategy & Planning"],
@@ -197,36 +198,36 @@ async def test_delete_expert(db_session: AsyncSession, async_client: AsyncClient
 
     expert_id = expert.id
 
-    response = await async_client.delete(f"/api/v1/experts/{expert_id}")
+    response = await client.delete(f"/api/v1/experts/{expert_id}")
 
     assert response.status_code == 204
 
     # Verify expert is deleted
-    get_response = await async_client.get(f"/api/v1/experts/{expert_id}")
+    get_response = await client.get(f"/api/v1/experts/{expert_id}")
     assert get_response.status_code == 404
 
 
 @pytest.mark.asyncio
 async def test_delete_expert_not_found(
-    db_session: AsyncSession, async_client: AsyncClient
+    db_session: AsyncSession, client: AsyncClient
 ):
     """Test deleting a non-existent expert returns 404."""
     fake_id = uuid.uuid4()
 
-    response = await async_client.delete(f"/api/v1/experts/{fake_id}")
+    response = await client.delete(f"/api/v1/experts/{fake_id}")
 
     assert response.status_code == 404
 
 
 @pytest.mark.asyncio
 async def test_inactive_expert_not_listed(
-    db_session: AsyncSession, async_client: AsyncClient
+    db_session: AsyncSession, client: AsyncClient
 ):
     """Test that inactive experts are not returned in list."""
     # Create active and inactive experts
     active_expert = Expert(
         name="Active Expert",
-        email="active@example.com",
+        email=f"active.{uuid4().hex[:6]}@example.com",
         role="Consultant",
         specialties=["Consulting"],
         services=["Consulting"],
@@ -234,7 +235,7 @@ async def test_inactive_expert_not_listed(
     )
     inactive_expert = Expert(
         name="Inactive Expert",
-        email="inactive@example.com",
+        email=f"inactive.{uuid4().hex[:6]}@example.com",
         role="Consultant",
         specialties=["Consulting"],
         services=["Consulting"],
@@ -245,7 +246,7 @@ async def test_inactive_expert_not_listed(
     db_session.add(inactive_expert)
     await db_session.commit()
 
-    response = await async_client.get("/api/v1/experts")
+    response = await client.get("/api/v1/experts")
 
     assert response.status_code == 200
     data = response.json()
@@ -256,11 +257,11 @@ async def test_inactive_expert_not_listed(
 
 
 @pytest.mark.asyncio
-async def test_deactivate_expert(db_session: AsyncSession, async_client: AsyncClient):
+async def test_deactivate_expert(db_session: AsyncSession, client: AsyncClient):
     """Test deactivating an expert via update."""
     expert = Expert(
         name="Dr. Sarah Johnson",
-        email="sarah@example.com",
+        email=f"sarah.deactivate.{uuid4().hex[:6]}@example.com",
         role="AI Strategy Consultant",
         specialties=["AI Strategy"],
         services=["AI Strategy & Planning"],
@@ -273,7 +274,7 @@ async def test_deactivate_expert(db_session: AsyncSession, async_client: AsyncCl
 
     # Deactivate the expert
     update_data = {"is_active": False}
-    response = await async_client.put(
+    response = await client.put(
         f"/api/v1/experts/{expert.id}", json=update_data
     )
 
@@ -282,7 +283,7 @@ async def test_deactivate_expert(db_session: AsyncSession, async_client: AsyncCl
     assert data["is_active"] is False
 
     # Verify expert no longer appears in list
-    list_response = await async_client.get("/api/v1/experts")
+    list_response = await client.get("/api/v1/experts")
     assert list_response.status_code == 200
     assert len(list_response.json()) == 0
 
@@ -294,7 +295,7 @@ async def test_connect_calendar_oauth_flow(
     """Test initiating Google Calendar OAuth flow."""
     expert = Expert(
         name="Dr. Sarah Johnson",
-        email="sarah@example.com",
+        email=f"sarah.calendar.{uuid4().hex[:6]}@example.com",
         role="AI Strategy Consultant",
         specialties=["AI Strategy"],
         services=["AI Strategy & Planning"],

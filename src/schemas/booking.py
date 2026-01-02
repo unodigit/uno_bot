@@ -28,6 +28,7 @@ class AvailabilityResponse(BaseModel):
 
     expert_id: UUID
     expert_name: str
+    expert_role: str | None = None
     timezone: str
     slots: list[TimeSlot]
     generated_at: datetime

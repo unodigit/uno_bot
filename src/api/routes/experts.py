@@ -326,6 +326,13 @@ async def oauth_callback(
             detail="Authorization code is required"
         )
 
+    # Check expert_id BEFORE trying to fetch token
+    if not expert_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Expert ID is required"
+        )
+
     calendar_service = CalendarService()
 
     try:
@@ -340,37 +347,33 @@ async def oauth_callback(
 
         # Store refresh token
         if credentials.refresh_token:
-            if expert_id:
-                expert_service = ExpertService(db)
-                expert = await expert_service.get_expert(expert_id)
-                if not expert:
-                    raise HTTPException(
-                        status_code=status.HTTP_404_NOT_FOUND,
-                        detail=f"Expert {expert_id} not found",
-                    )
-
-                # Update expert with refresh token and calendar ID
-                await expert_service.update_expert(expert, ExpertUpdate(
-                    refresh_token=credentials.refresh_token,
-                    calendar_id=credentials.client_id  # Store client_id as calendar_id for now
-                ))
-
-                return GoogleOAuthResponse(
-                    success=True,
-                    calendar_id=str(expert_id),  # Return expert_id as calendar_id
-                    message="Calendar connected successfully"
-                )
-            else:
+            expert_service = ExpertService(db)
+            expert = await expert_service.get_expert(expert_id)
+            if not expert:
                 raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Expert ID is required"
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Expert {expert_id} not found",
                 )
+
+            # Update expert with refresh token and calendar ID
+            await expert_service.update_expert(expert, ExpertUpdate(
+                refresh_token=credentials.refresh_token,
+                calendar_id=credentials.client_id  # Store client_id as calendar_id for now
+            ))
+
+            return GoogleOAuthResponse(
+                success=True,
+                calendar_id=str(expert_id),  # Return expert_id as calendar_id
+                message="Calendar connected successfully"
+            )
         else:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="No refresh token received"
             )
 
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

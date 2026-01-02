@@ -107,8 +107,7 @@ async def test_oauth_callback_validates_expert_exists(
 ):
     """Test that OAuth callback handles non-existent expert.
 
-    Note: The endpoint catches exceptions and returns 500 for any error
-    during OAuth processing, including expert not found.
+    The endpoint should return 404 when the expert doesn't exist.
     """
     fake_id = uuid.uuid4()
 
@@ -117,8 +116,8 @@ async def test_oauth_callback_validates_expert_exists(
         "/api/v1/experts/calendar/callback",
         params={"code": "test_code", "expert_id": str(fake_id)}
     )
-    # The endpoint returns 500 for any exception during OAuth processing
-    assert response.status_code == 500
+    # The endpoint returns 404 for non-existent expert
+    assert response.status_code == 404
 
 
 @pytest.mark.asyncio

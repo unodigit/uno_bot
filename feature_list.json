@@ -662,8 +662,10 @@
       "Step 4: Verify buffer time is blocked"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:37:05.859211Z"
   },
   {
     "category": "functional",
@@ -675,8 +677,10 @@
       "Step 4: Verify no slots after 5pm"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:39:07.809469Z"
   },
   {
     "category": "functional",
