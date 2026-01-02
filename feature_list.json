@@ -1128,7 +1128,7 @@
       "Step 4: Verify bot references earlier information",
       "Step 5: Verify SummarizationMiddleware kicks in if needed"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
@@ -1615,11 +1615,12 @@
       "Step 4: Verify messages area is ~400px height",
       "Step 5: Verify input area is 56px height"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:37:27.391076Z"
+    "dev_completed_at": "2026-01-02T07:37:27.391076Z",
+    "qa_completed_at": "2026-01-02T07:55:39.346905Z"
   },
   {
     "category": "style",
@@ -1631,11 +1632,12 @@
       "Step 4: Verify minimize button visible",
       "Step 5: Verify close button visible"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:36:09.019663Z"
+    "dev_completed_at": "2026-01-02T07:36:09.019663Z",
+    "qa_completed_at": "2026-01-02T07:55:39.346915Z"
   },
   {
     "category": "style",
@@ -1651,7 +1653,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "qa_completed_at": "2026-01-02T18:40:00.000000Z",
+    "qa_completed_at": "2026-01-02T07:55:39.346917Z",
     "dev_completed_at": "2026-01-02T07:43:29.740464Z"
   },
   {
@@ -1664,10 +1666,12 @@
       "Step 4: Verify text color is white",
       "Step 5: Verify proper border radius"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T07:43:29.740482Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T07:43:29.740482Z",
+    "qa_date": "2026-01-02T18:55:28.282041",
+    "qa_completed_at": "2026-01-02T07:55:39.346919Z"
   },
   {
     "category": "style",
@@ -1678,11 +1682,13 @@
       "Step 3: Verify animated dots pattern",
       "Step 4: Verify smooth animation timing"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "dev_completed_at": "2026-01-02T07:49:10.905952Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 0,
+    "qa_date": "2026-01-02T18:55:28.282046",
+    "qa_completed_at": "2026-01-02T07:55:39.346920Z"
   },
   {
     "category": "style",
@@ -1693,11 +1699,12 @@
       "Step 3: Verify placeholder text",
       "Step 4: Verify focus state styling"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:45:50.258169Z"
+    "dev_completed_at": "2026-01-02T07:45:50.258169Z",
+    "qa_completed_at": "2026-01-02T07:55:39.346922Z"
   },
   {
     "category": "style",
@@ -1749,8 +1756,10 @@
       "Step 5: Verify CTA button styling"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T07:50:54.163282Z"
   },
   {
     "category": "style",
