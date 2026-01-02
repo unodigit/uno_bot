@@ -1,0 +1,61 @@
+{
+  "test_file": "test_business_logic_verification.py",
+  "timestamp": "2026-01-03T10:00:00Z",
+  "results": {
+    "total_tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "test_decision_maker_code_implementation",
+        "status": "passed",
+        "feature": 187,
+        "description": "Decision maker identification code verified (4/4 checks)"
+      },
+      {
+        "name": "test_success_criteria_code_implementation",
+        "status": "passed",
+        "feature": 188,
+        "description": "Success criteria code verified (3/3 checks)"
+      },
+      {
+        "name": "test_intent_detection_code_implementation",
+        "status": "passed",
+        "feature": 189,
+        "description": "Intent detection code verified (5/5 checks)"
+      },
+      {
+        "name": "test_context_retention_code_implementation",
+        "status": "passed",
+        "feature": 190,
+        "description": "Context retention code verified (6/6 checks)"
+      },
+      {
+        "name": "test_industry_detection_keywords",
+        "status": "passed",
+        "feature": 189,
+        "description": "Found 7/7 industry keywords"
+      },
+      {
+        "name": "test_tech_stack_detection_keywords",
+        "status": "passed",
+        "feature": 189,
+        "description": "Found 7/7 tech keywords"
+      },
+      {
+        "name": "test_budget_detection_patterns",
+        "status": "passed",
+        "feature": 189,
+        "description": "Found 7/7 budget terms"
+      },
+      {
+        "name": "test_lead_score_calculation_logic",
+        "status": "passed",
+        "feature": 187,
+        "description": "Lead score calculation verified (4/4 factors)"
+      }
+    ]
+  },
+  "features_verified": [187, 188, 189, 190],
+  "summary": "All business logic features verified through code implementation tests"
+}
