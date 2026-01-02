@@ -1,5 +1,8 @@
 """API routes initialization."""
+from datetime import datetime
+
 from fastapi import APIRouter
+from sqlalchemy import text
 
 from src.api.routes.admin import router as admin_router
 from src.api.routes.bookings import router as bookings_router
@@ -7,6 +10,8 @@ from src.api.routes.experts import router as experts_router
 from src.api.routes.prd import router as prd_router
 from src.api.routes.sessions import router as sessions_router
 from src.api.routes.templates import router as templates_router
+from src.core.config import settings
+from src.core.database import AsyncSessionLocal
 
 # Create main router
 router = APIRouter(prefix="/api/v1")
@@ -19,7 +24,59 @@ router.include_router(bookings_router, prefix="/bookings", tags=["bookings"])
 router.include_router(templates_router, prefix="/templates", tags=["templates"])
 router.include_router(admin_router, tags=["admin"])
 
+
+async def check_database_health() -> str:
+    """Check database connectivity."""
+    try:
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(text("SELECT 1"))
+            if result.scalar() == 1:
+                return "healthy"
+    except Exception:
+        pass
+    return "unhealthy"
+
+
+async def check_redis_health() -> str:
+    """Check Redis connectivity."""
+    try:
+        import redis
+        client = redis.Redis.from_url(settings.redis_url, socket_connect_timeout=2)
+        client.ping()
+        return "healthy"
+    except redis.exceptions.ConnectionError:
+        return "unavailable"
+    except Exception:
+        return "unhealthy"
+
+
 @router.get("/health")
 async def health_check():
-    """Health check endpoint."""
-    return {"status": "healthy", "version": "1.0.0"}
+    """Health check endpoint with system status.
+
+    Returns:
+        Dictionary containing:
+        - status: Overall system status (operational, degraded, down)
+        - version: API version
+        - timestamp: Current timestamp
+        - database: Database connection status
+        - redis: Redis connection status
+    """
+    db_status = await check_database_health()
+    redis_status = await check_redis_health()
+
+    # Determine overall status
+    if db_status == "healthy" and redis_status in ["healthy", "unavailable"]:
+        overall_status = "operational"
+    elif db_status == "healthy":
+        overall_status = "degraded"
+    else:
+        overall_status = "down"
+
+    return {
+        "status": overall_status,
+        "version": settings.app_version,
+        "timestamp": datetime.utcnow().isoformat(),
+        "database": db_status,
+        "redis": redis_status,
+    }

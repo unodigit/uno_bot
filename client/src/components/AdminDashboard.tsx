@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, UserPlus, Download, Search, Filter, Users, MessageSquare, Activity, Database, BarChart3, Clock, Edit2, Trash2, Star, ToggleLeft, ToggleRight, Type, X, Save, XCircle } from 'lucide-react'
+import { Plus, UserPlus, Download, Search, Filter, Users, MessageSquare, Activity, Database, BarChart3, Clock, Edit2, Trash2, Star, ToggleLeft, ToggleRight, Type, X, Save } from 'lucide-react'
 import { Button } from './ui/Button'
 import { Input } from './ui/Input'
 import { Card } from './ui/Card'
@@ -7,7 +7,7 @@ import { ExpertCard } from './ExpertCard'
 import { EditExpertForm } from './EditExpertForm'
 import { AddExpertForm } from './AddExpertForm'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000';
 
 interface AdminDashboardProps {
   onBack?: () => void
@@ -26,14 +26,50 @@ interface WelcomeTemplate {
   updated_at: string;
 }
 
+interface Expert {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  bio: string | null;
+  photo_url: string | null;
+  specialties: string[];
+  services: string[];
+  is_active: boolean;
+}
+
+interface AnalyticsData {
+  system?: { status: string };
+  conversations?: {
+    sessions?: { total: number; completed: number; abandoned: number; completion_rate: number };
+    conversion_metrics?: { sessions_with_prd: number; prd_conversion_rate: number; booking_conversion_rate: number };
+    engagement_metrics?: { average_session_duration_minutes: number; lead_score: { average: number } };
+    service_analytics?: { most_popular_service: string };
+  };
+  bookings?: {
+    bookings?: { total: number; confirmed: number; cancelled: number; cancellation_rate: number };
+    timing?: { average_lead_time_days: number };
+    recent_trends?: { last_7_days_bookings: number; recent_cancellations: number; recent_cancellation_rate: number };
+  };
+  system_health?: {
+    status: string;
+    database: string;
+    metrics?: { active_sessions: number };
+  };
+  api?: { version: string };
+  experts_performance?: {
+    summary?: { total_experts: number; active_experts: number; average_bookings_per_expert: number };
+  };
+}
+
 export function AdminDashboard({ onBack }: AdminDashboardProps) {
-  const [experts, setExperts] = useState([])
-  const [analytics, setAnalytics] = useState<any>(null)
+  const [experts, setExperts] = useState<Expert[]>([])
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [templates, setTemplates] = useState<WelcomeTemplate[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [filterStatus, setFilterStatus] = useState('all')
-  const [editingExpert, setEditingExpert] = useState(null)
+  const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all')
+  const [editingExpert, setEditingExpert] = useState<Expert | null>(null)
   const [addingExpert, setAddingExpert] = useState(false)
   const [savingExpert, setSavingExpert] = useState(false)
   const [exporting, setExporting] = useState(false)
@@ -86,7 +122,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
     setAddingExpert(true)
   }
 
-  const handleSaveNewExpert = async (expertData: any) => {
+  const handleSaveNewExpert = async (expertData: Record<string, unknown>) => {
     try {
       setSavingExpert(true)
       const response = await fetch(`${API_BASE_URL}/api/v1/admin/experts`, {
@@ -99,7 +135,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
         throw new Error('Failed to create expert')
       }
 
-      const newExpert = await response.json()
+      const newExpert = (await response.json()) as Expert
       setExperts(prev => [...prev, newExpert])
       setAddingExpert(false)
     } catch (error) {
@@ -114,11 +150,11 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
     setAddingExpert(false)
   }
 
-  const handleEditExpert = (expert: any) => {
+  const handleEditExpert = (expert: Expert) => {
     setEditingExpert(expert)
   }
 
-  const handleSaveExpert = async (updatedExpert: any) => {
+  const handleSaveExpert = async (updatedExpert: Record<string, unknown>) => {
     if (!editingExpert) return
 
     try {
@@ -133,7 +169,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
         throw new Error('Failed to update expert')
       }
 
-      const updatedData = await response.json()
+      const updatedData = (await response.json()) as Expert
       setExperts(prev => prev.map(exp => exp.id === editingExpert.id ? updatedData : exp))
       setEditingExpert(null)
     } catch (error) {

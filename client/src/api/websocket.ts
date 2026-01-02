@@ -65,9 +65,6 @@ export interface WebSocketEvents {
   error: { message: string };
 }
 
-// Union type for all possible event names
-type EventName = keyof WebSocketEvents | 'connect' | 'disconnect';
-
 export class WebSocketClient {
   private socket: Socket | null = null;
   private sessionId: string | null = null;
