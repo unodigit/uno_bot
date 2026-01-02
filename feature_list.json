@@ -2822,11 +2822,12 @@
       "Step 3: Verify no sensitive data committed",
       "Step 4: Verify .gitignore is complete"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T12:25:00.826735Z"
+    "dev_completed_at": "2026-01-02T12:25:00.826735Z",
+    "qa_verified_at": "2026-01-02T23:33:55.764197"
   },
   {
     "category": "functional",
@@ -2851,8 +2852,10 @@
       "Step 4: Verify cache invalidation works"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T12:30:02.496939Z"
   },
   {
     "category": "functional",
@@ -2864,11 +2867,12 @@
       "Step 4: Verify message animations",
       "Step 5: Verify no janky motion"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T12:23:20.295754Z"
+    "dev_completed_at": "2026-01-02T12:23:20.295754Z",
+    "qa_verified_at": "2026-01-02T23:33:55.764202"
   },
   {
     "category": "functional",
