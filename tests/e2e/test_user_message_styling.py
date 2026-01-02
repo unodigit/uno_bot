@@ -1,4 +1,5 @@
 """E2E tests for user message bubble styling."""
+from typing import Any
 from playwright.sync_api import Page
 
 # Frontend URL
@@ -23,13 +24,13 @@ class TestUserMessageStyling:
         send_button = page.get_by_test_id("send-button")
         send_button.click()
 
-    def _get_user_message_container(self, page: Page) -> any:
+    def _get_user_message_container(self, page: Page) -> Any:
         """Get the user message container (motion.div with flex/justify classes)."""
         container = page.locator('[data-testid="message-user"]').first
         container.wait_for(state="visible", timeout=10000)
         return container
 
-    def _get_user_message_bubble(self, page: Page) -> any:
+    def _get_user_message_bubble(self, page: Page) -> Any:
         """Get the user message bubble (child div with styling classes)."""
         container = self._get_user_message_container(page)
         # The bubble is the first child div
@@ -44,6 +45,7 @@ class TestUserMessageStyling:
         # The data-testid is on the motion.div which contains the justify-end class
         container = self._get_user_message_container(page)
         justify_class = container.get_attribute('class')
+        assert justify_class is not None, "Container should have class attribute"
 
         assert 'justify-end' in justify_class, \
             f"User message container should have justify-end class, got: {justify_class}"

@@ -20,7 +20,7 @@ class ChatWidgetStylingTestReport:
         self.tests = []
         self.overall_status = "unknown"
 
-    def add_test(self, test_name: str, status: str, details: str = "", issues: List[str] | None = None):
+    def add_test(self, test_name: str, status: str, details: str = "", issues: List[str] | None = None) -> None:
         self.tests.append({
             "test_name": test_name,
             "status": status,

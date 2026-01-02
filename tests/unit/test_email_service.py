@@ -55,8 +55,8 @@ class TestEmailService:
         assert email_service.from_email == settings.sendgrid_from_email
         assert email_service.environment == settings.environment
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_booking_confirmation_success(
         self,
@@ -75,14 +75,17 @@ class TestEmailService:
         mock_mail_instance = AsyncMock()
         mock_mail.return_value = mock_mail_instance
 
-        result = await email_service.send_booking_confirmation(**sample_booking_data)
+        # Mock production environment to test actual SendGrid call
+        with patch.object(settings, 'environment', 'production'):
+            with patch.object(settings, 'sendgrid_api_key', 'test-key'):
+                result = await email_service.send_booking_confirmation(**sample_booking_data)
 
         assert result is True
         mock_mail.assert_called_once()
         mock_client_instance.send.assert_called_once()
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_booking_confirmation_failure(
         self,
@@ -99,8 +102,8 @@ class TestEmailService:
 
         assert result is False
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_booking_confirmation_no_meeting_link(
         self,
@@ -123,8 +126,8 @@ class TestEmailService:
 
         assert result is True
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_booking_confirmation_no_prd(
         self,
@@ -147,8 +150,8 @@ class TestEmailService:
 
         assert result is True
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_booking_confirmation_dev_environment(
         self,
@@ -167,8 +170,8 @@ class TestEmailService:
             # Should not call SendGrid in dev
             mock_sendgrid_client.assert_not_called()
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_booking_confirmation_prod_no_api_key(
         self,
@@ -186,8 +189,8 @@ class TestEmailService:
                 assert result is False
                 mock_sendgrid_client.assert_not_called()
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_expert_notification_success(
         self,
@@ -216,8 +219,8 @@ class TestEmailService:
         mock_mail.assert_called_once()
         mock_client_instance.send.assert_called_once()
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_expert_notification_failure(
         self,
@@ -237,8 +240,8 @@ class TestEmailService:
 
         assert result is False
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_reminder_email_success(
         self,
@@ -261,8 +264,8 @@ class TestEmailService:
         mock_mail.assert_called_once()
         mock_client_instance.send.assert_called_once()
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_reminder_email_failure(
         self,
@@ -278,8 +281,8 @@ class TestEmailService:
 
         assert result is False
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_reminder_email_1_hour(
         self,
@@ -302,8 +305,8 @@ class TestEmailService:
 
         assert result is True
 
-    @patch('src.services.email_service.sendgrid.SendGridAPIClient')
-    @patch('src.services.email_service.Mail')
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
     @pytest.mark.asyncio
     async def test_send_reminder_email_24_hours(
         self,
@@ -325,6 +328,127 @@ class TestEmailService:
         result = await email_service.send_reminder_email(**sample_reminder_data)
 
         assert result is True
+
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
+    @pytest.mark.asyncio
+    async def test_send_expert_notification_success(
+        self,
+        mock_mail,
+        mock_sendgrid_client,
+        email_service,
+        sample_booking_data
+    ):
+        """Test successful expert notification email."""
+        mock_client_instance = AsyncMock()
+        mock_sendgrid_client.return_value = mock_client_instance
+        mock_client_instance.send.return_value.status_code = 202
+
+        mock_mail_instance = AsyncMock()
+        mock_mail.return_value = mock_mail_instance
+
+        # Use correct parameters for send_expert_notification
+        result = await email_service.send_expert_notification(
+            expert_email="expert@example.com",
+            expert_name=sample_booking_data["expert_name"],
+            client_name=sample_booking_data["client_name"],
+            client_email=sample_booking_data["client_email"],
+            start_time=sample_booking_data["start_time"],
+            end_time=sample_booking_data["end_time"],
+            timezone=sample_booking_data["timezone"],
+            prd_content="Test PRD content",
+            meeting_link=sample_booking_data["meeting_link"]
+        )
+
+        assert result is True
+        mock_mail.assert_called_once()
+        mock_client_instance.send.assert_called_once()
+
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
+    @pytest.mark.asyncio
+    async def test_send_expert_notification_failure(
+        self,
+        mock_mail,
+        mock_sendgrid_client,
+        email_service,
+        sample_booking_data
+    ):
+        """Test expert notification email failure."""
+        mock_sendgrid_client.side_effect = Exception("SendGrid API error")
+
+        expert_email = "expert@example.com"
+        result = await email_service.send_expert_notification(
+            expert_email=expert_email,
+            **sample_booking_data
+        )
+
+        assert result is False
+
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
+    @pytest.mark.asyncio
+    async def test_send_cancellation_email_success(
+        self,
+        mock_mail,
+        mock_sendgrid_client,
+        email_service,
+        sample_booking_data
+    ):
+        """Test successful cancellation email."""
+        mock_client_instance = AsyncMock()
+        mock_sendgrid_client.return_value = mock_client_instance
+        mock_client_instance.send.return_value.status_code = 202
+
+        mock_mail_instance = AsyncMock()
+        mock_mail.return_value = mock_mail_instance
+
+        # Use correct parameters for send_cancellation_email
+        result = await email_service.send_cancellation_email(
+            client_email=sample_booking_data["client_email"],
+            client_name=sample_booking_data["client_name"],
+            expert_name=sample_booking_data["expert_name"],
+            start_time=sample_booking_data["start_time"],
+            end_time=sample_booking_data["end_time"],
+            timezone=sample_booking_data["timezone"],
+        )
+
+        assert result is True
+        mock_mail.assert_called_once()
+        mock_client_instance.send.assert_called_once()
+
+    @patch('sendgrid.SendGridAPIClient')
+    @patch('sendgrid.helpers.mail.Mail')
+    @pytest.mark.asyncio
+    async def test_send_expert_cancellation_notification_success(
+        self,
+        mock_mail,
+        mock_sendgrid_client,
+        email_service,
+        sample_booking_data
+    ):
+        """Test successful expert cancellation notification."""
+        mock_client_instance = AsyncMock()
+        mock_sendgrid_client.return_value = mock_client_instance
+        mock_client_instance.send.return_value.status_code = 202
+
+        mock_mail_instance = AsyncMock()
+        mock_mail.return_value = mock_mail_instance
+
+        # Use correct parameters for send_expert_cancellation_notification
+        result = await email_service.send_expert_cancellation_notification(
+            expert_email="expert@example.com",
+            client_name=sample_booking_data["client_name"],
+            start_time=sample_booking_data["start_time"],
+            end_time=sample_booking_data["end_time"],
+            timezone=sample_booking_data["timezone"],
+            reason="Client requested cancellation",
+            booking_id="booking_123"
+        )
+
+        assert result is True
+        mock_mail.assert_called_once()
+        mock_client_instance.send.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_format_date_time(self, email_service):

@@ -26,6 +26,7 @@ async def test_feature_10_bot_asks_name(page: Page):
     assert len(messages) >= 1, "Should have at least welcome message"
 
     welcome_text = await messages[0].text_content()
+    assert welcome_text is not None, "Welcome message should have text content"
 
     # The welcome message should ask for name
     assert "name" in welcome_text.lower() or "what's your name" in welcome_text.lower() or "to get started" in welcome_text.lower(), \
@@ -54,6 +55,7 @@ async def test_feature_11_collects_email(page: Page):
     messages = await page.locator("[data-testid='chat-message']").all()
     last_message = messages[-1]
     last_text = await last_message.text_content()
+    assert last_text is not None, "Last message should have text content"
 
     # Should ask for email
     assert "email" in last_text.lower(), f"Bot should ask for email after name. Got: {last_text}"
@@ -88,6 +90,7 @@ async def test_feature_12_collects_company(page: Page):
     messages = await page.locator("[data-testid='chat-message']").all()
     last_message = messages[-1]
     last_text = await last_message.text_content()
+    assert last_text is not None, "Last message should have text content"
 
     # Should ask about company or industry
     assert any(keyword in last_text.lower() for keyword in ["company", "industry", "organization", "business"]), \
@@ -128,6 +131,7 @@ async def test_feature_14_asks_tech_stack(page: Page):
     messages = await page.locator("[data-testid='chat-message']").all()
     last_message = messages[-1]
     last_text = await last_message.text_content()
+    assert last_text is not None, "Last message should have text content"
 
     # Should ask about tech stack or move to qualification
     print(f"Last message: {last_text}")
@@ -160,6 +164,7 @@ async def test_feature_15_collects_budget(page: Page):
     messages = await page.locator("[data-testid='chat-message']").all()
     last_message = messages[-1]
     last_text = await last_message.text_content()
+    assert last_text is not None, "Last message should have text content"
 
     # Should ask about budget
     assert "budget" in last_text.lower() or "$" in last_text, \
@@ -193,6 +198,7 @@ async def test_feature_16_collects_timeline(page: Page):
     messages = await page.locator("[data-testid='chat-message']").all()
     last_message = messages[-1]
     last_text = await last_message.text_content()
+    assert last_text is not None, "Last message should have text content"
 
     # Should ask about timeline
     assert "timeline" in last_text.lower() or "month" in last_text.lower(), \
