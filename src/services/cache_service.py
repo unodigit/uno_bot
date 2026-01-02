@@ -157,7 +157,7 @@ class CacheService:
         """Initialize cache service with Redis or fallback."""
         self.redis_url = settings.redis_url
         self.redis: Optional[Any] = None
-        self.in_memory_cache: Optional[InMemoryCache] = None
+        self.in_memory_cache: InMemoryCache = InMemoryCache()  # Always initialize
         self.use_redis: bool = False
 
     async def connect(self) -> None:
@@ -177,8 +177,7 @@ class CacheService:
             except Exception:
                 pass
 
-        # Fallback to in-memory cache
-        self.in_memory_cache = InMemoryCache()
+        # Fallback to in-memory cache (already initialized)
         self.use_redis = False
 
     async def disconnect(self) -> None:

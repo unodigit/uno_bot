@@ -107,10 +107,17 @@ class AnalyticsService:
         expert_bookings = await self._get_expert_booking_counts(start_date, end_date)
         expert_sessions = await self._get_expert_session_counts(start_date, end_date)
 
+        # Get all experts to look up their details
+        result = await self.db.execute(select(Expert))
+        all_experts = {e.id: e for e in result.scalars().all()}
+
         # Calculate expert performance metrics
         expert_metrics = []
-        for expert, booking_count in expert_bookings.items():
-            session_count = expert_sessions.get(expert, 0)
+        for expert_id, booking_count in expert_bookings.items():
+            expert = all_experts.get(expert_id)
+            if not expert:
+                continue
+            session_count = expert_sessions.get(expert_id, 0)
             conversion_rate = (booking_count / session_count * 100) if session_count > 0 else 0
 
             expert_metrics.append({
@@ -128,6 +135,9 @@ class AnalyticsService:
         # Sort by booking count
         expert_metrics.sort(key=lambda x: cast(int, x["total_bookings"]), reverse=True)
 
+        total_bookings = sum(e["total_bookings"] for e in expert_metrics)
+        avg_bookings = total_bookings / len(expert_metrics) if expert_metrics else 0.0
+
         return {
             "time_period": {
                 "start_date": start_date.isoformat(),
@@ -138,7 +148,7 @@ class AnalyticsService:
             "summary": {
                 "total_experts": len(expert_metrics),
                 "active_experts": len([e for e in expert_metrics if e["availability_status"] == "active"]),
-                "average_bookings_per_expert": sum(e["total_bookings"] for e in expert_metrics) / len(expert_metrics) if expert_metrics else 0.0
+                "average_bookings_per_expert": avg_bookings
             }
         }
 
@@ -402,7 +412,8 @@ class AnalyticsService:
             )
         )
 
-        phase_counts: Dict[str, int] = dict(result.fetchall())
+        rows = result.fetchall()
+        phase_counts: Dict[str, int] = {row[0]: row[1] for row in rows}
         total_sessions = sum(phase_counts.values())
 
         completion_rates = {}
@@ -433,7 +444,8 @@ class AnalyticsService:
             ).group_by(Expert.id)
         )
 
-        return dict(result.fetchall())
+        rows = result.fetchall()
+        return {row[0]: row[1] for row in rows}
 
     async def _get_expert_session_counts(self, start_date: datetime, end_date: datetime) -> Dict[uuid.UUID, int]:
         """Get session counts per expert."""
@@ -447,7 +459,8 @@ class AnalyticsService:
             ).group_by(Expert.id)
         )
 
-        return dict(result.fetchall())
+        rows = result.fetchall()
+        return {row[0]: row[1] for row in rows}
 
     async def _get_total_bookings(self, start_date: datetime, end_date: datetime) -> int:
         """Get total number of bookings."""

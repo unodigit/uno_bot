@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.models.expert import Expert
 from src.models.booking import Booking
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
+from src.services.cache_service import cache_expert_data, get_cached_expert_data
 
 
 class ExpertService:
@@ -70,20 +71,29 @@ class ExpertService:
         return result.scalar_one()
 
     async def get_expert(self, expert_id: uuid.UUID) -> Optional[ExpertResponse]:
-        """Get an expert by ID.
-
+        """Get an expert by ID with caching.
         Args:
             expert_id: The expert ID
-
         Returns:
             The expert or None if not found
         """
+        # Try to get from cache first
+        cached_expert = await get_cached_expert_data(str(expert_id))
+        if cached_expert:
+            # Reconstruct the ExpertResponse from cached data
+            return ExpertResponse(**cached_expert)
+
+        # If not cached, get from database
         result = await self.db.execute(
             select(Expert).where(Expert.id == expert_id)
         )
         expert = result.scalar_one_or_none()
         if expert:
-            return ExpertResponse.model_validate(expert)
+            expert_response = ExpertResponse.model_validate(expert)
+            expert_data = expert_response.model_dump()
+            # Cache the expert data
+            await cache_expert_data(str(expert_id), expert_data)
+            return expert_response
         return None
 
     async def get_expert_model(self, expert_id: uuid.UUID) -> Optional[Expert]:
