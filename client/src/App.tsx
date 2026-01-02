@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChatWidget } from './components/ChatWidget'
 import { useChatStore } from './stores/chatStore'
+import AdminPage from './pages/AdminPage'
 
-function App() {
+function Home() {
   const { loadSession } = useChatStore()
 
   // Check for session ID in URL parameters on app load
@@ -28,6 +30,17 @@ function App() {
       </div>
       <ChatWidget />
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

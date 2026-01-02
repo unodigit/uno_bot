@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { User, Mail, Award, Star, Briefcase, Calendar } from 'lucide-react'
+import { User, Mail, Award, Star, Briefcase, Calendar, Edit, Trash2 } from 'lucide-react'
 import { MatchedExpert, Expert } from '../types'
 
 interface ExpertCardProps {
@@ -7,10 +7,13 @@ interface ExpertCardProps {
   index?: number
   onSelect?: (expert: MatchedExpert) => void
   onBook?: (expert: MatchedExpert) => void
+  onEdit?: (expert: Expert) => void
+  onDelete?: (expertId: string) => void
   showActions?: boolean
+  showAdminActions?: boolean
 }
 
-export function ExpertCard({ expert, index = 0, onSelect, onBook, showActions = true }: ExpertCardProps) {
+export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDelete, showActions = true, showAdminActions = false }: ExpertCardProps) {
   const isMatchedExpert = 'match_score' in expert
   const scorePercentage = isMatchedExpert ? Math.round((expert as MatchedExpert).match_score) : null
 
@@ -19,7 +22,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, showActions = 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+      className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative group"
       data-testid={`expert-card-${index}`}
     >
       <div className="flex items-start gap-3">
@@ -119,6 +122,34 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, showActions = 
             </div>
           )}
         </div>
+
+        {/* Admin Action Buttons - Edit/Delete (visible on hover) */}
+        {showAdminActions && (onEdit || onDelete) && (
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+            {onEdit && (
+              <button
+                onClick={() => onEdit(expert as Expert)}
+                className="p-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                data-testid={`edit-expert-${index}`}
+                title="Edit"
+              >
+                <Edit className="w-3 h-3" />
+                <span className="sr-only">Edit</span>
+              </button>
+            )}
+            {onDelete && (
+              <button
+                onClick={() => onDelete(expert.id)}
+                className="p-1.5 bg-white border border-red-300 text-red-600 rounded hover:bg-red-50 transition-colors"
+                data-testid={`delete-expert-${index}`}
+                title="Delete"
+              >
+                <Trash2 className="w-3 h-3" />
+                <span className="sr-only">Delete</span>
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </motion.div>
   )

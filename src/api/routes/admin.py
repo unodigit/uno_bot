@@ -63,13 +63,14 @@ async def update_expert_admin(
         Updated expert profile
     """
     service = ExpertService(db)
-    expert = await service.update_expert(expert_id, expert_update)
+    expert = await service.get_expert(expert_id)
     if not expert:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Expert not found"
         )
-    return expert
+    updated_expert = await service.update_expert(expert, expert_update)
+    return updated_expert
 
 
 @router.delete("/experts/{expert_id}")
@@ -87,12 +88,13 @@ async def delete_expert_admin(
         Success message
     """
     service = ExpertService(db)
-    success = await service.delete_expert(expert_id)
-    if not success:
+    expert = await service.get_expert(expert_id)
+    if not expert:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Expert not found"
         )
+    await service.delete_expert(expert)
     return {"message": "Expert deleted successfully"}
 
 

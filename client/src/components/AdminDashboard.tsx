@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Plus, UserPlus, Edit, Trash2, Download, Search, Filter, Calendar, Users, MessageSquare, Activity, Database, BarChart3, TrendingUp, Eye, Clock, DollarSign, Users2, DatabaseBackup, DatabaseZap } from 'lucide-react'
-import { Button } from '../components/ui/Button'
-import { Input } from '../components/ui/Input'
-import { Card } from '../components/ui/Card'
+import { Plus, UserPlus, Download, Search, Filter, Calendar, Users, MessageSquare, Activity, Database, BarChart3, TrendingUp, Eye, Clock, DollarSign, Users2, DatabaseBackup, DatabaseZap } from 'lucide-react'
+import { Button } from './ui/Button'
+import { Input } from './ui/Input'
+import { Card } from './ui/Card'
 import { ExpertCard } from './ExpertCard'
 import { EditExpertForm } from './EditExpertForm'
 import { AddExpertForm } from './AddExpertForm'
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 interface AdminDashboardProps {
   onBack?: () => void
@@ -30,7 +32,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
   const fetchExperts = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/v1/admin/experts')
+      const response = await fetch(`${API_BASE_URL}/api/v1/admin/experts`)
       const data = await response.json()
       setExperts(data)
     } catch (error) {
@@ -42,7 +44,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('/api/v1/admin/analytics')
+      const response = await fetch(`${API_BASE_URL}/api/v1/admin/analytics`)
       const data = await response.json()
       setAnalytics(data)
     } catch (error) {
@@ -57,7 +59,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
   const handleSaveNewExpert = async (expertData: any) => {
     try {
       setSavingExpert(true)
-      const response = await fetch('/api/v1/admin/experts', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/admin/experts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +95,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
 
     try {
       setSavingExpert(true)
-      const response = await fetch(`/api/v1/admin/experts/${editingExpert.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/admin/experts/${editingExpert.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +125,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
   const handleDeleteExpert = async (expertId: string) => {
     if (confirm('Are you sure you want to delete this expert?')) {
       try {
-        await fetch(`/api/v1/admin/experts/${expertId}`, {
+        await fetch(`${API_BASE_URL}/api/v1/admin/experts/${expertId}`, {
           method: 'DELETE',
         })
         fetchExperts()
@@ -137,7 +139,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
     try {
       setExporting(true)
       // Get all experts with full details
-      const response = await fetch('/api/v1/admin/experts')
+      const response = await fetch(`${API_BASE_URL}/api/v1/admin/experts`)
       const data = await response.json()
 
       // Generate CSV
@@ -475,30 +477,16 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredExperts.map((expert: any) => (
-                  <div key={expert.id} className="relative group">
-                    <ExpertCard expert={expert} />
-                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditExpert(expert)}
-                        className="flex items-center gap-1"
-                      >
-                        <Edit className="w-3 h-3" />
-                        Edit
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleDeleteExpert(expert.id)}
-                        className="flex items-center gap-1"
-                      >
-                        <Trash2 className="w-3 h-3" />
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
+                {filteredExperts.map((expert: any, index: number) => (
+                  <ExpertCard
+                    key={expert.id}
+                    expert={expert}
+                    index={index}
+                    showActions={false}
+                    showAdminActions={true}
+                    onEdit={handleEditExpert}
+                    onDelete={handleDeleteExpert}
+                  />
                 ))}
               </div>
             )}

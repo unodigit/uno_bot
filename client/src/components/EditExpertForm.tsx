@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Edit, Save, X } from 'lucide-react'
-import { Button } from '../ui/Button'
-import { Input } from '../ui/Input'
-import { Textarea } from '../ui/Textarea'
+import { Button } from './ui/Button'
+import { Input } from './ui/Input'
+import { Textarea } from './ui/Textarea'
 
 interface EditExpertFormProps {
   expert: any
