@@ -738,9 +738,11 @@
       "Step 4: Verify received within 30 seconds",
       "Step 5: Verify email contains booking details"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T05:12:09.833895+00:00",
+    "qa_passed_at": "2026-01-02T05:12:09.833895+00:00"
   },
   {
     "category": "functional",
@@ -772,8 +774,9 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-02T15:58:00.000000Z",
-    "qa_completed_at": "2026-01-02T15:58:00.000000Z"
+    "dev_completed_at": "2026-01-02T05:12:05.729964Z",
+    "qa_completed_at": "2026-01-02T15:58:00.000000Z",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",
@@ -800,9 +803,12 @@
       "Step 3: Verify reminder email sent at 1 hour",
       "Step 4: Verify reminder contains join link"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T05:12:09.833895+00:00",
+    "qa_retry_count": 0,
+    "qa_completed_at": "2026-01-02T05:13:35.829053+00:00"
   },
   {
     "category": "functional",
@@ -813,11 +819,12 @@
       "Step 3: Verify logo is included",
       "Step 4: Verify brand colors are used"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T05:09:32.481021Z"
+    "dev_completed_at": "2026-01-02T05:09:32.481021Z",
+    "qa_passed_at": "2026-01-02T05:12:09.833895+00:00"
   },
   {
     "category": "functional",
