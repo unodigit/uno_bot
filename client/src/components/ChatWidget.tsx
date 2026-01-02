@@ -6,12 +6,26 @@ import { useChatStore } from '../stores/chatStore'
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
+  const [isFirstVisit, setIsFirstVisit] = useState(false)
 
   const { messages, sessionId, createSession, loadSession } = useChatStore()
 
-  // Check for existing session on mount
+  // Check for existing session on mount and determine if first visit
   useEffect(() => {
     const existingSessionId = localStorage.getItem('unobot_session_id')
+    const hasSeenWidget = localStorage.getItem('unobot_widget_seen')
+
+    // Check if this is the first time seeing the widget
+    if (!hasSeenWidget) {
+      setIsFirstVisit(true)
+      // Mark as seen after 3 seconds
+      const timer = setTimeout(() => {
+        setIsFirstVisit(false)
+        localStorage.setItem('unobot_widget_seen', 'true')
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+
     if (existingSessionId && !sessionId) {
       // Load existing session instead of creating a new one
       loadSession(existingSessionId)
@@ -44,7 +58,9 @@ export function ChatWidget() {
       {!isOpen && !isMinimized && (
         <button
           onClick={handleToggle}
-          className="fixed bottom-6 right-6 w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50"
+          className={`fixed bottom-6 right-6 w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50 ${
+            isFirstVisit ? 'animate-pulse-subtle' : ''
+          }`}
           aria-label="Open chat"
           data-testid="chat-widget-button"
         >
