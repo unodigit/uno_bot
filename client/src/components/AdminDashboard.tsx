@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, UserPlus, Download, Search, Filter, Users, MessageSquare, Activity, Database, BarChart3, Clock, Edit2, Trash2, Star, ToggleLeft, ToggleRight, Type, X, Save } from 'lucide-react'
+import { Plus, UserPlus, Download, Search, Filter, Users, MessageSquare, Activity, Database, BarChart3, Clock, Edit2, Trash2, Star, ToggleLeft, ToggleRight, Type, X, Save, Calendar, FileText } from 'lucide-react'
 import { Button } from './ui/Button'
 import { Input } from './ui/Input'
 import { Card } from './ui/Card'
@@ -956,6 +956,101 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
               </div>
             </div>
           </>
+        )}
+
+        {/* Leads Tab */}
+        {activeTab === 'leads' && (
+          <div className="space-y-6">
+            {/* Leads Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <Card className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-text">Total Leads</p>
+                    <p className="text-2xl font-bold text-text">{leads.length}</p>
+                  </div>
+                  <Activity className="w-8 h-8 text-blue-600" />
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-text">With Bookings</p>
+                    <p className="text-2xl font-bold text-text">{leads.filter(l => l.has_booking).length}</p>
+                  </div>
+                  <Calendar className="w-8 h-8 text-green-600" />
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-text">With PRDs</p>
+                    <p className="text-2xl font-bold text-text">{leads.filter(l => l.has_prd).length}</p>
+                  </div>
+                  <FileText className="w-8 h-8 text-purple-600" />
+                </div>
+              </Card>
+            </div>
+
+            {/* Leads List */}
+            <Card className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-lg font-semibold text-text">Lead Data</h2>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Sessions with high lead scores, bookings, or PRDs
+                  </p>
+                </div>
+              </div>
+
+              {leads.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  No leads found in the last 30 days
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="text-left py-2 px-2 font-medium">Visitor ID</th>
+                        <th className="text-left py-2 px-2 font-medium">Lead Score</th>
+                        <th className="text-left py-2 px-2 font-medium">Service</th>
+                        <th className="text-left py-2 px-2 font-medium">Booking</th>
+                        <th className="text-left py-2 px-2 font-medium">PRD</th>
+                        <th className="text-left py-2 px-2 font-medium">Phase</th>
+                        <th className="text-left py-2 px-2 font-medium">Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {leads.map((lead: any) => (
+                        <tr key={lead.session_id} className="border-b border-gray-100 hover:bg-gray-50">
+                          <td className="py-2 px-2 font-mono text-xs">{lead.visitor_id}</td>
+                          <td className="py-2 px-2">
+                            <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                              lead.lead_score >= 80 ? 'bg-green-100 text-green-800' :
+                              lead.lead_score >= 60 ? 'bg-blue-100 text-blue-800' :
+                              'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {lead.lead_score ?? '-'}
+                            </span>
+                          </td>
+                          <td className="py-2 px-2 text-xs">{lead.recommended_service || '-'}</td>
+                          <td className="py-2 px-2 text-xs">{lead.has_booking ? '✓' : '-'}</td>
+                          <td className="py-2 px-2 text-xs">{lead.has_prd ? '✓' : '-'}</td>
+                          <td className="py-2 px-2 text-xs">{lead.current_phase}</td>
+                          <td className="py-2 px-2 text-xs text-gray-500">
+                            {new Date(lead.created_at).toLocaleDateString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </Card>
+          </div>
         )}
       </div>
 

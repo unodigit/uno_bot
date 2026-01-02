@@ -992,9 +992,9 @@ class SessionService:
         result = await self.db.execute(
             select(ConversationSession)
             .where(
-                ConversationSession.created_at >= cutoff_date
+                ConversationSession.started_at >= cutoff_date
             )
-            .order_by(ConversationSession.created_at.desc())
+            .order_by(ConversationSession.started_at.desc())
         )
         sessions = result.scalars().all()
 
@@ -1011,7 +1011,7 @@ class SessionService:
                 leads.append({
                     "visitor_id": session.visitor_id,
                     "session_id": str(session.id),
-                    "created_at": session.created_at.isoformat() if session.created_at else None,
+                    "created_at": session.started_at.isoformat() if session.started_at else None,
                     "status": session.status,
                     "current_phase": session.current_phase,
                     "lead_score": session.lead_score,
