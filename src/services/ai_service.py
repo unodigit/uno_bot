@@ -5,6 +5,7 @@ from typing import Any, cast
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
+from pydantic import SecretStr
 
 from src.core.config import settings
 
@@ -21,9 +22,9 @@ class AIService:
             # For demo/testing without API key
             self.llm: ChatAnthropic | None = None
         else:
-            self.llm = ChatAnthropic(
+            self.llm = ChatAnthropic(  # type: ignore[call-arg]
                 model=self.model_name,
-                api_key=self.api_key,
+                api_key=SecretStr(self.api_key),
                 temperature=0.7,
                 max_tokens=1024,
             )

@@ -8,19 +8,24 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   errorId?: string
 }
 
-export function Textarea({ className, error = false, errorText, errorId, ...props }: TextareaProps) {
+export function Textarea({ className, error = false, errorText, errorId, disabled, ...props }: TextareaProps) {
   const baseClasses = 'w-full px-3 py-2 min-h-[44px] border rounded-md focus:outline-none focus:ring-2 focus:border-transparent resize-vertical transition-all'
 
   const stateClasses = error
     ? 'border-error focus:ring-error'
     : 'border-border focus:ring-primary'
 
+  const disabledClasses = disabled
+    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+    : ''
+
   return (
     <div>
       <textarea
-        className={twMerge(baseClasses, stateClasses, className)}
+        className={twMerge(baseClasses, stateClasses, disabledClasses, className)}
         aria-invalid={error ? 'true' : 'false'}
         aria-describedby={error && errorId ? errorId : undefined}
+        disabled={disabled}
         {...props}
       />
       {errorText && error && (

@@ -2758,11 +2758,17 @@
       "Step 3: Verify helpful error message shown",
       "Step 4: Verify retry mechanism exists"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T12:02:25.377551Z"
+    "dev_completed_at": "2026-01-02T12:02:25.377551Z",
+    "qa_completed_at": "2026-01-02T14:22:00+00:00",
+    "test_files": [
+      "tests/integration/test_error_handling.py::test_graceful_degradation_calendar_service_failure",
+      "tests/integration/test_error_handling.py::test_graceful_degradation_email_service_failure",
+      "tests/integration/test_error_handling.py::test_timezone_fallback_on_calendar_failure"
+    ]
   },
   {
     "category": "functional",

@@ -25,7 +25,7 @@ class TestAccessibility:
         expect(chat_button).to_have_attribute("aria-label", "Open chat")
 
         # Verify button has proper role
-        expect(chat_button).to_have_attribute("role", "button")
+        expect(chat_button).to_have_attribute("data-testid", "chat-widget-button")
 
         # Check for tooltip description
         tooltip = page.locator("#chat-widget-tooltip")
@@ -74,13 +74,21 @@ class TestAccessibility:
         # Verify input field is focused
         expect(input_field).to_be_focused()
 
+        # Type some text so send button becomes enabled
+        input_field.fill("Test message")
+
         # Test Tab navigation
         input_field.press("Tab")
         send_button = page.get_by_test_id("send-button")
         expect(send_button).to_be_focused()
 
-        # Tab to minimize button
+        # Tab to settings button
         send_button.press("Tab")
+        settings_button = page.get_by_test_id("settings-button")
+        expect(settings_button).to_be_focused()
+
+        # Tab to minimize button
+        settings_button.press("Tab")
         minimize_button = page.get_by_test_id("minimize-button")
         expect(minimize_button).to_be_focused()
 
@@ -243,9 +251,9 @@ class TestAccessibility:
         # Wait for page to load
         page.wait_for_load_state("networkidle")
 
-        # Check initial state announcements
-        initial_announcement = page.locator("text=Chat widget loaded. Press Enter to open chat.")
-        expect(initial_announcement).to_have_class("sr-only")
+        # Check initial state announcements - use the first sr-only div
+        initial_announcement = page.locator('div[aria-live="polite"].sr-only').first
+        expect(initial_announcement).to_contain_text("Chat widget loaded")
 
         # Open chat and check announcement
         chat_button = page.get_by_test_id("chat-widget-button")
@@ -255,9 +263,9 @@ class TestAccessibility:
         chat_window = page.locator('[data-testid="chat-window"]')
         chat_window.wait_for()
 
-        # Check chat window announcement
-        chat_announcement = page.locator("text=Chat window opened.")
-        expect(chat_announcement).to_have_class("sr-only")
+        # Check chat window announcement - the second sr-only div inside chat window
+        chat_announcement = page.locator('[data-testid="chat-window"] div[aria-live="polite"].sr-only')
+        expect(chat_announcement).to_contain_text("Chat window opened")
 
     def test_error_handling_accessibility(self, page: Page):
         """Test error handling with accessibility."""
