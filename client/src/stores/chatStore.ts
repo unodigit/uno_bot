@@ -21,6 +21,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isStreaming: false,
   error: null,
   visitorId: null,
+  currentPhase: 'greeting',
+  clientInfo: {},
+  businessContext: {},
+  qualification: {},
 
   // Actions
   openChat: () => {
@@ -88,6 +92,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
           created_at: new Date().toISOString(),
         }],
         isLoading: false,
+        currentPhase: session.current_phase || 'greeting',
+        clientInfo: session.client_info || {},
+        businessContext: session.business_context || {},
+        qualification: session.qualification || {},
       });
     } catch (error) {
       set({
@@ -111,6 +119,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         sessionId: session.id,
         messages: session.messages,
         isLoading: false,
+        currentPhase: session.current_phase || 'greeting',
+        clientInfo: session.client_info || {},
+        businessContext: session.business_context || {},
+        qualification: session.qualification || {},
       });
     } catch (error) {
       set({
@@ -150,10 +162,14 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // Fetch the updated session to get the bot response
       const updatedSession = await api.getSession(sessionId);
 
-      // Update messages with the full conversation history
+      // Update messages and session data with the full conversation history
       set({
         messages: updatedSession.messages,
         isStreaming: false,
+        currentPhase: updatedSession.current_phase || 'greeting',
+        clientInfo: updatedSession.client_info || {},
+        businessContext: updatedSession.business_context || {},
+        qualification: updatedSession.qualification || {},
       });
     } catch (error) {
       set({

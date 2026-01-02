@@ -242,8 +242,8 @@ class SessionService:
         if not session.client_info.get("company"):
             # Look for patterns like "I work at X", "company is X", "at X", "company is called X"
             company_patterns = [
-                r"(?:work at|work for)\s+([a-zA-Z0-9\s&]+?)(?:,|\.|!|\?|$)",
-                r"(?:my company|our company)\s+(?:is\s+)?(?:called\s+)?([a-zA-Z0-9\s&]+?)(?:,|\.|!|\?|$)"
+                r"(?:work at|work for)\s+([a-zA-Z0-9\s&]+?)(?:\s+(?:and|we|I|it|with|for|to)\s|,|\.|!|\?|$)",
+                r"(?:my company|our company)\s+(?:is\s+)?(?:called\s+)?([a-zA-Z0-9\s&]+?)(?:\s+(?:and|we|I|it|with)\s|,|\.|!|\?|$)"
             ]
             for pattern in company_patterns:
                 company_match = re.search(pattern, user_text)
@@ -291,9 +291,9 @@ class SessionService:
         # Extract budget range
         if not session.qualification.get("budget_range"):
             budget_patterns = {
-                r"(under|less than|<)\s*\$?25,?000": "small (<$25k)",
-                r"\$?25,?000\s*-\s*\$?100,?000|\$?50,?000|\$?75,?000": "medium ($25k-$100k)",
-                r"(over|more than|>|>\s*\$?100,?000)": "large (>$100k)",
+                r"(?:under|less than|<)\s*\$?25k|\$?25,?000\b": "small (<$25k)",
+                r"\$?25k\s*(?:to|-)\s*\$?100k|\$?25,?000\s*(?:to|-)\s*\$?100,?000|(?:^|[^1-9])\$?50k|(?:^|[^1-9])\$?50,?000\b|(?:^|[^1-9])\$?75k|(?:^|[^1-9])\$?75,?000\b": "medium ($25k-$100k)",
+                r"(?:over|more than|>|>\s*)\$?100k|\$?100,?000\b|\$?150k|\$?150,?000\b|\$?200k|\$?200,?000\b": "large (>$100k)",
                 r"\bsmall\b": "small (<$25k)",
                 r"\bmedium\b": "medium ($25k-$100k)",
                 r"\blarge\b": "large (>$100k)"
@@ -325,9 +325,9 @@ class SessionService:
         if not session.business_context.get("company_size"):
             size_patterns = {
                 r"(startup|small|1-10|under 10|few people)": "1-10",
-                r"(10-50|medium small|50 people)": "10-50",
-                r"(50-200|medium|100 people)": "50-200",
-                r"(200\+|large|enterprise|1000|big)": "200+"
+                r"(10-50|medium small|50 people|50 employees)": "10-50",
+                r"(50-200|medium|100 people|100 employees)": "50-200",
+                r"(200\+|200\s*(employees|people)|large|enterprise|1000|big)": "200+"
             }
             for pattern, value in size_patterns.items():
                 if re.search(pattern, user_text):
@@ -494,8 +494,57 @@ class SessionService:
                 return SessionPhase.PRD_GENERATION
             return None
 
+        # Phase 8: PRD Generation
+        if current_phase == SessionPhase.PRD_GENERATION and not session.prd_id:
+            # Generate PRD
+            await self._generate_prd_for_session(session)
+            # Move to expert matching phase
+            if current_phase != SessionPhase.EXPERT_MATCHING:
+                return SessionPhase.EXPERT_MATCHING
+            return None
+
         # All phases complete
         if current_phase != SessionPhase.EXPERT_MATCHING:
             return SessionPhase.EXPERT_MATCHING
 
         return None
+
+    async def _generate_prd_for_session(self, session: ConversationSession) -> None:
+        """Generate a PRD for the session."""
+        from src.models.prd import PRDDocument
+        from src.services.ai_service import AIService
+
+        # Get AI service
+        ai_service = AIService()
+
+        # Generate PRD content
+        conversation_history = []
+        for msg in session.messages:
+            conversation_history.append({
+                "role": msg.role,
+                "content": msg.content
+            })
+
+        prd_content = await ai_service.generate_prd(
+            business_context=session.business_context,
+            client_info=session.client_info,
+            conversation_history=conversation_history
+        )
+
+        # Create PRD document
+        prd = PRDDocument(
+            session_id=session.id,
+            content_markdown=prd_content,
+            client_company=session.client_info.get("company"),
+            client_name=session.client_info.get("name"),
+            recommended_service=session.recommended_service,
+            matched_expert=session.matched_expert_id
+        )
+
+        self.db.add(prd)
+        await self.db.commit()
+        await self.db.refresh(prd)
+
+        # Update session with PRD ID
+        session.prd_id = prd.id
+        await self.db.commit()
