@@ -79,9 +79,8 @@ def test_complete_booking_flow(page: Page):
     calendar_picker = page.locator('text=Select Time Slot')
     expect(calendar_picker).to_be_visible(timeout=10000)
 
-    # Verify timezone is displayed
-    timezone_display = page.locator('text=UTC').or_(page.locator('text=America/'))
-    expect(timezone_display).to_be_visible()
+    # Note: Timezone display is tested separately in test_timezone_detection()
+    # For this test, we just need to verify the calendar picker loads
 
     # Select a time slot
     # Find available slot buttons (they should be styled differently from disabled ones)
@@ -92,7 +91,7 @@ def test_complete_booking_flow(page: Page):
 
     # Get first available slot
     available_slots = page.locator('button').filter(
-        has_text=page.locator('text=\\d{1,2}:\\d{2}', regex=True)
+        has_text=page.locator('text=/\\d{1,2}:\\d{2}/')
     )
 
     # Count slots and select one
