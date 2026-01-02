@@ -61,7 +61,7 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-02T02:44:12.960325+00:00",
+    "dev_completed_at": "2026-01-02T02:52:43.334015Z",
     "qa_retry_count": 0,
     "qa_completed_at": "2026-01-02T02:51:59.170127+00:00"
   },
@@ -173,10 +173,10 @@
       "Step 5: Verify name is stored in session client_info"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:36:50.691442Z"
+    "qa_retry_count": 1,
+    "qa_completed_at": "2026-01-02T02:55:12.724752+00:00"
   },
   {
     "category": "functional",
