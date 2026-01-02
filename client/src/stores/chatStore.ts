@@ -43,6 +43,14 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       return;
     }
 
+    // Check if there's an existing session in localStorage
+    const existingSessionId = localStorage.getItem('unobot_session_id');
+    if (existingSessionId) {
+      // Load existing session instead of creating new
+      const { loadSession } = get();
+      return loadSession(existingSessionId);
+    }
+
     try {
       set({ isLoading: true, error: null });
 
@@ -86,7 +94,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   loadSession: async (sessionId: string) => {
     try {
       set({ isLoading: true, error: null });
-      const session = await api.getSession(sessionId);
+      // Use resumeSession to mark session as active again
+      const session = await api.resumeSession(sessionId);
+
+      // Store session ID in localStorage for persistence across page refreshes
+      localStorage.setItem('unobot_session_id', session.id);
 
       set({
         sessionId: session.id,

@@ -71,11 +71,53 @@ class AIService:
         """Get the system prompt for the AI assistant."""
         base_prompt = """You are UnoBot, an AI business consultant for UnoDigit, a digital transformation company.
 
-Your role is to:
-1. Greet visitors warmly and understand their business needs
-2. Ask qualifying questions to understand their challenges
-3. Recommend appropriate UnoDigit services
-4. Guide them toward booking a consultation
+Your role is to conduct a structured business discovery conversation:
+
+**Conversation Phases:**
+1. **Greeting & Name Collection**: Ask for user's name and introduce yourself
+2. **Email Collection**: Collect and validate email address for follow-up
+3. **Business Challenge Discovery**: Ask about current challenges and pain points
+4. **Qualification**: Understand budget, timeline, and decision-making process
+5. **Service Recommendation**: Recommend appropriate UnoDigit services
+6. **Expert Matching**: Match with appropriate expert and show availability
+7. **Booking**: Help book appointment with expert
+
+**Current Phase Detection:**
+- If no client_info.name: ASK FOR NAME
+- If no client_info.email: ASK FOR EMAIL
+- If no business_context.challenges: ASK ABOUT CHALLENGES
+- If no qualification.budget_range: ASK ABOUT BUDGET
+- If no qualification.timeline: ASK ABOUT TIMELINE
+- Otherwise: RECOMMEND SERVICES AND BOOK APPOINTMENT
+
+**Phase 1 - Name Collection:**
+- Ask: "What's your name?"
+- Be friendly and professional
+- Use their name in subsequent responses
+
+**Phase 2 - Email Collection:**
+- Ask for email address
+- Validate email format
+- Explain why email is needed (for follow-up and PRD)
+
+**Phase 3 - Business Challenge Discovery:**
+- Ask about current business challenges
+- Ask about industry and company size
+- Ask about technology stack
+- Ask about goals and objectives
+
+**Phase 4 - Qualification:**
+- Ask about budget range (small <$25k, medium $25k-$100k, large >$100k)
+- Ask about project timeline (urgent <1 month, near-term 1-3 months, long-term 3+ months)
+- Ask if they are the decision maker
+
+**Guidelines:**
+- Ask 2-3 questions at a time to avoid overwhelming
+- Always ask for ONE piece of information at a time
+- Listen to the user's needs before recommending
+- Keep responses concise and focused
+- Use business terminology appropriately
+- End responses with questions to continue conversation
 
 UnoDigit Services:
 - AI Strategy & Planning
@@ -83,21 +125,6 @@ UnoDigit Services:
 - Data Intelligence & Analytics
 - Cloud Infrastructure & DevOps
 - Digital Transformation Consulting
-
-Key capabilities:
-- Conduct business discovery conversations
-- Qualify leads based on budget, timeline, and needs
-- Match clients with appropriate experts
-- Generate Project Requirements Documents (PRDs)
-- Schedule appointments with experts
-
-Guidelines:
-- Be conversational and friendly, not robotic
-- Ask 2-3 questions at a time to avoid overwhelming
-- Listen to the user's needs before recommending
-- Keep responses concise and focused
-- Use business terminology appropriately
-- End responses with questions to continue conversation
 
 Current context:
 """
@@ -111,24 +138,39 @@ Current context:
 
     def _fallback_response(self, user_message: str, context: dict | None) -> str:
         """Generate a fallback response when AI service is unavailable."""
-        user_message_lower = user_message.lower()
+        # Initialize context if not provided
+        if context is None:
+            context = {"client_info": {}, "business_context": {}, "qualification": {}}
 
-        if any(greeting in user_message_lower for greeting in ["hi", "hello", "hey"]):
-            return "Hello! 👋 Welcome to UnoDigit. I'm here to help you explore how we can transform your business with AI-powered solutions. What brings you here today?"
+        client_info = context.get("client_info", {})
+        business_context = context.get("business_context", {})
+        qualification = context.get("qualification", {})
 
-        if any(word in user_message_lower for word in ["help", "service", "what do you do"]):
-            return "I can help you with:\n\n• AI Strategy & Planning\n• Custom Software Development\n• Data Intelligence Solutions\n• Cloud Infrastructure\n\nWhat specific challenge are you facing?"
+        # Phase 1: Name Collection
+        if not client_info.get("name"):
+            return """🎉 Welcome! I'm UnoBot, your AI business consultant from UnoDigit.
 
-        if any(word in user_message_lower for word in ["ai", "machine learning", "intelligence"]):
-            return "Great! AI is our specialty. We help businesses implement:\n\n• Predictive analytics\n• Process automation\n• Custom ML models\n• AI strategy & roadmap\n\nWhat kind of AI solution are you considering?"
+Before we dive into your business needs, what's your name? I'd love to address you personally!"""
 
-        if any(word in user_message_lower for word in ["price", "cost", "budget"]):
-            return "Every project is custom, so pricing depends on scope and complexity. Typical projects range from $10k for focused solutions to $100k+ for enterprise transformations. Let's discuss your needs first - what's the problem you're trying to solve?"
+        # Phase 2: Email Collection
+        if not client_info.get("email"):
+            return f"""Nice to meet you, {client_info.get('name', 'there')}! 🤝
 
-        if any(word in user_message_lower for word in ["book", "meeting", "call", "appointment"]):
-            return "I'd be happy to help you book a consultation! To find the best time, could you share:\n\n1. Your preferred time zone\n2. 2-3 time slots that work for you\n3. What you'd like to discuss\n\nI'll match you with the right expert."
+To help you best and send you a personalized proposal, I'll need your email address. This will also be used to share your custom Project Requirements Document once we understand your needs better.
 
-        return "Thank you for your message! I'm processing your request. To help you best, could you tell me more about what you're looking for?"
+What's the best email to reach you at?"""
+
+        # Phase 3: Business Challenge Discovery
+        if not business_context.get("challenges"):
+            return f"""Perfect! Thanks for sharing that, {client_info.get('name')}! ✨
+
+Now, let's talk about your business. To help you best, I'd love to understand:
+
+1. **What's the main business challenge** you're looking to solve with technology?
+2. **What industry** are you in?
+3. **How many people** are in your organization?
+
+This helps me match you with the right solutions!"""
 
     async def generate_prd(
         self,

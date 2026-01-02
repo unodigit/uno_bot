@@ -237,3 +237,71 @@ class TestChatWidget:
         content = bot_message.inner_text()
         assert "UnoBot" in content or "Hello" in content
         print("✓ Welcome message has proper content")
+
+    def test_session_persists_across_page_refresh(self, page: Page):
+        """
+        Test: Session persists across page refreshes
+
+        Steps:
+        1. Open chat widget and send a message
+        2. Note the session ID and message count
+        3. Refresh the page
+        4. Open chat widget again
+        5. Verify same session is resumed
+        6. Verify previous messages are displayed
+        """
+        # Clear storage to start fresh
+        page.context.add_init_script("localStorage.clear()")
+        page.context.clear_cookies()
+
+        page.goto(FRONTEND_URL)
+        page.wait_for_load_state("networkidle")
+
+        # Open chat widget
+        page.get_by_test_id("chat-widget-button").click()
+
+        # Wait for session creation
+        page.wait_for_timeout(500)
+
+        # Get session ID before refresh
+        session_id_before = page.evaluate("localStorage.getItem('unobot_session_id')")
+        assert session_id_before is not None, "Session ID not created"
+
+        # Send a message
+        input_field = page.get_by_test_id("message-input")
+        test_message = "Test message for persistence"
+        input_field.fill(test_message)
+        page.get_by_test_id("send-button").click()
+
+        # Wait for message to be sent
+        page.wait_for_timeout(500)
+
+        # Count messages before refresh
+        messages_before = page.get_by_test_id("message-user").count()
+        assert messages_before >= 1, "No user messages found"
+
+        # Refresh the page
+        page.reload()
+        page.wait_for_load_state("networkidle")
+
+        # Open chat widget again
+        page.get_by_test_id("chat-widget-button").click()
+
+        # Wait for session to load
+        page.wait_for_timeout(500)
+
+        # Verify session ID is the same
+        session_id_after = page.evaluate("localStorage.getItem('unobot_session_id')")
+        assert session_id_after == session_id_before, "Session ID changed after refresh"
+
+        # Verify messages are restored
+        # Check for the test message we sent
+        all_messages = page.locator('[data-testid^="message-"]')
+        message_count = all_messages.count()
+        assert message_count >= 2, f"Expected at least 2 messages after refresh, got {message_count}"
+
+        # Verify our test message is visible
+        test_message_found = page.get_by_text(test_message).is_visible()
+        assert test_message_found, "Test message not found after refresh"
+
+        print("✓ Session persists across page refresh")

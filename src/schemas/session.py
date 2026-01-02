@@ -91,9 +91,13 @@ class MessageResponse(BaseModel):
 
 
 class SessionResumeRequest(BaseModel):
-    """Request schema for resuming a session."""
+    """Request schema for resuming a session.
 
-    session_id: UUID
+    Accepts session_id in body for body-based resume endpoint.
+    For path-based resume, session_id comes from URL path.
+    """
+
+    session_id: UUID | None = Field(None, description="Session ID to resume (required for body-based resume)")
 
 
 # Update forward reference

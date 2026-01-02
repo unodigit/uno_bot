@@ -178,6 +178,9 @@ class SessionService:
             context=context,
         )
 
+        # Extract user information from their response
+        await self._extract_user_info(session, user_message)
+
         # Create and save AI message
         ai_message = Message(
             session_id=session.id,
@@ -191,3 +194,56 @@ class SessionService:
         await self.db.refresh(ai_message)
 
         return ai_message
+
+    async def _extract_user_info(self, session: ConversationSession, user_message: str) -> None:
+        """Extract user information from their responses and update session."""
+        import re
+        user_text = user_message.lower().strip()
+
+        # Extract name (simple heuristic - if it's a greeting response)
+        if not session.client_info.get("name"):
+            # Look for patterns like "My name is John" or "I'm John"
+            name_match = re.search(r"(?:my name is|i am|i'm)\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?)", user_text)
+            if name_match:
+                name = name_match.group(1).strip().title()
+                if len(name) > 1 and len(name) < 50:  # Basic validation
+                    await self.update_session_data(
+                        session,
+                        client_info={"name": name}
+                    )
+                    return
+
+        # Extract email
+        if not session.client_info.get("email"):
+            email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+            email_match = re.search(email_pattern, user_text)
+            if email_match:
+                email = email_match.group(0)
+                await self.update_session_data(
+                    session,
+                    client_info={"email": email}
+                )
+                return
+
+        # Extract business challenges
+        if not session.business_context.get("challenges"):
+            # If user mentions challenges, problems, issues, etc.
+            challenge_keywords = ['problem', 'issue', 'challenge', 'difficulty', 'struggle', 'pain', 'need']
+            if any(keyword in user_text for keyword in challenge_keywords):
+                # Store the business context
+                await self.update_session_data(
+                    session,
+                    business_context={"challenges": user_message}
+                )
+                return
+
+        # Extract industry
+        if not session.business_context.get("industry"):
+            industry_keywords = ['healthcare', 'finance', 'education', 'retail', 'manufacturing', 'tech', 'technology', 'software', 'e-commerce', 'ecommerce']
+            for keyword in industry_keywords:
+                if keyword in user_text:
+                    await self.update_session_data(
+                        session,
+                        business_context={"industry": keyword.title()}
+                    )
+                    return

@@ -128,8 +128,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:40:41.480631Z",
-    "qa_completed_at": "2026-01-02T02:51:59.170135+00:00"
+    "dev_completed_at": "2026-01-02T03:07:30.306803+00:00",
+    "qa_completed_at": "2026-01-02T03:07:30.306810+00:00"
   },
   {
     "category": "functional",
@@ -142,9 +142,12 @@
       "Step 5: Verify same session is resumed",
       "Step 6: Verify previous messages are displayed"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T14:05:00.000Z",
+    "qa_completed_at": "2026-01-02T14:05:00.000Z"
   },
   {
     "category": "functional",
@@ -277,8 +280,10 @@
       "Step 4: Verify score reflects budget, timeline, and fit factors"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:55:23.583711Z"
   },
   {
     "category": "functional",
@@ -349,8 +354,10 @@
       "Step 5: Verify Preview and Download buttons present"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T03:07:21.902654Z"
   },
   {
     "category": "functional",

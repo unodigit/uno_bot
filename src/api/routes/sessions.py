@@ -184,12 +184,11 @@ async def send_message(
 @router.post(
     "/{session_id}/resume",
     response_model=SessionResponse,
-    summary="Resume session",
-    description="Resume an existing session",
+    summary="Resume session (path-based)",
+    description="Resume an existing session using session_id in URL path",
 )
-async def resume_session(
+async def resume_session_path(
     session_id: uuid.UUID,
-    resume_request: SessionResumeRequest,
     db: AsyncSession = Depends(get_db),
 ) -> SessionResponse:
     """Resume an existing session.
@@ -204,6 +203,77 @@ async def resume_session(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Session {session_id} not found",
+        )
+
+    if session.status == "completed":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot resume a completed session",
+        )
+
+    resumed_session = await service.resume_session(session)
+
+    return SessionResponse(
+        id=resumed_session.id,
+        visitor_id=resumed_session.visitor_id,
+        status=resumed_session.status,
+        current_phase=resumed_session.current_phase,
+        source_url=resumed_session.source_url,
+        user_agent=resumed_session.user_agent,
+        client_info=resumed_session.client_info,
+        business_context=resumed_session.business_context,
+        qualification=resumed_session.qualification,
+        lead_score=resumed_session.lead_score,
+        recommended_service=resumed_session.recommended_service,
+        matched_expert_id=resumed_session.matched_expert_id,
+        prd_id=resumed_session.prd_id,
+        booking_id=resumed_session.booking_id,
+        started_at=resumed_session.started_at,
+        last_activity=resumed_session.last_activity,
+        completed_at=resumed_session.completed_at,
+        messages=[
+            MessageResponse(
+                id=msg.id,
+                session_id=msg.session_id,
+                role=msg.role,
+                content=msg.content,
+                meta_data=msg.meta_data,
+                created_at=msg.created_at,
+            )
+            for msg in resumed_session.messages
+        ],
+    )
+
+
+@router.post(
+    "/resume",
+    response_model=SessionResponse,
+    summary="Resume session",
+    description="Resume an existing session using session_id in request body",
+)
+async def resume_session(
+    resume_request: SessionResumeRequest,
+    db: AsyncSession = Depends(get_db),
+) -> SessionResponse:
+    """Resume an existing session.
+
+    Mark a session as active again and update its last activity timestamp.
+    This allows visitors to continue conversations after leaving the page.
+    Uses session_id from request body.
+    """
+    if not resume_request.session_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="session_id is required in request body",
+        )
+
+    service = SessionService(db)
+    session = await service.get_session(resume_request.session_id)
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Session {resume_request.session_id} not found",
         )
 
     if session.status == "completed":
