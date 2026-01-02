@@ -2704,8 +2704,9 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-03T00:20:00.000000Z",
-    "qa_completed_at": "2026-01-03T00:20:00.000000Z"
+    "dev_completed_at": "2026-01-02T13:19:51.317043Z",
+    "qa_completed_at": "2026-01-03T00:20:00.000000Z",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",
@@ -2852,8 +2853,9 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "dev_completed_at": "2026-01-03T00:00:00.000000Z",
-    "qa_completed_at": "2026-01-02T13:01:12.503152+00:00"
+    "dev_completed_at": "2026-01-02T13:20:02.651162Z",
+    "qa_completed_at": "2026-01-02T13:01:12.503152+00:00",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",
@@ -3224,7 +3226,9 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T13:10:24.448860+00:00",
-    "note": "PRD generation includes technical requirements section"
+    "note": "PRD generation includes technical requirements section",
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T13:21:06.859590Z"
   },
   {
     "category": "functional",
