@@ -37,6 +37,12 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   },
 
   createSession: async () => {
+    // Prevent duplicate session creation
+    const current = get();
+    if (current.sessionId || current.isLoading) {
+      return;
+    }
+
     try {
       set({ isLoading: true, error: null });
 

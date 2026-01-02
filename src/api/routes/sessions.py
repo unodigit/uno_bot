@@ -132,17 +132,17 @@ async def get_session(
     response_model=MessageResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Send message to session",
-    description="Send a user message to the session and receive AI response",
+    description="Send a user message to the session",
 )
 async def send_message(
     session_id: uuid.UUID,
     message_create: MessageCreate,
     db: AsyncSession = Depends(get_db),
 ) -> MessageResponse:
-    """Send a message to a session and receive AI response.
+    """Send a message to a session.
 
-    Add a user message to the conversation session, generate an AI response,
-    and return the user message that was sent.
+    Add a user message to the conversation session and return the user message.
+    The AI response will be sent via WebSocket for real-time streaming.
     """
     service = SessionService(db)
     session = await service.get_session(session_id)
@@ -167,9 +167,8 @@ async def send_message(
     # Update session activity
     await service.update_session_activity(session)
 
-    # Generate and add AI response (in background/async for WebSocket streaming)
-    # For now, we still generate it but don't wait for it in the response
-    # In a real implementation, this would be sent via WebSocket
+    # Generate AI response (will be sent via WebSocket in production)
+    # For now, we generate it but return the user message
     await service.generate_ai_response(session, message_create.content)
 
     return MessageResponse(

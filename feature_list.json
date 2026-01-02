@@ -251,8 +251,10 @@
       "Step 4: Verify timeline is stored in qualification data"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:45:17.231039Z"
   },
   {
     "category": "functional",
