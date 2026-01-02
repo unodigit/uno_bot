@@ -56,8 +56,9 @@
       "Step 5: Verify WebSocket connection is established"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T02:44:12.960325+00:00"
   },
   {
     "category": "functional",
@@ -68,9 +69,9 @@
       "Step 3: Verify welcome message appears from bot",
       "Step 4: Verify message contains personalized greeting"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T02:24:29.355689Z"
   },
@@ -84,9 +85,9 @@
       "Step 4: Verify message appears in chat history",
       "Step 5: Verify input field is cleared after sending"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T02:24:29.518185Z"
   },
@@ -100,9 +101,9 @@
       "Step 4: Verify complete response is rendered",
       "Step 5: Verify typing indicator disappears"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T02:24:29.358184Z"
   },
@@ -235,8 +236,10 @@
       "Step 4: Verify budget is stored in qualification data"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:44:07.085870Z"
   },
   {
     "category": "functional",

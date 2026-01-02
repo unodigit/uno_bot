@@ -3,11 +3,11 @@ import uuid
 from datetime import datetime, timedelta
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.core.config import settings
 from src.core.database import Base
+from src.core.types import UUIDType
 
 
 def default_expiry() -> datetime:
@@ -21,10 +21,10 @@ class PRDDocument(Base):
     __tablename__ = "prd_documents"
 
     id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+        UUIDType, primary_key=True, default=uuid.uuid4
     )
     session_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("conversation_sessions.id"), nullable=False
+        UUIDType, ForeignKey("conversation_sessions.id"), nullable=False
     )
 
     # Version tracking

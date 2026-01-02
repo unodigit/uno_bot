@@ -4,10 +4,10 @@ from datetime import datetime
 from enum import Enum
 
 from sqlalchemy import DateTime, ForeignKey, String, Text
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.core.database import Base
+from src.core.types import UUIDType
 
 
 class BookingStatus(str, Enum):
@@ -25,13 +25,13 @@ class Booking(Base):
     __tablename__ = "bookings"
 
     id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+        UUIDType, primary_key=True, default=uuid.uuid4
     )
     session_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("conversation_sessions.id"), nullable=False
+        UUIDType, ForeignKey("conversation_sessions.id"), nullable=False
     )
     expert_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("experts.id"), nullable=False
+        UUIDType, ForeignKey("experts.id"), nullable=False
     )
 
     # Google Calendar reference

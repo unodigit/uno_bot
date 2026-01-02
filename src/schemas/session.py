@@ -49,6 +49,8 @@ class SessionResponse(BaseModel):
     visitor_id: str
     status: str
     current_phase: str
+    source_url: str | None = None
+    user_agent: str | None = None
     client_info: dict[str, Any]
     business_context: dict[str, Any]
     qualification: dict[str, Any]

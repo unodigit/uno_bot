@@ -6,14 +6,14 @@
 
 import { Session, Message, CreateSessionRequest, SendMessageRequest } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 
 /**
  * API error response
  */
 interface ApiError {
   detail: string;
-  status_code?: number;
+  status_code: number;
 }
 
 class ApiClient {
@@ -35,11 +35,12 @@ class ApiClient {
     });
 
     if (!response.ok) {
-      const error: ApiError = await response.json().catch(() => ({ detail: `HTTP ${response.status}` }));
+      const error: ApiError = await response.json();
       throw new Error(error.detail || `HTTP ${response.status}`);
     }
 
-    return await response.json();
+    // Backend returns data directly, not wrapped in { data: ... }
+    return response.json();
   }
 
   /**
@@ -55,11 +56,12 @@ class ApiClient {
     });
 
     if (!response.ok) {
-      const error: ApiError = await response.json().catch(() => ({ detail: `HTTP ${response.status}` }));
+      const error: ApiError = await response.json();
       throw new Error(error.detail || `HTTP ${response.status}`);
     }
 
-    return await response.json();
+    // Backend returns data directly, not wrapped in { data: ... }
+    return response.json();
   }
 
   /**
@@ -67,16 +69,7 @@ class ApiClient {
    * POST /api/v1/sessions
    */
   async createSession(data: CreateSessionRequest): Promise<Session> {
-    const response = await this.post<any>('/api/v1/sessions', data);
-
-    // Transform messages metadata -> meta_data to match our types
-    return {
-      ...response,
-      messages: response.messages.map((msg: any) => ({
-        ...msg,
-        meta_data: msg.meta_data || msg.metadata || {},
-      })),
-    };
+    return this.post<Session>('/api/v1/sessions', data);
   }
 
   /**
@@ -84,16 +77,7 @@ class ApiClient {
    * GET /api/v1/sessions/{session_id}
    */
   async getSession(sessionId: string): Promise<Session> {
-    const response = await this.get<any>(`/api/v1/sessions/${sessionId}`);
-
-    // Transform messages metadata -> meta_data to match our types
-    return {
-      ...response,
-      messages: response.messages.map((msg: any) => ({
-        ...msg,
-        meta_data: msg.meta_data || msg.metadata || {},
-      })),
-    };
+    return this.get<Session>(`/api/v1/sessions/${sessionId}`);
   }
 
   /**
@@ -101,13 +85,7 @@ class ApiClient {
    * POST /api/v1/sessions/{session_id}/messages
    */
   async sendMessage(sessionId: string, data: SendMessageRequest): Promise<Message> {
-    const response = await this.post<any>(`/api/v1/sessions/${sessionId}/messages`, data);
-
-    // Transform metadata -> meta_data to match our types
-    return {
-      ...response,
-      meta_data: response.metadata || response.meta_data || {},
-    };
+    return this.post<Message>(`/api/v1/sessions/${sessionId}/messages`, data);
   }
 
   /**
@@ -115,16 +93,7 @@ class ApiClient {
    * POST /api/v1/sessions/{session_id}/resume
    */
   async resumeSession(sessionId: string): Promise<Session> {
-    const response = await this.post<any>(`/api/v1/sessions/${sessionId}/resume`, {});
-
-    // Transform messages metadata -> meta_data to match our types
-    return {
-      ...response,
-      messages: response.messages.map((msg: any) => ({
-        ...msg,
-        meta_data: msg.meta_data || msg.metadata || {},
-      })),
-    };
+    return this.post<Session>(`/api/v1/sessions/${sessionId}/resume`, {});
   }
 
   /**

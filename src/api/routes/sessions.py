@@ -142,7 +142,7 @@ async def send_message(
     """Send a message to a session and receive AI response.
 
     Add a user message to the conversation session, generate an AI response,
-    and return the AI response message.
+    and return the user message that was sent.
     """
     service = SessionService(db)
     session = await service.get_session(session_id)
@@ -160,23 +160,25 @@ async def send_message(
         )
 
     # Add user message
-    await service.add_message(
+    user_message = await service.add_message(
         session_id, message_create, MessageRole.USER
     )
 
     # Update session activity
     await service.update_session_activity(session)
 
-    # Generate and add AI response
-    ai_message = await service.generate_ai_response(session, message_create.content)
+    # Generate and add AI response (in background/async for WebSocket streaming)
+    # For now, we still generate it but don't wait for it in the response
+    # In a real implementation, this would be sent via WebSocket
+    await service.generate_ai_response(session, message_create.content)
 
     return MessageResponse(
-        id=ai_message.id,
-        session_id=ai_message.session_id,
-        role=ai_message.role,
-        content=ai_message.content,
-        meta_data=ai_message.meta_data,
-        created_at=ai_message.created_at,
+        id=user_message.id,
+        session_id=user_message.session_id,
+        role=user_message.role,
+        content=user_message.content,
+        meta_data=user_message.meta_data,
+        created_at=user_message.created_at,
     )
 
 
