@@ -120,6 +120,7 @@ export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }:
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm text-primary hover:text-primary-dark underline break-all"
             data-testid="meeting-link"
+            aria-label="Open meeting link in new tab"
           >
             {booking.meeting_link}
             <ExternalLink className="w-3 h-3" />
@@ -143,6 +144,7 @@ export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }:
           onClick={onDone}
           className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors shadow-sm hover:shadow"
           data-testid="done-button"
+          aria-label="Done viewing booking confirmation"
         >
           Done
         </button>
@@ -152,6 +154,7 @@ export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }:
           disabled={isCancelling}
           className="w-full py-2 bg-white border border-red-300 text-error hover:bg-red-50 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           data-testid="cancel-button"
+          aria-label="Cancel this booking"
         >
           {isCancelling ? (
             <>

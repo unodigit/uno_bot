@@ -114,6 +114,7 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
           <button
             onClick={onBack}
             className="text-xs text-text-muted hover:text-text px-2 py-1 rounded hover:bg-surface"
+            aria-label="Back to booking confirmation"
           >
             ← Back
           </button>
@@ -194,6 +195,8 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
                               ? 'bg-primary border-primary text-white shadow-md'
                               : 'bg-white border-border text-text hover:border-primary hover:bg-surface'
                           )}
+                          aria-label={`Select ${slot.display_time} on ${formatDateDisplay(slot.display_date)} in ${slot.timezone}`}
+                          aria-pressed={isSelected}
                         >
                           {slot.display_time}
                         </motion.button>
@@ -223,6 +226,7 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
                 <button
                   onClick={handleConfirm}
                   className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
+                  aria-label="Confirm booking with selected time slot"
                 >
                   Confirm Booking
                 </button>

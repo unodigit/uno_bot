@@ -76,6 +76,7 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
             onClick={handleDownload}
             className="flex items-center gap-2 px-3 py-2 bg-primary text-white text-sm rounded-md hover:bg-primary-dark transition-colors flex-1"
             data-testid="download-prd-button"
+            aria-label={`Download PRD file ${prdPreview.filename}`}
           >
             <Download className="w-4 h-4" />
             Download PRD (.md)
@@ -84,6 +85,7 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
             onClick={() => window.open(`/prd/${prdPreview.id}/preview`, '_blank')}
             className="flex items-center gap-2 px-3 py-2 bg-gray-100 text-text text-sm rounded-md hover:bg-gray-200 transition-colors"
             data-testid="view-full-prd-button"
+            aria-label="View full PRD in new tab"
           >
             <Eye className="w-4 h-4" />
             View Full

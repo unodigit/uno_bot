@@ -98,6 +98,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
                   onClick={() => onBook(expert as MatchedExpert)}
                   className="flex-1 px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors flex items-center justify-center gap-1"
                   data-testid={`book-expert-${index}`}
+                  aria-label={`Book appointment with ${expert.name}`}
                 >
                   <Calendar className="w-3 h-3" />
                   Book
@@ -108,6 +109,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
                   onClick={() => onSelect(expert as MatchedExpert)}
                   className="px-3 py-1.5 border border-border text-text text-xs rounded hover:bg-surface transition-colors"
                   data-testid={`select-expert-${index}`}
+                  aria-label={`Select ${expert.name} for consultation`}
                 >
                   Select
                 </button>
@@ -116,6 +118,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
                 href={`mailto:${expert.email}?subject=Consultation Request`}
                 className="px-3 py-1.5 border border-border text-text text-xs rounded hover:bg-surface transition-colors"
                 data-testid={`contact-expert-${index}`}
+                aria-label={`Contact ${expert.name} via email`}
               >
                 Contact
               </a>

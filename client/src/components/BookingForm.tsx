@@ -65,6 +65,7 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
             onClick={onBack}
             className="text-xs text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-100"
             disabled={isSubmitting}
+            aria-label="Back to select time slot"
           >
             ← Back
           </button>
@@ -111,6 +112,7 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="mb-4"
+            aria-live="polite"
           >
             <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-start gap-2">
               <AlertCircle className="w-4 h-4 text-red-600 mt-0.5" />
@@ -147,10 +149,12 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
                   : 'border-gray-300 focus:border-primary focus:ring-primary/20'
               )}
               disabled={isSubmitting}
+              aria-describedby={nameTouched && name.trim().length === 0 ? 'name-error' : undefined}
+              aria-invalid={nameTouched && name.trim().length === 0 ? 'true' : 'false'}
             />
           </div>
           {nameTouched && name.trim().length === 0 && (
-            <p className="text-xs text-red-600 mt-1">Name is required</p>
+            <p id="name-error" className="text-xs text-red-600 mt-1">Name is required</p>
           )}
         </div>
 
@@ -177,10 +181,12 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
                   : 'border-gray-300 focus:border-primary focus:ring-primary/20'
               )}
               disabled={isSubmitting}
+              aria-describedby={emailTouched && !email.includes('@') ? 'email-error' : undefined}
+              aria-invalid={emailTouched && !email.includes('@') ? 'true' : 'false'}
             />
           </div>
           {emailTouched && !email.includes('@') && (
-            <p className="text-xs text-red-600 mt-1">Valid email is required</p>
+            <p id="email-error" className="text-xs text-red-600 mt-1">Valid email is required</p>
           )}
         </div>
 

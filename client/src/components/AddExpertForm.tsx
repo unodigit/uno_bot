@@ -22,15 +22,63 @@ export function AddExpertForm({ onSave, onCancel, isSaving }: AddExpertFormProps
     is_active: true,
   })
 
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
   const handleChange = (field: string, value: any) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }))
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev }
+        delete newErrors[field]
+        return newErrors
+      })
+    }
+  }
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required'
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters'
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address'
+      }
+    }
+
+    // Role validation
+    if (!formData.role.trim()) {
+      newErrors.role = 'Role is required'
+    }
+
+    // Photo URL validation (if provided)
+    if (formData.photo_url && !formData.photo_url.startsWith('http')) {
+      newErrors.photo_url = 'Please enter a valid URL starting with http:// or https://'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!validateForm()) {
+      return
+    }
 
     // Process arrays
     const expertData = {
@@ -64,7 +112,8 @@ export function AddExpertForm({ onSave, onCancel, isSaving }: AddExpertFormProps
               value={formData.name}
               onChange={(e) => handleChange('name', e.target.value)}
               placeholder="Expert name"
-              required
+              error={!!errors.name}
+              errorText={errors.name}
             />
           </div>
 
@@ -77,7 +126,8 @@ export function AddExpertForm({ onSave, onCancel, isSaving }: AddExpertFormProps
               value={formData.email}
               onChange={(e) => handleChange('email', e.target.value)}
               placeholder="expert@example.com"
-              required
+              error={!!errors.email}
+              errorText={errors.email}
             />
           </div>
 
@@ -89,7 +139,8 @@ export function AddExpertForm({ onSave, onCancel, isSaving }: AddExpertFormProps
               value={formData.role}
               onChange={(e) => handleChange('role', e.target.value)}
               placeholder="e.g., Senior Developer, AI Consultant"
-              required
+              error={!!errors.role}
+              errorText={errors.role}
             />
           </div>
 
@@ -113,6 +164,8 @@ export function AddExpertForm({ onSave, onCancel, isSaving }: AddExpertFormProps
               value={formData.photo_url}
               onChange={(e) => handleChange('photo_url', e.target.value)}
               placeholder="https://example.com/photo.jpg"
+              error={!!errors.photo_url}
+              errorText={errors.photo_url}
             />
           </div>
 

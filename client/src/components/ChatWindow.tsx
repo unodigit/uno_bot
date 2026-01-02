@@ -88,11 +88,15 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     }
   }, [sessionId, createSession])
 
-  // Focus input when component mounts
+  // Focus input after mount and animation
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
+    // Small delay to ensure component is fully rendered and animated
+    const timer = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
+    }, 100)
+    return () => clearTimeout(timer)
   }, [])
 
   // Auto-scroll to bottom when new messages arrive
@@ -397,7 +401,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           data-testid="chat-window"
         >
           {/* Header */}
-          <div className="h-12 bg-gray-700 text-white flex items-center justify-between px-4 rounded-t-lg">
+          <div className="h-12 bg-primary text-white flex items-center justify-between px-4 rounded-t-lg">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                 <span className="text-xs font-bold">UD</span>
@@ -419,8 +423,8 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
               <X className="w-8 h-8 text-red-600" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">Booking Cancelled</h3>
-            <p className="text-sm text-white-muted mb-6">
+            <h3 className="text-lg font-bold text-text mb-2">Booking Cancelled</h3>
+            <p className="text-sm text-text-muted mb-6">
               Your appointment has been successfully cancelled.
             </p>
             <button
@@ -562,7 +566,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ duration: 0.2 }}
-        className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+        className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50 md:w-[380px] md:h-[520px] sm:w-[95vw] sm:h-[90vh] sm:bottom-4 sm:right-4 sm:rounded-lg"
         data-testid="chat-window"
       >
         {/* Screen reader announcements */}
@@ -585,27 +589,35 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           </div>
           <div className="flex items-center gap-2">
             {onMinimize && (
-              <button
-                onClick={onMinimize}
-                className="p-1 hover:bg-white/20 rounded transition-colors"
-                aria-label="Minimize chat window"
-                aria-describedby="minimize-instruction"
-                data-testid="minimize-button"
-              >
-                <Minimize2 className="w-4 h-4" />
-              </button>
-              <div id="minimize-instruction" className="sr-only">
-                Minimizes the chat window to the corner
-              </div>
+              <>
+                <button
+                  onClick={onMinimize}
+                  className="p-1 hover:bg-white/20 rounded transition-colors"
+                  aria-label="Minimize chat window"
+                  aria-describedby="minimize-instruction"
+                  data-testid="minimize-button"
+                  tabIndex={3}
+                >
+                  <Minimize2 className="w-4 h-4" />
+                </button>
+                <div id="minimize-instruction" className="sr-only">
+                  Minimizes the chat window to the corner
+                </div>
+              </>
             )}
             <button
               onClick={onClose}
               className="p-1 hover:bg-white/20 rounded transition-colors"
-              aria-label="Close chat"
+              aria-label="Close chat window"
+              aria-describedby="close-instruction"
               data-testid="close-button"
+              tabIndex={4}
             >
               <X className="w-4 h-4" />
             </button>
+            <div id="close-instruction" className="sr-only">
+              Closes the chat window
+            </div>
           </div>
         </div>
 
@@ -709,7 +721,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           aria-atomic="false"
         >
           {messages.length === 0 && !isLoading && (
-            <div className="flex justify-center items-center h-full text-white-muted text-sm">
+            <div className="flex justify-center items-center h-full text-text-muted text-sm">
               <div className="text-center">
                 <div className="animate-pulse mb-2">...</div>
                 <p>Initializing chat...</p>
@@ -841,12 +853,20 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 <button
                   key={idx}
                   onClick={() => sendMessage(reply)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      sendMessage(reply)
+                    }
+                  }}
                   className={twMerge(
                     'px-3 py-1.5 text-xs rounded-full transition-all duration-200 border font-medium',
                     'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                     'disabled:opacity-50 disabled:cursor-not-allowed',
                     'bg-surface text-text border-border hover:bg-gray-200 active:scale-95 shadow-sm'
                   )}
+                  aria-label={`Send quick reply: ${reply}`}
+                  aria-disabled={isStreaming || isLoading}
                   disabled={isStreaming || isLoading}
                   data-testid={`quick-reply-${idx}`}
                 >
@@ -872,6 +892,8 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             className="flex-1 h-full px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
             disabled={isStreaming || isLoading}
             data-testid="message-input"
+            tabIndex={1}
+            autoFocus
           />
           <div id="input-instruction" className="sr-only">
             Press Enter to send message, Shift+Enter for new line. Chat is {isStreaming ? 'streaming' : 'ready'}.
@@ -890,6 +912,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 : 'bg-primary hover:bg-primary-dark active:scale-95 text-white shadow-sm hover:shadow'
             )}
             data-testid="send-button"
+            tabIndex={2}
           >
             <Send className="w-4 h-4" />
           </button>
