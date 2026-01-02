@@ -58,10 +58,12 @@
       "Step 4: Verify session ID is returned and stored",
       "Step 5: Verify WebSocket connection is established"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T02:44:12.960325+00:00"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T02:44:12.960325+00:00",
+    "qa_retry_count": 0,
+    "qa_completed_at": "2026-01-02T02:51:59.170127+00:00"
   },
   {
     "category": "functional",
@@ -127,7 +129,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T02:40:41.480631Z",
-    "qa_completed_at": "2026-01-02T02:50:12.724757+00:00"
+    "qa_completed_at": "2026-01-02T02:51:59.170135+00:00"
   },
   {
     "category": "functional",
@@ -1014,10 +1016,11 @@
       "Step 4: Verify session exists in database",
       "Step 5: Verify initial status is 'active'"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T02:31:01.718446+00:00"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T02:31:01.718446+00:00",
+    "qa_completed_at": "2026-01-02T02:51:59.170150+00:00"
   },
   {
     "category": "functional",
@@ -1029,10 +1032,11 @@
       "Step 4: Verify bot response returned",
       "Step 5: Verify both messages have correct roles"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T02:31:01.718457+00:00"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T02:31:01.718457+00:00",
+    "qa_completed_at": "2026-01-02T02:51:59.170152+00:00"
   },
   {
     "category": "functional",
@@ -1044,10 +1048,11 @@
       "Step 4: Verify messages array included",
       "Step 5: Verify all messages in order"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T02:31:01.718459+00:00"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T02:31:01.718459+00:00",
+    "qa_completed_at": "2026-01-02T02:51:59.170154+00:00"
   },
   {
     "category": "functional",
