@@ -133,6 +133,19 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     return () => clearTimeout(timer)
   }, [])
 
+  // Global Escape key handler for closing the chat window
+  useEffect(() => {
+    const handleGlobalEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleGlobalEscape)
+    return () => document.removeEventListener('keydown', handleGlobalEscape)
+  }, [onClose])
+
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
