@@ -304,29 +304,44 @@ class CalendarService:
         """Generate mock availability for testing and development.
 
         Args:
-            timezone: Timezone for the mock slots
+            timezone: Timezone for the mock slots (e.g., 'America/New_York', 'Europe/London')
             days_ahead: Number of days to generate mock slots for
             min_slots_to_show: Minimum number of slots to return
 
         Returns:
-            List of mock time slots
+            List of mock time slots with times in the requested timezone
         """
         import random
         from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
 
         # Generate mock time slots for business days only
         slots = []
-        now = datetime.now()
+
+        # Use the requested timezone for generating slots
+        # This simulates the expert's availability in the visitor's timezone
+        try:
+            tz_info = ZoneInfo(timezone)
+        except Exception:
+            # Fallback to UTC if timezone is invalid
+            tz_info = ZoneInfo('UTC')
+
+        # Get current time in the target timezone
+        now = datetime.now(tz_info)
 
         for i in range(days_ahead):
             date = now + timedelta(days=i)
             if date.weekday() < 5:  # Only weekdays (Monday=0 to Friday=4)
-                # Generate slots for business hours: 9 AM to 5 PM
+                # Generate slots for business hours: 9 AM to 5 PM in the target timezone
                 for hour in [9, 10, 11, 14, 15, 16]:  # Morning and afternoon slots
                     slot_time = date.replace(hour=hour, minute=0, second=0, microsecond=0)
+                    # Convert to UTC for storage (ISO format with timezone info)
+                    slot_time_utc = slot_time.astimezone(ZoneInfo('UTC'))
+                    slot_end_utc = (slot_time + timedelta(hours=1)).astimezone(ZoneInfo('UTC'))
+
                     slots.append({
-                        'start': slot_time.isoformat(),
-                        'end': (slot_time + timedelta(hours=1)).isoformat(),
+                        'start': slot_time_utc.isoformat(),
+                        'end': slot_end_utc.isoformat(),
                         'start_formatted': slot_time.strftime('%Y-%m-%d %H:%M'),
                         'date': slot_time.strftime('%Y-%m-%d'),
                         'time': slot_time.strftime('%H:%M'),

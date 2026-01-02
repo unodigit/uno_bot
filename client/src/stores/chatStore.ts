@@ -341,6 +341,37 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
       set({ isCreatingBooking: true, error: null });
 
+      // Step 1: Refresh availability to ensure slot is still available
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const availabilityResponse = await fetch(
+        `${API_BASE_URL}/api/v1/bookings/experts/${selectedExpert.id}/availability?timezone=${encodeURIComponent(selectedTimeSlot.timezone)}`
+      );
+
+      if (!availabilityResponse.ok) {
+        throw new Error('Failed to verify availability');
+      }
+
+      const availabilityData = await availabilityResponse.json();
+
+      // Step 2: Check if the selected slot is still available
+      const isSlotAvailable = availabilityData.slots.some(
+        (slot: any) => slot.start_time === selectedTimeSlot.start_time
+      );
+
+      if (!isSlotAvailable) {
+        // Slot is no longer available - show error with alternative slots
+        const alternativeSlots = availabilityData.slots.slice(0, 3);
+        let errorMsg = 'This time slot is no longer available. Please select another time.';
+
+        if (alternativeSlots.length > 0) {
+          const slotTimes = alternativeSlots.map((s: any) => s.display_time).join(', ');
+          errorMsg += ` Alternatives: ${slotTimes}`;
+        }
+
+        throw new Error(errorMsg);
+      }
+
+      // Step 3: Proceed with booking creation
       const bookingData: BookingCreateRequest = {
         expert_id: selectedExpert.id,
         start_time: selectedTimeSlot.start_time,

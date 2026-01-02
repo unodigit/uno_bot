@@ -415,11 +415,12 @@ END:VCALENDAR"""
         if prd_content:
             # Truncate PRD for email preview
             prd_preview = prd_content[:500] + "..." if len(prd_content) > 500 else prd_content
+            prd_preview_html = prd_preview.replace('\n', '<br>')
             body += f"""
                     <div style="margin: 15px 0;">
                         <p style="margin: 0 0 8px 0; font-weight: 600;">Project Details:</p>
                         <div style="background: #f9fafb; padding: 12px; border-radius: 4px; font-size: 13px; color: #374151; max-height: 200px; overflow-y: auto;">
-                            {prd_preview.replace('\n', '<br>')}
+                            {prd_preview_html}
                         </div>
                     </div>
             """

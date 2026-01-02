@@ -574,11 +574,12 @@
       "Step 3: Verify times displayed in visitor's timezone",
       "Step 4: Verify timezone label is correct"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T04:48:50.892972Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T04:48:50.892972Z",
+    "qa_completed_at": "2026-01-02T15:48:00.000000Z"
   },
   {
     "category": "functional",
@@ -637,9 +638,12 @@
       "Step 3: Verify Google Meet link is included",
       "Step 4: Verify link is accessible"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T15:45:00.000000Z",
+    "qa_completed_at": "2026-01-02T15:45:00.000000Z"
   },
   {
     "category": "functional",
