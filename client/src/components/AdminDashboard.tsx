@@ -341,7 +341,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
         throw new Error('Failed to toggle template')
       }
 
-      const updated = await response.json()
+      const updated = (await response.json()) as WelcomeTemplate
       setTemplates(prev => prev.map(t => t.id === template.id ? updated : t))
     } catch (error) {
       console.error('Failed to toggle template:', error)
@@ -359,7 +359,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
             body: JSON.stringify({ is_default: false }),
           })
           if (unsetResponse.ok) {
-            const updated = await unsetResponse.json()
+            const updated = (await unsetResponse.json()) as WelcomeTemplate
             setTemplates(prev => prev.map(x => x.id === t.id ? updated : x))
           }
         }
@@ -375,7 +375,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
         throw new Error('Failed to set default template')
       }
 
-      const updated = await response.json()
+      const updated = (await response.json()) as WelcomeTemplate
       setTemplates(prev => prev.map(t => t.id === template.id ? updated : t))
     } catch (error) {
       console.error('Failed to set default template:', error)
@@ -703,7 +703,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredExperts.map((expert: any, index: number) => (
+                    {filteredExperts.map((expert: Expert, index: number) => (
                       <ExpertCard
                         key={expert.id}
                         expert={expert}

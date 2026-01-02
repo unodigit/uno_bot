@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus, ArrowLeft, Calendar, Check, XCircle, RefreshCw } from 'lucide-react'
+import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus, ArrowLeft, Calendar, Check, XCircle, RefreshCw, Settings, Volume2, VolumeX } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import { twMerge } from 'tailwind-merge'
 import { ExpertMatchList } from './ExpertCard'
@@ -32,6 +32,7 @@ const getQuickReplies = (phase: string, context: any): string[] => {
 
 export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   const [inputValue, setInputValue] = useState('')
+  const [showSettings, setShowSettings] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -82,6 +83,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     // Sound notifications
     playNotificationSound,
     soundNotificationsEnabled,
+    toggleSoundNotifications,
   } = useChatStore()
 
   // Create session on mount if not exists
