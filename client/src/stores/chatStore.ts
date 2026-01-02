@@ -210,6 +210,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   soundNotificationsEnabled: localStorage.getItem('unobot_sound_notifications') === 'true',
   // Widget position state - load from localStorage, default to 'right'
   widgetPosition: (localStorage.getItem('unobot_widget_position') as 'left' | 'right') || 'right',
+  // GDPR Consent state
+  hasGivenConsent: localStorage.getItem('uno_consent') ? JSON.parse(localStorage.getItem('uno_consent')!).accepted : false,
+  showConsentModal: false,
 
   // Actions
   openChat: () => {
@@ -482,6 +485,49 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   clearPRDPreview: () => {
     set({ prdPreview: null });
+  },
+
+  regeneratePRD: async (feedback?: string) => {
+    try {
+      const { prdPreview } = get();
+      if (!prdPreview?.id) {
+        throw new Error('No PRD available to regenerate');
+      }
+
+      set({ isGeneratingPRD: true, error: null });
+
+      // Regenerate PRD
+      const prdResponse = await api.regeneratePRD(prdPreview.id, feedback);
+
+      // Get updated preview
+      const preview = await api.getPRDPreview(prdResponse.id);
+
+      set({
+        prdPreview: preview,
+        isGeneratingPRD: false,
+      });
+
+      // Add a message to the chat indicating PRD was regenerated
+      const regenMessage: Message = {
+        id: `prd_regenerate_${Date.now()}`,
+        session_id: prdResponse.session_id,
+        role: 'assistant',
+        content: `🔄 PRD Regenerated!\n\n**${preview.filename}** (v${preview.version})\n\nPreview: ${preview.preview_text}\n\nUse the download button to save the new version.`,
+        meta_data: { type: 'prd_regenerated', prd_id: prdResponse.id, version: preview.version },
+        created_at: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        messages: [...state.messages, regenMessage],
+      }));
+
+    } catch (error) {
+      set({
+        isGeneratingPRD: false,
+        error: error instanceof Error ? error.message : 'Failed to regenerate PRD'
+      });
+      console.error('PRD regeneration error:', error);
+    }
   },
 
   matchExperts: async () => {
@@ -1010,6 +1056,95 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       const newPosition = state.widgetPosition === 'left' ? 'right' : 'left';
       localStorage.setItem('unobot_widget_position', newPosition);
       return { widgetPosition: newPosition };
+    });
+  },
+
+  // GDPR Consent actions
+  checkConsent: async () => {
+    const consentData = localStorage.getItem('uno_consent');
+    if (consentData) {
+      const parsed = JSON.parse(consentData);
+      set({
+        hasGivenConsent: parsed.accepted,
+        showConsentModal: !parsed.accepted && !parsed.declined
+      });
+      return parsed.accepted;
+    }
+    set({ showConsentModal: true });
+    return false;
+  },
+
+  acceptConsent: async () => {
+    const visitorId = getVisitorId();
+
+    const consentData = {
+      accepted: true,
+      declined: false,
+      timestamp: new Date().toISOString(),
+      version: '1.0',
+      visitor_id: visitorId,
+      data_collected: 'Personal information, business context, conversation data, technical data',
+      legal_basis: 'Legitimate interest and contract initiation',
+      retention_period: '30 days from last activity'
+    };
+
+    try {
+      // Save to backend
+      await api.saveConsent(consentData);
+    } catch (error) {
+      console.warn('Failed to save consent to backend:', error);
+      // Continue with local storage
+    }
+
+    // Save to localStorage
+    localStorage.setItem('uno_consent', JSON.stringify(consentData));
+    set({
+      hasGivenConsent: true,
+      showConsentModal: false
+    });
+  },
+
+  declineConsent: async () => {
+    const visitorId = getVisitorId();
+
+    const consentData = {
+      accepted: false,
+      declined: true,
+      timestamp: new Date().toISOString(),
+      version: '1.0',
+      visitor_id: visitorId
+    };
+
+    try {
+      // Save to backend
+      await api.saveConsent(consentData);
+    } catch (error) {
+      console.warn('Failed to save consent to backend:', error);
+      // Continue with local storage
+    }
+
+    localStorage.setItem('uno_consent', JSON.stringify(consentData));
+    set({
+      hasGivenConsent: false,
+      showConsentModal: false
+    });
+  },
+
+  resetConsent: async () => {
+    const visitorId = getVisitorId();
+
+    try {
+      // Revoke from backend
+      await api.revokeConsent(visitorId);
+    } catch (error) {
+      console.warn('Failed to revoke consent from backend:', error);
+      // Continue with local storage
+    }
+
+    localStorage.removeItem('uno_consent');
+    set({
+      hasGivenConsent: false,
+      showConsentModal: false
     });
   },
 }));

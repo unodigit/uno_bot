@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { Download, FileText, X, Maximize2 } from 'lucide-react'
+import { Download, FileText, X, Maximize2, RefreshCw } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import ReactMarkdown from 'react-markdown'
 import { useState } from 'react'
@@ -9,7 +9,7 @@ interface PRDPreviewProps {
 }
 
 export function PRDPreview({ onDismiss }: PRDPreviewProps) {
-  const { prdPreview, downloadPRD, clearPRDPreview } = useChatStore()
+  const { prdPreview, downloadPRD, clearPRDPreview, regeneratePRD, isGeneratingPRD } = useChatStore()
   const [showFull, setShowFull] = useState(false)
 
   if (!prdPreview) {
@@ -28,6 +28,14 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
     clearPRDPreview()
     if (onDismiss) {
       onDismiss()
+    }
+  }
+
+  const handleRegenerate = async () => {
+    try {
+      await regeneratePRD()
+    } catch (error) {
+      console.error('Regeneration failed:', error)
     }
   }
 
@@ -54,8 +62,18 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
               <div className="flex items-center gap-3">
                 <FileText className="w-5 h-5" />
                 <span className="font-semibold">{prdPreview.filename}</span>
+                <span className="text-xs bg-white/20 px-2 py-1 rounded">v{prdPreview.version}</span>
               </div>
               <div className="flex gap-2">
+                <button
+                  onClick={handleRegenerate}
+                  disabled={isGeneratingPRD}
+                  className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                  title="Regenerate PRD (creates new version)"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isGeneratingPRD ? 'animate-spin' : ''}`} />
+                  Regenerate
+                </button>
                 <button
                   onClick={handleDownload}
                   className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded text-sm"
@@ -161,6 +179,16 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
           >
             <Download className="w-4 h-4" />
             Download
+          </button>
+          <button
+            onClick={handleRegenerate}
+            disabled={isGeneratingPRD}
+            className="flex items-center gap-2 px-3 py-3 min-h-[44px] bg-orange-500 hover:bg-orange-600 text-white text-sm rounded-md transition-colors flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            data-testid="regenerate-prd-button"
+            aria-label="Regenerate PRD (creates new version)"
+          >
+            <RefreshCw className={`w-4 h-4 ${isGeneratingPRD ? 'animate-spin' : ''}`} />
+            Regenerate
           </button>
           <button
             onClick={() => setShowFull(true)}

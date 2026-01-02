@@ -7,6 +7,7 @@ import { ExpertMatchList } from './ExpertCard'
 import { CalendarPicker } from './CalendarPicker'
 import { BookingForm } from './BookingForm'
 import { BookingConfirmation } from './BookingConfirmation'
+import { ConsentModal } from './ConsentModal'
 import { TimeSlot } from '../types'
 
 interface ChatWindowProps {
@@ -61,6 +62,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     isGeneratingPRD,
     downloadPRD,
     clearPRDPreview,
+    regeneratePRD,
     matchedExperts,
     isMatchingExperts,
     matchExperts,
@@ -97,6 +99,12 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     // Widget position
     widgetPosition,
     toggleWidgetPosition,
+    // GDPR Consent
+    hasGivenConsent,
+    showConsentModal,
+    checkConsent,
+    acceptConsent,
+    declineConsent,
   } = useChatStore()
 
   // Create session on mount if not exists
@@ -105,6 +113,14 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       createSession()
     }
   }, [sessionId, createSession])
+
+  // Check consent when chat opens
+  useEffect(() => {
+    // Only check consent if we have a session and haven't given consent yet
+    if (sessionId && !hasGivenConsent) {
+      checkConsent()
+    }
+  }, [sessionId, hasGivenConsent, checkConsent])
 
   // Focus input after mount and animation
   useEffect(() => {
@@ -782,7 +798,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <h4 className="text-sm font-semibold text-gray-900">PRD Generated!</h4>
+                  <h4 className="text-sm font-semibold text-gray-900">PRD Generated! <span className="text-xs text-gray-500 font-normal">(v{prdPreview.version})</span></h4>
                   <button
                     onClick={clearPRDPreview}
                     className="text-xs text-blue-600 hover:text-blue-800 underline min-h-[32px] active:scale-95 transition-transform"
@@ -791,7 +807,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   </button>
                 </div>
                 <p className="text-xs text-gray-600 mb-2 line-clamp-2">{prdPreview.preview_text}</p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <button
                     onClick={() => prdPreview.id && downloadPRD(prdPreview.id)}
                     className="flex items-center gap-1 px-2 py-1 bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors"
@@ -799,6 +815,16 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   >
                     <Download className="w-3 h-3" />
                     Download
+                  </button>
+                  <button
+                    onClick={() => regeneratePRD()}
+                    disabled={isGeneratingPRD}
+                    className="flex items-center gap-1 px-2 py-1 bg-orange-500 hover:bg-orange-600 text-white text-xs rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    data-testid="regenerate-prd-button"
+                    title="Regenerate PRD (creates new version)"
+                  >
+                    <RefreshCw className={`w-3 h-3 ${isGeneratingPRD ? 'animate-spin' : ''}`} />
+                    Regenerate
                   </button>
                   <span className="text-xs text-gray-500">{prdPreview.filename}</span>
                 </div>
@@ -1096,6 +1122,13 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             {inputValue.trim() ? 'Ready to send' : 'Type a message to enable'}
           </div>
         </div>
+
+        {/* GDPR Consent Modal */}
+        <ConsentModal
+          isOpen={showConsentModal}
+          onAccept={acceptConsent}
+          onDecline={declineConsent}
+        />
       </motion.div>
     </AnimatePresence>
   )

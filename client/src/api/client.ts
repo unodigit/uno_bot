@@ -218,6 +218,50 @@ class ApiClient {
   async approveSummaryAndGeneratePRD(data: ConversationSummaryApproveRequest): Promise<PRDResponse | ConversationSummaryResponse> {
     return this.post<PRDResponse | ConversationSummaryResponse>('/api/v1/prd/approve-summary-and-generate-prd', data);
   }
+
+  /**
+   * Regenerate a PRD with optional feedback
+   * POST /api/v1/prd/{prd_id}/regenerate
+   */
+  async regeneratePRD(prdId: string, feedback?: string): Promise<PRDResponse> {
+    return this.post<PRDResponse>(`/api/v1/prd/${prdId}/regenerate`, { feedback });
+  }
+
+  /**
+   * Save user consent
+   * POST /api/v1/consent
+   */
+  async saveConsent(data: any): Promise<any> {
+    return this.post<any>('/api/v1/consent', data);
+  }
+
+  /**
+   * Get consent status for a visitor
+   * GET /api/v1/consent/{visitor_id}
+   */
+  async getConsent(visitorId: string): Promise<any> {
+    return this.get<any>(`/api/v1/consent/${visitorId}`);
+  }
+
+  /**
+   * Revoke consent for a visitor
+   * DELETE /api/v1/consent/{visitor_id}
+   */
+  async revokeConsent(visitorId: string): Promise<any> {
+    const response = await fetch(`${this.baseUrl}/api/v1/consent/${visitorId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const error: ApiError = await response.json();
+      throw new Error(error.detail || `HTTP ${response.status}`);
+    }
+
+    return response.json();
+  }
 }
 
 // Export singleton instance

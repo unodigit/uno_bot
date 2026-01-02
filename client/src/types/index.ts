@@ -220,6 +220,7 @@ export interface ChatActions {
   clearError: () => void;
   setStreaming: (isStreaming: boolean) => void;
   generatePRD: () => Promise<void>;
+  regeneratePRD: (feedback?: string) => Promise<void>;
   downloadPRD: (prdId: string) => Promise<void>;
   clearPRDPreview: () => void;
   matchExperts: () => Promise<void>;

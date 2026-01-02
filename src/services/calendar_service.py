@@ -177,6 +177,13 @@ class CalendarService:
         end_time = start_time + timedelta(hours=1)
         buffer_minutes = settings.booking_buffer_minutes
 
+        # Ensure start_time is timezone-aware for comparison
+        # If naive, assume UTC
+        if start_time.tzinfo is None:
+            from zoneinfo import ZoneInfo
+            start_time = start_time.replace(tzinfo=ZoneInfo('UTC'))
+            end_time = end_time.replace(tzinfo=ZoneInfo('UTC'))
+
         for event in events:
             event_start_str = event.get('start', {}).get('dateTime', '')
             event_end_str = event.get('end', {}).get('dateTime', '')
