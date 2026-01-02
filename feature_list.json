@@ -725,7 +725,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T15:53:16.000000Z",
+    "dev_completed_at": "2026-01-02T05:06:12.123838Z",
     "qa_completed_at": "2026-01-02T15:53:16.000000Z"
   },
   {
@@ -752,11 +752,12 @@
       "Step 4: Verify PRD is attached as .md file",
       "Step 5: Verify email contains visitor info"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T05:00:43.020492Z"
+    "dev_completed_at": "2026-01-02T05:00:43.020492Z",
+    "qa_completed_at": "2026-01-02T15:58:00.000000Z"
   },
   {
     "category": "functional",
@@ -768,9 +769,11 @@
       "Step 4: Verify .ics file opens in calendar app",
       "Step 5: Verify event details are correct"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T15:58:00.000000Z",
+    "qa_completed_at": "2026-01-02T15:58:00.000000Z"
   },
   {
     "category": "functional",
@@ -781,11 +784,12 @@
       "Step 3: Verify reminder email sent at 24 hours",
       "Step 4: Verify reminder contains meeting details"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T04:59:53.988580Z"
+    "dev_completed_at": "2026-01-02T04:59:53.988580Z",
+    "qa_completed_at": "2026-01-02T15:58:00.000000Z"
   },
   {
     "category": "functional",
@@ -810,8 +814,10 @@
       "Step 4: Verify brand colors are used"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T05:09:32.481021Z"
   },
   {
     "category": "functional",

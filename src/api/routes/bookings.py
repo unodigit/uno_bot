@@ -105,7 +105,7 @@ async def create_booking(
         )
 
 
-@router.get("/bookings/{booking_id}", response_model=BookingResponse)
+@router.get("/{booking_id}", response_model=BookingResponse)
 async def get_booking(
     booking_id: UUID,
     db: AsyncSession = Depends(get_db),
@@ -165,11 +165,11 @@ async def get_booking_by_session(
         )
 
 
-@router.delete("/bookings/{booking_id}")
+@router.delete("/{booking_id}")
 async def cancel_booking(
     booking_id: UUID,
     db: AsyncSession = Depends(get_db),
-    
+
 ):
     """Cancel a booking.
 
@@ -183,19 +183,13 @@ async def cancel_booking(
     """
     booking_service = BookingService(db)
 
-    try:
-        success = await booking_service.cancel_booking(booking_id)
-        if not success:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Booking not found"
-            )
-        return {"message": "Booking cancelled successfully"}
-    except Exception as e:
+    success = await booking_service.cancel_booking(booking_id)
+    if not success:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to cancel booking: {str(e)}"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Booking not found"
         )
+    return {"message": "Booking cancelled successfully"}
 
 
 @router.get("/experts/{expert_id}/bookings", response_model=List[BookingResponse])

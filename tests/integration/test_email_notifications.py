@@ -101,3 +101,21 @@ class TestEmailNotifications:
         assert "UID:test-uid-123" in ics_content
         assert "DTSTART;TZID=UTC:20250115T140000" in ics_content
         assert "DTEND;TZID=UTC:20250115T150000" in ics_content
+
+    async def test_email_service_send_cancellation(self):
+        """Test that email service can send cancellation emails."""
+        email_service = EmailService()
+
+        start_time = datetime.utcnow() + timedelta(days=1)
+        end_time = start_time + timedelta(hours=1)
+
+        result = await email_service.send_cancellation_email(
+            client_email="test@example.com",
+            client_name="Test Client",
+            expert_name="Dr. Expert",
+            start_time=start_time,
+            end_time=end_time,
+            timezone="UTC"
+        )
+
+        assert result is True

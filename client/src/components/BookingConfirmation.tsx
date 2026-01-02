@@ -50,6 +50,7 @@ export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }:
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       className="w-full"
+      data-testid="booking-confirmation-card"
     >
       {/* Success Header */}
       <div className="text-center mb-4">

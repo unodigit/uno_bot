@@ -56,22 +56,22 @@ def test_complete_booking_flow(page: Page):
     send_button.click()
     page.wait_for_timeout(2000)
 
-    # Wait for expert matching and booking option
-    # Look for booking-related content or buttons
+    # Wait for expert matching button to become available
+    # Click "Match Experts" button
+    match_experts_btn = page.get_by_test_id("match-experts-button")
+    expect(match_experts_btn).to_be_visible(timeout=10000)
+    match_experts_btn.click()
+
+    # Wait for expert matching to complete
     page.wait_for_timeout(2000)
 
-    # Check if there's a booking button or calendar option
-    # The bot should offer booking after qualification
-    booking_button = page.locator('button:has-text("Book")').or_(page.locator('button:has-text("Schedule")'))
+    # Wait for expert list to appear
+    expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
 
-    # If booking button exists, click it
-    if booking_button.count() > 0:
-        booking_button.first.click()
-    else:
-        # Try to find quick reply with booking
-        quick_reply = page.locator('button:has-text("book")').or_(page.locator('button:has-text("schedule")')).or_(page.locator('button:has-text("meeting")'))
-        if quick_reply.count() > 0:
-            quick_reply.first.click()
+    # Click "Book" button on first expert
+    book_expert_btn = page.get_by_test_id("book-expert-0")
+    expect(book_expert_btn).to_be_visible(timeout=5000)
+    book_expert_btn.click()
 
     page.wait_for_timeout(2000)
 
@@ -175,10 +175,18 @@ def test_timezone_detection(page: Page):
     send_button.click()
     page.wait_for_timeout(2000)
 
-    # Try to trigger booking
-    booking_btn = page.locator('button:has-text("Book")').or_(page.locator('button:has-text("Schedule")'))
-    if booking_btn.count() > 0:
-        booking_btn.first.click()
+    # Click "Match Experts" button
+    match_experts_btn = page.get_by_test_id("match-experts-button")
+    expect(match_experts_btn).to_be_visible(timeout=10000)
+    match_experts_btn.click()
+
+    # Wait for expert matching to complete
+    page.wait_for_timeout(2000)
+
+    # Click "Book" on first expert
+    book_expert_btn = page.get_by_test_id("book-expert-0")
+    expect(book_expert_btn).to_be_visible(timeout=5000)
+    book_expert_btn.click()
 
     page.wait_for_timeout(2000)
 
@@ -234,8 +242,19 @@ def test_time_slot_selection_confirmation(page: Page):
     send_button.click()
     page.wait_for_timeout(2000)
 
-    # Trigger booking
-    page.locator('button:has-text("Book")').or_(page.locator('button:has-text("Schedule")')).first.click()
+    # Click "Match Experts" button
+    match_experts_btn = page.get_by_test_id("match-experts-button")
+    expect(match_experts_btn).to_be_visible(timeout=10000)
+    match_experts_btn.click()
+
+    # Wait for expert matching to complete
+    page.wait_for_timeout(2000)
+
+    # Click "Book" on first expert
+    book_expert_btn = page.get_by_test_id("book-expert-0")
+    expect(book_expert_btn).to_be_visible(timeout=5000)
+    book_expert_btn.click()
+
     page.wait_for_timeout(2000)
 
     # Wait for calendar picker
@@ -296,8 +315,19 @@ def test_double_booking_prevention(page: Page):
     send_button.click()
     page.wait_for_timeout(2000)
 
-    # Trigger booking
-    page.locator('button:has-text("Book")').or_(page.locator('button:has-text("Schedule")')).first.click()
+    # Click "Match Experts" button
+    match_experts_btn = page.get_by_test_id("match-experts-button")
+    expect(match_experts_btn).to_be_visible(timeout=10000)
+    match_experts_btn.click()
+
+    # Wait for expert matching to complete
+    page.wait_for_timeout(2000)
+
+    # Click "Book" on first expert
+    book_expert_btn = page.get_by_test_id("book-expert-0")
+    expect(book_expert_btn).to_be_visible(timeout=5000)
+    book_expert_btn.click()
+
     page.wait_for_timeout(2000)
 
     # Wait for calendar picker
@@ -372,8 +402,19 @@ def test_availability_refresh(page: Page):
     send_button.click()
     page.wait_for_timeout(2000)
 
-    # Trigger booking
-    page.locator('button:has-text("Book")').or_(page.locator('button:has-text("Schedule")')).first.click()
+    # Click "Match Experts" button
+    match_experts_btn = page.get_by_test_id("match-experts-button")
+    expect(match_experts_btn).to_be_visible(timeout=10000)
+    match_experts_btn.click()
+
+    # Wait for expert matching to complete
+    page.wait_for_timeout(2000)
+
+    # Click "Book" on first expert
+    book_expert_btn = page.get_by_test_id("book-expert-0")
+    expect(book_expert_btn).to_be_visible(timeout=5000)
+    book_expert_btn.click()
+
     page.wait_for_timeout(2000)
 
     # Wait for calendar picker
