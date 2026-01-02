@@ -170,6 +170,11 @@ class SessionService:
         # This updates session data which is used for context
         await self._extract_user_info(session, user_message)
 
+        # Calculate lead score and recommend service after each message
+        # This ensures it runs even if extraction returns early
+        await self._calculate_lead_score(session)
+        await self._recommend_service(session)
+
         # Build context with updated session data
         context = {
             "business_context": session.business_context,
