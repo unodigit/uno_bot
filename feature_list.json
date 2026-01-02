@@ -1773,11 +1773,15 @@
       "Step 4: Verify preview text styling",
       "Step 5: Verify button row styling"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:46:15.434286Z"
+    "dev_completed_at": "2026-01-02T07:46:15.434286Z",
+    "qa_completed_at": "2026-01-02T08:04:56.785564+00:00",
+    "test_files": [
+      "tests/e2e/test_prd_preview_styling.py"
+    ]
   },
   {
     "category": "style",
@@ -1819,11 +1823,15 @@
       "Step 4: Verify expert info styling",
       "Step 5: Verify button styling"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:00:32.349039Z"
+    "dev_completed_at": "2026-01-02T08:00:32.349039Z",
+    "qa_completed_at": "2026-01-02T08:07:04.213692+00:00",
+    "test_files": [
+      "tests/e2e/test_booking_confirmation_styling.py"
+    ]
   },
   {
     "category": "style",
