@@ -298,14 +298,30 @@ class BookingService:
             except Exception as e:
                 print(f"Warning: Failed to send cancellation email: {e}")
 
-            # Update calendar event (delete or mark as cancelled)
-            # For now, we'll just update the status in our system
-            # In production, you might want to delete the calendar event:
-            # if booking.calendar_event_id and expert:
-            #     await self.calendar_service.delete_calendar_event(
-            #         refresh_token=expert.refresh_token,
-            #         event_id=booking.calendar_event_id
-            #     )
+            # Send cancellation notification to expert
+            if expert:
+                try:
+                    await self.email_service.send_expert_cancellation_notification(
+                        expert_email=expert.email,
+                        expert_name=expert_name,
+                        client_name=booking.client_name,
+                        client_email=booking.client_email,
+                        start_time=booking.start_time,
+                        end_time=booking.end_time,
+                        timezone=booking.timezone
+                    )
+                except Exception as e:
+                    print(f"Warning: Failed to send expert cancellation notification: {e}")
+
+            # Delete Google Calendar event
+            if booking.calendar_event_id and expert and expert.refresh_token:
+                try:
+                    await self.calendar_service.delete_calendar_event(
+                        refresh_token=expert.refresh_token,
+                        event_id=booking.calendar_event_id
+                    )
+                except Exception as e:
+                    print(f"Warning: Failed to delete calendar event: {e}")
 
             return True
         except Exception as e:

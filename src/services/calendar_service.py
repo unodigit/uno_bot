@@ -283,6 +283,41 @@ class CalendarService:
             print(f"Error creating calendar event: {e}")
             raise Exception(f"Failed to create calendar event: {e}") from e
 
+    async def delete_calendar_event(
+        self,
+        refresh_token: str,
+        event_id: str
+    ) -> bool:
+        """Delete a calendar event.
+
+        Args:
+            refresh_token: Expert's Google OAuth refresh token
+            event_id: Google Calendar event ID to delete
+
+        Returns:
+            True if deleted successfully, False otherwise
+        """
+        # For testing and development, return success
+        if settings.environment in ["test", "development"]:
+            return True
+
+        try:
+            service = self.get_calendar_service(refresh_token)
+            service.events().delete(
+                calendarId='primary',
+                eventId=event_id
+            ).execute()
+            return True
+        except HttpError as e:
+            # If event not found, that's fine - it's already deleted
+            if e.resp.status == 404:
+                return True
+            print(f"Google Calendar API error deleting event: {e}")
+            return False
+        except Exception as e:
+            print(f"Error deleting calendar event: {e}")
+            return False
+
     async def get_calendar_timezone(self, refresh_token: str) -> str:
         """Get the expert's calendar timezone."""
         try:

@@ -607,3 +607,100 @@ END:VCALENDAR"""
         except Exception as e:
             print(f"Error sending cancellation email: {e}")
             return False
+
+    async def send_expert_cancellation_notification(
+        self,
+        expert_email: str,
+        expert_name: str,
+        client_name: str,
+        client_email: str,
+        start_time: datetime,
+        end_time: datetime,
+        timezone: str,
+    ) -> bool:
+        """Send cancellation notification to expert.
+
+        Args:
+            expert_email: Expert's email address
+            expert_name: Expert's name
+            client_name: Client's name
+            client_email: Client's email
+            start_time: Original booking start time
+            end_time: Original booking end time
+            timezone: Timezone for the booking
+
+        Returns:
+            True if email sent successfully, False otherwise
+        """
+        subject = f"📅 Booking Cancelled: {client_name} - {start_time.strftime('%b %d, %Y')}"
+
+        # Format date and time
+        date_str = start_time.strftime('%A, %B %d, %Y')
+        start_time_str = start_time.strftime('%I:%M %p')
+        end_time_str = end_time.strftime('%I:%M %p')
+
+        # Build email body
+        body = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                <div style="background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; padding: 25px; text-align: center; border-radius: 8px 8px 0 0;">
+                    <h2 style="margin: 0; font-size: 20px;">Booking Cancelled</h2>
+                </div>
+
+                <div style="padding: 20px; background: #ffffff; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+                    <p style="margin: 0 0 20px 0;">Hi {expert_name},</p>
+
+                    <p style="margin: 0 0 15px 0;">A consultation booking has been cancelled:</p>
+
+                    <div style="background: #fee2e2; padding: 15px; border-radius: 6px; border: 1px solid #fecaca; margin-bottom: 20px;">
+                        <div style="font-weight: 600; font-size: 16px; color: #991b1b; margin-bottom: 8px;">👤 {client_name}</div>
+                        <div style="color: #991b1b; margin-bottom: 10px;">📧 {client_email}</div>
+                        <div style="font-weight: 600; color: #991b1b; margin-bottom: 5px;">📅 {date_str}</div>
+                        <div style="color: #991b1b;">⏰ {start_time_str} - {end_time_str} ({timezone})</div>
+                    </div>
+
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                        <p style="margin: 0; font-size: 12px; color: #6b7280;">
+                            The calendar event has been removed. This slot is now available for other bookings.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        # In development/test mode, log the email
+        if self.environment in ["test", "development"]:
+            print(f"\\n{'='*60}")
+            print("EXPERT CANCELLATION NOTIFICATION - Development Mode")
+            print(f"{'='*60}")
+            print(f"To: {expert_email}")
+            print(f"Subject: {subject}")
+            print(f"{'='*60}\\n")
+            return True
+
+        # Production: Send via SendGrid
+        try:
+            from sendgrid import SendGridAPIClient
+            from sendgrid.helpers.mail import Mail
+
+            message = Mail(
+                from_email=self.from_email,
+                to_emails=expert_email,
+                subject=subject,
+                html_content=body
+            )
+
+            sg = SendGridAPIClient(self.api_key)
+            response = sg.send(message)
+
+            return int(response.status_code) == 202
+
+        except ImportError:
+            print("SendGrid not installed. Install with: pip install sendgrid")
+            return False
+        except Exception as e:
+            print(f"Error sending expert cancellation notification: {e}")
+            return False
