@@ -2321,11 +2321,16 @@
       "Step 4: Verify response times acceptable",
       "Step 5: Verify no errors under load"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T09:42:14.471534Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T09:42:14.471534Z",
+    "qa_completed_at": "2026-01-02T09:54:48.712398+00:00",
+    "test_files": [
+      "tests/e2e/test_api_documentation.py",
+      "tests/e2e/test_performance_and_reliability.py"
+    ]
   },
   {
     "category": "functional",
@@ -2337,11 +2342,16 @@
       "Step 4: Send and receive messages",
       "Step 5: Verify functional despite slow connection"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T09:39:07.607513Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T09:39:07.607513Z",
+    "qa_completed_at": "2026-01-02T09:54:48.712408+00:00",
+    "test_files": [
+      "tests/e2e/test_api_documentation.py",
+      "tests/e2e/test_performance_and_reliability.py"
+    ]
   },
   {
     "category": "functional",
@@ -2377,11 +2387,16 @@
       "Step 3: Verify all endpoints documented",
       "Step 4: Verify request/response schemas shown"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T09:47:05.173427Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T09:47:05.173427Z",
+    "qa_completed_at": "2026-01-02T09:54:48.712411+00:00",
+    "test_files": [
+      "tests/e2e/test_api_documentation.py",
+      "tests/e2e/test_performance_and_reliability.py"
+    ]
   },
   {
     "category": "functional",
@@ -2392,11 +2407,16 @@
       "Step 3: Verify all schemas defined",
       "Step 4: Verify all endpoints included"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T09:42:13.504123Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T09:42:13.504123Z",
+    "qa_completed_at": "2026-01-02T09:54:48.712412+00:00",
+    "test_files": [
+      "tests/e2e/test_api_documentation.py",
+      "tests/e2e/test_performance_and_reliability.py"
+    ]
   },
   {
     "category": "functional",
@@ -2432,11 +2452,16 @@
       "Step 3: Verify no connection exhaustion",
       "Step 4: Verify proper connection release"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T09:47:39.558160Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T09:47:39.558160Z",
+    "qa_completed_at": "2026-01-02T09:54:48.712414+00:00",
+    "test_files": [
+      "tests/e2e/test_api_documentation.py",
+      "tests/e2e/test_performance_and_reliability.py"
+    ]
   },
   {
     "category": "functional",
