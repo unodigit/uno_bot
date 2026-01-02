@@ -1,15 +1,14 @@
 """Analytics service for conversation and system metrics."""
 import uuid
-from collections import defaultdict
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Tuple, Union, cast
+from typing import Any, cast
 
-from sqlalchemy import Row, func, select, text
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.booking import Booking, BookingStatus
 from src.models.expert import Expert
-from src.models.session import ConversationSession, SessionStatus, SessionPhase
+from src.models.session import ConversationSession, SessionPhase, SessionStatus
 
 
 class AnalyticsService:
@@ -18,7 +17,7 @@ class AnalyticsService:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def get_conversation_analytics(self, days_back: int = 30) -> Dict[str, Any]:
+    async def get_conversation_analytics(self, days_back: int = 30) -> dict[str, Any]:
         """Get comprehensive conversation analytics.
 
         Args:
@@ -91,7 +90,7 @@ class AnalyticsService:
             }
         }
 
-    async def get_expert_analytics(self, days_back: int = 30) -> Dict[str, Any]:
+    async def get_expert_analytics(self, days_back: int = 30) -> dict[str, Any]:
         """Get expert performance analytics.
 
         Args:
@@ -152,7 +151,7 @@ class AnalyticsService:
             }
         }
 
-    async def get_booking_analytics(self, days_back: int = 30) -> Dict[str, Any]:
+    async def get_booking_analytics(self, days_back: int = 30) -> dict[str, Any]:
         """Get booking performance analytics.
 
         Args:
@@ -206,7 +205,7 @@ class AnalyticsService:
             }
         }
 
-    async def get_system_health(self) -> Dict[str, Any]:
+    async def get_system_health(self) -> dict[str, Any]:
         """Get system health and performance metrics.
 
         Returns:
@@ -327,7 +326,7 @@ class AnalyticsService:
         # For now, return a placeholder
         return 0.0
 
-    async def _get_lead_score_statistics(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+    async def _get_lead_score_statistics(self, start_date: datetime, end_date: datetime) -> dict[str, Any]:
         """Get lead score statistics."""
         result = await self.db.execute(
             select(
@@ -352,7 +351,7 @@ class AnalyticsService:
             "distribution": await self._get_lead_score_distribution(start_date, end_date)
         }
 
-    async def _get_lead_score_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+    async def _get_lead_score_distribution(self, start_date: datetime, end_date: datetime) -> dict[str, Any]:
         """Get lead score distribution buckets."""
         # Group lead scores into buckets
         result = await self.db.execute(
@@ -377,7 +376,7 @@ class AnalyticsService:
 
         return distribution
 
-    async def _get_service_recommendation_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+    async def _get_service_recommendation_distribution(self, start_date: datetime, end_date: datetime) -> dict[str, Any]:
         """Get distribution of recommended services."""
         result = await self.db.execute(
             select(
@@ -398,7 +397,7 @@ class AnalyticsService:
 
         return distribution
 
-    async def _get_phase_completion_rates(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+    async def _get_phase_completion_rates(self, start_date: datetime, end_date: datetime) -> dict[str, Any]:
         """Get completion rates for each conversation phase."""
         result = await self.db.execute(
             select(
@@ -413,7 +412,7 @@ class AnalyticsService:
         )
 
         rows = result.fetchall()
-        phase_counts: Dict[str, int] = {row[0]: row[1] for row in rows}
+        phase_counts: dict[str, int] = {row[0]: row[1] for row in rows}
         total_sessions = sum(phase_counts.values())
 
         completion_rates = {}
@@ -426,13 +425,13 @@ class AnalyticsService:
 
         return completion_rates
 
-    async def _get_daily_metrics(self, start_date: datetime, end_date: datetime) -> List[Dict[str, Any]]:
+    async def _get_daily_metrics(self, start_date: datetime, end_date: datetime) -> list[dict[str, Any]]:
         """Get daily metrics for trend analysis."""
         # This would require more complex date grouping
         # For now, return empty list
         return []
 
-    async def _get_expert_booking_counts(self, start_date: datetime, end_date: datetime) -> Dict[uuid.UUID, int]:
+    async def _get_expert_booking_counts(self, start_date: datetime, end_date: datetime) -> dict[uuid.UUID, int]:
         """Get booking counts per expert."""
         result = await self.db.execute(
             select(
@@ -447,7 +446,7 @@ class AnalyticsService:
         rows = result.fetchall()
         return {row[0]: row[1] for row in rows}
 
-    async def _get_expert_session_counts(self, start_date: datetime, end_date: datetime) -> Dict[uuid.UUID, int]:
+    async def _get_expert_session_counts(self, start_date: datetime, end_date: datetime) -> dict[uuid.UUID, int]:
         """Get session counts per expert."""
         result = await self.db.execute(
             select(
@@ -506,7 +505,7 @@ class AnalyticsService:
         avg_lead_time = result.scalar_one()
         return float(avg_lead_time) if avg_lead_time else 0.0
 
-    async def _get_booking_time_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+    async def _get_booking_time_distribution(self, start_date: datetime, end_date: datetime) -> dict[str, Any]:
         """Get booking time distribution by hour."""
         # Extract hour from start_time and count
         result = await self.db.execute(
@@ -529,7 +528,7 @@ class AnalyticsService:
 
         return distribution
 
-    async def _get_booking_day_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
+    async def _get_booking_day_distribution(self, start_date: datetime, end_date: datetime) -> dict[str, Any]:
         """Get booking day distribution."""
         # Extract day of week from start_time and count
         result = await self.db.execute(

@@ -1,17 +1,16 @@
 """
 Admin API routes for expert management and system administration.
 """
-from typing import List
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status, Header, Request
+from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies import get_db
-from src.core.security import require_admin_auth, rate_limiter
+from src.core.security import require_admin_auth
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
-from src.services.expert_service import ExpertService
 from src.services.analytics_service import AnalyticsService
+from src.services.expert_service import ExpertService
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -37,11 +36,11 @@ async def verify_admin_access(
     return auth_data
 
 
-@router.get("/experts", response_model=List[ExpertResponse])
+@router.get("/experts", response_model=list[ExpertResponse])
 async def list_all_experts(
     admin_data: dict = Depends(verify_admin_access),
     db: AsyncSession = Depends(get_db)
-) -> List[ExpertResponse]:
+) -> list[ExpertResponse]:
     """List all experts for admin management (requires authentication).
 
     Returns:
@@ -190,7 +189,7 @@ async def get_admin_analytics(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch analytics: {str(e)}"
-        )
+        ) from e
 
 
 @router.get("/analytics/conversations")
@@ -216,7 +215,7 @@ async def get_conversation_analytics(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch conversation analytics: {str(e)}"
-        )
+        ) from e
 
 
 @router.get("/analytics/experts")
@@ -242,7 +241,7 @@ async def get_expert_analytics(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch expert analytics: {str(e)}"
-        )
+        ) from e
 
 
 @router.get("/analytics/bookings")
@@ -268,7 +267,7 @@ async def get_booking_analytics(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch booking analytics: {str(e)}"
-        )
+        ) from e
 
 
 @router.get("/analytics/health")
@@ -289,7 +288,7 @@ async def get_system_health(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch system health: {str(e)}"
-        )
+        ) from e
 
 
 @router.post("/auth/token")

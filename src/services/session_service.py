@@ -17,9 +17,13 @@ from src.models.session import (
 )
 from src.schemas.session import MessageCreate, SessionCreate
 from src.services.ai_service import AIService
+from src.services.cache_service import (
+    cache_session_data,
+    delete_cached_session_data,
+    get_cached_session_data,
+)
 from src.services.expert_service import ExpertService
 from src.services.template_service import TemplateService
-from src.services.cache_service import cache_session_data, get_cached_session_data, delete_cached_session_data
 
 
 class SessionService:
@@ -149,9 +153,10 @@ class SessionService:
 
     def _reconstruct_session_from_cache(self, cached_data: dict) -> ConversationSession:
         """Reconstruct a ConversationSession object from cached data."""
-        from src.models.session import SessionStatus, SessionPhase, MessageRole, Message
         import uuid
         from datetime import datetime
+
+        from src.models.session import Message, MessageRole, SessionPhase, SessionStatus
 
         # Parse timestamps from cache
         started_at = datetime.fromisoformat(cached_data["started_at"]) if cached_data.get("started_at") else datetime.utcnow()
@@ -396,7 +401,16 @@ class SessionService:
             # Capture full names (multiple words) until we hit punctuation or common stop words
             name_match = re.search(r"(?:my name is|i am|i'm)\s+([a-zA-Z\s]+?)(?:\s+(?:and|but|or|with|from|at|in|to|for|on|about|my|our|we|i)|[,.!?]|$)", user_text)
             if name_match:
-                name = sanitize_input(name_match.group(1).strip().title())
+                # Extract name from original message to preserve proper capitalization
+                # The match is on lowercased text, so we need to find the corresponding part in original
+                name_part = name_match.group(1).strip()
+                # Find the name in the original message (case-insensitive search)
+                original_match = re.search(re.escape(name_part), user_message, re.IGNORECASE)
+                if original_match:
+                    name = sanitize_input(original_match.group(0).strip().title())
+                else:
+                    name = sanitize_input(name_part.title())
+
                 if len(name) > 1 and len(name) < 50:  # Basic validation
                     await self.update_session_data(
                         session,
@@ -419,14 +433,20 @@ class SessionService:
         # Extract company information
         if not session.client_info.get("company"):
             # Look for patterns like "I work at X", "company is X", "at X", "company is called X"
+            # Also handle standalone company names
+            # Use case-insensitive patterns on original message to preserve casing
             company_patterns = [
                 r"(?:work at|work for)\s+([a-zA-Z0-9\s&]+?)(?:\s+(?:and|we|I|it|with|for|to)\s|,|\.|!|\?|$)",
-                r"(?:my company|our company)\s+(?:is\s+)?(?:called\s+)?([a-zA-Z0-9\s&]+?)(?:\s+(?:and|we|I|it|with)\s|,|\.|!|\?|$)"
+                r"(?:my company|our company)\s+(?:is\s+)?(?:called\s+)?([a-zA-Z0-9\s&]+?)(?:\s+(?:and|we|I|it|with)\s|,|\.|!|\?|$)",
+                # Pattern for standalone company name (2-4 words, each starting with capital letter)
+                r"^([A-Z][a-zA-Z0-9]+\s+[A-Z][a-zA-Z0-9]+(?:\s+[A-Z][a-zA-Z0-9]+)?)$"
             ]
             for pattern in company_patterns:
-                company_match = re.search(pattern, user_text)
+                # Apply case-insensitive search to original message
+                company_match = re.search(pattern, user_message, re.IGNORECASE)
                 if company_match:
-                    company = sanitize_input(company_match.group(1).strip().title())
+                    # Preserve original casing from the matched portion
+                    company = sanitize_input(company_match.group(1).strip())
                     if len(company) > 2 and len(company) < 100:
                         await self.update_session_data(
                             session,

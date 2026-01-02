@@ -1,11 +1,8 @@
 """Redis-based caching service for UnoBot with fallback to in-memory cache."""
-import json
-import time
 import asyncio
-from typing import Any, Optional, Dict, List, Union
+import json
 from datetime import datetime, timedelta
-
-from fastapi import HTTPException, status
+from typing import Any
 
 from src.core.config import settings
 
@@ -23,14 +20,14 @@ class InMemoryCache:
 
     def __init__(self):
         """Initialize in-memory cache."""
-        self.cache: Dict[str, Dict[str, Any]] = {}
-        self.ttl_tasks: List[asyncio.Task] = []
+        self.cache: dict[str, dict[str, Any]] = {}
+        self.ttl_tasks: list[asyncio.Task] = []
 
     async def set(
         self,
         key: str,
         value: Any,
-        ttl: Optional[int] = None
+        ttl: int | None = None
     ) -> bool:
         """Set a value in cache."""
         try:
@@ -48,7 +45,7 @@ class InMemoryCache:
         except Exception:
             return False
 
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         """Get a value from cache."""
         if key not in self.cache:
             return None
@@ -97,7 +94,7 @@ class InMemoryCache:
             return max(0, int(remaining))
         return -2  # No expiration
 
-    async def keys(self, pattern: str) -> List[str]:
+    async def keys(self, pattern: str) -> list[str]:
         """Get all keys matching a pattern."""
         import fnmatch
         return [key for key in self.cache.keys() if fnmatch.fnmatch(key, pattern)]
@@ -121,11 +118,11 @@ class InMemoryCache:
         await self.set(key, new_value)
         return new_value
 
-    async def set_hash(self, key: str, mapping: Dict[str, Any]) -> bool:
+    async def set_hash(self, key: str, mapping: dict[str, Any]) -> bool:
         """Set multiple fields in a hash."""
         return await self.set(key, mapping)
 
-    async def get_hash(self, key: str, field: Optional[str] = None) -> Union[Dict[str, Any], Any, None]:
+    async def get_hash(self, key: str, field: str | None = None) -> dict[str, Any] | Any | None:
         """Get fields from a hash."""
         value = await self.get(key)
         if value is None:
@@ -156,7 +153,7 @@ class CacheService:
     def __init__(self):
         """Initialize cache service with Redis or fallback."""
         self.redis_url = settings.redis_url
-        self.redis: Optional[Any] = None
+        self.redis: Any | None = None
         self.in_memory_cache: InMemoryCache = InMemoryCache()  # Always initialize
         self.use_redis: bool = False
 
@@ -190,7 +187,7 @@ class CacheService:
         self,
         key: str,
         value: Any,
-        ttl: Optional[int] = None
+        ttl: int | None = None
     ) -> bool:
         """Set a value in cache."""
         if self.use_redis and self.redis:
@@ -209,7 +206,7 @@ class CacheService:
         else:
             return await self.in_memory_cache.set(key, value, ttl)
 
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         """Get a value from cache."""
         if self.use_redis and self.redis:
             try:
@@ -265,7 +262,7 @@ class CacheService:
         else:
             return await self.in_memory_cache.ttl(key)
 
-    async def keys(self, pattern: str) -> List[str]:
+    async def keys(self, pattern: str) -> list[str]:
         """Get all keys matching a pattern."""
         if self.use_redis and self.redis:
             try:
@@ -298,7 +295,7 @@ class CacheService:
         else:
             return await self.in_memory_cache.increment(key, amount)
 
-    async def set_hash(self, key: str, mapping: Dict[str, Any]) -> bool:
+    async def set_hash(self, key: str, mapping: dict[str, Any]) -> bool:
         """Set multiple fields in a hash."""
         if self.use_redis and self.redis:
             try:
@@ -314,7 +311,7 @@ class CacheService:
         else:
             return await self.in_memory_cache.set_hash(key, mapping)
 
-    async def get_hash(self, key: str, field: Optional[str] = None) -> Union[Dict[str, Any], Any, None]:
+    async def get_hash(self, key: str, field: str | None = None) -> dict[str, Any] | Any | None:
         """Get fields from a hash."""
         if self.use_redis and self.redis:
             try:
@@ -370,7 +367,7 @@ CACHE_PREFIXES = {
 
 async def cache_session_data(
     session_id: str,
-    data: Dict[str, Any],
+    data: dict[str, Any],
     ttl: int = 86400 * 7  # 7 days
 ) -> bool:
     """Cache session data."""
@@ -378,7 +375,7 @@ async def cache_session_data(
     return await cache_service.set(key, data, ttl)
 
 
-async def get_cached_session_data(session_id: str) -> Optional[Dict[str, Any]]:
+async def get_cached_session_data(session_id: str) -> dict[str, Any] | None:
     """Get cached session data."""
     key = f"{CACHE_PREFIXES['session']}{session_id}"
     return await cache_service.get(key)
@@ -392,7 +389,7 @@ async def delete_cached_session_data(session_id: str) -> bool:
 
 async def cache_expert_data(
     expert_id: str,
-    data: Dict[str, Any],
+    data: dict[str, Any],
     ttl: int = 3600  # 1 hour
 ) -> bool:
     """Cache expert data."""
@@ -400,7 +397,7 @@ async def cache_expert_data(
     return await cache_service.set(key, data, ttl)
 
 
-async def get_cached_expert_data(expert_id: str) -> Optional[Dict[str, Any]]:
+async def get_cached_expert_data(expert_id: str) -> dict[str, Any] | None:
     """Get cached expert data."""
     key = f"{CACHE_PREFIXES['expert']}{expert_id}"
     return await cache_service.get(key)
@@ -408,7 +405,7 @@ async def get_cached_expert_data(expert_id: str) -> Optional[Dict[str, Any]]:
 
 async def cache_api_response(
     endpoint: str,
-    params: Dict[str, Any],
+    params: dict[str, Any],
     response: Any,
     ttl: int = 300  # 5 minutes
 ) -> bool:
@@ -422,8 +419,8 @@ async def cache_api_response(
 
 async def get_cached_api_response(
     endpoint: str,
-    params: Dict[str, Any]
-) -> Optional[Any]:
+    params: dict[str, Any]
+) -> Any | None:
     """Get cached API response."""
     import hashlib
     params_str = json.dumps(params, sort_keys=True)
@@ -442,7 +439,7 @@ async def cache_ai_response(
     return await cache_service.set(key, response, ttl)
 
 
-async def get_cached_ai_response(prompt_hash: str) -> Optional[Any]:
+async def get_cached_ai_response(prompt_hash: str) -> Any | None:
     """Get cached AI response."""
     key = f"{CACHE_PREFIXES['ai_response']}{prompt_hash}"
     return await cache_service.get(key)

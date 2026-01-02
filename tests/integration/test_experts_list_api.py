@@ -17,17 +17,20 @@ async def test_list_experts_returns_active_only(client, db_session, sample_exper
     # Create multiple experts - some active, some inactive
     expert1_data = sample_expert_data.copy()
     expert1_data["email"] = f"active1.{expert1_data['email']}"
-    expert1 = await service.create_expert(ExpertCreate(**expert1_data))
+    expert1_response = await service.create_expert(ExpertCreate(**expert1_data))
+    expert1 = await service.get_expert_model(expert1_response.id)
 
     expert2_data = sample_expert_data.copy()
     expert2_data["email"] = f"active2.{expert2_data['email']}"
-    expert2 = await service.create_expert(ExpertCreate(**expert2_data))
+    expert2_response = await service.create_expert(ExpertCreate(**expert2_data))
+    expert2 = await service.get_expert_model(expert2_response.id)
 
     # Create an inactive expert
     inactive_data = sample_expert_data.copy()
     inactive_data["email"] = f"inactive.{inactive_data['email']}"
     inactive_data["name"] = "Inactive Expert"
-    inactive_expert = await service.create_expert(ExpertCreate(**inactive_data))
+    inactive_response = await service.create_expert(ExpertCreate(**inactive_data))
+    inactive_expert = await service.get_expert_model(inactive_response.id)
     await service.deactivate_expert(inactive_expert)
 
     # Get experts list
@@ -106,7 +109,8 @@ async def test_list_experts_excludes_sensitive_data(client, db_session, sample_e
     service = ExpertService(db_session)
 
     # Create an expert with refresh token
-    expert = await service.create_expert(ExpertCreate(**sample_expert_data))
+    expert_response = await service.create_expert(ExpertCreate(**sample_expert_data))
+    expert = await service.get_expert_model(expert_response.id)
     expert.refresh_token = "secret_refresh_token_12345"
     db_session.add(expert)
     await db_session.commit()

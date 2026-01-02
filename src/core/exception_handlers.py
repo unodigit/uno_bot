@@ -1,6 +1,5 @@
 """Exception handlers for the UnoBot API."""
 import logging
-from typing import Any, Dict, List
 
 from fastapi import Request
 from fastapi.exceptions import RequestValidationError
@@ -10,17 +9,12 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from src.core.config import settings
 from src.core.exceptions import (
-    BadRequestError,
-    ConflictError,
-    DatabaseError,
-    ExternalServiceError,
-    NotFoundError,
     UnoBotError,
 )
 from src.schemas.error import (
     ErrorResponse,
-    ValidationErrorResponse,
     ValidationErrorDetail,
+    ValidationErrorResponse,
 )
 
 logger = logging.getLogger(__name__)
@@ -31,7 +25,7 @@ async def validation_exception_handler(
 ) -> JSONResponse:
     """Handle Pydantic validation errors."""
     # Extract field-level errors
-    field_errors: List[ValidationErrorDetail] = []
+    field_errors: list[ValidationErrorDetail] = []
     for error in exc.errors():
         field = ".".join(str(loc) for loc in error["loc"])
         field_errors.append(

@@ -1,14 +1,13 @@
 """Expert service for business logic."""
 import uuid
-from collections import defaultdict
-from datetime import datetime, timedelta
-from typing import Any, List, Optional
+from datetime import datetime
+from typing import Any
 
-from sqlalchemy import select, func
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models.expert import Expert
 from src.models.booking import Booking
+from src.models.expert import Expert
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 from src.services.cache_service import cache_expert_data, get_cached_expert_data
 
@@ -19,7 +18,7 @@ class ExpertService:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def list_active_experts(self) -> List[ExpertResponse]:
+    async def list_active_experts(self) -> list[ExpertResponse]:
         """List all active experts.
 
         Returns:
@@ -31,7 +30,7 @@ class ExpertService:
         experts = result.scalars().all()
         return [ExpertResponse.model_validate(e) for e in experts]
 
-    async def list_experts(self, include_inactive: bool = False) -> List[ExpertResponse]:
+    async def list_experts(self, include_inactive: bool = False) -> list[ExpertResponse]:
         """List all experts (optionally including inactive ones).
 
         Args:
@@ -70,7 +69,7 @@ class ExpertService:
             )
         return result.scalar_one()
 
-    async def get_expert(self, expert_id: uuid.UUID) -> Optional[ExpertResponse]:
+    async def get_expert(self, expert_id: uuid.UUID) -> ExpertResponse | None:
         """Get an expert by ID with caching.
         Args:
             expert_id: The expert ID
@@ -96,7 +95,7 @@ class ExpertService:
             return expert_response
         return None
 
-    async def get_expert_model(self, expert_id: uuid.UUID) -> Optional[Expert]:
+    async def get_expert_model(self, expert_id: uuid.UUID) -> Expert | None:
         """Get an expert model by ID (internal helper for updates).
 
         Args:
@@ -116,7 +115,7 @@ class ExpertService:
         specialties: list[str] | None = None,
         business_context: dict[str, Any] | None = None,
         workload_balancing: bool = True,
-    ) -> List[tuple[ExpertResponse, float]]:
+    ) -> list[tuple[ExpertResponse, float]]:
         """Match experts based on service type, specialties, and business context.
 
         Args:

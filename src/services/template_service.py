@@ -1,6 +1,5 @@
 """Service for managing welcome message templates."""
 import uuid
-from typing import List, Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -33,7 +32,7 @@ class TemplateService:
         await self.db.refresh(template)
         return WelcomeMessageTemplateResponse.model_validate(template)
 
-    async def get_template(self, template_id: uuid.UUID) -> Optional[WelcomeMessageTemplateResponse]:
+    async def get_template(self, template_id: uuid.UUID) -> WelcomeMessageTemplateResponse | None:
         """Get a template by ID."""
         result = await self.db.execute(
             select(WelcomeMessageTemplate).where(WelcomeMessageTemplate.id == template_id)
@@ -43,7 +42,7 @@ class TemplateService:
             return WelcomeMessageTemplateResponse.model_validate(template)
         return None
 
-    async def get_all_templates(self) -> List[WelcomeMessageTemplateResponse]:
+    async def get_all_templates(self) -> list[WelcomeMessageTemplateResponse]:
         """Get all templates."""
         result = await self.db.execute(
             select(WelcomeMessageTemplate).order_by(WelcomeMessageTemplate.created_at.desc())
@@ -51,22 +50,22 @@ class TemplateService:
         templates = result.scalars().all()
         return [WelcomeMessageTemplateResponse.model_validate(t) for t in templates]
 
-    async def get_active_templates(self) -> List[WelcomeMessageTemplateResponse]:
+    async def get_active_templates(self) -> list[WelcomeMessageTemplateResponse]:
         """Get all active templates."""
         result = await self.db.execute(
             select(WelcomeMessageTemplate)
-            .where(WelcomeMessageTemplate.is_active == True)
+            .where(WelcomeMessageTemplate.is_active)
             .order_by(WelcomeMessageTemplate.created_at.desc())
         )
         templates = result.scalars().all()
         return [WelcomeMessageTemplateResponse.model_validate(t) for t in templates]
 
-    async def get_default_template(self) -> Optional[WelcomeMessageTemplateResponse]:
+    async def get_default_template(self) -> WelcomeMessageTemplateResponse | None:
         """Get the default template."""
         result = await self.db.execute(
             select(WelcomeMessageTemplate)
-            .where(WelcomeMessageTemplate.is_default == True)
-            .where(WelcomeMessageTemplate.is_active == True)
+            .where(WelcomeMessageTemplate.is_default)
+            .where(WelcomeMessageTemplate.is_active)
         )
         template = result.scalar_one_or_none()
         if template:
@@ -74,8 +73,8 @@ class TemplateService:
         return None
 
     async def get_template_for_industry(
-        self, industry: Optional[str] = None
-    ) -> Optional[WelcomeMessageTemplateResponse]:
+        self, industry: str | None = None
+    ) -> WelcomeMessageTemplateResponse | None:
         """Get a template suitable for the given industry."""
         if not industry:
             return await self.get_default_template()
@@ -83,7 +82,7 @@ class TemplateService:
         # First try to find an industry-specific active template
         result = await self.db.execute(
             select(WelcomeMessageTemplate)
-            .where(WelcomeMessageTemplate.is_active == True)
+            .where(WelcomeMessageTemplate.is_active)
             .where(
                 WelcomeMessageTemplate.target_industry.ilike(f"%{industry.lower()}%")
             )
@@ -100,7 +99,7 @@ class TemplateService:
 
     async def update_template(
         self, template_id: uuid.UUID, template_update: WelcomeMessageTemplateUpdate
-    ) -> Optional[WelcomeMessageTemplateResponse]:
+    ) -> WelcomeMessageTemplateResponse | None:
         """Update a template."""
         template = await self._get_template_model(template_id)
         if not template:
@@ -138,7 +137,7 @@ class TemplateService:
             self.db.add(template)
             await self.db.commit()
 
-    async def _get_template_model(self, template_id: uuid.UUID) -> Optional[WelcomeMessageTemplate]:
+    async def _get_template_model(self, template_id: uuid.UUID) -> WelcomeMessageTemplate | None:
         """Get a template model by ID (internal helper)."""
         result = await self.db.execute(
             select(WelcomeMessageTemplate).where(WelcomeMessageTemplate.id == template_id)
@@ -148,7 +147,7 @@ class TemplateService:
     async def _unset_all_defaults(self) -> None:
         """Unset the default flag on all templates."""
         result = await self.db.execute(
-            select(WelcomeMessageTemplate).where(WelcomeMessageTemplate.is_default == True)
+            select(WelcomeMessageTemplate).where(WelcomeMessageTemplate.is_default)
         )
         templates = result.scalars().all()
         for template in templates:

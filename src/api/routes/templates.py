@@ -1,6 +1,5 @@
 """Welcome message template API routes."""
 import uuid
-from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -40,13 +39,13 @@ async def create_template(
 
 @router.get(
     "",
-    response_model=List[WelcomeMessageTemplateResponse],
+    response_model=list[WelcomeMessageTemplateResponse],
     summary="List all templates",
     description="Get all welcome message templates",
 )
 async def list_templates(
     db: AsyncSession = Depends(get_db),
-) -> List[WelcomeMessageTemplateResponse]:
+) -> list[WelcomeMessageTemplateResponse]:
     """List all welcome message templates."""
     service = TemplateService(db)
     templates = await service.get_all_templates()
@@ -55,13 +54,13 @@ async def list_templates(
 
 @router.get(
     "/active",
-    response_model=List[WelcomeMessageTemplateResponse],
+    response_model=list[WelcomeMessageTemplateResponse],
     summary="List active templates",
     description="Get all active welcome message templates",
 )
 async def list_active_templates(
     db: AsyncSession = Depends(get_db),
-) -> List[WelcomeMessageTemplateResponse]:
+) -> list[WelcomeMessageTemplateResponse]:
     """List all active welcome message templates."""
     service = TemplateService(db)
     templates = await service.get_active_templates()

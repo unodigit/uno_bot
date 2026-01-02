@@ -1,7 +1,7 @@
 """Custom SQLAlchemy types for database compatibility."""
 import json
 import uuid
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 from sqlalchemy import Text, TypeDecorator
 from sqlalchemy.dialects.postgresql import JSONB
@@ -21,7 +21,7 @@ class JSONType(TypeDecorator[Any]):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         # Determine dialect from bind (set at runtime)
-        self._is_postgres: Optional[bool] = None
+        self._is_postgres: bool | None = None
 
     def load_dialect_impl(self, dialect: Dialect) -> Any:
         if dialect.name == 'postgresql':
@@ -29,17 +29,17 @@ class JSONType(TypeDecorator[Any]):
         else:
             return dialect.type_descriptor(Text())
 
-    def process_bind_param(self, value: Optional[Any], dialect: Dialect) -> Optional[Union[str, dict[str, Any], list[Any]]]:
+    def process_bind_param(self, value: Any | None, dialect: Dialect) -> str | dict[str, Any] | list[Any] | None:
         """Convert Python object to database value."""
         if value is None:
             return None
         if dialect.name == 'postgresql':
             # For PostgreSQL, return as-is (JSONB handles it)
-            return cast(Union[str, dict[str, Any], list[Any]], value)
+            return cast(str | dict[str, Any] | list[Any], value)
         # For SQLite, serialize to JSON string
         return json.dumps(value) if isinstance(value, (dict, list)) else value
 
-    def process_result_value(self, value: Optional[str], dialect: Dialect) -> Optional[Union[str, dict[str, Any], list[Any]]]:
+    def process_result_value(self, value: str | None, dialect: Dialect) -> str | dict[str, Any] | list[Any] | None:
         """Convert database value to Python object."""
         if value is None:
             return None
@@ -74,7 +74,7 @@ class UUIDType(TypeDecorator[uuid.UUID]):
         else:
             return dialect.type_descriptor(Text())
 
-    def process_bind_param(self, value: Optional[Union[uuid.UUID, str]], dialect: Dialect) -> Optional[str]:
+    def process_bind_param(self, value: uuid.UUID | str | None, dialect: Dialect) -> str | None:
         """Convert Python UUID to database value."""
         if value is None:
             return None
@@ -83,18 +83,18 @@ class UUIDType(TypeDecorator[uuid.UUID]):
         # For SQLite, convert UUID to string
         return str(value) if isinstance(value, uuid.UUID) else value
 
-    def process_result_value(self, value: Optional[str], dialect: Dialect) -> Optional[uuid.UUID]:
+    def process_result_value(self, value: str | None, dialect: Dialect) -> uuid.UUID | None:
         """Convert database value to Python UUID."""
         if value is None:
             return None
         if dialect.name == 'postgresql':
             # PostgreSQL returns UUID as string when using as_uuid=True
             try:
-                return uuid.UUID(value) if isinstance(value, str) else cast(Optional[uuid.UUID], value)
+                return uuid.UUID(value) if isinstance(value, str) else cast(uuid.UUID | None, value)
             except (ValueError, TypeError):
-                return cast(Optional[uuid.UUID], value)
+                return cast(uuid.UUID | None, value)
         # For SQLite, convert string to UUID
         try:
-            return uuid.UUID(value) if isinstance(value, str) else cast(Optional[uuid.UUID], value)
+            return uuid.UUID(value) if isinstance(value, str) else cast(uuid.UUID | None, value)
         except (ValueError, TypeError):
-            return cast(Optional[uuid.UUID], value)
+            return cast(uuid.UUID | None, value)

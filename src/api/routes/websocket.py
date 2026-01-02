@@ -1,17 +1,17 @@
 """WebSocket routes for real-time chat with Socket.IO."""
 import logging
 import uuid
-from typing import Dict, Any
+from typing import Any
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from socketio import AsyncServer
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
 from src.models.session import MessageRole
 from src.schemas.session import MessageCreate
-from src.services.session_service import SessionService
-from src.services.prd_service import PRDService
 from src.services.expert_service import ExpertService
+from src.services.prd_service import PRDService
+from src.services.session_service import SessionService
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ class WebSocketManager:
     """Manages WebSocket connections and event handling."""
 
     def __init__(self):
-        self.active_connections: Dict[str, Any] = {}
+        self.active_connections: dict[str, Any] = {}
 
     def disconnect(self, session_id: str) -> None:
         """Disconnect a WebSocket connection."""
@@ -45,7 +45,7 @@ async def handle_streaming_chat_message(
     session_id: str,
     content: str,
     db: AsyncSession,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Handle incoming chat message and generate AI response with streaming.
 
     This function sends streaming events for real-time response updates.
@@ -210,7 +210,7 @@ async def handle_streaming_chat_message(
 async def handle_generate_prd(
     session_id: str,
     db: AsyncSession,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Handle PRD generation request."""
     session_service = SessionService(db)
     prd_service = PRDService(db)
@@ -246,7 +246,7 @@ async def handle_generate_prd(
 async def handle_match_experts(
     session_id: str,
     db: AsyncSession,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Handle expert matching request."""
     session_service = SessionService(db)
     expert_service = ExpertService(db)
@@ -296,7 +296,7 @@ async def handle_get_availability(
     expert_id: str,
     timezone: str,
     db: AsyncSession,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Handle availability request."""
     from src.services.calendar_service import CalendarService
 
@@ -326,9 +326,9 @@ async def handle_get_availability(
 
 async def handle_create_booking(
     session_id: str,
-    booking_data: Dict[str, Any],
+    booking_data: dict[str, Any],
     db: AsyncSession,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Handle booking creation."""
     from src.services.booking_service import BookingService
 

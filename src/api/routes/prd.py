@@ -2,12 +2,11 @@
 import uuid
 from io import BytesIO
 
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
-from src.models.prd import PRDDocument
 from src.schemas.prd import (
     ConversationSummaryApproveRequest,
     ConversationSummaryResponse,

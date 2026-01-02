@@ -1,10 +1,9 @@
 """Google Calendar integration service for appointment booking."""
-import asyncio
 from datetime import datetime, timedelta
-from typing import List, Optional, Any, Dict, cast
+from typing import Any
 
-from google.auth.transport.requests import Request
 from google.auth.exceptions import RefreshError
+from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -68,7 +67,7 @@ class CalendarService:
             return creds
         except RefreshError as e:
             print(f"Error refreshing credentials: {e}")
-            raise Exception(f"Invalid refresh token: {e}")
+            raise Exception(f"Invalid refresh token: {e}") from e
 
     def get_calendar_service(self, refresh_token: str) -> Any:
         """Get authenticated Google Calendar service."""
@@ -81,7 +80,7 @@ class CalendarService:
         timezone: str = 'UTC',
         days_ahead: int = 14,
         min_slots_to_show: int = 5
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Get available time slots for an expert.
 
         Args:
@@ -122,7 +121,7 @@ class CalendarService:
             business_start_hour = 9
             business_end_hour = 17
 
-            available_slots: List[dict[str, Any]] = []
+            available_slots: list[dict[str, Any]] = []
             current_time = start_date
 
             while len(available_slots) < min_slots_to_show and current_time < end_date:
@@ -164,15 +163,15 @@ class CalendarService:
 
         except HttpError as e:
             print(f"Google Calendar API error: {e}")
-            raise Exception(f"Failed to get availability: {e}")
+            raise Exception(f"Failed to get availability: {e}") from e
         except Exception as e:
             print(f"Error getting availability: {e}")
-            raise Exception(f"Failed to get availability: {e}")
+            raise Exception(f"Failed to get availability: {e}") from e
 
     def _is_time_slot_available(
         self,
         start_time: datetime,
-        events: List[dict[str, Any]]
+        events: list[dict[str, Any]]
     ) -> bool:
         """Check if a time slot is available (no conflicting events)."""
         end_time = start_time + timedelta(hours=1)
@@ -234,7 +233,7 @@ class CalendarService:
 
             event = {
                 'summary': f'UnoDigit Consultation with {client_name}',
-                'description': f'Business consultation appointment generated through UnoBot.',
+                'description': 'Business consultation appointment generated through UnoBot.',
                 'start': {
                     'dateTime': start_time.isoformat(),
                     'timeZone': timezone,
@@ -272,10 +271,10 @@ class CalendarService:
 
         except HttpError as e:
             print(f"Google Calendar API error: {e}")
-            raise Exception(f"Failed to create calendar event: {e}")
+            raise Exception(f"Failed to create calendar event: {e}") from e
         except Exception as e:
             print(f"Error creating calendar event: {e}")
-            raise Exception(f"Failed to create calendar event: {e}")
+            raise Exception(f"Failed to create calendar event: {e}") from e
 
     async def get_calendar_timezone(self, refresh_token: str) -> str:
         """Get the expert's calendar timezone."""
@@ -287,7 +286,7 @@ class CalendarService:
             print(f"Error getting calendar timezone: {e}")
             return 'UTC'
 
-    def format_time_slot(self, start_time: datetime, timezone: str) -> Dict[str, Any]:
+    def format_time_slot(self, start_time: datetime, timezone: str) -> dict[str, Any]:
         """Format a time slot for display."""
         return {
             'start': start_time.isoformat(),
@@ -303,7 +302,7 @@ class CalendarService:
         timezone: str = 'UTC',
         days_ahead: int = 14,
         min_slots_to_show: int = 5
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Generate mock availability for testing and development.
 
         Args:

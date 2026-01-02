@@ -1,6 +1,5 @@
 """API routes for booking and calendar functionality."""
 from datetime import datetime
-from typing import List, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -8,14 +7,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies import get_db
 from src.schemas.booking import (
-    BookingCreate, BookingResponse, AvailabilityResponse, TimeSlot
+    AvailabilityResponse,
+    BookingCreate,
+    BookingResponse,
 )
-from src.schemas.expert import ExpertResponse
 from src.services.booking_service import BookingService
-# from src.services.calendar_service import CalendarService
-from src.services.expert_service import ExpertService
-from src.services.session_service import SessionService
 
+# from src.services.calendar_service import CalendarService
 
 router = APIRouter()
 
@@ -23,9 +21,9 @@ router = APIRouter()
 @router.get("/experts/{expert_id}/availability", response_model=AvailabilityResponse)
 async def get_expert_availability(
     expert_id: UUID,
-    timezone: Optional[str] = None,
-    days_ahead: Optional[int] = None,
-    min_slots_to_show: Optional[int] = None,
+    timezone: str | None = None,
+    days_ahead: int | None = None,
+    min_slots_to_show: int | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     """Get available time slots for an expert.
@@ -55,12 +53,12 @@ async def get_expert_availability(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e)
-        )
+        ) from e
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get availability: {str(e)}"
-        )
+        ) from e
 
 
 @router.post("/sessions/{session_id}/bookings", response_model=BookingResponse, status_code=status.HTTP_201_CREATED)
@@ -97,12 +95,12 @@ async def create_booking(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e)
-        )
+        ) from e
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create booking: {str(e)}"
-        )
+        ) from e
 
 
 @router.get("/{booking_id}", response_model=BookingResponse)
@@ -134,14 +132,14 @@ async def get_booking(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get booking: {str(e)}"
-        )
+        ) from e
 
 
-@router.get("/sessions/{session_id}/bookings", response_model=Optional[BookingResponse])
+@router.get("/sessions/{session_id}/bookings", response_model=BookingResponse | None)
 async def get_booking_by_session(
     session_id: UUID,
     db: AsyncSession = Depends(get_db),
-    
+
 ):
     """Get booking by session ID.
 
@@ -162,7 +160,7 @@ async def get_booking_by_session(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get booking: {str(e)}"
-        )
+        ) from e
 
 
 @router.delete("/{booking_id}")
@@ -192,13 +190,13 @@ async def cancel_booking(
     return {"message": "Booking cancelled successfully"}
 
 
-@router.get("/experts/{expert_id}/bookings", response_model=List[BookingResponse])
+@router.get("/experts/{expert_id}/bookings", response_model=list[BookingResponse])
 async def get_expert_bookings(
     expert_id: UUID,
-    start_date: Optional[datetime] = None,
-    end_date: Optional[datetime] = None,
+    start_date: datetime | None = None,
+    end_date: datetime | None = None,
     db: AsyncSession = Depends(get_db),
-    
+
 ):
     """Get all bookings for an expert within a date range.
 
@@ -225,4 +223,4 @@ async def get_expert_bookings(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to get expert bookings: {str(e)}"
-        )
+        ) from e

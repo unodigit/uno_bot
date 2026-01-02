@@ -3,13 +3,13 @@
 Main FastAPI application with OpenAPI documentation.
 """
 import logging
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from socketio import AsyncServer, ASGIApp
+from socketio import ASGIApp
 
 # Import cache service with fallback (Redis is optional)
 try:
@@ -22,22 +22,23 @@ except ImportError:
         async def connect(self): pass
         async def disconnect(self): pass
     cache_service = DummyCacheService()
-    get_cache_service = lambda: cache_service
+    def get_cache_service():
+        return cache_service
 
 from src.api.routes import router
-from src.core.config import settings
-from src.core.database import init_db, AsyncSessionLocal
-from src.core.exception_handlers import register_exception_handlers
-from src.core.security import rate_limit_middleware, mask_sensitive_data
 from src.api.routes.websocket import (
-    sio,
-    manager,
-    handle_streaming_chat_message,
+    handle_create_booking,
     handle_generate_prd,
-    handle_match_experts,
     handle_get_availability,
-    handle_create_booking
+    handle_match_experts,
+    handle_streaming_chat_message,
+    manager,
+    sio,
 )
+from src.core.config import settings
+from src.core.database import AsyncSessionLocal, init_db
+from src.core.exception_handlers import register_exception_handlers
+from src.core.security import mask_sensitive_data, rate_limit_middleware
 
 
 class SecureLogFilter(logging.Filter):

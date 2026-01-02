@@ -1,10 +1,6 @@
 """Email notification service using SendGrid for booking confirmations and reminders."""
-import asyncio
-from datetime import datetime, timedelta
-from typing import Optional
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import base64
+from datetime import datetime
 
 from src.core.config import settings
 
@@ -26,10 +22,10 @@ class EmailService:
         start_time: datetime,
         end_time: datetime,
         timezone: str,
-        meeting_link: Optional[str] = None,
-        prd_url: Optional[str] = None,
-        booking_id: Optional[str] = None,
-        session_id: Optional[str] = None,
+        meeting_link: str | None = None,
+        prd_url: str | None = None,
+        booking_id: str | None = None,
+        session_id: str | None = None,
     ) -> bool:
         """Send booking confirmation email to client.
 
@@ -139,7 +135,7 @@ class EmailService:
         # In development/test mode, log the email instead of sending
         if self.environment in ["test", "development"]:
             print(f"\n{'='*60}")
-            print(f"EMAIL NOTIFICATION (Development Mode)")
+            print("EMAIL NOTIFICATION (Development Mode)")
             print(f"{'='*60}")
             print(f"To: {client_email}")
             print(f"Subject: {subject}")
@@ -150,8 +146,7 @@ class EmailService:
         # Production: Send via SendGrid
         try:
             from sendgrid import SendGridAPIClient
-            from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
-            import io
+            from sendgrid.helpers.mail import Attachment, Mail
 
             # Create email message
             message = Mail(
@@ -202,7 +197,7 @@ class EmailService:
         start_time: datetime,
         end_time: datetime,
         timezone: str,
-        meeting_link: Optional[str] = None,
+        meeting_link: str | None = None,
         hours_before: int = 24,
     ) -> bool:
         """Send reminder email before appointment.
@@ -256,7 +251,7 @@ class EmailService:
                     </div>
             """
 
-        body += f"""
+        body += """
                     <p style="margin: 15px 0 0 0; font-size: 14px; color: #6b7280;">
                         If you need to reschedule or cancel, please contact us as soon as possible.
                     </p>
@@ -368,8 +363,8 @@ END:VCALENDAR"""
         start_time: datetime,
         end_time: datetime,
         timezone: str,
-        prd_content: Optional[str] = None,
-        meeting_link: Optional[str] = None,
+        prd_content: str | None = None,
+        meeting_link: str | None = None,
     ) -> bool:
         """Send notification email to expert about new booking.
 
@@ -437,7 +432,7 @@ END:VCALENDAR"""
                     </div>
             """
 
-        body += f"""
+        body += """
                     <div style="margin: 20px 0; padding: 15px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px;">
                         <p style="margin: 0 0 10px 0; font-weight: 600; color: #1e40af;">Action Required:</p>
                         <ul style="margin: 0; padding-left: 20px; color: #1e40af; font-size: 14px;">
@@ -462,7 +457,7 @@ END:VCALENDAR"""
         # In development/test mode, log the email
         if self.environment in ["test", "development"]:
             print(f"\n{'='*60}")
-            print(f"EXPERT NOTIFICATION - Development Mode")
+            print("EXPERT NOTIFICATION - Development Mode")
             print(f"{'='*60}")
             print(f"To: {expert_email}")
             print(f"Subject: {subject}")
@@ -471,9 +466,10 @@ END:VCALENDAR"""
 
         # Production: Send via SendGrid
         try:
-            from sendgrid import SendGridAPIClient
-            from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
             import base64
+
+            from sendgrid import SendGridAPIClient
+            from sendgrid.helpers.mail import Attachment, Mail
 
             message = Mail(
                 from_email=self.from_email,
@@ -581,7 +577,7 @@ END:VCALENDAR"""
         # In development/test mode, log the email
         if self.environment in ["test", "development"]:
             print(f"\\n{'='*60}")
-            print(f"CANCELLATION EMAIL - Development Mode")
+            print("CANCELLATION EMAIL - Development Mode")
             print(f"{'='*60}")
             print(f"To: {client_email}")
             print(f"Subject: {subject}")

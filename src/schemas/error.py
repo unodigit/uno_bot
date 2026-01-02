@@ -1,6 +1,6 @@
 """Error response schemas for API validation."""
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -10,7 +10,7 @@ class ValidationErrorDetail(BaseModel):
 
     field: str = Field(..., description="Field name that failed validation")
     message: str = Field(..., description="Error message for the field")
-    value: Optional[Any] = Field(None, description="Value that failed validation")
+    value: Any | None = Field(None, description="Value that failed validation")
 
 
 class ErrorResponse(BaseModel):
@@ -20,11 +20,11 @@ class ErrorResponse(BaseModel):
     detail: str = Field(..., description="Error message")
     error_code: str = Field(..., description="Machine-readable error code")
     timestamp: datetime = Field(default_factory=datetime.now, description="Error timestamp")
-    path: Optional[str] = Field(None, description="API endpoint path")
-    details: Optional[List[ValidationErrorDetail]] = Field(
+    path: str | None = Field(None, description="API endpoint path")
+    details: list[ValidationErrorDetail] | None = Field(
         default=None, description="Field-level validation errors"
     )
-    debug_info: Optional[Dict[str, Any]] = Field(
+    debug_info: dict[str, Any] | None = Field(
         default=None, description="Additional debug information (development only)"
     )
 
@@ -45,7 +45,7 @@ class ValidationErrorResponse(ErrorResponse):
     """422 Validation Error response with field details."""
 
     error_code: Literal["VALIDATION_ERROR"] = "VALIDATION_ERROR"
-    details: List[ValidationErrorDetail] = Field(default_factory=list, description="Field validation errors")
+    details: list[ValidationErrorDetail] = Field(default_factory=list, description="Field validation errors")
 
 
 class InternalServerError(ErrorResponse):

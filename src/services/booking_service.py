@@ -1,17 +1,18 @@
 """Booking service for appointment scheduling and management."""
 import uuid
 from datetime import datetime, timedelta
-from typing import List, Optional
 
-from sqlalchemy import select, and_, func
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from src.models.booking import Booking
-from src.models.session import ConversationSession
 from src.models.expert import Expert
+from src.models.session import ConversationSession
 from src.schemas.booking import (
-    BookingCreate, BookingResponse, AvailabilityResponse, TimeSlot
+    AvailabilityResponse,
+    BookingResponse,
+    TimeSlot,
 )
 from src.services.calendar_service import CalendarService
 from src.services.email_service import EmailService
@@ -29,9 +30,9 @@ class BookingService:
     async def get_expert_availability(
         self,
         expert_id: uuid.UUID,
-        timezone: Optional[str] = None,
-        days_ahead: Optional[int] = None,
-        min_slots_to_show: Optional[int] = None
+        timezone: str | None = None,
+        days_ahead: int | None = None,
+        min_slots_to_show: int | None = None
     ) -> AvailabilityResponse:
         """Get available time slots for an expert.
 
@@ -154,7 +155,7 @@ class BookingService:
                 timezone=timezone
             )
         except Exception as e:
-            raise Exception(f"Failed to create calendar event: {e}")
+            raise Exception(f"Failed to create calendar event: {e}") from e
 
         # Create booking record
         # Generate Google Meet link (mock for now)
@@ -226,7 +227,7 @@ class BookingService:
 
         return BookingResponse.from_orm(booking)
 
-    async def get_booking(self, booking_id: uuid.UUID) -> Optional[BookingResponse]:
+    async def get_booking(self, booking_id: uuid.UUID) -> BookingResponse | None:
         """Get a booking by ID."""
         result = await self.db.execute(
             select(Booking)
@@ -239,7 +240,7 @@ class BookingService:
             return BookingResponse.from_orm(booking)
         return None
 
-    async def get_booking_by_session(self, session_id: uuid.UUID) -> Optional[BookingResponse]:
+    async def get_booking_by_session(self, session_id: uuid.UUID) -> BookingResponse | None:
         """Get booking by session ID."""
         result = await self.db.execute(
             select(Booking)
@@ -305,9 +306,9 @@ class BookingService:
     async def get_expert_bookings(
         self,
         expert_id: uuid.UUID,
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None
-    ) -> List[BookingResponse]:
+        start_date: datetime | None = None,
+        end_date: datetime | None = None
+    ) -> list[BookingResponse]:
         """Get all bookings for an expert within a date range."""
         query = select(Booking).where(Booking.expert_id == expert_id)
 
@@ -346,7 +347,7 @@ class BookingService:
                 Booking.start_time >= start_window,
                 Booking.start_time < end_window,
                 # Only send once per reminder period
-                Booking.reminder_sent_at == None
+                Booking.reminder_sent_at is None
             )
         )
 
@@ -382,21 +383,21 @@ class BookingService:
 
         return sent_count
 
-    async def _get_expert(self, expert_id: uuid.UUID) -> Optional[Expert]:
+    async def _get_expert(self, expert_id: uuid.UUID) -> Expert | None:
         """Get expert by ID."""
         result = await self.db.execute(
             select(Expert).where(Expert.id == expert_id)
         )
         return result.scalar_one_or_none()
 
-    async def _get_session(self, session_id: uuid.UUID) -> Optional[ConversationSession]:
+    async def _get_session(self, session_id: uuid.UUID) -> ConversationSession | None:
         """Get session by ID."""
         result = await self.db.execute(
             select(ConversationSession).where(ConversationSession.id == session_id)
         )
         return result.scalar_one_or_none()
 
-    async def _get_booking(self, booking_id: uuid.UUID) -> Optional[Booking]:
+    async def _get_booking(self, booking_id: uuid.UUID) -> Booking | None:
         """Get booking by ID."""
         result = await self.db.execute(
             select(Booking).where(Booking.id == booking_id)
@@ -408,7 +409,7 @@ class BookingService:
         expert_id: uuid.UUID,
         start_time: datetime,
         end_time: datetime,
-        exclude_booking_id: Optional[uuid.UUID] = None
+        exclude_booking_id: uuid.UUID | None = None
     ) -> None:
         """Check for booking conflicts within the same expert.
 

@@ -1,7 +1,7 @@
 """Expert API routes for CRUD operations."""
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
@@ -12,12 +12,10 @@ from src.schemas.expert import (
     ExpertPublicResponse,
     ExpertResponse,
     ExpertUpdate,
-    GoogleOAuthRequest,
     GoogleOAuthResponse,
-    GoogleOAuthCallbackRequest,
 )
-from src.services.expert_service import ExpertService
 from src.services.calendar_service import CalendarService
+from src.services.expert_service import ExpertService
 
 router = APIRouter()
 
@@ -292,7 +290,7 @@ async def connect_calendar(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to initiate OAuth flow: {str(e)}"
-        )
+        ) from e
 
 
 @router.get(
@@ -378,4 +376,4 @@ async def oauth_callback(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"OAuth callback failed: {str(e)}"
-        )
+        ) from e

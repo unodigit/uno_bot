@@ -3,12 +3,10 @@ import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.exceptions import RequestValidationError
-from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
-from src.core.exceptions import BadRequestError, ConflictError, NotFoundError
+from src.core.exceptions import BadRequestError, NotFoundError
 from src.models.session import MessageRole
 from src.schemas.expert import ExpertMatchResponse
 from src.schemas.session import (
@@ -33,12 +31,12 @@ def validate_session_id(session_id: str) -> uuid.UUID:
     """
     try:
         return uuid.UUID(session_id)
-    except (ValueError, AttributeError):
+    except (ValueError, AttributeError) as e:
         # Invalid UUID format - return validation error (422)
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Invalid UUID format for session_id: {session_id}",
-        )
+        ) from e
 
 
 @router.post(

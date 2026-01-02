@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
 
-
 # User type for authentication (stub - no auth in current implementation)
 User = Any
 

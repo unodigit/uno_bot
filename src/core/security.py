@@ -1,22 +1,21 @@
 """Security utilities and middleware for UnoBot API."""
-import logging
-import re
-from datetime import datetime, timedelta
-from typing import Optional, Dict, Any
-from functools import wraps
-
-from fastapi import Request, HTTPException, status, Depends, Header
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import hashlib
 import hmac
+import logging
+import re
 import secrets
+from datetime import datetime, timedelta
+from typing import Any
+
+from fastapi import Depends, Header, HTTPException, Request, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from src.core.config import settings
 
 logger = logging.getLogger(__name__)
 
 # Rate limiting storage (in-memory for now, can be swapped with Redis)
-_rate_limit_store: Dict[str, Dict[str, Any]] = {}
+_rate_limit_store: dict[str, dict[str, Any]] = {}
 
 
 class RateLimiter:
@@ -226,7 +225,7 @@ def mask_sensitive_data(text: str) -> str:
     return text
 
 
-def sign_data(data: str, secret: Optional[str] = None) -> str:
+def sign_data(data: str, secret: str | None = None) -> str:
     """
     Create HMAC signature for data verification.
 
@@ -247,7 +246,7 @@ def sign_data(data: str, secret: Optional[str] = None) -> str:
     ).hexdigest()
 
 
-def verify_signature(data: str, signature: str, secret: Optional[str] = None) -> bool:
+def verify_signature(data: str, signature: str, secret: str | None = None) -> bool:
     """
     Verify HMAC signature.
 
@@ -272,7 +271,7 @@ class TokenManager:
         return secrets.token_hex(length)
 
     @staticmethod
-    def encrypt_token(token: str, secret: Optional[str] = None) -> str:
+    def encrypt_token(token: str, secret: str | None = None) -> str:
         """
         Encrypt token using HMAC.
 
@@ -287,7 +286,7 @@ class TokenManager:
         return f"{token}:{signature}"
 
     @staticmethod
-    def decrypt_token(encrypted: str, secret: Optional[str] = None) -> Optional[str]:
+    def decrypt_token(encrypted: str, secret: str | None = None) -> str | None:
         """
         Decrypt and verify token.
 
@@ -311,7 +310,7 @@ class AdminSecurity:
     """Admin route security and authentication."""
 
     # Simple admin token system (in production, use JWT or OAuth)
-    _admin_tokens: Dict[str, Dict[str, Any]] = {}
+    _admin_tokens: dict[str, dict[str, Any]] = {}
 
     @staticmethod
     def create_admin_token(username: str, expires_minutes: int = 60) -> str:
@@ -338,7 +337,7 @@ class AdminSecurity:
         return token
 
     @staticmethod
-    def verify_admin_token(token: str) -> Optional[Dict[str, Any]]:
+    def verify_admin_token(token: str) -> dict[str, Any] | None:
         """
         Verify admin token.
 
@@ -407,7 +406,7 @@ async def get_api_key(
 
 async def require_admin_auth(
     credentials: HTTPAuthorizationCredentials = Depends(security)
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Dependency to require admin authentication.
 
@@ -459,7 +458,7 @@ async def rate_limit_middleware(request: Request, call_next):
     if not is_allowed:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            detail=f"Rate limit exceeded. Try again later.",
+            detail="Rate limit exceeded. Try again later.",
             headers={"X-RateLimit-Remaining": str(remaining)}
         )
 
@@ -470,7 +469,7 @@ async def rate_limit_middleware(request: Request, call_next):
     return response
 
 
-def sanitize_request_data(request_data: Dict[str, Any]) -> Dict[str, Any]:
+def sanitize_request_data(request_data: dict[str, Any]) -> dict[str, Any]:
     """
     Sanitize all data in a request.
 

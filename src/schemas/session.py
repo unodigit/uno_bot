@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class ClientInfo(BaseModel):
@@ -66,9 +66,10 @@ class SessionResponse(BaseModel):
     email_preferences: dict[str, Any] = Field(default_factory=dict)
     messages: list["MessageResponse"] = Field(default_factory=list)
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,
+    )
 
 
 class MessageCreate(BaseModel):
@@ -88,9 +89,10 @@ class MessageResponse(BaseModel):
     meta_data: dict[str, Any]
     created_at: datetime
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,
+    )
 
 
 class SessionResumeRequest(BaseModel):
