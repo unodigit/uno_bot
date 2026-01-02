@@ -321,9 +321,12 @@
       "Step 4: Verify the option is sent as a message",
       "Step 5: Verify conversation continues based on selection"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T03:36:09.243712Z",
+    "qa_completed_at": "2026-01-02T15:00:00.000000Z"
   },
   {
     "category": "functional",
@@ -335,11 +338,12 @@
       "Step 4: Verify PRD subagent is invoked",
       "Step 5: Verify PRD is generated within 60 seconds"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:50:53.417340Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T02:50:53.417340Z",
+    "qa_completed_at": "2026-01-02T14:30:00.000Z"
   },
   {
     "category": "functional",
@@ -428,8 +432,10 @@
       "Step 6: Verify expert no longer exists"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T03:35:42.907046Z"
   },
   {
     "category": "functional",
