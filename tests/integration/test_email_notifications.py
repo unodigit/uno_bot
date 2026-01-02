@@ -38,7 +38,7 @@ class TestEmailNotifications:
         assert result is True
 
     async def test_email_service_send_reminder(self):
-        """Test that email service can send reminder emails."""
+        """Test that email service can send 24-hour reminder emails."""
         email_service = EmailService()
 
         start_time = datetime.utcnow() + timedelta(hours=25)
@@ -53,6 +53,26 @@ class TestEmailNotifications:
             timezone="UTC",
             meeting_link="https://meet.google.com/test",
             hours_before=24
+        )
+
+        assert result is True
+
+    async def test_email_service_send_1hour_reminder(self):
+        """Test that email service can send 1-hour reminder emails."""
+        email_service = EmailService()
+
+        start_time = datetime.utcnow() + timedelta(hours=2)
+        end_time = start_time + timedelta(hours=1)
+
+        result = await email_service.send_reminder_email(
+            client_email="test@example.com",
+            client_name="Test Client",
+            expert_name="Dr. Expert",
+            start_time=start_time,
+            end_time=end_time,
+            timezone="UTC",
+            meeting_link="https://meet.google.com/test",
+            hours_before=1
         )
 
         assert result is True
