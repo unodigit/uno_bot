@@ -1,31 +1,31 @@
 """Monitoring and metrics response schemas."""
-from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
 class MetricsResponse(BaseModel):
     """Base metrics response model."""
     success: bool = Field(description="Whether the request was successful")
-    data: Dict[str, Any] = Field(description="The metrics data")
+    data: dict[str, Any] = Field(description="The metrics data")
 
 
 class HealthStatusResponse(BaseModel):
     """Health status response model."""
     success: bool = Field(description="Whether the request was successful")
-    data: Dict[str, Any] = Field(description="Health check results")
+    data: dict[str, Any] = Field(description="Health check results")
 
 
 class SystemMetricsResponse(BaseModel):
     """System metrics response model."""
     success: bool = Field(description="Whether the request was successful")
-    data: Dict[str, Any] = Field(description="System metrics data")
+    data: dict[str, Any] = Field(description="System metrics data")
 
 
 class EndpointMetricsResponse(BaseModel):
     """Endpoint metrics response model."""
     success: bool = Field(description="Whether the request was successful")
-    data: Dict[str, Any] = Field(description="Endpoint metrics data")
+    data: dict[str, Any] = Field(description="Endpoint metrics data")
 
 
 class RequestMetrics(BaseModel):
@@ -70,4 +70,4 @@ class HealthCheck(BaseModel):
     status: str = Field(description="Health status: ok, warning, error, or unknown")
     message: str = Field(description="Detailed health check message")
     last_check: str = Field(description="ISO timestamp of last check")
-    details: Optional[Dict[str, Any]] = Field(default=None, description="Additional health check details")
+    details: dict[str, Any] | None = Field(default=None, description="Additional health check details")

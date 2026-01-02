@@ -5,6 +5,7 @@ import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.security import decrypt_oauth_token
 from src.schemas.expert import ExpertCreate
 from src.services.expert_service import ExpertService
 
@@ -65,7 +66,9 @@ async def test_google_calendar_oauth_flow_completes_successfully(
     # Step 4: Verify expert has refresh_token and calendar_id stored
     # Use get_expert_model to access sensitive fields like refresh_token
     updated_expert = await service.get_expert_model(expert.id)
-    assert updated_expert.refresh_token == "test_refresh_token"
+    # Refresh token is now encrypted in the database
+    decrypted_token = decrypt_oauth_token(updated_expert.refresh_token)
+    assert decrypted_token == "test_refresh_token"
     assert updated_expert.calendar_id is not None
 
 

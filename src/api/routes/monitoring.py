@@ -1,13 +1,16 @@
 """Monitoring and metrics API endpoints."""
-from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies import get_db
 from src.core.security import require_admin_auth
-from src.schemas.monitoring import SystemMetricsResponse, HealthStatusResponse, EndpointMetricsResponse
+from src.schemas.monitoring import (
+    EndpointMetricsResponse,
+    HealthStatusResponse,
+    SystemMetricsResponse,
+)
 from src.services.monitoring_service import MonitoringService, get_monitoring_service
 
 router = APIRouter()
@@ -49,7 +52,7 @@ async def get_system_metrics(
             }
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get metrics: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get metrics: {str(e)}") from e
 
 
 @router.get("/metrics/endpoints", response_model=EndpointMetricsResponse, tags=["monitoring"])
@@ -65,7 +68,7 @@ async def get_endpoint_metrics(
             data=endpoint_metrics
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get endpoint metrics: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get endpoint metrics: {str(e)}") from e
 
 
 @router.get("/health", response_model=HealthStatusResponse, tags=["monitoring"])
@@ -98,7 +101,7 @@ async def get_health_status(
             data=health_status
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}") from e
 
 
 @router.get("/health/detailed", response_model=HealthStatusResponse, tags=["monitoring"])
@@ -171,7 +174,7 @@ async def get_detailed_health_status(
             data=health_status
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Detailed health check failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Detailed health check failed: {str(e)}") from e
 
 
 @router.get("/metrics/summary", response_model=SystemMetricsResponse, tags=["monitoring"])
@@ -211,4 +214,4 @@ async def get_metrics_summary(
             data=summary_data
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get metrics summary: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get metrics summary: {str(e)}") from e

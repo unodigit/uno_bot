@@ -6,8 +6,6 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-logger = logging.getLogger(__name__)
-
 from src.core.config import settings
 from src.core.database import get_db
 from src.core.exceptions import BadRequestError, NotFoundError
@@ -24,6 +22,8 @@ from src.schemas.session import (
 )
 from src.services.expert_service import ExpertService
 from src.services.session_service import SessionService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 

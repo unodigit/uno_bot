@@ -1,11 +1,11 @@
 """Performance monitoring and metrics service for UnoBot."""
-import time
 import logging
+import time
 from collections import defaultdict, deque
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple, Any
 from contextlib import contextmanager
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from typing import Any
 
 from src.core.config import settings
 from src.core.database import get_database_size
@@ -21,8 +21,8 @@ class RequestMetrics:
     status_code: int
     duration: float
     timestamp: datetime
-    user_agent: Optional[str] = None
-    ip_address: Optional[str] = None
+    user_agent: str | None = None
+    ip_address: str | None = None
 
 
 @dataclass
@@ -54,9 +54,9 @@ class MonitoringService:
     def __init__(self):
         # Request tracking
         self.request_history: deque[RequestMetrics] = deque(maxlen=10000)
-        self._active_requests: Dict[str, float] = {}  # request_id -> start_time
-        self._request_counts: Dict[str, int] = defaultdict(int)
-        self._response_times: Dict[str, List[float]] = defaultdict(list)
+        self._active_requests: dict[str, float] = {}  # request_id -> start_time
+        self._request_counts: dict[str, int] = defaultdict(int)
+        self._response_times: dict[str, list[float]] = defaultdict(list)
 
         # Session tracking
         self._session_starts: deque[datetime] = deque(maxlen=10000)
@@ -69,10 +69,10 @@ class MonitoringService:
         self._expert_match_count: int = 0
 
         # Health checks
-        self._last_health_check: Optional[datetime] = None
-        self._health_status: Dict[str, Any] = {}
+        self._last_health_check: datetime | None = None
+        self._health_status: dict[str, Any] = {}
 
-    def record_request_start(self, request_id: str, path: str, method: str, user_agent: Optional[str] = None, ip_address: Optional[str] = None) -> None:
+    def record_request_start(self, request_id: str, path: str, method: str, user_agent: str | None = None, ip_address: str | None = None) -> None:
         """Record the start of a request."""
         self._active_requests[request_id] = time.time()
 
@@ -80,7 +80,7 @@ class MonitoringService:
         if settings.debug:
             logger.debug(f"Request started: {method} {path}")
 
-    def record_request_end(self, request_id: str, status_code: int, path: str, method: str, user_agent: Optional[str] = None, ip_address: Optional[str] = None) -> None:
+    def record_request_end(self, request_id: str, status_code: int, path: str, method: str, user_agent: str | None = None, ip_address: str | None = None) -> None:
         """Record the end of a request and calculate metrics."""
         start_time = self._active_requests.pop(request_id, None)
         if start_time is None:
@@ -179,7 +179,7 @@ class MonitoringService:
             expert_matches=self._expert_match_count,
         )
 
-    def get_endpoint_metrics(self) -> Dict[str, Dict[str, Any]]:
+    def get_endpoint_metrics(self) -> dict[str, dict[str, Any]]:
         """Get metrics per endpoint."""
         metrics = {}
 
@@ -204,7 +204,7 @@ class MonitoringService:
 
         return metrics
 
-    def get_health_status(self) -> Dict[str, Any]:
+    def get_health_status(self) -> dict[str, Any]:
         """Get application health status."""
         now = datetime.now()
 
@@ -279,12 +279,12 @@ class MonitoringService:
         return 100.0
 
     @contextmanager
-    def track_request(self, request_id: str, path: str, method: str, user_agent: Optional[str] = None, ip_address: Optional[str] = None):
+    def track_request(self, request_id: str, path: str, method: str, user_agent: str | None = None, ip_address: str | None = None):
         """Context manager for tracking request metrics."""
         self.record_request_start(request_id, path, method, user_agent, ip_address)
         try:
             yield
-        except Exception as e:
+        except Exception:
             # Record failed request
             self.record_request_end(request_id, 500, path, method, user_agent, ip_address)
             raise

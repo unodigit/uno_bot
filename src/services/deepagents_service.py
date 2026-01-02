@@ -36,9 +36,8 @@ class DeepAgentsService:
         self.api_key = settings.anthropic_api_key
 
         # Create model object for DeepAgents
-        from typing import Optional
-        self.model: Optional[ChatAnthropic] = None
-        self.model_name: Optional[str] = None
+        self.model: ChatAnthropic | None = None
+        self.model_name: str | None = None
         self.agent: Any = None
 
         # Check if DeepAgents is available
@@ -350,7 +349,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         """Get expert availability from calendar system."""
         # For now, return mock availability since we don't have expert refresh tokens
         # In production, this would look up the expert's refresh token from the database
-        from datetime import datetime, timedelta
+        from datetime import timedelta
 
         # Generate mock slots for the next 14 days
         slots = []
@@ -516,7 +515,6 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         which are automatically provided by DeepAgents.
         """
         import os
-        from datetime import datetime
 
         # Use the PRD storage directory
         prd_storage_dir = "prd_documents"
@@ -561,7 +559,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
 
         try:
             # Build conversation history for DeepAgents
-            conversation_history = await self._build_conversation_history(session_id)
+            await self._build_conversation_history(session_id)
 
             # Create the input for DeepAgents
             agent_input = {

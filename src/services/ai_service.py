@@ -367,7 +367,7 @@ You are currently conversing with a client in the {detected_industry.lower()} in
 """
         else:
             # General business adaptation
-            adaptation += f"""- Business process optimization
+            adaptation += """- Business process optimization
 - Competitive advantage strategies
 - Return on investment (ROI) improvement
 - Stakeholder management

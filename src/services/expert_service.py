@@ -6,7 +6,7 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.security import decrypt_oauth_token, encrypt_oauth_token
+from src.core.security import encrypt_oauth_token
 from src.models.booking import Booking
 from src.models.expert import Expert
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate

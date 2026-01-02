@@ -9,7 +9,7 @@ from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies import get_db
-from src.core.security import require_admin_auth, security
+from src.core.security import security
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 from src.services.analytics_service import AnalyticsService
 from src.services.cleanup_service import CleanupService

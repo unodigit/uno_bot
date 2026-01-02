@@ -2,7 +2,7 @@
 import asyncio
 import json
 from datetime import datetime, timedelta
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from src.core.config import settings
 

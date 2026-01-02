@@ -1,11 +1,8 @@
 """Session cleanup service for managing session lifecycle and cleanup."""
-import uuid
 from datetime import datetime, timedelta
-from typing import List
 
 from sqlalchemy import and_, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
 from src.models.prd import PRDDocument
 from src.models.session import ConversationSession, Message, SessionStatus

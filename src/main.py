@@ -41,6 +41,7 @@ from src.core.config import settings
 from src.core.database import AsyncSessionLocal, init_db
 from src.core.exception_handlers import register_exception_handlers
 from src.core.security import mask_sensitive_data, rate_limit_middleware
+from src.services.monitoring_service import MonitoringMiddleware
 
 
 class SecureLogFilter(logging.Filter):
@@ -177,7 +178,6 @@ app.add_middleware(
 )
 
 # Add monitoring middleware
-from src.services.monitoring_service import MonitoringMiddleware
 app.add_middleware(MonitoringMiddleware)
 
 # Add rate limiting middleware

@@ -12,7 +12,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.config import settings
 from src.core.database import get_db
 from src.core.security import require_admin_auth
-from src.models.expert import Expert
 from src.services.expert_service import ExpertService
 
 router = APIRouter()
@@ -98,7 +97,7 @@ async def upload_expert_photo(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to save file: {str(e)}"
-        )
+        ) from e
 
     # Update expert's photo_url in database
     photo_url = f"/api/v1/uploads/expert-photo/{unique_filename}"
@@ -186,7 +185,7 @@ async def delete_expert_photo(
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Failed to delete file: {str(e)}"
-            )
+            ) from e
 
     # Update expert's photo_url in database
     expert_service = ExpertService(db)

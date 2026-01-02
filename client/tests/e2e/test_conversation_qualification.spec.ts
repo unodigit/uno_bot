@@ -29,23 +29,31 @@ async function progressToQualification(page: Page) {
   await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
   await page.waitForTimeout(1500);
 
+  // Accept consent if modal appears
+  const consentAccept = page.locator('[data-testid="consent-accept-button"]');
+  const consentCount = await consentAccept.count();
+  if (consentCount > 0) {
+    await consentAccept.click();
+    await page.waitForTimeout(500);
+  }
+
   // Provide name
-  await page.fill('[data-testid="chat-input"]', 'My name is John Doe');
+  await page.fill('[data-testid="message-input"]', 'My name is John Doe');
   await page.click('[data-testid="send-button"]');
   await page.waitForTimeout(2500);
 
   // Provide email
-  await page.fill('[data-testid="chat-input"]', 'john@example.com');
+  await page.fill('[data-testid="message-input"]', 'john@example.com');
   await page.click('[data-testid="send-button"]');
   await page.waitForTimeout(2000);
 
   // Provide challenge
-  await page.fill('[data-testid="chat-input"]', 'We need help with data analytics challenges');
+  await page.fill('[data-testid="message-input"]', 'We need help with data analytics challenges');
   await page.click('[data-testid="send-button"]');
   await page.waitForTimeout(2000);
 
   // Provide industry
-  await page.fill('[data-testid="chat-input"]', 'We are in the healthcare industry');
+  await page.fill('[data-testid="message-input"]', 'We are in the healthcare industry');
   await page.click('[data-testid="send-button"]');
   await page.waitForTimeout(2000);
 }
@@ -76,7 +84,7 @@ test.describe('Feature 187: Decision maker identification is collected', () => {
     await progressToQualification(page);
 
     // Respond that user is decision maker
-    await page.fill('[data-testid="chat-input"]', 'Yes, I am the decision maker for this project');
+    await page.fill('[data-testid="message-input"]', 'Yes, I am the decision maker for this project');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -94,12 +102,12 @@ test.describe('Feature 187: Decision maker identification is collected', () => {
     await progressToQualification(page);
 
     // Indicate decision maker status
-    await page.fill('[data-testid="chat-input"]', 'I decide on these matters and can approve the budget');
+    await page.fill('[data-testid="message-input"]', 'I decide on these matters and can approve the budget');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Provide budget
-    await page.fill('[data-testid="chat-input"]', 'Our budget is around $50,000');
+    await page.fill('[data-testid="message-input"]', 'Our budget is around $50,000');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
@@ -117,7 +125,7 @@ test.describe('Feature 187: Decision maker identification is collected', () => {
     await progressToQualification(page);
 
     // Indicate not the decision maker
-    await page.fill('[data-testid="chat-input"]', 'I am not the decision maker, I need to get approval from my boss');
+    await page.fill('[data-testid="message-input"]', 'I am not the decision maker, I need to get approval from my boss');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -137,12 +145,12 @@ test.describe('Feature 188: Success criteria collection works', () => {
     await progressToQualification(page);
 
     // Provide budget first
-    await page.fill('[data-testid="chat-input"]', 'Our budget is around $50,000');
+    await page.fill('[data-testid="message-input"]', 'Our budget is around $50,000');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Mention success criteria
-    await page.fill('[data-testid="chat-input"]', 'Our success criteria are to improve data processing efficiency by 50% and reduce manual work');
+    await page.fill('[data-testid="message-input"]', 'Our success criteria are to improve data processing efficiency by 50% and reduce manual work');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -160,16 +168,16 @@ test.describe('Feature 188: Success criteria collection works', () => {
     await progressToQualification(page);
 
     // Provide qualification info
-    await page.fill('[data-testid="chat-input"]', 'Our budget is medium, around $50,000');
+    await page.fill('[data-testid="message-input"]', 'Our budget is medium, around $50,000');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
-    await page.fill('[data-testid="chat-input"]', 'We need this done within 2 months');
+    await page.fill('[data-testid="message-input"]', 'We need this done within 2 months');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Define success criteria
-    await page.fill('[data-testid="chat-input"]', 'Success would be measured by 50% efficiency improvement and automated reporting');
+    await page.fill('[data-testid="message-input"]', 'Success would be measured by 50% efficiency improvement and automated reporting');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -187,12 +195,12 @@ test.describe('Feature 188: Success criteria collection works', () => {
     await progressToQualification(page);
 
     // Provide budget
-    await page.fill('[data-testid="chat-input"]', 'Budget is around $50,000');
+    await page.fill('[data-testid="message-input"]', 'Budget is around $50,000');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Provide vague success criteria
-    await page.fill('[data-testid="chat-input"]', 'We want success');
+    await page.fill('[data-testid="message-input"]', 'We want success');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -210,12 +218,12 @@ test.describe('Feature 188: Success criteria collection works', () => {
     await progressToQualification(page);
 
     // Provide budget and timeline
-    await page.fill('[data-testid="chat-input"]', 'Budget is $50,000 and timeline is 2 months');
+    await page.fill('[data-testid="message-input"]', 'Budget is $50,000 and timeline is 2 months');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Provide specific success criteria with KPIs
-    await page.fill('[data-testid="chat-input"]', 'Our KPIs are: 50% faster processing, 80% reduction in errors, and 100% automated reporting');
+    await page.fill('[data-testid="message-input"]', 'Our KPIs are: 50% faster processing, 80% reduction in errors, and 100% automated reporting');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -238,12 +246,12 @@ test.describe('Feature 189: Intent detection identifies visitor needs', () => {
     await page.waitForTimeout(1000);
 
     // Provide name
-    await page.fill('[data-testid="chat-input"]', 'My name is Sarah Chen');
+    await page.fill('[data-testid="message-input"]', 'My name is Sarah Chen');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Express AI strategy need
-    await page.fill('[data-testid="chat-input"]', 'We need help with our AI strategy and machine learning implementation');
+    await page.fill('[data-testid="message-input"]', 'We need help with our AI strategy and machine learning implementation');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -262,12 +270,12 @@ test.describe('Feature 189: Intent detection identifies visitor needs', () => {
     await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
     await page.waitForTimeout(1000);
 
-    await page.fill('[data-testid="chat-input"]', 'I am Mike Johnson');
+    await page.fill('[data-testid="message-input"]', 'I am Mike Johnson');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Express custom development need
-    await page.fill('[data-testid="chat-input"]', 'We need a custom software application built for our business');
+    await page.fill('[data-testid="message-input"]', 'We need a custom software application built for our business');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -285,12 +293,12 @@ test.describe('Feature 189: Intent detection identifies visitor needs', () => {
     await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
     await page.waitForTimeout(1000);
 
-    await page.fill('[data-testid="chat-input"]', 'My name is Alex Kim');
+    await page.fill('[data-testid="message-input"]', 'My name is Alex Kim');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
     // Express data analytics intent
-    await page.fill('[data-testid="chat-input"]', 'We need data analytics and business intelligence solutions');
+    await page.fill('[data-testid="message-input"]', 'We need data analytics and business intelligence solutions');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -306,7 +314,7 @@ test.describe('Feature 189: Intent detection identifies visitor needs', () => {
     await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
     await page.waitForTimeout(1000);
 
-    await page.fill('[data-testid="chat-input"]', 'I am just browsing');
+    await page.fill('[data-testid="message-input"]', 'I am just browsing');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -327,7 +335,7 @@ test.describe('Feature 190: Context retention across long conversations', () => 
     await page.waitForTimeout(1000);
 
     // Start conversation with name
-    await page.fill('[data-testid="chat-input"]', 'My name is Emily Watson');
+    await page.fill('[data-testid="message-input"]', 'My name is Emily Watson');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
@@ -351,13 +359,13 @@ test.describe('Feature 190: Context retention across long conversations', () => 
     ];
 
     for (const msg of messages) {
-      await page.fill('[data-testid="chat-input"]', msg);
+      await page.fill('[data-testid="message-input"]', msg);
       await page.click('[data-testid="send-button"]');
       await page.waitForTimeout(1500);
     }
 
     // Reference earlier information
-    await page.fill('[data-testid="chat-input"]', 'Great, Emily! Can you send the PRD to my email?');
+    await page.fill('[data-testid="message-input"]', 'Great, Emily! Can you send the PRD to my email?');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(3000);
 
@@ -377,7 +385,7 @@ test.describe('Feature 190: Context retention across long conversations', () => 
     await page.waitForTimeout(1000);
 
     // Have a long conversation
-    await page.fill('[data-testid="chat-input"]', 'My name is David Lee');
+    await page.fill('[data-testid="message-input"]', 'My name is David Lee');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
@@ -400,7 +408,7 @@ test.describe('Feature 190: Context retention across long conversations', () => 
     ];
 
     for (const msg of conversation) {
-      await page.fill('[data-testid="chat-input"]', msg);
+      await page.fill('[data-testid="message-input"]', msg);
       await page.click('[data-testid="send-button"]');
       await page.waitForTimeout(1500);
     }
@@ -420,7 +428,7 @@ test.describe('Feature 190: Context retention across long conversations', () => 
     await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
     await page.waitForTimeout(1000);
 
-    await page.fill('[data-testid="chat-input"]', 'Hi, I am Rachel Green');
+    await page.fill('[data-testid="message-input"]', 'Hi, I am Rachel Green');
     await page.click('[data-testid="send-button"]');
     await page.waitForTimeout(2000);
 
@@ -450,7 +458,7 @@ test.describe('Feature 190: Context retention across long conversations', () => 
     ];
 
     for (const msg of longConversation) {
-      await page.fill('[data-testid="chat-input"]', msg);
+      await page.fill('[data-testid="message-input"]', msg);
       await page.click('[data-testid="send-button"]');
       await page.waitForTimeout(1200);
     }

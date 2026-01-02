@@ -1,7 +1,7 @@
 """WebSocket routes for real-time chat with Socket.IO."""
 import logging
 import uuid
-from typing import Any, cast
+from typing import Any
 
 from socketio import AsyncServer
 from sqlalchemy.ext.asyncio import AsyncSession

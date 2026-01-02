@@ -1,6 +1,5 @@
 """API routes for GDPR consent functionality."""
 from datetime import datetime
-from typing import Any, Dict
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
