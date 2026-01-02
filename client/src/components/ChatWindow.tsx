@@ -33,6 +33,7 @@ const getQuickReplies = (phase: string, context: any): string[] => {
 export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   const [inputValue, setInputValue] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const {
     messages,
@@ -86,6 +87,13 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       createSession()
     }
   }, [sessionId, createSession])
+
+  // Focus input when component mounts
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -546,6 +554,10 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   return (
     <AnimatePresence>
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chat-title"
+        aria-describedby="chat-description"
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -553,6 +565,16 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
         data-testid="chat-window"
       >
+        {/* Screen reader announcements */}
+        <div aria-live="polite" aria-atomic="true" className="sr-only">
+          Chat window opened. {messages.length} messages in conversation.
+        </div>
+
+        {/* Hidden title for screen readers */}
+        <h2 id="chat-title" className="sr-only">UnoBot Chat</h2>
+        <div id="chat-description" className="sr-only">
+          AI Business Consultant chat interface. Use Enter to send messages, Escape to close.
+        </div>
         {/* Header */}
         <div className="h-12 bg-primary text-white flex items-center justify-between px-4 rounded-t-lg">
           <div className="flex items-center gap-2">
@@ -566,11 +588,15 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               <button
                 onClick={onMinimize}
                 className="p-1 hover:bg-white/20 rounded transition-colors"
-                aria-label="Minimize"
+                aria-label="Minimize chat window"
+                aria-describedby="minimize-instruction"
                 data-testid="minimize-button"
               >
                 <Minimize2 className="w-4 h-4" />
               </button>
+              <div id="minimize-instruction" className="sr-only">
+                Minimizes the chat window to the corner
+              </div>
             )}
             <button
               onClick={onClose}
@@ -677,6 +703,10 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         <div
           className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50"
           data-testid="messages-container"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions text"
+          aria-atomic="false"
         >
           {messages.length === 0 && !isLoading && (
             <div className="flex justify-center items-center h-full text-white-muted text-sm">
@@ -698,6 +728,10 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 message.role === 'user' ? 'justify-end' : 'justify-start'
               )}
               data-testid={`message-${message.role}`}
+              role="listitem"
+              aria-label={message.role === 'user' ? 'Your message' : 'Bot message'}
+              aria-live="polite"
+              aria-atomic="true"
             >
               <div
                 className={twMerge(
@@ -725,6 +759,9 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
               data-testid="typing-indicator"
+              role="status"
+              aria-live="polite"
+              aria-label="Bot is typing..."
             >
               <div className="bg-surface border border-border rounded-lg rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
                 <div className="flex items-center space-x-1">
@@ -823,18 +860,27 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         {/* Input Area */}
         <div className="h-14 border-t border-border bg-white p-3 flex items-center gap-2 rounded-b-lg">
           <input
+            ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={isStreaming ? 'Bot is typing...' : 'Type your message...'}
+            aria-label="Type your message"
+            aria-describedby="input-instruction"
+            aria-disabled={isStreaming || isLoading}
             className="flex-1 h-full px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
             disabled={isStreaming || isLoading}
             data-testid="message-input"
           />
+          <div id="input-instruction" className="sr-only">
+            Press Enter to send message, Shift+Enter for new line. Chat is {isStreaming ? 'streaming' : 'ready'}.
+          </div>
           <button
             onClick={handleSend}
             disabled={!inputValue.trim() || isStreaming || isLoading}
+            aria-label={inputValue.trim() ? `Send message${isStreaming ? ' (disabled - bot is typing)' : ''}` : 'Send message (disabled - empty message)'}
+            aria-describedby="send-button-status"
             className={twMerge(
               'h-full px-4 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
               'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
@@ -843,11 +889,13 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-60'
                 : 'bg-primary hover:bg-primary-dark active:scale-95 text-white shadow-sm hover:shadow'
             )}
-            aria-label="Send message"
             data-testid="send-button"
           >
             <Send className="w-4 h-4" />
           </button>
+          <div id="send-button-status" className="sr-only">
+            {inputValue.trim() ? 'Ready to send' : 'Type a message to enable'}
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

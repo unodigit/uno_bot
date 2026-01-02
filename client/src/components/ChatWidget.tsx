@@ -54,17 +54,33 @@ export function ChatWidget() {
 
   return (
     <>
+      {/* Screen reader announcements */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {isFirstVisit && "Chat widget loaded. Press Enter to open chat."}
+        {isOpen && "Chat window opened."}
+        {!isOpen && isMinimized && `Chat minimized. ${unreadCount} new messages.`}
+      </div>
+
       {/* Floating Button - Normal */}
       {!isOpen && !isMinimized && (
         <button
           onClick={handleToggle}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              handleToggle()
+            }
+          }}
           className={`fixed bottom-6 right-6 w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50 ${
             isFirstVisit ? 'animate-pulse-subtle' : ''
           }`}
           aria-label="Open chat"
+          aria-expanded={isOpen}
+          aria-describedby="chat-widget-tooltip"
           data-testid="chat-widget-button"
         >
           <MessageSquare className="w-8 h-8" />
+          <span id="chat-widget-tooltip" className="sr-only">UnoBot - AI Business Consultant</span>
         </button>
       )}
 
@@ -72,13 +88,22 @@ export function ChatWidget() {
       {!isOpen && isMinimized && (
         <button
           onClick={handleToggle}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              handleToggle()
+            }
+          }}
           className="fixed bottom-6 right-6 w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 relative z-50"
-          aria-label="Open chat"
+          aria-label={`Open chat. ${unreadCount} new messages`}
+          aria-expanded={isOpen}
+          aria-describedby="chat-widget-tooltip-minimized"
           data-testid="chat-widget-button-minimized"
         >
           <MessageSquare className="w-8 h-8" />
+          <span id="chat-widget-tooltip-minimized" className="sr-only">UnoBot - AI Business Consultant</span>
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-6 h-6 bg-error text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white">
+            <span className="absolute -top-1 -right-1 w-6 h-6 bg-error text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white" aria-label={`${unreadCount} unread messages`}>
               {unreadCount}
             </span>
           )}

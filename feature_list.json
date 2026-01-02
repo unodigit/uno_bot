@@ -1523,11 +1523,12 @@
       "Step 4: Verify todos are updated",
       "Step 5: Verify read_todos returns progress"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:22:28.368103Z"
+    "dev_completed_at": "2026-01-02T07:22:28.368103Z",
+    "qa_completed_at": "2026-01-02T08:43:39.832150+00:00"
   },
   {
     "category": "functional",
@@ -1538,11 +1539,12 @@
       "Step 3: Verify context is passed to subagent",
       "Step 4: Verify subagent result returned"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:28:55.725946Z"
+    "dev_completed_at": "2026-01-02T07:28:55.725946Z",
+    "qa_completed_at": "2026-01-02T08:44:50.815598+00:00"
   },
   {
     "category": "functional",
@@ -1554,11 +1556,12 @@
       "Step 4: Verify context is summarized",
       "Step 5: Verify key information retained"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:38:27.570042Z"
+    "dev_completed_at": "2026-01-02T07:38:27.570042Z",
+    "qa_completed_at": "2026-01-02T08:46:25.982814+00:00"
   },
   {
     "category": "functional",
@@ -1570,9 +1573,9 @@
       "Step 4: Approve the booking",
       "Step 5: Verify booking completes"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T07:34:22.464193Z"
   },
@@ -2063,8 +2066,10 @@
       "Step 4: Verify appropriate iconography"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:42:47.675673Z"
   },
   {
     "category": "style",
@@ -2139,8 +2144,10 @@
       "Step 5: Verify no focus traps"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:44:59.750377Z"
   },
   {
     "category": "functional",
