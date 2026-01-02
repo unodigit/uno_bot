@@ -688,8 +688,11 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           )}
 
           {messages.map((message) => (
-            <div
+            <motion.div
               key={message.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
               className={twMerge(
                 'flex w-full',
                 message.role === 'user' ? 'justify-end' : 'justify-start'
@@ -700,32 +703,37 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 className={twMerge(
                   'max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm',
                   message.role === 'user'
-                    ? 'bg-primary text-white rounded-br-none'
-                    : 'bg-white text-text border border-border rounded-bl-none'
+                    ? 'bg-primary text-white rounded-br-sm'
+                    : 'bg-gray-100 text-gray-800 rounded-bl-sm border border-gray-200'
                 )}
               >
                 <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                 <span className={twMerge(
                   'text-[10px] opacity-70 mt-1 block',
-                  message.role === 'user' ? 'text-white/80' : 'text-text-muted'
+                  message.role === 'user' ? 'text-white/80' : 'text-gray-600'
                 )}>
                   {formatTime(message.created_at)}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
 
           {/* Typing Indicator */}
           {isStreaming && (
-            <div className="flex justify-start" data-testid="typing-indicator">
-              <div className="bg-white border border-border rounded-lg px-3 py-2 shadow-sm">
-                <div className="flex space-x-1">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex justify-start"
+              data-testid="typing-indicator"
+            >
+              <div className="bg-surface border border-border rounded-lg rounded-bl-sm px-4 py-3 shadow-sm max-w-[85%]">
+                <div className="flex items-center space-x-1">
                   <div className="w-2 h-2 bg-text-muted rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                  <div className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+                  <div className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
+                  <div className="w-2 h-2 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Loading State */}

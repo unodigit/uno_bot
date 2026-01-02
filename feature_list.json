@@ -1553,8 +1553,10 @@
       "Step 5: Verify key information retained"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T07:38:27.570042Z"
   },
   {
     "category": "functional",
@@ -1612,8 +1614,10 @@
       "Step 5: Verify input area is 56px height"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T07:37:27.391076Z"
   },
   {
     "category": "style",
@@ -1641,9 +1645,12 @@
       "Step 4: Verify proper border radius",
       "Step 5: Verify text color is #1F2937"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "qa_completed_at": "2026-01-02T18:40:00.000000Z",
+    "dev_completed_at": "2026-01-02T07:43:29.740464Z"
   },
   {
     "category": "style",
@@ -1656,8 +1663,9 @@
       "Step 5: Verify proper border radius"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T07:43:29.740482Z"
   },
   {
     "category": "style",
@@ -1669,8 +1677,9 @@
       "Step 4: Verify smooth animation timing"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T07:43:29.740493Z"
   },
   {
     "category": "style",
