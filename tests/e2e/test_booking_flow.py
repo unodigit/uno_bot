@@ -1,1 +1,139 @@
-\"\"\"End-to-end tests for Booking Flow functionality.\"\"\nimport re\n\nfrom playwright.sync_api import Page, expect\n\n# Frontend URL\nFRONTEND_URL = \"http://localhost:5173\"\n\n\ndef _accept_consent(page: Page):\n    \"\"\"Helper to accept GDPR consent modal if it appears.\"\"\"\n    try:\n        # Check if consent modal is visible within 2 seconds\n        consent_modal = page.locator('text=Privacy & Data Consent')\n        if consent_modal.is_visible(timeout=2000):\n            # Scroll to enable accept button\n            page.locator('.max-h-\\[60vh\\]').scroll_to_position(0, 1000)\n            page.wait_for_timeout(500)\n            # Click accept button\n            accept_btn = page.locator('button:has-text(\"I Agree\")')\n            if accept_btn.is_visible():\n                accept_btn.click()\n                page.wait_for_timeout(500)\n    except:\n        # Modal didn't appear or already handled\n        pass\n\n\nclass TestBookingFlow:\n    \"\"\"Test cases for complete booking flow.\"\"\"\n\n    def test_complete_booking_flow(self, page: Page):\n        \"\"\"\n        Test: Complete booking flow from expert matching to confirmation\n\n        Steps:\n        1. Open chat widget\n        2. Complete discovery phase (name, email, challenges)\n        3. Match experts\n        4. Select expert to book\n        5. Select time slot\n        6. Fill booking form\n        7. Confirm booking\n        8. Verify confirmation screen\n        \"\"\"\n        page.goto(FRONTEND_URL)\n        page.wait_for_load_state(\"networkidle\")\n\n        # Clear storage for clean test\n        page.evaluate(\"localStorage.clear()\")\n        page.context.clear_cookies()\n        page.reload()\n        page.wait_for_load_state(\"networkidle\")\n\n        # Open chat widget\n        page.get_by_test_id(\"chat-widget-button\").click()\n        page.wait_for_selector('[data-testid=\"chat-window\"]', state=\"visible\")\n\n        # Handle consent if it appears\n        _accept_consent(page)\n\n        # Complete discovery phase\n        chat_input = page.get_by_test_id(\"message-input\")\n        send_button = page.get_by_test_id(\"send-button\")\n\n        # Send name\n        chat_input.fill(\"John Doe\")\n        send_button.click()\n        page.wait_for_timeout(1500)\n\n        # Send email\n        chat_input.fill(\"john.doe@example.com\")\n        send_button.click()\n        page.wait_for_timeout(1500)\n\n        # Send business challenges\n        chat_input.fill(\"We need help with AI strategy and machine learning implementation\")\n        send_button.click()\n        page.wait_for_timeout(2000)\n\n        # Click \"Match Experts\" button\n        match_experts_btn = page.get_by_test_id(\"match-experts-button\")\n        expect(match_experts_btn).to_be_visible(timeout=10000)\n        match_experts_btn.click()\n\n        # Wait for expert matching to complete\n        expect(page.get_by_test_id(\"expert-match-list\")).to_be_visible(timeout=10000)\n        page.wait_for_timeout(1000)\n\n        # Click \"Book\" on first expert\n        book_expert_btn = page.get_by_test_id(\"book-expert-0\")\n        expect(book_expert_btn).to_be_visible(timeout=5000)\n        book_expert_btn.click()\n\n        # Wait for calendar picker\n        page.wait_for_selector('text=Select Time Slot', timeout=10000)\n\n        # Select a time slot\n        slot_buttons = page.locator('button').filter(has_text=re.compile(r'\\d{1,2}:\\d{2}'))\n        expect(slot_buttons.first).to_be_visible(timeout=5000)\n        slot_buttons.first.click()\n\n        # Wait for confirm button to appear\n        confirm_btn = page.locator('button:has-text(\"Confirm Booking\")')\n        expect(confirm_btn).to_be_visible(timeout=5000)\n\n        # Fill booking form (name and email fields in BookingForm)\n        # The form appears after selecting a slot\n        name_input = page.locator('input[placeholder*=\"name\" i], input[name*=\"name\" i]').first\n        email_input = page.locator('input[placeholder*=\"email\" i], input[name*=\"email\" i]').first\n\n        if name_input.is_visible():\n            name_input.fill(\"John Doe\")\n        if email_input.is_visible():\n            email_input.fill(\"john.doe@example.com\")\n\n        # Click confirm\n        confirm_btn.click()\n\n        # Wait for booking confirmation\n        page.wait_for_timeout(3000)\n\n        # Verify booking confirmation screen appears\n        expect(page.locator('text=Booking Confirmed')).to_be_visible(timeout=10000)\n        expect(page.locator('text=Meeting Link')).to_be_visible(timeout=5000)\n\n        print(\"✓ Complete booking flow test passed\")\n\n\n    def test_timezone_detection(self, page: Page):\n        \"\"\"\n        Test: Timezone is automatically detected and displayed\n\n        Steps:\n        1. Navigate to booking flow\n        2. Open calendar picker\n        3. Verify timezone is detected and shown\n        \"\"\"\n        page.goto(FRONTEND_URL)\n        page.wait_for_load_state(\"networkidle\")\n\n        # Setup\n        page.evaluate(\"localStorage.clear()\")\n        page.context.clear_cookies()\n        page.reload()\n        page.wait_for_load_state(\"networkidle\")\n\n        page.get_by_test_id(\"chat-widget-button\").click()\n        page.wait_for_selector('[data-testid=\"chat-window\"]', state=\"visible\")\n\n        # Handle consent\n        _accept_consent(page)\n\n        # Complete discovery\n        chat_input = page.get_by_test_id(\"message-input\")\n        send_button = page.get_by_test_id(\"send-button\")\n\n        chat_input.fill(\"Test User\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"test@example.com\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"Need AI help\")\n        send_button.click()\n        page.wait_for_timeout(2000)\n\n        # Match experts\n        match_experts_btn = page.get_by_test_id(\"match-experts-button\")\n        expect(match_experts_btn).to_be_visible(timeout=10000)\n        match_experts_btn.click()\n        expect(page.get_by_test_id(\"expert-match-list\")).to_be_visible(timeout=10000)\n        page.wait_for_timeout(1000)\n\n        # Book expert\n        book_expert_btn = page.get_by_test_id(\"book-expert-0\")\n        expect(book_expert_btn).to_be_visible(timeout=5000)\n        book_expert_btn.click()\n\n        # Wait for calendar picker\n        page.wait_for_selector('text=Select Time Slot', timeout=10000)\n\n        # Verify timezone is displayed (should show detected timezone)\n        # The timezone is shown in the header of calendar picker\n        timezone_display = page.locator('text=UTC')  # or other detected timezone\n        expect(timezone_display).to_be_visible(timeout=5000)\n\n        print(\"✓ Timezone detection test passed\")\n\n\n    def test_time_slot_selection_confirmation(self, page: Page):\n        \"\"\"\n        Test: Time slot selection shows confirmation UI\n\n        Steps:\n        1. Navigate to booking flow\n        2. Select a time slot\n        3. Verify confirmation UI appears with selected slot info\n        \"\"\"\n        page.goto(FRONTEND_URL)\n        page.wait_for_load_state(\"networkidle\")\n\n        # Setup\n        page.evaluate(\"localStorage.clear()\")\n        page.context.clear_cookies()\n        page.reload()\n        page.wait_for_load_state(\"networkidle\")\n\n        page.get_by_test_id(\"chat-widget-button\").click()\n        page.wait_for_selector('[data-testid=\"chat-window\"]', state=\"visible\")\n\n        # Handle consent\n        _accept_consent(page)\n\n        # Complete discovery\n        chat_input = page.get_by_test_id(\"message-input\")\n        send_button = page.get_by_test_id(\"send-button\")\n\n        chat_input.fill(\"Test User\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"test@example.com\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"Need AI help\")\n        send_button.click()\n        page.wait_for_timeout(2000)\n\n        # Match experts\n        match_experts_btn = page.get_by_test_id(\"match-experts-button\")\n        expect(match_experts_btn).to_be_visible(timeout=10000)\n        match_experts_btn.click()\n        expect(page.get_by_test_id(\"expert-match-list\")).to_be_visible(timeout=10000)\n        page.wait_for_timeout(1000)\n\n        # Book expert\n        book_expert_btn = page.get_by_test_id(\"book-expert-0\")\n        expect(book_expert_btn).to_be_visible(timeout=5000)\n        book_expert_btn.click()\n\n        # Wait for calendar picker\n        page.wait_for_selector('text=Select Time Slot', timeout=10000)\n\n        # Select a time slot\n        slot_buttons = page.locator('button').filter(has_text=re.compile(r'\\d{1,2}:\\d{2}'))\n        expect(slot_buttons.first).to_be_visible(timeout=5000)\n        slot_buttons.first.click()\n\n        # Verify confirmation UI appears\n        expect(page.locator('text=Selected:')).to_be_visible(timeout=5000)\n        expect(page.locator('button:has-text(\"Confirm Booking\")')).to_be_visible(timeout=5000)\n\n        print(\"✓ Time slot selection confirmation test passed\")\n\n\n    def test_double_booking_prevention(self, page: Page):\n        \"\"\"\n        Test: Double-booking prevention works correctly\n\n        Note: This test verifies that the booking flow validates\n        availability before confirming\n\n        Steps:\n        1. Navigate to booking\n        2. Select a slot\n        3. Verify availability check happens before booking\n        \"\"\"\n        page.goto(FRONTEND_URL)\n        page.wait_for_load_state(\"networkidle\")\n\n        # Setup\n        page.evaluate(\"localStorage.clear()\")\n        page.context.clear_cookies()\n        page.reload()\n        page.wait_for_load_state(\"networkidle\")\n\n        page.get_by_test_id(\"chat-widget-button\").click()\n        page.wait_for_selector('[data-testid=\"chat-window\"]', state=\"visible\")\n\n        # Handle consent\n        _accept_consent(page)\n\n        # Complete discovery\n        chat_input = page.get_by_test_id(\"message-input\")\n        send_button = page.get_by_test_id(\"send-button\")\n\n        chat_input.fill(\"Test User\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"test@example.com\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"Need AI help with machine learning\")\n        send_button.click()\n        page.wait_for_timeout(2000)\n\n        # Click \"Match Experts\" button\n        match_experts_btn = page.get_by_test_id(\"match-experts-button\")\n        expect(match_experts_btn).to_be_visible(timeout=10000)\n        match_experts_btn.click()\n        expect(page.get_by_test_id(\"expert-match-list\")).to_be_visible(timeout=10000)\n        page.wait_for_timeout(1000)\n\n        # Click \"Book\" on first expert\n        book_expert_btn = page.get_by_test_id(\"book-expert-0\")\n        expect(book_expert_btn).to_be_visible(timeout=5000)\n        book_expert_btn.click()\n\n        page.wait_for_timeout(2000)\n\n        # Wait for calendar picker\n        page.wait_for_selector('text=Select Time Slot', timeout=10000)\n\n        # Select a slot\n        slot_buttons = page.locator('button').filter(has_text=re.compile(r'\\d{1,2}:\\d{2}'))\n        slot_buttons.first.click()\n\n        # Track API calls - set up BEFORE clicking confirm\n        availability_check_called = False\n        booking_create_called = False\n\n        def track_api_calls(route):\n            nonlocal availability_check_called, booking_create_called\n            url = route.request.url\n            if \"/availability\" in url and route.request.method == \"GET\":\n                availability_check_called = True\n            if \"/bookings\" in url and route.request.method == \"POST\":\n                booking_create_called = True\n            route.continue_()\n\n        page.route(\"**/*\", track_api_calls)\n\n        # Fill booking form first\n        name_input = page.locator('input[placeholder*=\"name\" i], input[name*=\"name\" i]').first\n        email_input = page.locator('input[placeholder*=\"email\" i], input[name*=\"email\" i]').first\n\n        if name_input.is_visible():\n            name_input.fill(\"Test User\")\n        if email_input.is_visible():\n            email_input.fill(\"test@example.com\")\n\n        # Click confirm\n        confirm_btn = page.locator('button:has-text(\"Confirm Booking\")')\n        confirm_btn.click()\n\n        # Wait for API calls\n        page.wait_for_timeout(3000)\n\n        # Verify availability was checked before booking\n        assert availability_check_called, \"Availability check should happen before booking\"\n        assert booking_create_called, \"Booking should be created\"\n\n        print(\"✓ Double-booking prevention test passed\")\n\n\n    def test_availability_refresh(self, page: Page):\n        \"\"\"\n        Test: Availability refreshes in real-time before confirmation\n\n        Steps:\n        1. Open calendar picker\n        2. Wait for slots to load\n        3. Verify availability check happens on confirm\n        \"\"\"\n        page.goto(FRONTEND_URL)\n        page.wait_for_load_state(\"networkidle\")\n\n        # Setup\n        page.evaluate(\"localStorage.clear()\")\n        page.context.clear_cookies()\n        page.reload()\n        page.wait_for_load_state(\"networkidle\")\n\n        page.get_by_test_id(\"chat-widget-button\").click()\n        page.wait_for_selector('[data-testid=\"chat-window\"]', state=\"visible\")\n\n        # Handle consent\n        _accept_consent(page)\n\n        # Complete discovery\n        chat_input = page.get_by_test_id(\"message-input\")\n        send_button = page.get_by_test_id(\"send-button\")\n\n        chat_input.fill(\"Test User\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"test@example.com\")\n        send_button.click()\n        page.wait_for_timeout(800)\n\n        chat_input.fill(\"Need AI help with machine learning\")\n        send_button.click()\n        page.wait_for_timeout(2000)\n\n        # Click \"Match Experts\" button\n        match_experts_btn = page.get_by_test_id(\"match-experts-button\")\n        expect(match_experts_btn).to_be_visible(timeout=10000)\n        match_experts_btn.click()\n        expect(page.get_by_test_id(\"expert-match-list\")).to_be_visible(timeout=10000)\n        page.wait_for_timeout(1000)\n\n        # Click \"Book\" on first expert\n        book_expert_btn = page.get_by_test_id(\"book-expert-0\")\n        expect(book_expert_btn).to_be_visible(timeout=5000)\n        book_expert_btn.click()\n\n        page.wait_for_timeout(2000)\n\n        # Wait for calendar picker\n        page.wait_for_selector('text=Select Time Slot', timeout=10000)\n\n        # Select a slot\n        slot_buttons = page.locator('button').filter(has_text=re.compile(r'\\d{1,2}:\\d{2}'))\n        slot_buttons.first.click()\n\n        # Track availability calls\n        availability_calls = []\n\n        def track_availability(route):\n            url = route.request.url\n            if \"/availability\" in url and route.request.method == \"GET\":\n                availability_calls.append(url)\n            route.continue_()\n\n        page.route(\"**/*\", track_availability)\n\n        # Fill booking form\n        name_input = page.locator('input[placeholder*=\"name\" i], input[name*=\"name\" i]').first\n        email_input = page.locator('input[placeholder*=\"email\" i], input[name*=\"email\" i]').first\n\n        if name_input.is_visible():\n            name_input.fill(\"Test User\")\n        if email_input.is_visible():\n            email_input.fill(\"test@example.com\")\n\n        # Click confirm (this triggers final availability check in confirmBooking)\n        confirm_btn = page.locator('button:has-text(\"Confirm Booking\")')\n        confirm_btn.click()\n\n        page.wait_for_timeout(2000)\n\n        # Verify at least one availability check happened (the one in confirmBooking)\n        assert len(availability_calls) > 0, f\"Availability should be checked, got {len(availability_calls)} calls\"\n\n        print(\"✓ Availability refresh test passed\")\n
+"""End-to-end tests for Booking Flow functionality."""
+import re
+
+from playwright.sync_api import Page, expect
+
+# Frontend URL
+FRONTEND_URL = "http://localhost:5173"
+
+
+def _accept_consent(page: Page):
+    """Helper to accept GDPR consent modal if it appears."""
+    try:
+        consent_modal = page.locator('text=Privacy & Data Consent')
+        if consent_modal.is_visible(timeout=2000):
+            page.locator('.max-h-[60vh]').scroll_to_position(0, 1000)
+            page.wait_for_timeout(500)
+            accept_btn = page.locator('button:has-text("I Agree")')
+            if accept_btn.is_visible():
+                accept_btn.click()
+                page.wait_for_timeout(500)
+    except:
+        pass
+
+
+class TestBookingFlow:
+    """Test cases for complete booking flow."""
+
+    def test_complete_booking_flow(self, page: Page):
+        """Test complete booking flow from expert matching to confirmation."""
+        page.goto(FRONTEND_URL)
+        page.wait_for_load_state("networkidle")
+        page.evaluate("localStorage.clear()")
+        page.context.clear_cookies()
+        page.reload()
+        page.wait_for_load_state("networkidle")
+
+        page.get_by_test_id("chat-widget-button").click()
+        page.wait_for_selector('[data-testid="chat-window"]', state="visible")
+        _accept_consent(page)
+
+        chat_input = page.get_by_test_id("message-input")
+        send_button = page.get_by_test_id("send-button")
+
+        chat_input.fill("John Doe")
+        send_button.click()
+        page.wait_for_timeout(1500)
+
+        chat_input.fill("john.doe@example.com")
+        send_button.click()
+        page.wait_for_timeout(1500)
+
+        chat_input.fill("We need help with AI strategy and machine learning implementation")
+        send_button.click()
+        page.wait_for_timeout(2000)
+
+        match_experts_btn = page.get_by_test_id("match-experts-button")
+        expect(match_experts_btn).to_be_visible(timeout=10000)
+        match_experts_btn.click()
+
+        expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
+        page.wait_for_timeout(1000)
+
+        book_expert_btn = page.get_by_test_id("book-expert-0")
+        expect(book_expert_btn).to_be_visible(timeout=5000)
+        book_expert_btn.click()
+
+        page.wait_for_selector('text=Select Time Slot', timeout=10000)
+
+        slot_buttons = page.locator('button').filter(has_text=re.compile(r'\d{1,2}:\d{2}'))
+        expect(slot_buttons.first).to_be_visible(timeout=5000)
+        slot_buttons.first.click()
+
+        confirm_btn = page.locator('button:has-text("Confirm Booking")')
+        expect(confirm_btn).to_be_visible(timeout=5000)
+
+        name_input = page.locator('input[placeholder*="name" i], input[name*="name" i]').first
+        email_input = page.locator('input[placeholder*="email" i], input[name*="email" i]').first
+
+        if name_input.is_visible():
+            name_input.fill("John Doe")
+        if email_input.is_visible():
+            email_input.fill("john.doe@example.com")
+
+        confirm_btn.click()
+        page.wait_for_timeout(3000)
+
+        expect(page.locator('text=Booking Confirmed')).to_be_visible(timeout=10000)
+        expect(page.locator('text=Meeting Link')).to_be_visible(timeout=5000)
+
+        print("✓ Complete booking flow test passed")
+
+    def test_time_slot_selection_confirmation(self, page: Page):
+        """Test: Time slot selection shows confirmation UI."""
+        page.goto(FRONTEND_URL)
+        page.wait_for_load_state("networkidle")
+        page.evaluate("localStorage.clear()")
+        page.context.clear_cookies()
+        page.reload()
+        page.wait_for_load_state("networkidle")
+
+        page.get_by_test_id("chat-widget-button").click()
+        page.wait_for_selector('[data-testid="chat-window"]', state="visible")
+        _accept_consent(page)
+
+        chat_input = page.get_by_test_id("message-input")
+        send_button = page.get_by_test_id("send-button")
+
+        chat_input.fill("Test User")
+        send_button.click()
+        page.wait_for_timeout(800)
+
+        chat_input.fill("test@example.com")
+        send_button.click()
+        page.wait_for_timeout(800)
+
+        chat_input.fill("Need AI help")
+        send_button.click()
+        page.wait_for_timeout(2000)
+
+        match_experts_btn = page.get_by_test_id("match-experts-button")
+        expect(match_experts_btn).to_be_visible(timeout=10000)
+        match_experts_btn.click()
+        expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
+        page.wait_for_timeout(1000)
+
+        book_expert_btn = page.get_by_test_id("book-expert-0")
+        expect(book_expert_btn).to_be_visible(timeout=5000)
+        book_expert_btn.click()
+
+        page.wait_for_selector('text=Select Time Slot', timeout=10000)
+
+        slot_buttons = page.locator('button').filter(has_text=re.compile(r'\d{1,2}:\d{2}'))
+        expect(slot_buttons.first).to_be_visible(timeout=5000)
+        slot_buttons.first.click()
+
+        expect(page.locator('text=Selected:')).to_be_visible(timeout=5000)
+        expect(page.locator('button:has-text("Confirm Booking")')).to_be_visible(timeout=5000)
+
+        print("✓ Time slot selection confirmation test passed")

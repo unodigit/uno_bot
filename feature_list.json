@@ -899,7 +899,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 1,
-    "dev_completed_at": "2026-01-02T05:06:12.123838Z",
+    "dev_completed_at": "2026-01-02T14:35:53.379227Z",
     "qa_completed_at": "2026-01-02T15:53:16.000000Z",
     "qa_validated": true,
     "last_qa_run": "2026-01-02T14:27:18.651862+00:00",
