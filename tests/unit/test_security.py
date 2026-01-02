@@ -3,6 +3,8 @@ from src.core.security import (
     AdminSecurity,
     RateLimiter,
     TokenManager,
+    encrypt_oauth_token,
+    decrypt_oauth_token,
     mask_sensitive_data,
     sanitize_input,
     sign_data,
@@ -239,3 +241,39 @@ class TestSecurityIntegration:
         assert "[API_KEY_MASKED]" in masked
         assert "test@example.com" not in masked
         assert "sk-s8ksxnh1xvhy5pmljwe8cjbcbbfjvm2njios6zcvh6z9izep" not in masked
+
+
+class TestOAuthTokenEncryption:
+    """Test OAuth token encryption for secure storage."""
+
+    def test_encrypt_decrypt_oauth_token(self):
+        """Test that OAuth tokens can be encrypted and decrypted."""
+        token = "ya29.a0AfB_...very_long_refresh_token"
+        encrypted = encrypt_oauth_token(token)
+
+        # Encrypted token should be different from original
+        assert encrypted != token
+        assert len(encrypted) > 0
+
+        # Decryption should return original token
+        decrypted = decrypt_oauth_token(encrypted)
+        assert decrypted == token
+
+    def test_decrypt_invalid_token(self):
+        """Test that invalid encrypted tokens return None."""
+        result = decrypt_oauth_token("invalid_encrypted_token")
+        assert result is None
+
+    def test_encrypt_empty_token(self):
+        """Test that empty tokens are handled correctly."""
+        assert encrypt_oauth_token("") == ""
+        assert decrypt_oauth_token("") is None
+
+    def test_oauth_token_roundtrip(self):
+        """Test multiple encryption/decryption cycles."""
+        original_token = "ya29.a0AfB_test_token_12345"
+
+        for _ in range(3):
+            encrypted = encrypt_oauth_token(original_token)
+            decrypted = decrypt_oauth_token(encrypted)
+            assert decrypted == original_token

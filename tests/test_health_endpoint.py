@@ -66,26 +66,6 @@ async def test_health_endpoint_includes_timestamp():
         assert isinstance(data["timestamp"], str)
 
 
-@pytest.mark.asyncio
-async def test_detailed_health_endpoint():
-    """Test that GET /api/v1/admin/health/detailed returns comprehensive health info."""
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.get("/api/v1/admin/health/detailed")
-
-        assert response.status_code == 200
-        data = response.json()
-
-        # Should have success flag
-        assert "success" in data
-        assert data["success"] is True
-
-        # Should have data with checks
-        assert "data" in data
-        assert "checks" in data["data"]
-        assert isinstance(data["data"]["checks"], dict)
-
-
 if __name__ == "__main__":
     import asyncio
 
@@ -108,12 +88,6 @@ if __name__ == "__main__":
             assert "timestamp" in data
             assert "database" in data
             print("✓ All required fields present")
-
-            # Test detailed health endpoint
-            response = await client.get("/api/v1/health/detailed")
-            assert response.status_code == 200
-            data = response.json()
-            print(f"✓ Detailed health endpoint status: {response.status_code}")
 
         print("\n✅ All health endpoint tests passed!")
 

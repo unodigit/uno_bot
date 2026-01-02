@@ -7,6 +7,7 @@ from socketio import AsyncServer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
+from src.core.security import decrypt_oauth_token
 from src.models.session import MessageRole
 from src.schemas.session import MessageCreate
 from src.services.expert_service import ExpertService
@@ -318,9 +319,12 @@ async def handle_get_availability(
     if not expert:
         raise ValueError(f"Expert {expert_id} not found")
 
+    # Decrypt OAuth token
+    decrypted_token = decrypt_oauth_token(expert.refresh_token or "") if expert.refresh_token else ""
+
     # Get availability
     slots = await calendar_service.get_expert_availability(
-        refresh_token=expert.refresh_token or "",
+        refresh_token=decrypted_token,
         timezone=timezone,
         days_ahead=14,
         min_slots_to_show=5

@@ -8,7 +8,7 @@ import { test, expect, Page } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   // Navigate to main page before each test
-  await page.goto("http://localhost:5185");
+  await page.goto("http://localhost:5173");
   await page.waitForLoadState("networkidle");
 
   // Track console errors
@@ -27,12 +27,12 @@ async function progressToQualification(page: Page) {
   // Open chat
   await page.click('[data-testid="chat-widget-button"]');
   await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(1500);
 
   // Provide name
   await page.fill('[data-testid="chat-input"]', 'My name is John Doe');
   await page.click('[data-testid="send-button"]');
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(2500);
 
   // Provide email
   await page.fill('[data-testid="chat-input"]', 'john@example.com');

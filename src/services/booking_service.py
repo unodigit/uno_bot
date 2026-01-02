@@ -323,8 +323,9 @@ class BookingService:
             # Delete Google Calendar event
             if booking.calendar_event_id and expert and expert.refresh_token:
                 try:
+                    decrypted_token = decrypt_oauth_token(expert.refresh_token)
                     await self.calendar_service.delete_calendar_event(
-                        refresh_token=expert.refresh_token,
+                        refresh_token=decrypted_token,
                         event_id=booking.calendar_event_id
                     )
                 except Exception as e:
