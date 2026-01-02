@@ -34,3 +34,9 @@ def page(context: BrowserContext):
     page = context.new_page()
     yield page
     page.close()
+
+
+@pytest.fixture(scope="session")
+def base_url():
+    """Return the base URL for testing."""
+    return "http://localhost:5173"

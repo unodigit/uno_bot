@@ -1793,11 +1793,12 @@
       "Step 4: Verify time slots 2 per row",
       "Step 5: Verify confirm button styling"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:08:41.356209Z"
+    "dev_completed_at": "2026-01-02T08:08:41.356209Z",
+    "qa_completed_at": "2026-01-02T19:20:00.000000Z"
   },
   {
     "category": "style",
@@ -1809,11 +1810,12 @@
       "Step 4: Verify unselected slots styling",
       "Step 5: Verify transition animation"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:02:29.632037Z"
+    "dev_completed_at": "2026-01-02T08:02:29.632037Z",
+    "qa_completed_at": "2026-01-02T19:20:00.000000Z"
   },
   {
     "category": "style",
