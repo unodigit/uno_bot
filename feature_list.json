@@ -1935,8 +1935,9 @@
       "Step 4: Verify no janky animations"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T08:32:49.733806Z"
   },
   {
     "category": "style",
@@ -2094,8 +2095,10 @@
       "Step 6: Verify Escape closes chat"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:31:55.686654Z"
   },
   {
     "category": "functional",
