@@ -170,13 +170,22 @@ test.describe('Feature 5: User can type and send messages', () => {
     // Find and click send button
     const sendButton = page.locator('[data-testid="send-button"], button[type="submit"]');
     await sendButton.click();
+
+    // Wait for the message to be sent and response to arrive
+    // The user message should appear immediately, then AI response
     await page.waitForTimeout(2000);
 
-    // Check if user message appears in chat
-    const userMessages = page.locator('[data-testid^="message-"]');
-    const lastMessage = userMessages.last();
-    const lastMessageText = await lastMessage.textContent();
+    // Check if user message appears in chat by looking for user messages
+    const userMessages = page.locator('[data-testid="message-user"]');
+    const userMessageCount = await userMessages.count();
 
-    expect(lastMessageText).toContain(testMessage);
+    // Should have at least one user message
+    expect(userMessageCount).toBeGreaterThan(0);
+
+    // Check the last user message contains our test message
+    const lastUserMessage = userMessages.last();
+    const lastUserMessageText = await lastUserMessage.textContent();
+
+    expect(lastUserMessageText).toContain(testMessage);
   });
 });
