@@ -705,8 +705,10 @@
       "Step 6: Verify alternative slots offered"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:59:22.115887Z"
   },
   {
     "category": "functional",
