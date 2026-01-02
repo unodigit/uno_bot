@@ -972,7 +972,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "last_updated": "2026-01-02T06:05:55.063776+00:00",
-    "dev_completed_at": "2026-01-02T06:10:20.052873+00:00"
+    "dev_completed_at": "2026-01-02T06:11:02.731240Z",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",
