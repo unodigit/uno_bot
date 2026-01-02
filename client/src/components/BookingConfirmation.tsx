@@ -1,6 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { Calendar, Clock, User, Mail, Link as LinkIcon, CheckCircle2, ExternalLink, X } from 'lucide-react'
-import { TimeSlot } from './CalendarPicker'
+import { motion } from 'framer-motion'
+import { Calendar, User, Mail, Link as LinkIcon, CheckCircle2, ExternalLink, X } from 'lucide-react'
 
 export interface BookingData {
   id: string
@@ -24,17 +23,6 @@ interface BookingConfirmationProps {
 export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }: BookingConfirmationProps) {
   const startTime = new Date(booking.start_time)
   const endTime = new Date(booking.end_time)
-
-  const formatDateTime = (date: Date) => {
-    return date.toLocaleString('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      timeZone: booking.timezone
-    })
-  }
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', {

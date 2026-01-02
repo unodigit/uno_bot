@@ -34,7 +34,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
   const [inputValue, setInputValue] = useState('')
   const [showSettings, setShowSettings] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const {
     messages,
@@ -48,10 +48,8 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     currentPhase,
     clientInfo,
     businessContext,
-    qualification,
     prdPreview,
     isGeneratingPRD,
-    generatePRD,
     downloadPRD,
     clearPRDPreview,
     matchedExperts,
@@ -360,7 +358,6 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               timeSlot={selectedTimeSlot}
               onBack={() => {
                 // Go back to time selection
-                const { selectedTimeSlot: _, ...rest } = {} as any
               }}
               onSubmit={handleBookingSubmit}
               isSubmitting={isCreatingBooking}
