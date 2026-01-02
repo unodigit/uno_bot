@@ -68,7 +68,9 @@ async def upload_expert_photo(
         Dictionary containing the photo URL
     """
     # Validate file type
-    if not is_allowed_file_type(file.content_type, file.filename):
+    content_type = file.content_type or ""
+    filename = file.filename or ""
+    if not is_allowed_file_type(content_type, filename):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid file type. Allowed types: JPEG, PNG, GIF, WebP"
@@ -84,7 +86,7 @@ async def upload_expert_photo(
         )
 
     # Generate unique filename
-    extension = get_file_extension(file.filename)
+    extension = get_file_extension(filename)
     unique_filename = f"expert_{expert_id}_{int(datetime.now().timestamp())}{extension}"
     file_path = UPLOAD_DIR / unique_filename
 

@@ -1,13 +1,14 @@
 """Session and message service layer for business logic."""
 import logging
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from src.core.config import settings
 from src.core.security import sanitize_input, validate_sql_input
 from src.models.session import (
     ConversationSession,
@@ -36,6 +37,53 @@ class SessionService:
         self.db = db
         self.ai_service = AIService()
         self.template_service = TemplateService(db)
+
+    @staticmethod
+    def is_session_expired(session: ConversationSession) -> bool:
+        """Check if a session has expired based on its age.
+
+        A session expires after `session_expiry_days` days from its `started_at` timestamp.
+
+        Args:
+            session: The session to check
+
+        Returns:
+            True if the session has expired, False otherwise
+        """
+        if not session.started_at:
+            return False
+
+        expiry_date = session.started_at + timedelta(days=settings.session_expiry_days)
+        return datetime.utcnow() > expiry_date
+
+    @staticmethod
+    def get_session_expiry_date(session: ConversationSession) -> datetime | None:
+        """Get the expiry date for a session.
+
+        Args:
+            session: The session to get expiry date for
+
+        Returns:
+            The expiry datetime, or None if no started_at timestamp
+        """
+        if not session.started_at:
+            return None
+        return session.started_at + timedelta(days=settings.session_expiry_days)
+
+    @staticmethod
+    def get_session_age(session: ConversationSession) -> int:
+        """Get the age of a session in days.
+
+        Args:
+            session: The session to check
+
+        Returns:
+            Age in days, or -1 if no started_at timestamp
+        """
+        if not session.started_at:
+            return -1
+        age = datetime.utcnow() - session.started_at
+        return age.days
 
     async def create_session(self, session_create: SessionCreate) -> ConversationSession:
         """Create a new conversation session with sanitized inputs."""

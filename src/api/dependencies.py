@@ -32,6 +32,11 @@ async def get_current_user() -> User:
     return None
 
 
+async def get_current_admin() -> User:
+    """Stub for admin authentication - returns None (no auth in current implementation)."""
+    return None
+
+
 # Type aliases for dependency injection
 DBSession = Annotated[AsyncSession, Depends(get_db)]
 SessionId = Annotated[str, Depends(require_session_id)]

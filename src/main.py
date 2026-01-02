@@ -27,6 +27,7 @@ except ImportError:
         return cache_service  # type: ignore[return-value]
 
 from src.api.routes import router
+from src.api.routes.monitoring import router as monitoring_router
 from src.api.routes.websocket import (
     handle_create_booking,
     handle_generate_prd,
@@ -175,11 +176,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add monitoring middleware
+from src.services.monitoring_service import MonitoringMiddleware
+app.add_middleware(MonitoringMiddleware)
+
 # Add rate limiting middleware
 app.middleware("http")(rate_limit_middleware)
 
 # Include API routes
 app.include_router(router)
+app.include_router(monitoring_router, prefix="/api/v1/admin")
 
 # Register exception handlers
 register_exception_handlers(app)

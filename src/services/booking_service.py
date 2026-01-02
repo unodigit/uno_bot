@@ -342,7 +342,7 @@ class BookingService:
         if end_date:
             query = query.where(Booking.end_time <= end_date)
 
-        query = query.options(selectinload(Booking.session))  # type: ignore[attr-defined]
+        query = query.options(selectinload(Booking.session))
 
         result = await self.db.execute(query)
         bookings = result.scalars().all()

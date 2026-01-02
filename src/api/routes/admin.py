@@ -10,6 +10,7 @@ from src.api.dependencies import get_db
 from src.core.security import require_admin_auth
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 from src.services.analytics_service import AnalyticsService
+from src.services.cleanup_service import CleanupService
 from src.services.expert_service import ExpertService
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -348,3 +349,141 @@ async def revoke_admin_token(
     AdminSecurity.revoke_token(token)
 
     return {"message": "Token revoked successfully"}
+
+
+@router.post("/cleanup/sessions")
+async def cleanup_old_sessions(
+    max_age_days: int = 7,
+    admin_data: dict = Depends(verify_admin_access),
+    db: AsyncSession = Depends(get_db)
+):
+    """Clean up sessions older than specified days.
+
+    Args:
+        max_age_days: Maximum age in days for sessions to keep (default: 7)
+        admin_data: Admin authentication data
+        db: Database session
+
+    Returns:
+        Number of sessions deleted and cleanup details
+    """
+    try:
+        cleanup_service = CleanupService(db)
+        deleted_count = await cleanup_service.cleanup_old_sessions(max_age_days=max_age_days)
+
+        return {
+            "message": f"Cleaned up {deleted_count} old sessions",
+            "deleted_count": deleted_count,
+            "max_age_days": max_age_days,
+            "status": "completed"
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to cleanup sessions: {str(e)}"
+        ) from e
+
+
+@router.post("/cleanup/prds")
+async def cleanup_expired_prds(
+    max_age_days: int = 90,
+    admin_data: dict = Depends(verify_admin_access),
+    db: AsyncSession = Depends(get_db)
+):
+    """Clean up PRDs older than specified days.
+
+    Args:
+        max_age_days: Maximum age in days for PRDs to keep (default: 90)
+        admin_data: Admin authentication data
+        db: Database session
+
+    Returns:
+        Number of PRDs deleted and cleanup details
+    """
+    try:
+        cleanup_service = CleanupService(db)
+        deleted_count = await cleanup_service.cleanup_expired_prds(max_age_days=max_age_days)
+
+        return {
+            "message": f"Cleaned up {deleted_count} expired PRDs",
+            "deleted_count": deleted_count,
+            "max_age_days": max_age_days,
+            "status": "completed"
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to cleanup PRDs: {str(e)}"
+        ) from e
+
+
+@router.post("/cleanup/orphaned")
+async def cleanup_orphaned_data(
+    admin_data: dict = Depends(verify_admin_access),
+    db: AsyncSession = Depends(get_db)
+):
+    """Clean up orphaned data (messages and PRDs without sessions).
+
+    Args:
+        admin_data: Admin authentication data
+        db: Database session
+
+    Returns:
+        Cleanup results for orphaned data
+    """
+    try:
+        cleanup_service = CleanupService(db)
+        result = await cleanup_service.cleanup_orphaned_data()
+
+        return {
+            "message": "Cleaned up orphaned data",
+            "orphaned_messages_deleted": result["messages_deleted"],
+            "orphaned_prds_deleted": result["prds_deleted"],
+            "status": "completed"
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to cleanup orphaned data: {str(e)}"
+        ) from e
+
+
+@router.get("/cleanup/stats")
+async def get_cleanup_stats(
+    admin_data: dict = Depends(verify_admin_access),
+    db: AsyncSession = Depends(get_db)
+):
+    """Get cleanup statistics and session lifecycle metrics.
+
+    Args:
+        admin_data: Admin authentication data
+        db: Database session
+
+    Returns:
+        Session statistics and cleanup recommendations
+    """
+    try:
+        cleanup_service = CleanupService(db)
+        stats = await cleanup_service.get_session_stats()
+
+        # Add cleanup recommendations
+        recommendations = []
+        if stats.get("sessions_older_than_7_days", 0) > 100:
+            recommendations.append("Consider running session cleanup - many old sessions found")
+        if stats.get("sessions_older_than_30_days", 0) > 50:
+            recommendations.append("Many very old sessions - cleanup recommended")
+
+        return {
+            "session_stats": stats,
+            "recommendations": recommendations,
+            "cleanup_endpoints": [
+                "/api/v1/admin/cleanup/sessions",
+                "/api/v1/admin/cleanup/prds",
+                "/api/v1/admin/cleanup/orphaned"
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get cleanup stats: {str(e)}"
+        ) from e

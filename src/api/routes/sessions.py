@@ -5,6 +5,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.config import settings
 from src.core.database import get_db
 from src.core.exceptions import BadRequestError, NotFoundError
 from src.models.session import MessageRole
@@ -107,7 +108,7 @@ async def get_session(
     """Get session details and message history.
 
     Retrieve a conversation session by its ID, including all messages
-    and session metadata.
+    and session metadata. Returns 410 Gone if session has expired.
     """
     # Validate session_id and convert to UUID
     session_uuid = validate_session_id(session_id)
@@ -117,6 +118,21 @@ async def get_session(
 
     if not session:
         raise NotFoundError("Session", session_id)
+
+    # Check if session has expired
+    if service.is_session_expired(session):
+        expiry_date = service.get_session_expiry_date(session)
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail={
+                "message": "Session has expired",
+                "session_id": str(session.id),
+                "started_at": session.started_at.isoformat() if session.started_at else None,
+                "expired_at": expiry_date.isoformat() if expiry_date else None,
+                "session_age_days": service.get_session_age(session),
+                "max_age_days": settings.session_expiry_days,
+            },
+        )
 
     return SessionResponse(
         id=session.id,
@@ -168,6 +184,7 @@ async def send_message(
 
     Add a user message to the conversation session and return the user message.
     The AI response will be sent via WebSocket for real-time streaming.
+    Returns 410 Gone if session has expired.
     """
     # Validate session_id and convert to UUID
     session_uuid = validate_session_id(session_id)
@@ -178,6 +195,21 @@ async def send_message(
 
     if not session:
         raise NotFoundError("Session", session_id)
+
+    # Check if session has expired
+    if service.is_session_expired(session):
+        expiry_date = service.get_session_expiry_date(session)
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail={
+                "message": "Session has expired",
+                "session_id": str(session.id),
+                "started_at": session.started_at.isoformat() if session.started_at else None,
+                "expired_at": expiry_date.isoformat() if expiry_date else None,
+                "session_age_days": service.get_session_age(session),
+                "max_age_days": settings.session_expiry_days,
+            },
+        )
 
     # Check if session is active (handle both string and enum)
     status_value = session.status.value if hasattr(session.status, 'value') else session.status
@@ -220,6 +252,7 @@ async def resume_session_path(
 
     Mark a session as active again and update its last activity timestamp.
     This allows visitors to continue conversations after leaving the page.
+    Returns 410 Gone if session has expired.
     """
     # Validate session_id and convert to UUID
     session_uuid = validate_session_id(session_id)
@@ -229,6 +262,21 @@ async def resume_session_path(
 
     if not session:
         raise NotFoundError("Session", session_id)
+
+    # Check if session has expired
+    if service.is_session_expired(session):
+        expiry_date = service.get_session_expiry_date(session)
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail={
+                "message": "Session has expired",
+                "session_id": str(session.id),
+                "started_at": session.started_at.isoformat() if session.started_at else None,
+                "expired_at": expiry_date.isoformat() if expiry_date else None,
+                "session_age_days": service.get_session_age(session),
+                "max_age_days": settings.session_expiry_days,
+            },
+        )
 
     # Check if session is completed (handle both string and enum)
     status_value = session.status.value if hasattr(session.status, 'value') else session.status
@@ -286,6 +334,7 @@ async def resume_session(
     Mark a session as active again and update its last activity timestamp.
     This allows visitors to continue conversations after leaving the page.
     Uses session_id from request body.
+    Returns 410 Gone if session has expired.
     """
     if not resume_request.session_id:
         raise BadRequestError("session_id is required in request body")
@@ -295,6 +344,21 @@ async def resume_session(
 
     if not session:
         raise NotFoundError("Session", str(resume_request.session_id))
+
+    # Check if session has expired
+    if service.is_session_expired(session):
+        expiry_date = service.get_session_expiry_date(session)
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail={
+                "message": "Session has expired",
+                "session_id": str(session.id),
+                "started_at": session.started_at.isoformat() if session.started_at else None,
+                "expired_at": expiry_date.isoformat() if expiry_date else None,
+                "session_age_days": service.get_session_age(session),
+                "max_age_days": settings.session_expiry_days,
+            },
+        )
 
     # Check if session is completed (handle both string and enum)
     status_value = session.status.value if hasattr(session.status, 'value') else session.status
@@ -352,6 +416,7 @@ async def match_expert(
     Analyzes the session's business context, recommended service, and
     qualification data to find the most relevant experts. Returns
     ranked experts with match scores.
+    Returns 410 Gone if session has expired.
     """
     # Validate session_id and convert to UUID
     session_uuid = validate_session_id(session_id)
@@ -361,6 +426,21 @@ async def match_expert(
 
     if not session:
         raise NotFoundError("Session", session_id)
+
+    # Check if session has expired
+    if session_service.is_session_expired(session):
+        expiry_date = session_service.get_session_expiry_date(session)
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail={
+                "message": "Session has expired",
+                "session_id": str(session.id),
+                "started_at": session.started_at.isoformat() if session.started_at else None,
+                "expired_at": expiry_date.isoformat() if expiry_date else None,
+                "session_age_days": session_service.get_session_age(session),
+                "max_age_days": settings.session_expiry_days,
+            },
+        )
 
     expert_service = ExpertService(db)
 
@@ -427,6 +507,7 @@ async def update_session(
 
     Allows partial updates to session fields like business_context,
     qualification, recommended_service, etc.
+    Returns 410 Gone if session has expired.
     """
     # Validate session_id and convert to UUID
     session_uuid = validate_session_id(session_id)
@@ -436,6 +517,21 @@ async def update_session(
 
     if not session:
         raise NotFoundError("Session", session_id)
+
+    # Check if session has expired
+    if service.is_session_expired(session):
+        expiry_date = service.get_session_expiry_date(session)
+        raise HTTPException(
+            status_code=status.HTTP_410_GONE,
+            detail={
+                "message": "Session has expired",
+                "session_id": str(session.id),
+                "started_at": session.started_at.isoformat() if session.started_at else None,
+                "expired_at": expiry_date.isoformat() if expiry_date else None,
+                "session_age_days": service.get_session_age(session),
+                "max_age_days": settings.session_expiry_days,
+            },
+        )
 
     # Update session with provided data using keyword arguments
     updated_session = await service.update_session_data(
@@ -500,6 +596,12 @@ async def unsubscribe_from_marketing(
     session = await service.get_session(unsubscribe_request.session_id)
     if not session:
         raise NotFoundError("Session", str(unsubscribe_request.session_id))
+
+    # Check if session has expired
+    # Note: We still allow unsubscribe for expired sessions since it's an email preference operation
+    # But we log it for tracking purposes
+    if service.is_session_expired(session):
+        logger.warning(f"Unsubscribe called for expired session {session.id}")
 
     # Update email preferences to opt out of marketing
     session.email_opt_in = False

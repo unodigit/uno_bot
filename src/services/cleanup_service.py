@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from src.models.prd import PRDDocument
-from src.models.session import ConversationSession, Message
+from src.models.session import ConversationSession, Message, SessionStatus
 
 
 class CleanupService:
@@ -34,8 +34,8 @@ class CleanupService:
             .where(
                 and_(
                     ConversationSession.status.in_([
-                        ConversationSession.status.COMPLETED.value,
-                        ConversationSession.status.ABANDONED.value
+                        SessionStatus.COMPLETED.value,
+                        SessionStatus.ABANDONED.value
                     ]),
                     ConversationSession.completed_at < cutoff_date
                 )
@@ -62,7 +62,7 @@ class CleanupService:
         )
 
         await self.db.commit()
-        return delete_result.rowcount
+        return delete_result.rowcount  # type: ignore[attr-defined, no-any-return]
 
     async def cleanup_expired_prds(self, max_age_days: int = 90) -> int:
         """Clean up PRDs older than max_age_days.
@@ -91,7 +91,7 @@ class CleanupService:
         )
 
         await self.db.commit()
-        return delete_result.rowcount
+        return delete_result.rowcount  # type: ignore[attr-defined, no-any-return]
 
     async def get_session_stats(self) -> dict:
         """Get session statistics for monitoring.
@@ -102,7 +102,7 @@ class CleanupService:
         # Count sessions by status
         result = await self.db.execute(
             select(ConversationSession.status, ConversationSession.completed_at)
-            .order_by(ConversationSession.created_at)
+            .order_by(ConversationSession.created_at)  # type: ignore[attr-defined]
         )
         sessions = result.fetchall()
 
@@ -119,11 +119,11 @@ class CleanupService:
         cutoff_30_days = datetime.utcnow() - timedelta(days=30)
 
         for status, completed_at in sessions:
-            if status == ConversationSession.status.ACTIVE.value:
+            if status == SessionStatus.ACTIVE.value:
                 stats["active_sessions"] += 1
-            elif status == ConversationSession.status.COMPLETED.value:
+            elif status == SessionStatus.COMPLETED.value:
                 stats["completed_sessions"] += 1
-            elif status == ConversationSession.status.ABANDONED.value:
+            elif status == SessionStatus.ABANDONED.value:
                 stats["abandoned_sessions"] += 1
 
             if completed_at:
@@ -154,7 +154,7 @@ class CleanupService:
             delete_result = await self.db.execute(
                 delete(Message).where(Message.id.in_(orphaned_message_ids))
             )
-            messages_deleted = delete_result.rowcount
+            messages_deleted = delete_result.rowcount  # type: ignore[attr-defined]
 
         # Find orphaned PRDs
         result = await self.db.execute(
@@ -170,7 +170,7 @@ class CleanupService:
             delete_result = await self.db.execute(
                 delete(PRDDocument).where(PRDDocument.id.in_(orphaned_prd_ids))
             )
-            prds_deleted = delete_result.rowcount
+            prds_deleted = delete_result.rowcount  # type: ignore[attr-defined]
 
         await self.db.commit()
 

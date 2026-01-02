@@ -1,8 +1,10 @@
 """Database connection and session management."""
+import os
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import text
 
 from src.core.config import settings
 
@@ -60,3 +62,22 @@ async def init_db() -> None:
     """Initialize database tables."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+
+def get_database_size() -> float:
+    """Get database size in megabytes."""
+    try:
+        if is_sqlite:
+            # For SQLite, get file size
+            db_path = settings.database_url.replace("sqlite+aiosqlite:///", "")
+            if os.path.exists(db_path):
+                size_bytes = os.path.getsize(db_path)
+                return size_bytes / (1024 * 1024)  # Convert to MB
+            return 0.0
+        else:
+            # For PostgreSQL, use pg_database_size
+            # This would need to be implemented with proper async database access
+            # For now, return 0
+            return 0.0
+    except Exception:
+        return 0.0

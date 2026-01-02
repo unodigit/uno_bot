@@ -323,7 +323,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -334,7 +334,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           {error && (
             <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
               <span className="text-xs text-error">{error}</span>
-              <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
+              <button onClick={clearError} className="w-8 h-8 min-w-[44px] min-h-[44px] text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
             </div>
           )}
 
@@ -373,7 +373,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -384,7 +384,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           {error && (
             <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
               <span className="text-xs text-error">{error}</span>
-              <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
+              <button onClick={clearError} className="w-8 h-8 min-w-[44px] min-h-[44px] text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
             </div>
           )}
 
@@ -427,7 +427,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -480,7 +480,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -533,7 +533,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -544,7 +544,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           {error && (
             <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
               <span className="text-xs text-error">{error}</span>
-              <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
+              <button onClick={clearError} className="w-8 h-8 min-w-[44px] min-h-[44px] text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
             </div>
           )}
 
@@ -659,7 +659,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             {/* Settings Button */}
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px]"
               aria-label="Open settings"
               aria-expanded={showSettings}
               data-testid="settings-button"
@@ -671,7 +671,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               <>
                 <button
                   onClick={onMinimize}
-                  className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]"
+                  className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] sm:min-w-[40px] sm:min-h-[40px]"
                   aria-label="Minimize chat window"
                   aria-describedby="minimize-instruction"
                   data-testid="minimize-button"
@@ -714,7 +714,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               <span className="text-sm font-semibold text-gray-700">Settings</span>
               <button
                 onClick={() => setShowSettings(false)}
-                className="text-xs text-gray-500 hover:text-gray-700 min-h-[32px]"
+                className="text-xs text-gray-500 hover:text-gray-700 min-h-[44px]"
                 aria-label="Close settings"
               >
                 Close
@@ -885,7 +885,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         {error && (
           <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
             <span className="text-xs text-error">{error}</span>
-            <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
+            <button onClick={clearError} className="w-8 h-8 min-w-[44px] min-h-[44px] text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
           </div>
         )}
 
@@ -1038,7 +1038,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                     }
                   }}
                   className={twMerge(
-                    'px-3 py-2 min-h-[40px] min-w-[60px] text-xs rounded-full transition-all duration-200 border font-medium',
+                    'px-3 py-2 min-h-[44px] min-w-[60px] text-xs rounded-full transition-all duration-200 border font-medium',
                     'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                     'disabled:opacity-50 disabled:cursor-not-allowed',
                     'bg-surface text-text border-border hover:bg-gray-200 active:scale-95 shadow-sm'
