@@ -4,7 +4,7 @@
  * Handles all HTTP communication with the UnoBot backend API.
  */
 
-import { Session, Message, CreateSessionRequest, SendMessageRequest, PRDResponse, PRDPreview, ExpertMatchResponse } from '../types';
+import { Session, Message, CreateSessionRequest, SendMessageRequest, PRDResponse, PRDPreview, ExpertMatchResponse, AvailabilityResponse, BookingCreateRequest, BookingResponse } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -143,6 +143,23 @@ class ApiClient {
    */
   async matchExperts(sessionId: string): Promise<ExpertMatchResponse> {
     return this.post<ExpertMatchResponse>(`/api/v1/sessions/${sessionId}/match-expert`, {});
+  }
+
+  /**
+   * Get expert availability
+   * GET /api/v1/bookings/experts/{expert_id}/availability
+   */
+  async getExpertAvailability(expertId: string, timezone?: string): Promise<AvailabilityResponse> {
+    const params = timezone ? `?timezone=${encodeURIComponent(timezone)}` : ''
+    return this.get<AvailabilityResponse>(`/api/v1/bookings/experts/${expertId}/availability${params}`);
+  }
+
+  /**
+   * Create a booking
+   * POST /api/v1/bookings/sessions/{session_id}/bookings
+   */
+  async createBooking(sessionId: string, data: BookingCreateRequest): Promise<BookingResponse> {
+    return this.post<BookingResponse>(`/api/v1/bookings/sessions/${sessionId}/bookings`, data);
   }
 
   /**

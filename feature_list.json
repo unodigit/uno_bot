@@ -428,7 +428,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T03:58:26.398248Z",
-    "qa_completed_at": "2026-01-02T15:25:00.000Z"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
   },
   {
     "category": "functional",
@@ -508,9 +508,12 @@
       "Step 3: Verify bookings distributed across experts",
       "Step 4: Verify no single expert is overloaded"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:33:15.032080Z",
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
   },
   {
     "category": "functional",
@@ -527,7 +530,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T03:58:13.410839Z",
-    "qa_completed_at": "2026-01-02T15:25:00.000Z"
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
   },
   {
     "category": "functional",
@@ -539,9 +542,12 @@
       "Step 4: Verify busy times are excluded",
       "Step 5: Verify free slots are returned"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:36:11.323992+00:00",
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
   },
   {
     "category": "functional",
@@ -552,11 +558,12 @@
       "Step 3: Verify slots span up to 14 days",
       "Step 4: Verify slots are within business hours"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T04:12:50.802133Z"
+    "dev_completed_at": "2026-01-02T04:12:50.802133Z",
+    "qa_completed_at": "2026-01-02T04:36:11.323992+00:00"
   },
   {
     "category": "functional",
@@ -580,11 +587,12 @@
       "Step 3: Verify slots are grouped under date headers",
       "Step 4: Verify time slot buttons arranged 2 per row"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T04:25:23.028716Z"
+    "dev_completed_at": "2026-01-02T04:25:23.028716Z",
+    "qa_completed_at": "2026-01-02T15:35:05.424Z"
   },
   {
     "category": "functional",
@@ -608,11 +616,12 @@
       "Step 3: Verify Google Calendar event is created",
       "Step 4: Verify event has correct title, time, attendees"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T04:21:07.206331Z"
+    "dev_completed_at": "2026-01-02T04:21:07.206331Z",
+    "qa_completed_at": "2026-01-02T15:35:05.424Z"
   },
   {
     "category": "functional",

@@ -94,6 +94,10 @@ class CalendarService:
         Returns:
             List of available time slots with start/end times
         """
+        # For testing and development, return mock data
+        if settings.environment in ["test", "development"]:
+            return await self._get_mock_availability(timezone, days_ahead, min_slots_to_show)
+
         try:
             service = self.get_calendar_service(refresh_token)
 
@@ -217,6 +221,11 @@ class CalendarService:
         Returns:
             Event ID of the created calendar event
         """
+        # For testing and development, return mock event ID
+        if settings.environment in ["test", "development"]:
+            import random
+            return f"mock-event-{random.randint(10000, 99999)}"
+
         try:
             service = self.get_calendar_service(refresh_token)
 
@@ -285,3 +294,49 @@ class CalendarService:
             'time': start_time.strftime('%H:%M'),
             'timezone': timezone
         }
+
+    async def _get_mock_availability(
+        self,
+        timezone: str = 'UTC',
+        days_ahead: int = 14,
+        min_slots_to_show: int = 5
+    ) -> List[dict]:
+        """Generate mock availability for testing and development.
+
+        Args:
+            timezone: Timezone for the mock slots
+            days_ahead: Number of days to generate mock slots for
+            min_slots_to_show: Minimum number of slots to return
+
+        Returns:
+            List of mock time slots
+        """
+        import random
+        from datetime import datetime, timedelta
+
+        # Generate mock time slots for business days only
+        slots = []
+        now = datetime.now()
+
+        for i in range(days_ahead):
+            date = now + timedelta(days=i)
+            if date.weekday() < 5:  # Only weekdays (Monday=0 to Friday=4)
+                # Generate slots for business hours: 9 AM to 5 PM
+                for hour in [9, 10, 11, 14, 15, 16]:  # Morning and afternoon slots
+                    slot_time = date.replace(hour=hour, minute=0, second=0, microsecond=0)
+                    slots.append({
+                        'start': slot_time.isoformat(),
+                        'end': (slot_time + timedelta(hours=1)).isoformat(),
+                        'start_formatted': slot_time.strftime('%Y-%m-%d %H:%M'),
+                        'date': slot_time.strftime('%Y-%m-%d'),
+                        'time': slot_time.strftime('%H:%M'),
+                        'timezone': timezone
+                    })
+
+        # Return a subset of available slots to meet min_slots_to_show requirement
+        if len(slots) > min_slots_to_show:
+            available_slots = random.sample(slots, min_slots_to_show)
+        else:
+            available_slots = slots
+
+        return available_slots

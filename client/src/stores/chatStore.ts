@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert } from '../types';
+import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert, TimeSlot, BookingCreateRequest } from '../types';
 import { api } from '../api/client';
 
 // Generate visitor ID
@@ -29,6 +29,12 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isGeneratingPRD: false,
   matchedExperts: [],
   isMatchingExperts: false,
+  // Booking flow state
+  bookingState: 'idle',
+  selectedExpert: null,
+  selectedTimeSlot: null,
+  createdBooking: null,
+  isCreatingBooking: false,
 
   // Actions
   openChat: () => {
@@ -305,5 +311,80 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   clearMatchedExperts: () => {
     set({ matchedExperts: [] });
+  },
+
+  // Booking flow actions
+  startBookingFlow: (expert: MatchedExpert) => {
+    set({
+      selectedExpert: expert,
+      bookingState: 'selecting_time',
+      selectedTimeSlot: null,
+      createdBooking: null,
+      error: null,
+    });
+  },
+
+  selectTimeSlot: async (slot: TimeSlot) => {
+    set({
+      selectedTimeSlot: slot,
+      bookingState: 'confirming',
+    });
+  },
+
+  confirmBooking: async (clientName: string, clientEmail: string) => {
+    try {
+      const { sessionId, selectedExpert, selectedTimeSlot } = get();
+
+      if (!sessionId || !selectedExpert || !selectedTimeSlot) {
+        throw new Error('Missing booking information');
+      }
+
+      set({ isCreatingBooking: true, error: null });
+
+      const bookingData: BookingCreateRequest = {
+        expert_id: selectedExpert.id,
+        start_time: selectedTimeSlot.start_time,
+        end_time: selectedTimeSlot.end_time,
+        timezone: selectedTimeSlot.timezone,
+        client_name: clientName,
+        client_email: clientEmail,
+      };
+
+      const booking = await api.createBooking(sessionId, bookingData);
+
+      // Add message to chat
+      const bookingMessage: Message = {
+        id: `booking_${Date.now()}`,
+        session_id: sessionId,
+        role: 'assistant',
+        content: `✅ Booking confirmed with ${selectedExpert.name}!\n\nDate: ${new Date(booking.start_time).toLocaleDateString()}\nTime: ${new Date(booking.start_time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n\nCheck the confirmation card for details.`,
+        meta_data: { type: 'booking_confirmed', booking_id: booking.id },
+        created_at: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        messages: [...state.messages, bookingMessage],
+        createdBooking: booking,
+        bookingState: 'completed',
+        isCreatingBooking: false,
+      }));
+    } catch (error) {
+      set({
+        isCreatingBooking: false,
+        error: error instanceof Error ? error.message : 'Failed to create booking',
+      });
+      console.error('Booking creation error:', error);
+    }
+  },
+
+  resetBookingFlow: () => {
+    set({
+      bookingState: 'idle',
+      selectedExpert: null,
+      selectedTimeSlot: null,
+      createdBooking: null,
+      isCreatingBooking: false,
+      error: null,
+    });
   },
 }));

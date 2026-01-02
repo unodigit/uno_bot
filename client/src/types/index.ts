@@ -110,6 +110,50 @@ export interface MatchedExpert {
   match_score: number;
 }
 
+// Booking Types
+export interface TimeSlot {
+  start_time: string;
+  end_time: string;
+  timezone: string;
+  display_time: string;
+  display_date: string;
+}
+
+export interface AvailabilityResponse {
+  expert_id: string;
+  expert_name: string;
+  expert_role: string;
+  timezone: string;
+  slots: TimeSlot[];
+  generated_at: string;
+}
+
+export interface BookingCreateRequest {
+  expert_id: string;
+  start_time: string;
+  end_time: string;
+  timezone: string;
+  client_name: string;
+  client_email: string;
+}
+
+export interface BookingResponse {
+  id: string;
+  session_id: string;
+  expert_id: string;
+  calendar_event_id: string | null;
+  title: string;
+  start_time: string;
+  end_time: string;
+  timezone: string;
+  meeting_link: string | null;
+  expert_email: string;
+  client_email: string;
+  client_name: string;
+  status: string;
+  created_at: string;
+}
+
 // Chat UI Types
 export interface ChatState {
   isOpen: boolean;
@@ -127,6 +171,12 @@ export interface ChatState {
   isGeneratingPRD: boolean;
   matchedExperts: MatchedExpert[];
   isMatchingExperts: boolean;
+  // Booking flow state
+  bookingState: 'idle' | 'selecting_expert' | 'selecting_time' | 'confirming' | 'completed';
+  selectedExpert: MatchedExpert | null;
+  selectedTimeSlot: TimeSlot | null;
+  createdBooking: BookingResponse | null;
+  isCreatingBooking: boolean;
 }
 
 export interface ChatActions {
@@ -143,6 +193,11 @@ export interface ChatActions {
   clearPRDPreview: () => void;
   matchExperts: () => Promise<void>;
   clearMatchedExperts: () => void;
+  // Booking flow actions
+  startBookingFlow: (expert: MatchedExpert) => void;
+  selectTimeSlot: (slot: TimeSlot) => Promise<void>;
+  confirmBooking: (clientName: string, clientEmail: string) => Promise<void>;
+  resetBookingFlow: () => void;
 }
 
 export type ChatStore = ChatState & ChatActions;

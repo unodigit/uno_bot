@@ -166,10 +166,12 @@ async def test_create_booking_creates_calendar_event(db_session: AsyncSession, c
     # Verify calendar event was created (mock returns a string)
     assert "calendar_event_id" in booking
     assert booking["calendar_event_id"] is not None
-    assert booking["calendar_event_id"].startswith("mock_event_")
+    assert booking["calendar_event_id"].startswith("mock-event-")
 
-    # Verify meeting link is generated
+    # Verify meeting link is generated (mock creates a Google Meet link)
     assert "meeting_link" in booking
+    assert booking["meeting_link"] is not None
+    assert "meet.google.com" in booking["meeting_link"]
 
 
 @pytest.mark.asyncio
@@ -257,9 +259,9 @@ async def test_booking_has_correct_time_and_timezone(db_session: AsyncSession, c
     await db_session.refresh(session)
 
     # Create booking with specific timezone
-    now = datetime.utcnow()
-    start_time = now + timedelta(days=2, hours=10)
-    end_time = start_time + timedelta(hours=1)
+    # Use specific times to make testing predictable
+    start_time = datetime(2026, 1, 10, 14, 30, 0)  # 2:30 PM
+    end_time = datetime(2026, 1, 10, 15, 30, 0)    # 3:30 PM
 
     booking_data = {
         "expert_id": str(expert.id),
@@ -278,12 +280,16 @@ async def test_booking_has_correct_time_and_timezone(db_session: AsyncSession, c
     assert response.status_code == 201
     booking = response.json()
 
-    # Verify times are correct
+    # Verify times are preserved correctly
     returned_start = datetime.fromisoformat(booking["start_time"])
     returned_end = datetime.fromisoformat(booking["end_time"])
 
-    assert returned_start.hour == 10
+    assert returned_start.year == 2026
+    assert returned_start.month == 1
+    assert returned_start.day == 10
+    assert returned_start.hour == 14
+    assert returned_start.minute == 30
     assert (returned_end - returned_start).total_seconds() == 3600  # 1 hour
 
-    # Verify timezone
+    # Verify timezone is stored
     assert booking["timezone"] == "America/New_York"

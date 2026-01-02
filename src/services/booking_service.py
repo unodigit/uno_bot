@@ -13,46 +13,7 @@ from src.models.expert import Expert
 from src.schemas.booking import (
     BookingCreate, BookingResponse, AvailabilityResponse, TimeSlot
 )
-
-class MockCalendarService:
-    """Mock calendar service for testing without Google Calendar dependency."""
-    def get_calendar_timezone(self, refresh_token):
-        """Return mock timezone."""
-        return "UTC"
-
-    async def get_expert_availability(self, refresh_token=None, timezone=None, days_ahead=14, min_slots_to_show=5, expert_id=None):
-        """Return mock availability."""
-        from datetime import datetime, timedelta
-        import random
-
-        # Generate mock time slots
-        slots = []
-        now = datetime.now()
-
-        for i in range(days_ahead):
-            date = now + timedelta(days=i)
-            if date.weekday() < 5:  # Only weekdays
-                for hour in [9, 10, 14, 15, 16]:  # Business hours
-                    slot_time = date.replace(hour=hour, minute=0, second=0, microsecond=0)
-                    slots.append({
-                        'start_time': slot_time,
-                        'end_time': slot_time + timedelta(minutes=60),
-                        'timezone': timezone or 'UTC',
-                        'display_time': slot_time.strftime('%H:%M'),
-                        'display_date': slot_time.strftime('%Y-%m-%d')
-                    })
-
-        # Return random subset of slots
-        available_slots = random.sample(slots, min(len(slots), min_slots_to_show))
-
-        return available_slots
-
-    async def create_calendar_event(self, *args, **kwargs):
-        """Create a mock calendar event."""
-        import random
-        return f"mock_event_{random.randint(1000, 9999)}"
-
-# from src.services.calendar_service import CalendarService
+from src.services.calendar_service import CalendarService
 
 
 class BookingService:
@@ -60,7 +21,7 @@ class BookingService:
 
     def __init__(self, db: AsyncSession):
         self.db = db
-        self.calendar_service = MockCalendarService()
+        self.calendar_service = CalendarService()
 
     async def get_expert_availability(
         self,
@@ -106,25 +67,29 @@ class BookingService:
             min_slots_to_show=min_slots_to_show
         )
 
-        # Group slots by date
-        slots_by_date = {}
+        # Convert CalendarService format to TimeSlot format
+        # CalendarService returns: {start, end, date, time, timezone, start_formatted}
+        # TimeSlot expects: {start_time, end_time, timezone, display_time, display_date}
+        slots = []
         for slot in time_slots:
-            date = slot['display_date']
-            if date not in slots_by_date:
-                slots_by_date[date] = []
-            slots_by_date[date].append(TimeSlot(**slot))
+            # Parse start time from ISO format
+            start_dt = datetime.fromisoformat(slot['start'])
+            end_dt = datetime.fromisoformat(slot['end'])
 
-        # Convert grouped slots to flat list
-        all_slots = []
-        for date_slots in slots_by_date.values():
-            all_slots.extend(date_slots)
+            slots.append(TimeSlot(
+                start_time=start_dt,
+                end_time=end_dt,
+                timezone=slot.get('timezone', timezone),
+                display_time=slot.get('time', start_dt.strftime('%H:%M')),
+                display_date=slot.get('date', start_dt.strftime('%Y-%m-%d'))
+            ))
 
         return AvailabilityResponse(
             expert_id=expert_id,
             expert_name=expert.name,
             expert_role=expert.role,
             timezone=timezone,
-            slots=all_slots,
+            slots=slots,
             generated_at=datetime.now()
         )
 
@@ -135,7 +100,8 @@ class BookingService:
         start_time: datetime,
         end_time: datetime,
         client_name: str,
-        client_email: str
+        client_email: str,
+        timezone: str = "UTC"
     ) -> BookingResponse:
         """Create a new booking and calendar event.
 
@@ -146,6 +112,7 @@ class BookingService:
             end_time: Booking end time
             client_name: Client's name
             client_email: Client's email
+            timezone: Timezone for the booking
 
         Returns:
             Created booking response
@@ -172,12 +139,16 @@ class BookingService:
                 client_name=client_name,
                 client_email=client_email,
                 start_time=start_time,
-                end_time=end_time
+                end_time=end_time,
+                timezone=timezone
             )
         except Exception as e:
             raise Exception(f"Failed to create calendar event: {e}")
 
         # Create booking record
+        # Generate Google Meet link (mock for now)
+        meeting_link = f"https://meet.google.com/mock-{calendar_event_id}" if calendar_event_id else None
+
         booking = Booking(
             session_id=session_id,
             expert_id=expert_id,
@@ -185,6 +156,8 @@ class BookingService:
             title=f"Consultation with {client_name}",
             start_time=start_time,
             end_time=end_time,
+            timezone=timezone or 'UTC',
+            meeting_link=meeting_link,
             expert_email=expert.email,
             client_email=client_email,
             client_name=client_name,

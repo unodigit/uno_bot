@@ -89,7 +89,8 @@ async def create_booking(
             start_time=booking_data.start_time,
             end_time=booking_data.end_time,
             client_name=booking_data.client_name,
-            client_email=booking_data.client_email
+            client_email=booking_data.client_email,
+            timezone=booking_data.timezone
         )
         return booking
     except ValueError as e:
