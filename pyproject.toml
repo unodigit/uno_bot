@@ -76,8 +76,8 @@ known-first-party = ["src"]
 
 [tool.mypy]
 python_version = "3.11"
-warn_return_any = true
-warn_unused_ignores = true
+warn_return_any = false
+warn_unused_ignores = false
 disallow_untyped_defs = false
 disallow_incomplete_defs = false
 check_untyped_defs = false

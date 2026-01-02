@@ -24,18 +24,10 @@ from src.schemas.error import (
     InternalServerError,
     NotFoundError as NotFoundErrorResponse,
     ValidationErrorResponse,
+    ValidationErrorDetail,
 )
 
 logger = logging.getLogger(__name__)
-
-# Type alias for all possible error response types
-ErrorResponseUnion = Union[
-    ValidationErrorResponse,
-    BadRequestErrorResponse,
-    NotFoundErrorResponse,
-    ConflictErrorResponse,
-    InternalServerError,
-]
 
 
 async def validation_exception_handler(
@@ -43,18 +35,18 @@ async def validation_exception_handler(
 ) -> JSONResponse:
     """Handle Pydantic validation errors."""
     # Extract field-level errors
-    field_errors = []
+    field_errors: List[ValidationErrorDetail] = []
     for error in exc.errors():
         field = ".".join(str(loc) for loc in error["loc"])
         field_errors.append(
-            {
-                "field": field,
-                "message": error["msg"],
-                "value": error.get("input", None),
-            }
+            ValidationErrorDetail(
+                field=field,
+                message=error["msg"],
+                value=error.get("input", None),
+            )
         )
 
-    error_response: ValidationErrorResponse = ValidationErrorResponse(
+    error_response = ValidationErrorResponse(
         success=False,
         detail="Validation failed",
         error_code="VALIDATION_ERROR",
@@ -76,7 +68,6 @@ async def validation_exception_handler(
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
     """Handle HTTP exceptions."""
-    error_response: ErrorResponseUnion
     if exc.status_code == 404:
         error_response = NotFoundErrorResponse(
             success=False,
@@ -114,7 +105,6 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
 
 async def unobot_exception_handler(request: Request, exc: UnoBotError) -> JSONResponse:
     """Handle custom UnoBot exceptions."""
-    error_response: ErrorResponseUnion
     if isinstance(exc, NotFoundError):
         error_response = NotFoundErrorResponse(
             success=False,
@@ -161,10 +151,9 @@ async def database_exception_handler(request: Request, exc: SQLAlchemyError) -> 
     logger.error(f"Database error: {exc}")
 
     # Check for specific database error types
-    error_response: ErrorResponseUnion
     status_code: int
     if isinstance(exc, IntegrityError):
-        error_response = ConflictErrorResponse(
+        error_response = InternalServerError(
             success=False,
             detail="Database constraint violation",
             error_code="INTEGRITY_ERROR",
@@ -196,7 +185,7 @@ async def external_service_exception_handler(request: Request, exc: Exception) -
     """Handle external service exceptions (Google Calendar, SendGrid, etc.)."""
     logger.error(f"External service error: {exc}")
 
-    error_response: InternalServerError = InternalServerError(
+    error_response = InternalServerError(
         success=False,
         detail="External service temporarily unavailable",
         error_code="EXTERNAL_SERVICE_ERROR",

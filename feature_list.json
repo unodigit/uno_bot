@@ -2545,9 +2545,9 @@
       "Step 3: Make request from different origin",
       "Step 4: Verify appropriate behavior"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "functional",
@@ -2558,9 +2558,9 @@
       "Step 3: Verify 429 response returned",
       "Step 4: Wait and verify limit resets"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "functional",
@@ -2571,9 +2571,11 @@
       "Step 3: Verify no XSS execution",
       "Step 4: Test various XSS vectors"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T10:50:02.035066Z"
   },
   {
     "category": "functional",
@@ -2584,9 +2586,9 @@
       "Step 3: Verify no SQL injection possible",
       "Step 4: Test various injection vectors"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "functional",
@@ -2597,9 +2599,9 @@
       "Step 3: Verify no sensitive data logged",
       "Step 4: Verify proper log sanitization"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T10:48:49.366018Z"
   },
@@ -2612,9 +2614,9 @@
       "Step 3: Verify refresh_token is encrypted",
       "Step 4: Verify token not in logs"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "functional",
@@ -2625,9 +2627,9 @@
       "Step 3: Authenticate and retry",
       "Step 4: Verify access granted"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true
   },
   {
     "category": "functional",

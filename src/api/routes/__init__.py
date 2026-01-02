@@ -80,3 +80,79 @@ async def health_check():
         "database": db_status,
         "redis": redis_status,
     }
+
+
+# Cache management endpoints (admin only)
+
+@router.get("/cache/status")
+async def cache_status(admin_data: dict = Depends(require_admin_auth)):
+    """Get cache status and statistics."""
+    try:
+        # Test Redis connection
+        await cache_service.connect()
+
+        # Get cache statistics
+        stats = {
+            "status": "healthy",
+            "prefixes": CACHE_PREFIXES,
+            "total_keys": 0,
+            "key_counts": {}
+        }
+
+        # Count keys by prefix
+        for prefix_name, prefix_value in CACHE_PREFIXES.items():
+            keys = await cache_service.keys(f"{prefix_value}*")
+            stats["key_counts"][prefix_name] = len(keys)
+            stats["total_keys"] += len(keys)
+
+        return stats
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+
+@router.delete("/cache/clear/{prefix}")
+async def clear_cache_prefix(
+    prefix: str,
+    admin_data: dict = Depends(require_admin_auth)
+):
+    """Clear all cache entries for a specific prefix."""
+    if prefix not in CACHE_PREFIXES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid prefix. Valid prefixes: {list(CACHE_PREFIXES.keys())}"
+        )
+
+    pattern = f"{CACHE_PREFIXES[prefix]}*"
+    deleted = await cache_service.delete_pattern(pattern)
+
+    return {
+        "message": f"Cleared {deleted} cache entries",
+        "prefix": prefix,
+        "pattern": pattern
+    }
+
+
+@router.get("/cache/test")
+async def test_cache(admin_data: dict = Depends(require_admin_auth)):
+    """Test cache functionality."""
+    try:
+        test_key = "test:cache_functionality"
+        test_data = {"test": "data", "timestamp": datetime.utcnow().isoformat()}
+
+        # Test set
+        set_result = await cache_service.set(test_key, test_data, 60)
+
+        # Test get
+        get_result = await cache_service.get(test_key)
+
+        # Test delete
+        delete_result = await cache_service.delete(test_key)
+
+        return {
+            "set_result": set_result,
+            "get_result": get_result,
+            "delete_result": delete_result,
+            "test_data": test_data
+        }
+    except Exception as e:
+        return {"status": "error", "error": str(e)}

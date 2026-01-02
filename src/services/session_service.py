@@ -7,6 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
+from src.core.security import sanitize_input, validate_sql_input
 from src.models.session import (
     ConversationSession,
     Message,
@@ -29,11 +30,16 @@ class SessionService:
         self.template_service = TemplateService(db)
 
     async def create_session(self, session_create: SessionCreate) -> ConversationSession:
-        """Create a new conversation session."""
+        """Create a new conversation session with sanitized inputs."""
+        # Sanitize string inputs
+        sanitized_visitor_id = sanitize_input(session_create.visitor_id)
+        sanitized_source_url = sanitize_input(session_create.source_url)
+        sanitized_user_agent = sanitize_input(session_create.user_agent)
+
         session = ConversationSession(
-            visitor_id=session_create.visitor_id,
-            source_url=session_create.source_url,
-            user_agent=session_create.user_agent,
+            visitor_id=sanitized_visitor_id,
+            source_url=sanitized_source_url,
+            user_agent=sanitized_user_agent,
             status=SessionStatus.ACTIVE,
             current_phase=SessionPhase.GREETING,
             started_at=datetime.utcnow(),
@@ -97,11 +103,18 @@ class SessionService:
     async def add_message(
         self, session_id: uuid.UUID, message_create: MessageCreate, role: MessageRole
     ) -> Message:
-        """Add a message to a session."""
+        """Add a message to a session with input sanitization."""
+        # Sanitize content to prevent XSS
+        sanitized_content = sanitize_input(message_create.content)
+
+        # Validate against SQL injection
+        if not validate_sql_input(sanitized_content):
+            raise ValueError("Invalid content detected")
+
         message = Message(
             session_id=session_id,
             role=role,
-            content=message_create.content,
+            content=sanitized_content,
             meta_data=message_create.metadata or {},
             created_at=datetime.utcnow(),
         )
@@ -266,7 +279,7 @@ class SessionService:
             # Capture full names (multiple words) until we hit punctuation or common stop words
             name_match = re.search(r"(?:my name is|i am|i'm)\s+([a-zA-Z\s]+?)(?:\s+(?:and|but|or|with|from|at|in|to|for|on|about|my|our|we|i)|[,.!?]|$)", user_text)
             if name_match:
-                name = name_match.group(1).strip().title()
+                name = sanitize_input(name_match.group(1).strip().title())
                 if len(name) > 1 and len(name) < 50:  # Basic validation
                     await self.update_session_data(
                         session,
@@ -279,7 +292,7 @@ class SessionService:
             email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             email_match = re.search(email_pattern, user_text)
             if email_match:
-                email = email_match.group(0)
+                email = sanitize_input(email_match.group(0))
                 await self.update_session_data(
                     session,
                     client_info={"email": email}
@@ -296,7 +309,7 @@ class SessionService:
             for pattern in company_patterns:
                 company_match = re.search(pattern, user_text)
                 if company_match:
-                    company = company_match.group(1).strip().title()
+                    company = sanitize_input(company_match.group(1).strip().title())
                     if len(company) > 2 and len(company) < 100:
                         await self.update_session_data(
                             session,
@@ -308,9 +321,10 @@ class SessionService:
         if not session.business_context.get("challenges"):
             challenge_keywords = ['problem', 'issue', 'challenge', 'difficulty', 'struggle', 'pain', 'need', 'want', 'looking for', 'trying to']
             if any(keyword in user_text for keyword in challenge_keywords):
+                sanitized_challenges = sanitize_input(user_message)
                 await self.update_session_data(
                     session,
-                    business_context={"challenges": user_message}
+                    business_context={"challenges": sanitized_challenges}
                 )
                 return
 

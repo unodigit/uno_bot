@@ -2,10 +2,11 @@
 import uuid
 from datetime import datetime
 from enum import Enum
-from typing import Any, Type
+from typing import Any, Type, Union
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, TypeDecorator
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import TypeEngine
 
 from src.core.config import settings
 from src.core.database import Base
@@ -13,7 +14,7 @@ from src.core.types import JSONType, UUIDType
 
 # SQLite compatibility for INET
 if "sqlite" in settings.database_url:
-    INETType: Type[TypeDecorator[Any]] = String
+    INETType: Type[Union[TypeEngine[Any], TypeDecorator[Any]]] = String
 else:
     from sqlalchemy.dialects.postgresql import INET
     INETType = INET

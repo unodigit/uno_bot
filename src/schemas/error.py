@@ -60,3 +60,8 @@ class ConflictError(ErrorResponse):
     """409 Conflict error response."""
 
     error_code: Literal["CONFLICT"] = "CONFLICT"
+
+
+# Type alias for all error response types that can be used in exception handlers
+# This includes InternalServerError which supports custom error codes
+AnyErrorResponse = InternalServerError

@@ -117,13 +117,13 @@ def sanitize_input(text: str, max_length: int = 10000) -> str:
         '<': '<',
         '>': '>',
         '"': '"',
-        "'": ''',
+        "'": "'",
         '`': '`',
         'javascript:': '',  # Remove javascript: protocol
         'vbscript:': '',    # Remove vbscript: protocol
-        'onload=', '',      # Remove event handlers
-        'onerror=', '',     # Remove event handlers
-        'onclick=', '',     # Remove event handlers
+        'onload=': '',      # Remove event handlers
+        'onerror=': '',     # Remove event handlers
+        'onclick=': '',     # Remove event handlers
     }
 
     for char, replacement in replacements.items():
@@ -156,9 +156,10 @@ def validate_sql_input(text: str) -> bool:
         r'(?i)\bDELETE\s+FROM',             # delete statements
         r'(?i)\bINSERT\s+INTO',             # insert statements
         r'(?i)\bUPDATE\s+\w+\s+SET',        # update statements
+        r'(?i)\bEXEC\s+\w+\s*\(',           # exec function with procedure
         r'(?i)\bEXEC\s*\(',                 # exec function
         r'(?i)\bWAITFOR\s+DELAY',           # time-based attacks
-        r'(?i)\bSELECT\s+\*\s+FROM\s+\w+',  # select all
+        r'(?i)\bSELECT\s+\*\s+FROM',        # select all pattern
         r'--',                              # SQL comment
         r'/\*.*\*/',                        # SQL block comment
         r';\s*(DROP|DELETE|UPDATE|INSERT)', # multiple statements
@@ -189,17 +190,18 @@ def mask_sensitive_data(text: str) -> str:
     email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
     text = re.sub(email_pattern, '[EMAIL_MASKED]', text)
 
-    # Mask API keys (common patterns)
+    # Mask API keys (common patterns) - BEFORE phone numbers to avoid conflicts
     api_key_patterns = [
-        r'sk-[A-Za-z0-9]{20,}',  # Anthropic-style keys
-        r'pk-[A-Za-z0-9]{20,}',  # Public keys
+        r'sk-[A-Za-z0-9]{16,}',  # Anthropic-style keys (16+ chars after sk-)
+        r'pk-[A-Za-z0-9]{16,}',  # Public keys
         r'AKIA[A-Z0-9]{16}',     # AWS access keys
     ]
     for pattern in api_key_patterns:
         text = re.sub(pattern, '[API_KEY_MASKED]', text)
 
-    # Mask phone numbers
-    phone_pattern = r'\b\d{3}[-.]?\d{3}[-.]?\d{4}\b'
+    # Mask phone numbers (handles formats like 555-123-4567, (555) 123-4567, 555.123.4567)
+    # Use word boundaries to avoid matching parts of longer strings
+    phone_pattern = r'\b\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b'
     text = re.sub(phone_pattern, '[PHONE_MASKED]', text)
 
     # Mask credit card numbers (basic)

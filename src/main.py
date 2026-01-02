@@ -1,20 +1,22 @@
-"""
-UnoBot - AI Business Consultant & Appointment Booking System
+"""UnoBot - AI Business Consultant & Appointment Booking System
 
 Main FastAPI application with OpenAPI documentation.
 """
 import logging
 from contextlib import asynccontextmanager
+from typing import AsyncIterator
 
-from fastapi import FastAPI, WebSocket as FastAPIWebSocket
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from socketio import AsyncServer, ASGIApp
 
+from src.services.cache_service import cache_service, get_cache_service
 from src.api.routes import router
 from src.core.config import settings
 from src.core.database import init_db, AsyncSessionLocal
 from src.core.exception_handlers import register_exception_handlers
+from src.core.security import rate_limit_middleware, mask_sensitive_data
 from src.api.routes.websocket import (
     sio,
     manager,
@@ -25,24 +27,63 @@ from src.api.routes.websocket import (
     handle_create_booking
 )
 
+
+class SecureLogFilter(logging.Filter):
+    """Filter to mask sensitive data in logs."""
+
+    def filter(self, record):
+        # Mask sensitive data in log messages
+        if hasattr(record, 'msg'):
+            record.msg = mask_sensitive_data(str(record.msg))
+        if hasattr(record, 'args'):
+            record.args = tuple(
+                mask_sensitive_data(str(arg)) if isinstance(arg, str) else arg
+                for arg in record.args
+            )
+        return True
+
+
 # Configure logging
 logging.basicConfig(
     level=logging.DEBUG if settings.debug else logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
+
+# Add secure filter to all loggers
+secure_filter = SecureLogFilter()
+for name in logging.root.manager.loggerDict:
+    logger_instance = logging.getLogger(name)
+    logger_instance.addFilter(secure_filter)
+
 logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> None:
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Application lifespan events."""
     # Startup
     logger.info("Starting UnoBot API...")
     await init_db()
     logger.info("Database initialized")
+
+    # Initialize cache service
+    try:
+        await cache_service.connect()
+        logger.info("Redis cache service initialized")
+    except Exception as e:
+        logger.warning(f"Redis cache service not available: {e}")
+
     yield
+
     # Shutdown
     logger.info("Shutting down UnoBot API...")
+
+    # Close cache service
+    try:
+        await cache_service.disconnect()
+        logger.info("Redis cache service closed")
+    except Exception as e:
+        logger.warning(f"Error closing cache service: {e}")
 
 
 # Create FastAPI application
@@ -65,7 +106,16 @@ app = FastAPI(
     ## Authentication
 
     Most endpoints require a session ID passed in the `X-Session-ID` header.
-    Admin endpoints require JWT authentication.
+    Admin endpoints require authentication via `X-Admin-Token` header or Bearer token.
+
+    ## Security
+
+    - **Rate Limiting**: 100 requests per minute (50 for admin routes)
+    - **CORS**: Configured for development origins
+    - **Input Sanitization**: XSS prevention on all inputs
+    - **SQL Injection Prevention**: Query validation
+    - **Sensitive Data Masking**: Logs and responses are sanitized
+    - **Admin Authentication**: Required for all admin endpoints
     """,
     version="1.0.0",
     docs_url="/docs",
@@ -83,6 +133,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add rate limiting middleware
+app.middleware("http")(rate_limit_middleware)
 
 # Include API routes
 app.include_router(router)

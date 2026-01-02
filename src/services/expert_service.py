@@ -2,14 +2,14 @@
 import uuid
 from collections import defaultdict
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, List, Optional
 
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.expert import Expert
 from src.models.booking import Booking
-from src.schemas.expert import ExpertCreate, ExpertUpdate
+from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 
 
 class ExpertService:
@@ -18,7 +18,7 @@ class ExpertService:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def list_active_experts(self) -> list[Expert]:
+    async def list_active_experts(self) -> List[ExpertResponse]:
         """List all active experts.
 
         Returns:
@@ -27,9 +27,10 @@ class ExpertService:
         result = await self.db.execute(
             select(Expert).where(Expert.is_active == True)  # noqa: E712
         )
-        return list(result.scalars().all())
+        experts = result.scalars().all()
+        return [ExpertResponse.model_validate(e) for e in experts]
 
-    async def list_experts(self, include_inactive: bool = False) -> list[Expert]:
+    async def list_experts(self, include_inactive: bool = False) -> List[ExpertResponse]:
         """List all experts (optionally including inactive ones).
 
         Args:
@@ -46,7 +47,8 @@ class ExpertService:
             result = await self.db.execute(
                 select(Expert).where(Expert.is_active == True)  # noqa: E712
             )
-        return list(result.scalars().all())
+        experts = result.scalars().all()
+        return [ExpertResponse.model_validate(e) for e in experts]
 
     async def count_experts(self, active_only: bool = False) -> int:
         """Count total number of experts.
@@ -67,7 +69,7 @@ class ExpertService:
             )
         return result.scalar_one()
 
-    async def get_expert(self, expert_id: uuid.UUID) -> Expert | None:
+    async def get_expert(self, expert_id: uuid.UUID) -> Optional[ExpertResponse]:
         """Get an expert by ID.
 
         Args:
@@ -75,6 +77,23 @@ class ExpertService:
 
         Returns:
             The expert or None if not found
+        """
+        result = await self.db.execute(
+            select(Expert).where(Expert.id == expert_id)
+        )
+        expert = result.scalar_one_or_none()
+        if expert:
+            return ExpertResponse.model_validate(expert)
+        return None
+
+    async def get_expert_model(self, expert_id: uuid.UUID) -> Optional[Expert]:
+        """Get an expert model by ID (internal helper for updates).
+
+        Args:
+            expert_id: The expert ID
+
+        Returns:
+            The expert model or None if not found
         """
         result = await self.db.execute(
             select(Expert).where(Expert.id == expert_id)
@@ -87,7 +106,7 @@ class ExpertService:
         specialties: list[str] | None = None,
         business_context: dict[str, Any] | None = None,
         workload_balancing: bool = True,
-    ) -> list[tuple[Expert, float]]:
+    ) -> List[tuple[ExpertResponse, float]]:
         """Match experts based on service type, specialties, and business context.
 
         Args:
@@ -100,9 +119,9 @@ class ExpertService:
             List of (expert, score) tuples sorted by score descending
         """
         # Get all active experts
-        experts = await self.list_active_experts()
+        experts_models = await self.list_active_experts()
 
-        if not experts:
+        if not experts_models:
             return []
 
         # Get workload counts for all experts
@@ -112,18 +131,23 @@ class ExpertService:
 
         # Calculate match scores for each expert
         scored_experts = []
-        for expert in experts:
+        for expert_response in experts_models:
+            # Get the model for scoring (need to access raw data)
+            expert_model = await self.get_expert_model(expert_response.id)
+            if not expert_model:
+                continue
+
             score = self._calculate_match_score(
-                expert, service_type, specialties, business_context
+                expert_model, service_type, specialties, business_context
             )
             if score > 0:  # Only include experts with positive scores
                 # Apply workload penalty if enabled
                 if workload_balancing:
                     workload_penalty = self._calculate_workload_penalty(
-                        expert.id, workload_map
+                        expert_response.id, workload_map
                     )
                     score = score * workload_penalty
-                scored_experts.append((expert, score))
+                scored_experts.append((expert_response, score))
 
         # Sort by score descending
         scored_experts.sort(key=lambda x: x[1], reverse=True)
@@ -266,7 +290,7 @@ class ExpertService:
 
         return [k for k in keywords if len(k) > 2]  # Filter short words
 
-    async def create_expert(self, expert_create: ExpertCreate) -> Expert:
+    async def create_expert(self, expert_create: ExpertCreate) -> ExpertResponse:
         """Create a new expert.
 
         Args:
@@ -291,9 +315,9 @@ class ExpertService:
         await self.db.commit()
         await self.db.refresh(expert)
 
-        return expert
+        return ExpertResponse.model_validate(expert)
 
-    async def update_expert(self, expert: Expert, expert_update: ExpertUpdate) -> Expert:
+    async def update_expert(self, expert: Expert, expert_update: ExpertUpdate) -> ExpertResponse:
         """Update an expert.
 
         Args:
@@ -331,9 +355,9 @@ class ExpertService:
         await self.db.commit()
         await self.db.refresh(expert)
 
-        return expert
+        return ExpertResponse.model_validate(expert)
 
-    async def deactivate_expert(self, expert: Expert) -> Expert:
+    async def deactivate_expert(self, expert: Expert) -> ExpertResponse:
         """Deactivate an expert.
 
         Args:
@@ -346,7 +370,7 @@ class ExpertService:
         self.db.add(expert)
         await self.db.commit()
         await self.db.refresh(expert)
-        return expert
+        return ExpertResponse.model_validate(expert)
 
     async def delete_expert(self, expert: Expert) -> None:
         """Delete an expert.
