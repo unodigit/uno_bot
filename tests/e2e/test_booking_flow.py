@@ -114,22 +114,40 @@ def test_complete_booking_flow(page: Page):
     expect(confirm_button).to_be_visible()
     expect(confirm_button).to_be_enabled()
 
-    # Click confirm
+    # Click confirm (in CalendarPicker - moves to BookingForm)
     confirm_button.click()
+
+    # Wait for BookingForm to appear
+    page.wait_for_timeout(1000)
+    expect(page.locator('text=Confirm Booking')).to_be_visible(timeout=5000)
+
+    # Fill in name in BookingForm
+    name_input = page.locator('input[id="name"]')
+    expect(name_input).to_be_visible()
+    name_input.fill("Test User")
+
+    # Fill in email in BookingForm
+    email_input = page.locator('input[id="email"]')
+    expect(email_input).to_be_visible()
+    email_input.fill("testuser@example.com")
+
+    # Click final confirm button in BookingForm (the one with Calendar icon)
+    # There are two "Confirm Booking" buttons - one in CalendarPicker (already clicked) and one in BookingForm
+    # The BookingForm button is inside a form
+    final_confirm = page.locator('form button:has-text("Confirm Booking")')
+    expect(final_confirm).to_be_visible()
+    expect(final_confirm).to_be_enabled()
+    final_confirm.click()
 
     # Wait for booking to be processed
     page.wait_for_timeout(3000)
 
-    # Verify booking confirmation message appears in chat
-    # Look for success message
-    booking_message = page.locator('text=Booking confirmed')
-    expect(booking_message).to_be_visible(timeout=10000)
-
-    # Verify confirmation card is displayed
-    # Look for booking confirmation component
+    # Verify confirmation card is displayed (bookingState = 'completed' shows this)
     confirmation_card = page.locator('[data-testid="booking-confirmation-card"]')
-    if confirmation_card.count() > 0:
-        expect(confirmation_card).to_be_visible()
+    expect(confirmation_card).to_be_visible(timeout=10000)
+
+    # Verify the confirmation card shows "Booking Confirmed!"
+    expect(page.locator('text=Booking Confirmed!')).to_be_visible()
 
     print("✓ Complete booking flow test passed")
 
