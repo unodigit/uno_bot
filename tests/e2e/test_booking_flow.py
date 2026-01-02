@@ -117,9 +117,9 @@ def test_complete_booking_flow(page: Page):
     # Click confirm (in CalendarPicker - moves to BookingForm)
     confirm_button.click()
 
-    # Wait for BookingForm to appear
+    # Wait for BookingForm to appear (look for the form header)
     page.wait_for_timeout(1000)
-    expect(page.locator('text=Confirm Booking')).to_be_visible(timeout=5000)
+    expect(page.locator('h3:has-text("Confirm Booking")')).to_be_visible(timeout=5000)
 
     # Fill in name in BookingForm
     name_input = page.locator('input[id="name"]')
