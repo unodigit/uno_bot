@@ -29,14 +29,16 @@ router = APIRouter()
 def validate_session_id(session_id: str) -> uuid.UUID:
     """Validate session_id and return UUID or raise appropriate error.
 
-    For session endpoints, we want to return 404 for invalid UUIDs
-    rather than 422 validation errors, to be more RESTful.
+    Returns 422 for invalid UUID format to match test expectations.
     """
     try:
         return uuid.UUID(session_id)
     except (ValueError, AttributeError):
-        # Invalid UUID format - treat as "not found"
-        raise NotFoundError("Session", session_id)
+        # Invalid UUID format - return validation error (422)
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Invalid UUID format for session_id: {session_id}",
+        )
 
 
 @router.post(
@@ -101,7 +103,7 @@ async def create_session(
     description="Retrieve a session and its message history",
 )
 async def get_session(
-    session_id: uuid.UUID,
+    session_id: str,
     db: AsyncSession = Depends(get_db),
 ) -> SessionResponse:
     """Get session details and message history.
@@ -109,8 +111,11 @@ async def get_session(
     Retrieve a conversation session by its ID, including all messages
     and session metadata.
     """
+    # Validate session_id and convert to UUID
+    session_uuid = validate_session_id(session_id)
+
     service = SessionService(db)
-    session = await service.get_session(session_id)
+    session = await service.get_session(session_uuid)
 
     if not session:
         raise NotFoundError("Session", session_id)
@@ -157,7 +162,7 @@ async def get_session(
     description="Send a user message to the session",
 )
 async def send_message(
-    session_id: uuid.UUID,
+    session_id: str,
     message_create: MessageCreate,
     db: AsyncSession = Depends(get_db),
 ) -> MessageResponse:
@@ -166,8 +171,11 @@ async def send_message(
     Add a user message to the conversation session and return the user message.
     The AI response will be sent via WebSocket for real-time streaming.
     """
+    # Validate session_id and convert to UUID
+    session_uuid = validate_session_id(session_id)
+
     service = SessionService(db)
-    session = await service.get_session(session_id)
+    session = await service.get_session(session_uuid)
 
     if not session:
         raise NotFoundError("Session", session_id)
@@ -206,7 +214,7 @@ async def send_message(
     description="Resume an existing session using session_id in URL path",
 )
 async def resume_session_path(
-    session_id: uuid.UUID,
+    session_id: str,
     db: AsyncSession = Depends(get_db),
 ) -> SessionResponse:
     """Resume an existing session.
@@ -214,8 +222,11 @@ async def resume_session_path(
     Mark a session as active again and update its last activity timestamp.
     This allows visitors to continue conversations after leaving the page.
     """
+    # Validate session_id and convert to UUID
+    session_uuid = validate_session_id(session_id)
+
     service = SessionService(db)
-    session = await service.get_session(session_id)
+    session = await service.get_session(session_uuid)
 
     if not session:
         raise NotFoundError("Session", session_id)

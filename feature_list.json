@@ -1895,8 +1895,10 @@
       "Step 4: Verify consistency"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:15:21.700843Z"
   },
   {
     "category": "style",
@@ -2003,8 +2005,10 @@
       "Step 4: Verify brand colors used"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:16:00.543859Z"
   },
   {
     "category": "style",

@@ -61,7 +61,6 @@ class PRDDownloadResponse(BaseModel):
 class PRDRegenerateRequest(BaseModel):
     """Request schema for regenerating a PRD."""
 
-    session_id: UUID
     feedback: str | None = Field(None, description="Optional feedback for regeneration")
 
 

@@ -11,7 +11,7 @@ async def test():
     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
     # Import models and create tables
-    from src.models import Base
+    from src.core.database import Base
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

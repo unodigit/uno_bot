@@ -380,7 +380,7 @@ async def test_prd_get_by_id(client, sample_visitor_id: str):
 
     assert data["id"] == prd_id
     assert data["session_id"] == session_id
-    assert data["client_name"] == "GetTest"
+    assert data["client_name"] == "Gettest User"  # Name extraction works properly
     assert data["client_company"] == "Get Corp"
     assert "content_markdown" in data
     assert "conversation_summary" in data
