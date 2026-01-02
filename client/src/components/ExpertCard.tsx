@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mail, Star, Briefcase, Calendar, Edit, Trash2 } from 'lucide-react'
+import { Mail, Star, Briefcase, Calendar, Edit, Trash2, Award } from 'lucide-react'
 import { MatchedExpert, Expert } from '../types'
 
 interface ExpertCardProps {

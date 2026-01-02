@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Edit, Save, X } from 'lucide-react'
+import { Save, X } from 'lucide-react'
 import { Button } from './ui/Button'
 import { Input } from './ui/Input'
 import { Textarea } from './ui/Textarea'
@@ -36,8 +36,8 @@ export function EditExpertForm({ expert, onSave, onCancel, isSaving }: EditExper
     // Process arrays
     const updatedExpert = {
       ...formData,
-      specialties: formData.specialties.split(',').map(s => s.trim()).filter(s => s),
-      services: formData.services.split(',').map(s => s.trim()).filter(s => s),
+      specialties: formData.specialties.split(',').map((s: string) => s.trim()).filter((s: string) => s),
+      services: formData.services.split(',').map((s: string) => s.trim()).filter((s: string) => s),
     }
 
     onSave(updatedExpert)
