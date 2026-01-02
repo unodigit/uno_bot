@@ -1,0 +1,118 @@
+"""Shared test fixtures and configuration."""
+import asyncio
+from typing import AsyncGenerator, Generator
+from uuid import uuid4
+
+import pytest
+import pytest_asyncio
+from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+from src.core.database import Base, get_db
+from src.main import app
+
+# Test database URL - uses a separate test database
+TEST_DATABASE_URL = "postgresql+asyncpg://unobot:unobot@localhost:5432/unobot_test"
+
+
+@pytest.fixture(scope="session")
+def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
+    """Create event loop for async tests."""
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest_asyncio.fixture(scope="session")
+async def engine():
+    """Create test database engine."""
+    engine = create_async_engine(TEST_DATABASE_URL, echo=False)
+
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+    yield engine
+
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+    await engine.dispose()
+
+
+@pytest_asyncio.fixture
+async def db_session(engine) -> AsyncGenerator[AsyncSession, None]:
+    """Create database session for each test."""
+    async_session = async_sessionmaker(
+        engine, class_=AsyncSession, expire_on_commit=False
+    )
+
+    async with async_session() as session:
+        yield session
+        await session.rollback()
+
+
+@pytest_asyncio.fixture
+async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+    """Create test client with database override."""
+
+    async def override_get_db():
+        yield db_session
+
+    app.dependency_overrides[get_db] = override_get_db
+
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac
+
+    app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def sample_visitor_id() -> str:
+    """Generate sample visitor ID."""
+    return f"visitor_{uuid4().hex[:8]}"
+
+
+@pytest.fixture
+def sample_expert_data() -> dict:
+    """Sample expert data for testing."""
+    return {
+        "name": "John Doe",
+        "email": f"john.doe.{uuid4().hex[:6]}@unodigit.com",
+        "role": "AI Solutions Architect",
+        "bio": "Expert in AI strategy and implementation",
+        "specialties": ["AI Strategy", "Machine Learning", "Data Analytics"],
+        "services": ["AI Strategy", "Custom Development"],
+    }
+
+
+@pytest.fixture
+def sample_session_data(sample_visitor_id: str) -> dict:
+    """Sample session data for testing."""
+    return {
+        "visitor_id": sample_visitor_id,
+        "source_url": "https://unodigit.com/services",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91.0",
+    }
+
+
+@pytest.fixture
+def sample_message_data() -> dict:
+    """Sample message data for testing."""
+    return {
+        "content": "Hello, I'm interested in AI solutions for my business.",
+        "metadata": {},
+    }
+
+
+@pytest.fixture
+def sample_booking_data() -> dict:
+    """Sample booking data for testing."""
+    from datetime import datetime, timedelta
+
+    return {
+        "start_time": (datetime.utcnow() + timedelta(days=2)).isoformat(),
+        "end_time": (datetime.utcnow() + timedelta(days=2, hours=1)).isoformat(),
+        "timezone": "America/New_York",
+        "client_name": "Jane Smith",
+        "client_email": "jane.smith@example.com",
+    }

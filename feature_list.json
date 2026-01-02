@@ -1,0 +1,2754 @@
+[
+  {
+    "category": "functional",
+    "description": "Chat widget button renders on page load and is visible in bottom-right corner",
+    "steps": [
+      "Step 1: Navigate to the main page",
+      "Step 2: Wait for page to fully load",
+      "Step 3: Verify chat button is visible in bottom-right corner",
+      "Step 4: Verify button has correct size (60x60px)",
+      "Step 5: Verify button has 24px margin from edges"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Chat widget opens when clicking the floating button",
+    "steps": [
+      "Step 1: Navigate to the main page",
+      "Step 2: Click the chat widget button",
+      "Step 3: Verify chat window opens with smooth animation",
+      "Step 4: Verify chat window is visible and interactive"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Chat widget closes when clicking minimize button",
+    "steps": [
+      "Step 1: Navigate to main page and open chat widget",
+      "Step 2: Click the minimize/close button in header",
+      "Step 3: Verify chat window closes with animation",
+      "Step 4: Verify floating button becomes visible again"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Chat session is created when opening widget for first time",
+    "steps": [
+      "Step 1: Clear browser storage and navigate to main page",
+      "Step 2: Open the chat widget",
+      "Step 3: Verify POST request to /api/v1/sessions is made",
+      "Step 4: Verify session ID is returned and stored",
+      "Step 5: Verify WebSocket connection is established"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Welcome message is displayed when chat opens",
+    "steps": [
+      "Step 1: Navigate to main page",
+      "Step 2: Open chat widget",
+      "Step 3: Verify welcome message appears from bot",
+      "Step 4: Verify message contains personalized greeting"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "User can type and send messages via text input",
+    "steps": [
+      "Step 1: Open chat widget",
+      "Step 2: Type a message in the input field",
+      "Step 3: Click send button or press Enter",
+      "Step 4: Verify message appears in chat history",
+      "Step 5: Verify input field is cleared after sending"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot responds to user messages with streaming text",
+    "steps": [
+      "Step 1: Open chat widget and send a message",
+      "Step 2: Verify typing indicator appears",
+      "Step 3: Verify bot response streams in character by character",
+      "Step 4: Verify complete response is rendered",
+      "Step 5: Verify typing indicator disappears"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Messages are persisted in the database",
+    "steps": [
+      "Step 1: Open chat and send multiple messages",
+      "Step 2: Query database for messages table",
+      "Step 3: Verify all messages are stored with correct content",
+      "Step 4: Verify messages have correct session_id, role, and timestamps"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Session persists across page refreshes",
+    "steps": [
+      "Step 1: Open chat widget and exchange several messages",
+      "Step 2: Note the session ID and message count",
+      "Step 3: Refresh the page",
+      "Step 4: Open chat widget again",
+      "Step 5: Verify same session is resumed",
+      "Step 6: Verify previous messages are displayed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket connection handles reconnection gracefully",
+    "steps": [
+      "Step 1: Open chat widget and start conversation",
+      "Step 2: Simulate network disconnection",
+      "Step 3: Verify reconnection attempt is made",
+      "Step 4: Verify session is restored after reconnection",
+      "Step 5: Verify conversation continues normally"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot asks for user's name during conversation",
+    "steps": [
+      "Step 1: Start new conversation",
+      "Step 2: Respond to welcome message",
+      "Step 3: Verify bot asks for contact information",
+      "Step 4: Provide name and verify it's acknowledged",
+      "Step 5: Verify name is stored in session client_info"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot collects and validates email address",
+    "steps": [
+      "Step 1: Progress conversation to email collection phase",
+      "Step 2: Enter an invalid email format",
+      "Step 3: Verify validation error message",
+      "Step 4: Enter valid email address",
+      "Step 5: Verify email is accepted and stored"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot collects company information",
+    "steps": [
+      "Step 1: Progress conversation to company collection phase",
+      "Step 2: Provide company name",
+      "Step 3: Verify bot acknowledges and asks follow-up",
+      "Step 4: Verify company is stored in business_context"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot asks about business challenges and pain points",
+    "steps": [
+      "Step 1: Progress to business discovery phase",
+      "Step 2: Describe business challenges",
+      "Step 3: Verify bot asks clarifying questions",
+      "Step 4: Verify responses are stored in session context"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot asks about current technology stack",
+    "steps": [
+      "Step 1: Progress to technology assessment phase",
+      "Step 2: Describe current systems/tools",
+      "Step 3: Verify bot adapts terminology based on answers",
+      "Step 4: Verify tech stack is recorded"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot collects budget range information",
+    "steps": [
+      "Step 1: Progress to qualification phase",
+      "Step 2: When asked, provide budget range",
+      "Step 3: Verify bot accepts various formats (range, specific, flexible)",
+      "Step 4: Verify budget is stored in qualification data"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot collects project timeline information",
+    "steps": [
+      "Step 1: Progress to timeline collection phase",
+      "Step 2: Provide timeline expectations",
+      "Step 3: Verify bot asks about urgency",
+      "Step 4: Verify timeline is stored in qualification data"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Lead scoring calculates score based on qualification data",
+    "steps": [
+      "Step 1: Complete full qualification conversation",
+      "Step 2: Check lead_score in session",
+      "Step 3: Verify score is between 0-100",
+      "Step 4: Verify score reflects budget, timeline, and fit factors"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Service matching recommends appropriate service type",
+    "steps": [
+      "Step 1: Complete discovery conversation mentioning AI needs",
+      "Step 2: Verify recommended_service is set",
+      "Step 3: Verify service matches one of: AI Strategy, Custom Dev, Data Intelligence"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Quick reply buttons appear for common options",
+    "steps": [
+      "Step 1: Open chat widget",
+      "Step 2: Verify quick reply buttons appear after welcome message",
+      "Step 3: Click on a quick reply option",
+      "Step 4: Verify the option is sent as a message",
+      "Step 5: Verify conversation continues based on selection"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PRD generation is triggered after qualification complete",
+    "steps": [
+      "Step 1: Complete full discovery and qualification conversation",
+      "Step 2: Verify bot offers to generate PRD",
+      "Step 3: Confirm PRD generation",
+      "Step 4: Verify PRD subagent is invoked",
+      "Step 5: Verify PRD is generated within 60 seconds"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PRD contains all required sections",
+    "steps": [
+      "Step 1: Generate a PRD from completed conversation",
+      "Step 2: Open PRD preview",
+      "Step 3: Verify Executive Summary section exists",
+      "Step 4: Verify Context section exists",
+      "Step 5: Verify Solution section exists",
+      "Step 6: Verify Parameters section exists",
+      "Step 7: Verify Next Steps section exists"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PRD preview displays in chat interface",
+    "steps": [
+      "Step 1: Generate a PRD",
+      "Step 2: Verify PRD preview component appears",
+      "Step 3: Verify document icon and filename shown",
+      "Step 4: Verify preview text snippet is visible",
+      "Step 5: Verify Preview and Download buttons present"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PRD download works as .md file",
+    "steps": [
+      "Step 1: Generate a PRD",
+      "Step 2: Click Download button",
+      "Step 3: Verify file downloads with .md extension",
+      "Step 4: Open file and verify valid Markdown format",
+      "Step 5: Verify download count is incremented"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PRD is stored with 90-day expiration",
+    "steps": [
+      "Step 1: Generate a PRD",
+      "Step 2: Query prd_documents table",
+      "Step 3: Verify expires_at is 90 days from created_at",
+      "Step 4: Verify storage_url contains unique access link"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "PRD version tracking for regenerated documents",
+    "steps": [
+      "Step 1: Generate initial PRD",
+      "Step 2: Request PRD regeneration",
+      "Step 3: Verify new version is created",
+      "Step 4: Verify version number is incremented",
+      "Step 5: Verify both versions accessible"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Expert database CRUD operations work correctly",
+    "steps": [
+      "Step 1: Create new expert via admin API",
+      "Step 2: Read expert and verify all fields",
+      "Step 3: Update expert information",
+      "Step 4: Verify update persisted",
+      "Step 5: Delete expert",
+      "Step 6: Verify expert no longer exists"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Expert matching algorithm returns relevant experts",
+    "steps": [
+      "Step 1: Set up experts with different specialties",
+      "Step 2: Complete conversation requiring AI Strategy",
+      "Step 3: Trigger expert matching",
+      "Step 4: Verify returned experts have matching specialties",
+      "Step 5: Verify experts are ranked by relevance"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Expert card displays with correct information",
+    "steps": [
+      "Step 1: Progress to expert matching phase",
+      "Step 2: Verify expert card appears in chat",
+      "Step 3: Verify photo thumbnail is visible",
+      "Step 4: Verify name and role displayed",
+      "Step 5: Verify specialties list shown",
+      "Step 6: Verify 'Book with [Expert]' button present"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Multiple expert options shown when available",
+    "steps": [
+      "Step 1: Set up multiple matching experts",
+      "Step 2: Complete discovery for matching service",
+      "Step 3: Verify multiple expert cards displayed",
+      "Step 4: Verify user can choose between experts"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Expert workload balancing distributes leads evenly",
+    "steps": [
+      "Step 1: Set up multiple experts with same specialties",
+      "Step 2: Process multiple bookings",
+      "Step 3: Verify bookings distributed across experts",
+      "Step 4: Verify no single expert is overloaded"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Google Calendar OAuth flow completes successfully",
+    "steps": [
+      "Step 1: Navigate to admin expert setup",
+      "Step 2: Click connect calendar",
+      "Step 3: Complete Google OAuth consent",
+      "Step 4: Verify refresh_token is stored",
+      "Step 5: Verify calendar_id is populated"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Calendar availability fetches from Google Calendar API",
+    "steps": [
+      "Step 1: Set up expert with connected calendar",
+      "Step 2: Add events to expert's calendar",
+      "Step 3: Fetch availability via API",
+      "Step 4: Verify busy times are excluded",
+      "Step 5: Verify free slots are returned"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "At least 5 available slots shown over 14 days",
+    "steps": [
+      "Step 1: Request expert availability",
+      "Step 2: Verify at least 5 slots returned",
+      "Step 3: Verify slots span up to 14 days",
+      "Step 4: Verify slots are within business hours"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Timezone detection works automatically",
+    "steps": [
+      "Step 1: Access chat from different timezone",
+      "Step 2: Request availability",
+      "Step 3: Verify times displayed in visitor's timezone",
+      "Step 4: Verify timezone label is correct"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Calendar picker UI displays slots grouped by date",
+    "steps": [
+      "Step 1: Reach booking phase in conversation",
+      "Step 2: Verify calendar picker component appears",
+      "Step 3: Verify slots are grouped under date headers",
+      "Step 4: Verify time slot buttons arranged 2 per row"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Time slot selection shows confirmation",
+    "steps": [
+      "Step 1: View calendar picker with available slots",
+      "Step 2: Click on a time slot",
+      "Step 3: Verify slot is highlighted as selected",
+      "Step 4: Verify Confirm button becomes active"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Booking creation creates calendar event",
+    "steps": [
+      "Step 1: Select time slot and confirm",
+      "Step 2: Verify booking is created in database",
+      "Step 3: Verify Google Calendar event is created",
+      "Step 4: Verify event has correct title, time, attendees"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Google Meet link is auto-generated for booking",
+    "steps": [
+      "Step 1: Complete booking process",
+      "Step 2: Check calendar event details",
+      "Step 3: Verify Google Meet link is included",
+      "Step 4: Verify link is accessible"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Booking confirmation displays in chat",
+    "steps": [
+      "Step 1: Complete booking",
+      "Step 2: Verify confirmation component appears",
+      "Step 3: Verify success checkmark icon",
+      "Step 4: Verify date, time, timezone shown",
+      "Step 5: Verify expert name and role shown",
+      "Step 6: Verify Google Meet location shown",
+      "Step 7: Verify Calendar invite and Join Meeting buttons"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Buffer time between meetings is enforced",
+    "steps": [
+      "Step 1: Configure expert with 15-minute buffer",
+      "Step 2: Book a meeting",
+      "Step 3: Check available slots around booking",
+      "Step 4: Verify buffer time is blocked"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Business hours restriction limits available slots",
+    "steps": [
+      "Step 1: Configure expert with 9am-5pm business hours",
+      "Step 2: Fetch availability",
+      "Step 3: Verify no slots before 9am",
+      "Step 4: Verify no slots after 5pm"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Double-booking prevention works correctly",
+    "steps": [
+      "Step 1: Select a time slot",
+      "Step 2: Delay confirmation",
+      "Step 3: Have another user book same slot",
+      "Step 4: Try to confirm original selection",
+      "Step 5: Verify error message about slot unavailable",
+      "Step 6: Verify alternative slots offered"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Availability refreshes in real-time before confirmation",
+    "steps": [
+      "Step 1: View calendar picker",
+      "Step 2: Wait 30 seconds",
+      "Step 3: Verify availability is refreshed",
+      "Step 4: Select slot and confirm",
+      "Step 5: Verify final availability check before booking"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Visitor receives confirmation email within 30 seconds",
+    "steps": [
+      "Step 1: Complete booking with valid email",
+      "Step 2: Check email inbox",
+      "Step 3: Verify confirmation email received",
+      "Step 4: Verify received within 30 seconds",
+      "Step 5: Verify email contains booking details"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Expert receives notification email with PRD attached",
+    "steps": [
+      "Step 1: Complete booking",
+      "Step 2: Check expert's email",
+      "Step 3: Verify notification email received",
+      "Step 4: Verify PRD is attached as .md file",
+      "Step 5: Verify email contains visitor info"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Calendar attachment (.ics) included in emails",
+    "steps": [
+      "Step 1: Complete booking",
+      "Step 2: Check confirmation email",
+      "Step 3: Verify .ics file is attached",
+      "Step 4: Verify .ics file opens in calendar app",
+      "Step 5: Verify event details are correct"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "24-hour reminder email is sent",
+    "steps": [
+      "Step 1: Create booking for 25 hours in future",
+      "Step 2: Wait for scheduler to run",
+      "Step 3: Verify reminder email sent at 24 hours",
+      "Step 4: Verify reminder contains meeting details"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "1-hour reminder email is sent",
+    "steps": [
+      "Step 1: Create booking for 2 hours in future",
+      "Step 2: Wait for scheduler to run",
+      "Step 3: Verify reminder email sent at 1 hour",
+      "Step 4: Verify reminder contains join link"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Emails use branded templates",
+    "steps": [
+      "Step 1: Receive booking confirmation email",
+      "Step 2: Verify UnoDigit branding present",
+      "Step 3: Verify logo is included",
+      "Step 4: Verify brand colors are used"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Unsubscribe option works for marketing emails",
+    "steps": [
+      "Step 1: Receive marketing email",
+      "Step 2: Click unsubscribe link",
+      "Step 3: Verify unsubscribe confirmation",
+      "Step 4: Verify no more marketing emails sent"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Session resume works via email link",
+    "steps": [
+      "Step 1: Start conversation and get session ID",
+      "Step 2: Close browser completely",
+      "Step 3: Open email link with session ID",
+      "Step 4: Verify conversation is resumed",
+      "Step 5: Verify full history is visible"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Cross-device session access works correctly",
+    "steps": [
+      "Step 1: Start conversation on desktop",
+      "Step 2: Get session resume link",
+      "Step 3: Open link on mobile device",
+      "Step 4: Verify session loads correctly",
+      "Step 5: Verify can continue conversation"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Sessions persist for 7 days",
+    "steps": [
+      "Step 1: Create session and note ID",
+      "Step 2: Verify session is accessible after 6 days",
+      "Step 3: Verify session expires after 7 days",
+      "Step 4: Verify appropriate message shown for expired session"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Full conversation history is viewable",
+    "steps": [
+      "Step 1: Have a 15+ message conversation",
+      "Step 2: Scroll through chat history",
+      "Step 3: Verify all messages are visible",
+      "Step 4: Verify messages in correct order"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can create new expert profiles",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Navigate to expert management",
+      "Step 3: Click Add Expert",
+      "Step 4: Fill in all required fields",
+      "Step 5: Submit and verify expert created"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can edit existing expert profiles",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Select an existing expert",
+      "Step 3: Modify expert information",
+      "Step 4: Save changes",
+      "Step 5: Verify changes persisted"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can deactivate expert profiles",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Select an active expert",
+      "Step 3: Click deactivate",
+      "Step 4: Verify expert is_active is false",
+      "Step 5: Verify expert no longer shown in matching"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can view conversation analytics",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Navigate to analytics",
+      "Step 3: Verify total conversations shown",
+      "Step 4: Verify completion rate displayed",
+      "Step 5: Verify booking rate shown"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can export leads to CSV",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Navigate to leads section",
+      "Step 3: Click export CSV",
+      "Step 4: Verify file downloads",
+      "Step 5: Verify CSV contains lead data"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin can configure welcome message templates",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Navigate to settings",
+      "Step 3: Edit welcome message template",
+      "Step 4: Save changes",
+      "Step 5: Start new chat and verify new message used"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "System health monitoring dashboard works",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Navigate to system health",
+      "Step 3: Verify API status shown",
+      "Step 4: Verify database status shown",
+      "Step 5: Verify Redis status shown"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot handles out-of-scope requests gracefully",
+    "steps": [
+      "Step 1: Start conversation",
+      "Step 2: Ask about unrelated topic (weather, news)",
+      "Step 3: Verify bot politely redirects",
+      "Step 4: Verify conversation can continue normally"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot handles ambiguous responses with clarification",
+    "steps": [
+      "Step 1: Start conversation",
+      "Step 2: Give an ambiguous answer to a question",
+      "Step 3: Verify bot asks for clarification",
+      "Step 4: Provide clearer answer",
+      "Step 5: Verify conversation continues"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot adapts industry terminology based on context",
+    "steps": [
+      "Step 1: Start conversation mentioning healthcare industry",
+      "Step 2: Continue conversation",
+      "Step 3: Verify bot uses relevant healthcare terms",
+      "Step 4: Verify bot understands industry-specific context"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Conversation summary generated before PRD",
+    "steps": [
+      "Step 1: Complete full discovery conversation",
+      "Step 2: Before PRD generation, verify summary offered",
+      "Step 3: Review summary",
+      "Step 4: Verify summary captures key points"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot supports 20+ message conversations",
+    "steps": [
+      "Step 1: Start conversation",
+      "Step 2: Exchange 25+ messages with bot",
+      "Step 3: Verify bot maintains context",
+      "Step 4: Verify bot references earlier information",
+      "Step 5: Verify SummarizationMiddleware kicks in if needed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GDPR consent is collected before data processing",
+    "steps": [
+      "Step 1: Start conversation",
+      "Step 2: When collecting personal info, verify consent prompt",
+      "Step 3: Accept consent",
+      "Step 4: Verify consent timestamp stored",
+      "Step 5: Verify data processing continues"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Booking cancellation works correctly",
+    "steps": [
+      "Step 1: Create a booking",
+      "Step 2: Call DELETE /api/v1/bookings/{id}",
+      "Step 3: Verify booking status is cancelled",
+      "Step 4: Verify Google Calendar event is deleted",
+      "Step 5: Verify cancellation emails sent"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API returns proper error codes for invalid requests",
+    "steps": [
+      "Step 1: Send request with invalid session ID",
+      "Step 2: Verify 404 response",
+      "Step 3: Send request with malformed data",
+      "Step 4: Verify 400 response with details",
+      "Step 5: Verify error responses follow schema"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Database migrations run without errors",
+    "steps": [
+      "Step 1: Start with empty database",
+      "Step 2: Run alembic upgrade head",
+      "Step 3: Verify all tables created",
+      "Step 4: Verify indexes and constraints exist"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/sessions creates new session correctly",
+    "steps": [
+      "Step 1: Call POST /api/v1/sessions with visitor info",
+      "Step 2: Verify 201 response",
+      "Step 3: Verify session_id returned",
+      "Step 4: Verify session exists in database",
+      "Step 5: Verify initial status is 'active'"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/sessions/{id}/messages stores and responds",
+    "steps": [
+      "Step 1: Create session",
+      "Step 2: POST message to session",
+      "Step 3: Verify message stored in messages table",
+      "Step 4: Verify bot response returned",
+      "Step 5: Verify both messages have correct roles"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/sessions/{id} returns session with history",
+    "steps": [
+      "Step 1: Create session with multiple messages",
+      "Step 2: GET session by ID",
+      "Step 3: Verify session data returned",
+      "Step 4: Verify messages array included",
+      "Step 5: Verify all messages in order"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/sessions/{id}/resume restores session",
+    "steps": [
+      "Step 1: Create session and close",
+      "Step 2: POST to resume endpoint",
+      "Step 3: Verify session is restored",
+      "Step 4: Verify last_activity updated",
+      "Step 5: Verify can continue messaging"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/sessions/{id}/prd generates document",
+    "steps": [
+      "Step 1: Complete qualification conversation",
+      "Step 2: POST to PRD endpoint",
+      "Step 3: Verify PRD is generated",
+      "Step 4: Verify prd_id returned",
+      "Step 5: Verify PRD stored in database"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/prd/{id}/download returns markdown file",
+    "steps": [
+      "Step 1: Generate PRD",
+      "Step 2: GET download endpoint",
+      "Step 3: Verify Content-Type is text/markdown",
+      "Step 4: Verify Content-Disposition has filename",
+      "Step 5: Verify file content is valid markdown"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/prd/{id}/preview returns PRD preview",
+    "steps": [
+      "Step 1: Generate PRD",
+      "Step 2: GET preview endpoint",
+      "Step 3: Verify PRD content returned",
+      "Step 4: Verify rendered for preview"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/experts returns list of active experts",
+    "steps": [
+      "Step 1: Create multiple experts",
+      "Step 2: GET experts list",
+      "Step 3: Verify only active experts returned",
+      "Step 4: Verify all fields present"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/experts/{id} returns expert profile",
+    "steps": [
+      "Step 1: Create expert",
+      "Step 2: GET expert by ID",
+      "Step 3: Verify all profile data returned",
+      "Step 4: Verify sensitive fields not exposed"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "GET /api/v1/experts/{id}/availability returns time slots",
+    "steps": [
+      "Step 1: Set up expert with calendar",
+      "Step 2: GET availability with timezone",
+      "Step 3: Verify slots returned",
+      "Step 4: Verify slots in correct timezone",
+      "Step 5: Verify slots within business hours"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/sessions/{id}/match-expert matches correctly",
+    "steps": [
+      "Step 1: Complete discovery with specific needs",
+      "Step 2: POST to match-expert endpoint",
+      "Step 3: Verify matching experts returned",
+      "Step 4: Verify ranking is appropriate"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "POST /api/v1/sessions/{id}/bookings creates booking",
+    "steps": [
+      "Step 1: Get available slot",
+      "Step 2: POST booking with slot details",
+      "Step 3: Verify booking created",
+      "Step 4: Verify calendar event created",
+      "Step 5: Verify status is 'confirmed'"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket chat connection establishes correctly",
+    "steps": [
+      "Step 1: Connect to /ws/chat with session ID",
+      "Step 2: Verify 'connected' event received",
+      "Step 3: Verify connection ID assigned",
+      "Step 4: Verify ready to send/receive"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket send_message event works correctly",
+    "steps": [
+      "Step 1: Establish WebSocket connection",
+      "Step 2: Send 'send_message' event with content",
+      "Step 3: Verify message acknowledged",
+      "Step 4: Verify 'message_stream' events received",
+      "Step 5: Verify complete 'message' event received"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket typing indicators work correctly",
+    "steps": [
+      "Step 1: Establish connection",
+      "Step 2: Send 'typing_start' event",
+      "Step 3: Verify typing indicator shown on server",
+      "Step 4: Send 'typing_stop' event",
+      "Step 5: Verify indicator cleared"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket phase_change event triggers correctly",
+    "steps": [
+      "Step 1: Start conversation via WebSocket",
+      "Step 2: Progress through phases",
+      "Step 3: Verify 'phase_change' event received",
+      "Step 4: Verify phase name is correct"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket prd_ready event triggers correctly",
+    "steps": [
+      "Step 1: Complete qualification",
+      "Step 2: Request PRD generation",
+      "Step 3: Verify 'prd_ready' event received",
+      "Step 4: Verify event contains prd_id"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket availability event returns slots",
+    "steps": [
+      "Step 1: Match with expert",
+      "Step 2: Request availability",
+      "Step 3: Verify 'availability' event received",
+      "Step 4: Verify slots data included"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket booking_confirmed event triggers correctly",
+    "steps": [
+      "Step 1: Select time slot via WebSocket",
+      "Step 2: Confirm booking",
+      "Step 3: Verify 'booking_confirmed' event received",
+      "Step 4: Verify booking details included"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "WebSocket error event handles failures gracefully",
+    "steps": [
+      "Step 1: Cause an error condition",
+      "Step 2: Verify 'error' event received",
+      "Step 3: Verify error message is helpful",
+      "Step 4: Verify connection remains stable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "DeepAgents TodoListMiddleware tracks conversation progress",
+    "steps": [
+      "Step 1: Start conversation",
+      "Step 2: Verify write_todos is called",
+      "Step 3: Progress through conversation",
+      "Step 4: Verify todos are updated",
+      "Step 5: Verify read_todos returns progress"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "DeepAgents subagent delegation works correctly",
+    "steps": [
+      "Step 1: Reach PRD generation phase",
+      "Step 2: Verify prd-agent subagent is invoked",
+      "Step 3: Verify context is passed to subagent",
+      "Step 4: Verify subagent result returned"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "DeepAgents SummarizationMiddleware handles long contexts",
+    "steps": [
+      "Step 1: Have very long conversation (100+ messages)",
+      "Step 2: Verify conversation continues working",
+      "Step 3: Verify SummarizationMiddleware triggers",
+      "Step 4: Verify context is summarized",
+      "Step 5: Verify key information retained"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "DeepAgents human-in-the-loop works for booking approval",
+    "steps": [
+      "Step 1: Configure interrupt_on for create_booking",
+      "Step 2: Attempt to create booking",
+      "Step 3: Verify workflow pauses for approval",
+      "Step 4: Approve the booking",
+      "Step 5: Verify booking completes"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "DeepAgents FilesystemBackend stores PRDs correctly",
+    "steps": [
+      "Step 1: Generate PRD",
+      "Step 2: Verify file written via FilesystemBackend",
+      "Step 3: Verify file accessible via storage_url",
+      "Step 4: Verify file content matches PRD"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Chat widget button has correct styling and animation",
+    "steps": [
+      "Step 1: Navigate to page",
+      "Step 2: Take screenshot of chat button",
+      "Step 3: Verify button is 60x60px with rounded corners",
+      "Step 4: Verify UnoDigit blue color (#2563EB)",
+      "Step 5: Verify pulse animation on first visit"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Chat window has correct dimensions and styling",
+    "steps": [
+      "Step 1: Open chat widget on desktop",
+      "Step 2: Verify width is 380px",
+      "Step 3: Verify header is 48px height",
+      "Step 4: Verify messages area is ~400px height",
+      "Step 5: Verify input area is 56px height"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Chat window header displays logo and controls",
+    "steps": [
+      "Step 1: Open chat widget",
+      "Step 2: Verify UnoDigit logo in header",
+      "Step 3: Verify title text present",
+      "Step 4: Verify minimize button visible",
+      "Step 5: Verify close button visible"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Bot message bubbles have correct styling",
+    "steps": [
+      "Step 1: Open chat and receive bot message",
+      "Step 2: Verify message is left-aligned",
+      "Step 3: Verify surface background color (#F3F4F6)",
+      "Step 4: Verify proper border radius",
+      "Step 5: Verify text color is #1F2937"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "User message bubbles have correct styling",
+    "steps": [
+      "Step 1: Send a message",
+      "Step 2: Verify message is right-aligned",
+      "Step 3: Verify primary background color (#2563EB)",
+      "Step 4: Verify text color is white",
+      "Step 5: Verify proper border radius"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Typing indicator animation displays correctly",
+    "steps": [
+      "Step 1: Send message to trigger bot response",
+      "Step 2: Observe typing indicator",
+      "Step 3: Verify animated dots pattern",
+      "Step 4: Verify smooth animation timing"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Input field has correct styling",
+    "steps": [
+      "Step 1: Focus on input field",
+      "Step 2: Verify border styling",
+      "Step 3: Verify placeholder text",
+      "Step 4: Verify focus state styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Send button has correct styling and states",
+    "steps": [
+      "Step 1: View send button when input empty",
+      "Step 2: Verify disabled state styling",
+      "Step 3: Type a message",
+      "Step 4: Verify enabled state styling",
+      "Step 5: Verify hover state"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Quick reply buttons have correct styling",
+    "steps": [
+      "Step 1: View quick reply options",
+      "Step 2: Verify horizontal layout",
+      "Step 3: Verify button styling",
+      "Step 4: Verify hover states",
+      "Step 5: Verify selected state"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Expert card has correct layout and styling",
+    "steps": [
+      "Step 1: Reach expert matching phase",
+      "Step 2: Verify expert photo thumbnail",
+      "Step 3: Verify name and role typography",
+      "Step 4: Verify specialties list styling",
+      "Step 5: Verify CTA button styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "PRD preview card has correct styling",
+    "steps": [
+      "Step 1: Generate PRD",
+      "Step 2: Verify document icon",
+      "Step 3: Verify filename display",
+      "Step 4: Verify preview text styling",
+      "Step 5: Verify button row styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Calendar picker has correct layout",
+    "steps": [
+      "Step 1: Reach booking phase",
+      "Step 2: Verify expert name header",
+      "Step 3: Verify date group headings",
+      "Step 4: Verify time slots 2 per row",
+      "Step 5: Verify confirm button styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Time slot selection styling works correctly",
+    "steps": [
+      "Step 1: View available time slots",
+      "Step 2: Click on a slot",
+      "Step 3: Verify selected state indicator",
+      "Step 4: Verify unselected slots styling",
+      "Step 5: Verify transition animation"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Booking confirmation card has correct styling",
+    "steps": [
+      "Step 1: Complete a booking",
+      "Step 2: Verify success checkmark icon (green)",
+      "Step 3: Verify date/time typography",
+      "Step 4: Verify expert info styling",
+      "Step 5: Verify button styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Color palette matches design system",
+    "steps": [
+      "Step 1: Inspect various UI elements",
+      "Step 2: Verify Primary: #2563EB used correctly",
+      "Step 3: Verify Secondary: #10B981 for success",
+      "Step 4: Verify Error: #EF4444 for errors",
+      "Step 5: Verify text colors match spec"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Typography follows design system",
+    "steps": [
+      "Step 1: Inspect font family",
+      "Step 2: Verify Inter font is loaded",
+      "Step 3: Verify font sizes match spec",
+      "Step 4: Verify font weights match spec"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Spacing follows design system",
+    "steps": [
+      "Step 1: Measure padding/margins",
+      "Step 2: Verify XS: 4px spacing used",
+      "Step 3: Verify SM: 8px spacing used",
+      "Step 4: Verify MD: 16px spacing used",
+      "Step 5: Verify LG: 24px spacing used"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Border radius follows design system",
+    "steps": [
+      "Step 1: Inspect button corners",
+      "Step 2: Inspect card corners",
+      "Step 3: Verify 4px, 8px, 16px values used",
+      "Step 4: Verify consistency"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Shadow levels are correctly applied",
+    "steps": [
+      "Step 1: Inspect chat widget shadow",
+      "Step 2: Inspect cards shadows",
+      "Step 3: Verify sm, md, lg shadow levels",
+      "Step 4: Verify consistent application"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Transition animations are smooth",
+    "steps": [
+      "Step 1: Open/close chat widget",
+      "Step 2: Verify 300ms transition for normal",
+      "Step 3: Verify 150ms for fast transitions",
+      "Step 4: Verify no janky animations"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Skeleton loaders appear for async content",
+    "steps": [
+      "Step 1: Load chat with slow connection",
+      "Step 2: Verify skeleton loaders appear",
+      "Step 3: Verify smooth transition to content",
+      "Step 4: Verify skeleton styling matches theme"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Unread badge displays on minimized chat",
+    "steps": [
+      "Step 1: Open and minimize chat",
+      "Step 2: Trigger new message",
+      "Step 3: Verify unread badge appears",
+      "Step 4: Verify badge styling (red dot)",
+      "Step 5: Verify badge clears on open"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Mobile full-screen mode displays correctly",
+    "steps": [
+      "Step 1: Open chat on mobile viewport (<768px)",
+      "Step 2: Verify chat takes 100% width",
+      "Step 3: Verify chat takes 100% height",
+      "Step 4: Verify proper mobile styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Responsive breakpoints work correctly",
+    "steps": [
+      "Step 1: Test at 320px viewport",
+      "Step 2: Test at 768px viewport",
+      "Step 3: Test at 1024px viewport",
+      "Step 4: Test at 1920px viewport",
+      "Step 5: Verify layout adapts at each"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Touch targets are appropriately sized on mobile",
+    "steps": [
+      "Step 1: View on mobile device",
+      "Step 2: Verify buttons are at least 44px",
+      "Step 3: Verify adequate spacing between targets",
+      "Step 4: Verify easy to tap without mistakes"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Admin dashboard has professional appearance",
+    "steps": [
+      "Step 1: Log in to admin dashboard",
+      "Step 2: Verify consistent styling",
+      "Step 3: Verify professional layout",
+      "Step 4: Verify brand colors used"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Form validation errors display correctly",
+    "steps": [
+      "Step 1: Submit form with errors",
+      "Step 2: Verify error styling on fields",
+      "Step 3: Verify error message styling",
+      "Step 4: Verify error color (#EF4444) used"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Success states display correctly",
+    "steps": [
+      "Step 1: Complete successful action",
+      "Step 2: Verify success styling",
+      "Step 3: Verify success color (#10B981) used",
+      "Step 4: Verify appropriate iconography"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Loading states display correctly",
+    "steps": [
+      "Step 1: Trigger loading state",
+      "Step 2: Verify spinner or loading indicator",
+      "Step 3: Verify disabled state styling",
+      "Step 4: Verify no layout shift"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Empty states display correctly",
+    "steps": [
+      "Step 1: View empty list (no experts)",
+      "Step 2: Verify empty state message",
+      "Step 3: Verify helpful iconography",
+      "Step 4: Verify call to action if applicable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Keyboard navigation works for chat interface",
+    "steps": [
+      "Step 1: Focus on chat widget button with Tab",
+      "Step 2: Press Enter to open",
+      "Step 3: Tab through all interactive elements",
+      "Step 4: Verify logical tab order",
+      "Step 5: Verify Enter/Space work on buttons",
+      "Step 6: Verify Escape closes chat"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Screen reader announces chat content correctly",
+    "steps": [
+      "Step 1: Enable screen reader",
+      "Step 2: Navigate to chat widget",
+      "Step 3: Verify button is announced",
+      "Step 4: Open chat and verify announcement",
+      "Step 5: Verify messages are read correctly",
+      "Step 6: Verify live region for new messages"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Focus management works correctly",
+    "steps": [
+      "Step 1: Open chat widget",
+      "Step 2: Verify focus moves to input",
+      "Step 3: Close chat",
+      "Step 4: Verify focus returns to button",
+      "Step 5: Verify no focus traps"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Color contrast meets WCAG 2.1 AA standards",
+    "steps": [
+      "Step 1: Check text on background contrast",
+      "Step 2: Verify 4.5:1 ratio for normal text",
+      "Step 3: Verify 3:1 ratio for large text",
+      "Step 4: Check button text contrast"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "ARIA labels are correctly applied",
+    "steps": [
+      "Step 1: Inspect interactive elements",
+      "Step 2: Verify aria-label on icon buttons",
+      "Step 3: Verify aria-expanded on toggle",
+      "Step 4: Verify aria-describedby on inputs"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Sound notifications can be enabled/disabled",
+    "steps": [
+      "Step 1: Enable sound notifications",
+      "Step 2: Receive new message",
+      "Step 3: Verify sound plays",
+      "Step 4: Disable sound notifications",
+      "Step 5: Receive message and verify no sound"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Widget position is configurable (left/right)",
+    "steps": [
+      "Step 1: Configure widget for bottom-left",
+      "Step 2: Verify widget appears in bottom-left",
+      "Step 3: Configure for bottom-right",
+      "Step 4: Verify widget appears in bottom-right"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Widget loads in under 2 seconds",
+    "steps": [
+      "Step 1: Clear cache",
+      "Step 2: Navigate to page",
+      "Step 3: Measure time until widget visible",
+      "Step 4: Verify under 2000ms"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Chat opens in under 500ms",
+    "steps": [
+      "Step 1: Click chat button",
+      "Step 2: Measure time until fully open",
+      "Step 3: Verify under 500ms"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Bot response starts within 3 seconds",
+    "steps": [
+      "Step 1: Send a message",
+      "Step 2: Measure time until first response",
+      "Step 3: Verify under 3000ms"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Message streaming latency is under 100ms",
+    "steps": [
+      "Step 1: Send message",
+      "Step 2: Measure latency between stream chunks",
+      "Step 3: Verify average under 100ms"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "System handles 100+ concurrent users",
+    "steps": [
+      "Step 1: Set up load test with 100 connections",
+      "Step 2: Simulate concurrent conversations",
+      "Step 3: Verify all connections stable",
+      "Step 4: Verify response times acceptable",
+      "Step 5: Verify no errors under load"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Application works on 3G connection speeds",
+    "steps": [
+      "Step 1: Throttle to 3G speed",
+      "Step 2: Load application",
+      "Step 3: Verify widget appears",
+      "Step 4: Send and receive messages",
+      "Step 5: Verify functional despite slow connection"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Frontend builds without TypeScript errors",
+    "steps": [
+      "Step 1: Run TypeScript compiler check",
+      "Step 2: Verify no type errors",
+      "Step 3: Run production build",
+      "Step 4: Verify successful build"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Backend passes type checking with mypy",
+    "steps": [
+      "Step 1: Run mypy on backend code",
+      "Step 2: Verify no type errors",
+      "Step 3: Verify all functions have type hints"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API documentation is auto-generated at /docs",
+    "steps": [
+      "Step 1: Navigate to /docs endpoint",
+      "Step 2: Verify Swagger UI loads",
+      "Step 3: Verify all endpoints documented",
+      "Step 4: Verify request/response schemas shown"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "OpenAPI spec available at /openapi.json",
+    "steps": [
+      "Step 1: GET /openapi.json",
+      "Step 2: Verify valid OpenAPI 3.0 spec",
+      "Step 3: Verify all schemas defined",
+      "Step 4: Verify all endpoints included"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "ReDoc documentation available at /redoc",
+    "steps": [
+      "Step 1: Navigate to /redoc",
+      "Step 2: Verify ReDoc UI loads",
+      "Step 3: Verify documentation is readable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Pydantic schemas validate request bodies",
+    "steps": [
+      "Step 1: Send request with missing field",
+      "Step 2: Verify 422 validation error",
+      "Step 3: Send request with wrong type",
+      "Step 4: Verify appropriate error message"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Database connection pool handles load correctly",
+    "steps": [
+      "Step 1: Simulate 50 concurrent DB queries",
+      "Step 2: Verify connection pool manages",
+      "Step 3: Verify no connection exhaustion",
+      "Step 4: Verify proper connection release"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Redis caching improves response times",
+    "steps": [
+      "Step 1: Make request without cache",
+      "Step 2: Measure response time",
+      "Step 3: Make same request (cache hit)",
+      "Step 4: Verify faster response",
+      "Step 5: Verify cache TTL works"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Session data stored in Redis correctly",
+    "steps": [
+      "Step 1: Create session",
+      "Step 2: Check Redis for session key",
+      "Step 3: Verify session data present",
+      "Step 4: Verify TTL matches 7 days"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Environment variables are properly loaded",
+    "steps": [
+      "Step 1: Verify .env file is read",
+      "Step 2: Check ANTHROPIC_API_KEY loaded",
+      "Step 3: Check database URL loaded",
+      "Step 4: Check all required vars present"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "CORS is properly configured",
+    "steps": [
+      "Step 1: Make request from allowed origin",
+      "Step 2: Verify CORS headers present",
+      "Step 3: Make request from different origin",
+      "Step 4: Verify appropriate behavior"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "API rate limiting prevents abuse",
+    "steps": [
+      "Step 1: Make many requests rapidly",
+      "Step 2: Verify rate limit kicks in",
+      "Step 3: Verify 429 response returned",
+      "Step 4: Wait and verify limit resets"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Input sanitization prevents XSS attacks",
+    "steps": [
+      "Step 1: Submit message with script tag",
+      "Step 2: Verify script is escaped",
+      "Step 3: Verify no XSS execution",
+      "Step 4: Test various XSS vectors"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "SQL injection is prevented",
+    "steps": [
+      "Step 1: Submit malicious SQL in input",
+      "Step 2: Verify parameterized queries used",
+      "Step 3: Verify no SQL injection possible",
+      "Step 4: Test various injection vectors"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Sensitive data is not logged",
+    "steps": [
+      "Step 1: Submit data with email/password",
+      "Step 2: Check server logs",
+      "Step 3: Verify no sensitive data logged",
+      "Step 4: Verify proper log sanitization"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "OAuth tokens are stored securely",
+    "steps": [
+      "Step 1: Complete OAuth flow",
+      "Step 2: Check database storage",
+      "Step 3: Verify refresh_token is encrypted",
+      "Step 4: Verify token not in logs"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Admin routes require authentication",
+    "steps": [
+      "Step 1: Try admin endpoint without auth",
+      "Step 2: Verify 401 response",
+      "Step 3: Authenticate and retry",
+      "Step 4: Verify access granted"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Unit tests cover core business logic",
+    "steps": [
+      "Step 1: Run pytest on unit tests",
+      "Step 2: Verify lead scoring tested",
+      "Step 3: Verify expert matching tested",
+      "Step 4: Verify PRD generation tested"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Integration tests cover API endpoints",
+    "steps": [
+      "Step 1: Run integration test suite",
+      "Step 2: Verify all endpoints covered",
+      "Step 3: Verify database interactions tested",
+      "Step 4: Verify proper test isolation"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "E2E tests cover critical user flows",
+    "steps": [
+      "Step 1: Run Playwright e2e tests",
+      "Step 2: Verify chat flow tested",
+      "Step 3: Verify booking flow tested",
+      "Step 4: Verify all tests pass"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Test coverage is at least 80%",
+    "steps": [
+      "Step 1: Run tests with coverage",
+      "Step 2: Generate coverage report",
+      "Step 3: Verify at least 80% coverage",
+      "Step 4: Identify uncovered critical paths"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Linting passes with no errors",
+    "steps": [
+      "Step 1: Run ruff on Python code",
+      "Step 2: Run ESLint on TypeScript code",
+      "Step 3: Verify no linting errors",
+      "Step 4: Verify code style consistent"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Health check endpoint returns status",
+    "steps": [
+      "Step 1: GET /health or /api/health",
+      "Step 2: Verify 200 response",
+      "Step 3: Verify status JSON returned",
+      "Step 4: Verify includes DB/Redis status"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Error handling returns helpful messages",
+    "steps": [
+      "Step 1: Trigger various error conditions",
+      "Step 2: Verify error responses are helpful",
+      "Step 3: Verify no stack traces in production",
+      "Step 4: Verify error codes are correct"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Graceful degradation when external services fail",
+    "steps": [
+      "Step 1: Simulate Calendar API failure",
+      "Step 2: Verify app continues working",
+      "Step 3: Verify helpful error message shown",
+      "Step 4: Verify retry mechanism exists"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Logging captures important events",
+    "steps": [
+      "Step 1: Perform various actions",
+      "Step 2: Check log files",
+      "Step 3: Verify sessions logged",
+      "Step 4: Verify errors logged",
+      "Step 5: Verify bookings logged"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Application starts with init.sh script",
+    "steps": [
+      "Step 1: Clone fresh repository",
+      "Step 2: Run init.sh",
+      "Step 3: Verify dependencies install",
+      "Step 4: Verify servers start",
+      "Step 5: Verify application accessible"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "README contains complete setup instructions",
+    "steps": [
+      "Step 1: Read README.md",
+      "Step 2: Verify prerequisites listed",
+      "Step 3: Verify setup steps documented",
+      "Step 4: Verify environment variables documented"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Git repository has clean history",
+    "steps": [
+      "Step 1: Check git log",
+      "Step 2: Verify meaningful commit messages",
+      "Step 3: Verify no sensitive data committed",
+      "Step 4: Verify .gitignore is complete"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Zustand state management works correctly",
+    "steps": [
+      "Step 1: Open chat widget",
+      "Step 2: Verify state updates correctly",
+      "Step 3: Perform actions and check state",
+      "Step 4: Verify state persists appropriately"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "TanStack Query caches server state",
+    "steps": [
+      "Step 1: Fetch experts list",
+      "Step 2: Verify data cached",
+      "Step 3: Re-fetch and verify cache hit",
+      "Step 4: Verify cache invalidation works"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Framer Motion animations work correctly",
+    "steps": [
+      "Step 1: Open chat widget",
+      "Step 2: Verify smooth open animation",
+      "Step 3: Send messages",
+      "Step 4: Verify message animations",
+      "Step 5: Verify no janky motion"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "React Markdown renders PRD correctly",
+    "steps": [
+      "Step 1: Generate PRD",
+      "Step 2: View PRD preview",
+      "Step 3: Verify headings render",
+      "Step 4: Verify lists render",
+      "Step 5: Verify code blocks render"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Radix UI primitives are accessible",
+    "steps": [
+      "Step 1: Tab through dialog components",
+      "Step 2: Verify focus trapping",
+      "Step 3: Verify Escape closes dialogs",
+      "Step 4: Verify ARIA attributes present"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Lucide React icons display correctly",
+    "steps": [
+      "Step 1: View various UI elements",
+      "Step 2: Verify icons are visible",
+      "Step 3: Verify icons are correctly sized",
+      "Step 4: Verify icons match context"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Vite hot module replacement works",
+    "steps": [
+      "Step 1: Start dev server",
+      "Step 2: Modify a component",
+      "Step 3: Verify change appears without refresh",
+      "Step 4: Verify state preserved"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Production build is optimized",
+    "steps": [
+      "Step 1: Run production build",
+      "Step 2: Check bundle sizes",
+      "Step 3: Verify code splitting works",
+      "Step 4: Verify assets are minified"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Socket.io reconnection logic works",
+    "steps": [
+      "Step 1: Establish WebSocket connection",
+      "Step 2: Simulate server restart",
+      "Step 3: Verify client reconnects",
+      "Step 4: Verify session restored"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "SQLAlchemy ORM operations work correctly",
+    "steps": [
+      "Step 1: Create records via ORM",
+      "Step 2: Query records",
+      "Step 3: Update records",
+      "Step 4: Delete records",
+      "Step 5: Verify relationships work"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Alembic migrations can be rolled back",
+    "steps": [
+      "Step 1: Apply migrations",
+      "Step 2: Run alembic downgrade",
+      "Step 3: Verify schema reverts",
+      "Step 4: Verify data handling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "SendGrid API integration works",
+    "steps": [
+      "Step 1: Configure SendGrid API key",
+      "Step 2: Trigger email send",
+      "Step 3: Verify API call succeeds",
+      "Step 4: Verify email delivered"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Google Calendar API integration works",
+    "steps": [
+      "Step 1: Configure Google credentials",
+      "Step 2: Complete OAuth flow",
+      "Step 3: Fetch calendar availability",
+      "Step 4: Create calendar event",
+      "Step 5: Verify event appears on calendar"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Anthropic API integration works with Claude",
+    "steps": [
+      "Step 1: Configure API key from /tmp/api-key",
+      "Step 2: Send message to bot",
+      "Step 3: Verify Claude API is called",
+      "Step 4: Verify response is received"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "DeepAgents create_deep_agent works correctly",
+    "steps": [
+      "Step 1: Initialize agent with config",
+      "Step 2: Verify agent is created",
+      "Step 3: Verify tools are registered",
+      "Step 4: Verify subagents are available"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Conversation handles network interruption gracefully",
+    "steps": [
+      "Step 1: Start conversation",
+      "Step 2: Exchange several messages",
+      "Step 3: Simulate network drop",
+      "Step 4: Restore network",
+      "Step 5: Verify conversation resumes",
+      "Step 6: Verify no messages lost"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Error boundary catches React errors",
+    "steps": [
+      "Step 1: Simulate component error",
+      "Step 2: Verify error boundary catches",
+      "Step 3: Verify fallback UI shown",
+      "Step 4: Verify can recover"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "File upload for profile photos works",
+    "steps": [
+      "Step 1: Navigate to expert profile",
+      "Step 2: Upload profile photo",
+      "Step 3: Verify file is uploaded",
+      "Step 4: Verify URL is saved",
+      "Step 5: Verify image displays"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "TailwindCSS JIT compilation works",
+    "steps": [
+      "Step 1: Add new Tailwind class",
+      "Step 2: Verify class is compiled",
+      "Step 3: Verify styling applies",
+      "Step 4: Verify no unused CSS in build"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Decision maker identification is collected",
+    "steps": [
+      "Step 1: Progress to qualification phase",
+      "Step 2: Answer decision maker question",
+      "Step 3: Verify response stored",
+      "Step 4: Verify affects lead score"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Success criteria collection works",
+    "steps": [
+      "Step 1: Progress conversation",
+      "Step 2: Define success criteria",
+      "Step 3: Verify captured in context",
+      "Step 4: Verify included in PRD"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Intent detection identifies visitor needs",
+    "steps": [
+      "Step 1: Start conversation",
+      "Step 2: Express a specific need",
+      "Step 3: Verify intent is detected",
+      "Step 4: Verify conversation adapts"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Context retention works across long conversations",
+    "steps": [
+      "Step 1: Have 15+ message conversation",
+      "Step 2: Reference earlier information",
+      "Step 3: Verify bot remembers context",
+      "Step 4: Verify no context confusion"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "AI generates technical recommendations in PRD",
+    "steps": [
+      "Step 1: Complete technical discovery",
+      "Step 2: Generate PRD",
+      "Step 3: Find recommendations section",
+      "Step 4: Verify recommendations are relevant",
+      "Step 5: Verify technology suggestions appropriate"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Attachment button works in input area",
+    "steps": [
+      "Step 1: Locate attachment button",
+      "Step 2: Click attachment button",
+      "Step 3: Verify file picker opens",
+      "Step 4: Verify acceptable file types"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Error states have consistent styling",
+    "steps": [
+      "Step 1: Trigger validation error",
+      "Step 2: Verify red border on input",
+      "Step 3: Verify error message styling",
+      "Step 4: Verify icon if applicable"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Disabled states have correct styling",
+    "steps": [
+      "Step 1: View disabled button",
+      "Step 2: Verify reduced opacity",
+      "Step 3: Verify cursor not-allowed",
+      "Step 4: Verify no hover effects"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Active/pressed states have feedback",
+    "steps": [
+      "Step 1: Click and hold button",
+      "Step 2: Verify pressed state visible",
+      "Step 3: Verify appropriate feedback"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Form layouts are aligned and consistent",
+    "steps": [
+      "Step 1: View various forms",
+      "Step 2: Verify label alignment",
+      "Step 3: Verify input alignment",
+      "Step 4: Verify consistent spacing"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Tables display data clearly",
+    "steps": [
+      "Step 1: View admin tables",
+      "Step 2: Verify header styling",
+      "Step 3: Verify row alternation if any",
+      "Step 4: Verify hover states"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Modal/dialog styling is correct",
+    "steps": [
+      "Step 1: Open a modal dialog",
+      "Step 2: Verify backdrop overlay",
+      "Step 3: Verify dialog centering",
+      "Step 4: Verify close button styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Toast notifications style correctly",
+    "steps": [
+      "Step 1: Trigger success notification",
+      "Step 2: Verify green styling",
+      "Step 3: Trigger error notification",
+      "Step 4: Verify red styling"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Scrollbar styling is consistent",
+    "steps": [
+      "Step 1: View scrollable area",
+      "Step 2: Verify custom scrollbar styling",
+      "Step 3: Verify works on different browsers"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Logo displays correctly at different sizes",
+    "steps": [
+      "Step 1: Check logo in header",
+      "Step 2: Check logo in emails",
+      "Step 3: Verify no pixelation",
+      "Step 4: Verify aspect ratio maintained"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "style",
+    "description": "Icons are visually consistent",
+    "steps": [
+      "Step 1: Review all icons",
+      "Step 2: Verify same icon set used",
+      "Step 3: Verify consistent sizing",
+      "Step 4: Verify color consistency"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "Middleware chain processes in correct order",
+    "steps": [
+      "Step 1: Configure multiple middleware",
+      "Step 2: Make request",
+      "Step 3: Verify order of processing",
+      "Step 4: Verify no middleware conflicts"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  },
+  {
+    "category": "functional",
+    "description": "AnthropicPromptCachingMiddleware reduces API costs",
+    "steps": [
+      "Step 1: Enable caching middleware",
+      "Step 2: Make repeated similar requests",
+      "Step 3: Verify cache hits occur",
+      "Step 4: Compare token usage"
+    ],
+    "passes": false,
+    "is_dev_done": false,
+    "is_qa_passed": false
+  }
+]

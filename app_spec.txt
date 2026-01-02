@@ -1,0 +1,636 @@
+<project_specification>
+  <project_name>UnoBot - AI Business Consultant & Appointment Booking System</project_name>
+
+  <overview>
+    Build an AI-powered business consultant chatbot that transforms website visitors into qualified leads
+    by conducting intelligent business discovery conversations, automatically generating Project Requirements
+    Documents (PRDs), and seamlessly booking appointments with UnoDigit professionals. Features include
+    real-time chat with streaming responses, expert matching, Google Calendar integration, and email
+    notifications. Focus on conversion-optimized UX with 24/7 availability and mobile-first design.
+  </overview>
+
+  <technology_stack>
+    <language_preference>
+      IMPORTANT: Use TypeScript (.ts, .tsx) for ALL frontend code and Python for ALL backend code.
+      All files must have proper type annotations and strict type checking enabled.
+    </language_preference>
+    <api_key>
+        You can use an API key located at /tmp/api-key for testing.
+    </api_key>
+    <frontend>
+      <framework>React 18+ with Vite and TypeScript</framework>
+      <language>TypeScript (strict mode) - use .tsx for components, .ts for utilities</language>
+      <styling>TailwindCSS 3.x with custom design tokens</styling>
+      <state_management>Zustand for client state, TanStack Query for server state</state_management>
+      <realtime>Socket.io Client for WebSocket communication</realtime>
+      <ui_components>Radix UI primitives, Lucide React icons, Framer Motion for animations</ui_components>
+      <markdown>React Markdown for PRD rendering</markdown>
+      <type_safety>Enable strict mode in tsconfig.json, no implicit any</type_safety>
+      <port>Only launch on port {frontend_port}</port>
+    </frontend>
+    <backend>
+      <runtime>Python 3.11+ with FastAPI</runtime>
+      <language>Python with full type annotations (Pydantic schemas)</language>
+      <database>PostgreSQL 15 with SQLAlchemy ORM</database>
+      <cache>Redis 7 for sessions and caching</cache>
+      <agent_framework>
+        DeepAgents (langchain-ai/deepagents) - high-level agent harness built on LangGraph
+        - Use create_deep_agent() for agent creation with built-in middleware
+        - Built-in TodoListMiddleware for task planning and progress tracking
+        - Built-in FilesystemMiddleware for file operations and PRD storage
+        - Built-in SubAgentMiddleware for delegating to specialized agents
+        - Built-in SummarizationMiddleware for long conversations (170k+ tokens)
+        - Human-in-the-loop workflows via interrupt_on configuration
+        - Pluggable backends (StateBackend, FilesystemBackend, StoreBackend)
+      </agent_framework>
+      <llm>Claude Sonnet 4.5 (claude-sonnet-4-5-20250929) via Anthropic API - DeepAgents default</llm>
+      <calendar>Google Calendar API with OAuth 2.0</calendar>
+      <email>SendGrid for transactional emails</email>
+      <file_storage>AWS S3 or Cloudflare R2 for PRD storage (can use DeepAgents FilesystemBackend)</file_storage>
+      <type_safety>Use Pydantic for all API request/response schemas</type_safety>
+    </backend>
+    <communication>
+      <api>RESTful endpoints with typed request/response schemas</api>
+      <realtime>WebSocket for chat streaming via Socket.io</realtime>
+      <shared_types>Pydantic schemas for validation</shared_types>
+    </communication>
+  </technology_stack>
+
+  <prerequisites>
+    <environment_setup>
+      - Repository includes .env with required API keys (ANTHROPIC_API_KEY, GOOGLE_OAUTH_CREDENTIALS, SENDGRID_API_KEY)
+      - Frontend dependencies pre-installed via pnpm
+      - Backend dependencies managed via uv (Python package manager)
+      - DeepAgents installed: uv add deepagents
+      - PostgreSQL and Redis instances available
+      - Google Cloud project with Calendar API enabled
+      - SendGrid account configured
+    </environment_setup>
+    <deepagents_dependencies>
+      - deepagents (agent harness with built-in middleware)
+      - langchain-anthropic (Claude model integration)
+      - langgraph (underlying state machine - handled by deepagents)
+    </deepagents_dependencies>
+  </prerequisites>
+
+  <core_features>
+    <chat_widget>
+      - Floating chat button on all website pages
+      - Click to open/close chat window with smooth animation
+      - Configurable position (bottom-left or bottom-right)
+      - UnoDigit branded appearance (logo, colors)
+      - Full-screen mode on mobile devices
+      - Unread message indicator when minimized
+      - Keyboard navigation and accessibility (WCAG 2.1 AA)
+      - Sound notification option for new messages
+    </chat_widget>
+
+    <conversation_engine>
+      - DeepAgents-powered conversation with create_deep_agent()
+      - Welcome message with personalized greeting
+      - Intent detection for visitor's primary need
+      - Structured business elicitation questions
+      - Adaptive questioning based on responses
+      - Industry recognition and terminology adaptation
+      - Context retention across conversation (DeepAgents state management)
+      - Clarification handling for ambiguous answers
+      - Support for 20+ message conversations (SummarizationMiddleware handles long contexts)
+      - Conversation summary before PRD generation
+      - Graceful handoff for out-of-scope requests
+      - Lead scoring (0-100) based on budget, timeline, fit
+      - Service matching (AI Strategy, Custom Dev, Data Intelligence)
+      - Built-in task tracking via TodoListMiddleware (write_todos, read_todos)
+      - Subagent delegation for specialized tasks (PRD generation, expert matching)
+    </conversation_engine>
+
+    <information_collection>
+      - Contact information (name, email, company)
+      - Real-time email validation
+      - Company and industry information
+      - Business challenge description
+      - Current technology stack/systems
+      - Budget range expectations
+      - Project timeline and urgency
+      - Success criteria definition
+      - Decision maker identification
+      - Data privacy consent with GDPR compliance
+    </information_collection>
+
+    <prd_generation>
+      - Automatic PRD generation from conversation
+      - Valid Markdown format output
+      - Standard PRD sections (Executive Summary, Context, Solution, Parameters, Next Steps)
+      - AI-generated technical recommendations
+      - Preview display in chat interface
+      - Single-click download as .md file
+      - 90-day storage with unique access link
+      - Version tracking for regenerated PRDs
+    </prd_generation>
+
+    <expert_matching>
+      - Expert profile database (name, email, photo, role, specialties)
+      - Matching algorithm based on service area and specialties
+      - Expert card display with photo, name, role, bio
+      - Multiple expert options when available
+      - Workload balancing for even lead distribution
+    </expert_matching>
+
+    <calendar_integration>
+      - Real-time availability fetching from Google Calendar
+      - Display available slots (at least 5 over 14 days)
+      - Automatic timezone detection and display
+      - Single-click slot selection with confirmation
+      - Calendar event creation with all details
+      - Auto-generated Google Meet link
+      - Attendee management (expert and visitor)
+      - Buffer time between meetings (configurable)
+      - Business hours restriction (configurable per expert)
+      - Real-time availability refresh on selection
+      - Double-booking prevention
+    </calendar_integration>
+
+    <notification_system>
+      - Visitor booking confirmation email (within 30 seconds)
+      - Expert notification email with PRD attached
+      - Calendar attachment (.ics file)
+      - PRD attachment as .md file
+      - Reminder emails (24 hours and 1 hour before)
+      - Branded email templates
+      - Unsubscribe option for marketing
+    </notification_system>
+
+    <session_management>
+      - Server-side session persistence via DeepAgents checkpointer
+      - 7-day session duration with LangGraph memory store
+      - Resume conversation via email link (session ID lookup)
+      - Cross-device session access using StoreBackend persistence
+      - Full conversation history view (messages stored in state)
+      - Long-term memory via CompositeBackend /memories/ route
+    </session_management>
+
+    <admin_dashboard>
+      - Expert management (CRUD operations)
+      - Conversation analytics and metrics
+      - Configurable welcome message templates
+      - Lead export to CSV
+      - System health monitoring
+    </admin_dashboard>
+
+    <responsive_design>
+      - Mobile-first layout approach
+      - Full-screen chat on mobile (< 768px)
+      - Touch-optimized interface
+      - Responsive at all breakpoints (320px - 4K)
+      - Functional on 3G connections
+    </responsive_design>
+  </core_features>
+
+  <deepagents_architecture>
+    <overview>
+      UnoBot uses DeepAgents (https://github.com/langchain-ai/deepagents) as the agent harness.
+      DeepAgents provides built-in planning, filesystem backend, and subagent delegation,
+      eliminating the need for low-level LangGraph/LangChain state machine code.
+    </overview>
+
+    <main_agent>
+      <creation>
+        from deepagents import create_deep_agent
+        
+        agent = create_deep_agent(
+            model="anthropic:claude-sonnet-4-5-20250929",
+            tools=[lead_scoring, calendar_lookup, send_email, match_expert],
+            system_prompt="You are UnoBot, a friendly AI business consultant for UnoDigit...",
+            subagents=[discovery_agent, prd_agent, booking_agent],
+            backend=CompositeBackend(
+                default=StateBackend(),
+                routes={"/prd/": StoreBackend(store=persistent_store)}
+            ),
+            interrupt_on={"create_booking": {"allowed_decisions": ["approve", "edit", "reject"]}}
+        )
+      </creation>
+      <built_in_tools>
+        - write_todos / read_todos: Task planning and progress tracking
+        - ls / read_file / write_file / edit_file: File operations
+        - glob / grep: File search and pattern matching
+        - task: Delegate to specialized subagents
+      </built_in_tools>
+    </main_agent>
+
+    <subagents>
+      <discovery_agent>
+        - name: "discovery-agent"
+        - description: "Conducts business elicitation and qualification"
+        - system_prompt: "You are an expert at understanding business challenges..."
+        - tools: [extract_info, calculate_lead_score, identify_service]
+        - Purpose: Gather client info, business context, and qualification data
+      </discovery_agent>
+
+      <prd_agent>
+        - name: "prd-agent"
+        - description: "Generates Project Requirements Documents from conversation"
+        - system_prompt: "You are a technical writer who creates professional PRDs..."
+        - tools: [write_file, format_markdown]
+        - Purpose: Extract conversation data and generate formatted PRD
+      </prd_agent>
+
+      <booking_agent>
+        - name: "booking-agent"
+        - description: "Handles calendar integration and meeting scheduling"
+        - system_prompt: "You manage appointment scheduling with experts..."
+        - tools: [get_availability, create_calendar_event, send_confirmation]
+        - Purpose: Fetch availability, create bookings, send notifications
+      </booking_agent>
+    </subagents>
+
+    <middleware_configuration>
+      <default_middleware>
+        - TodoListMiddleware: Manages conversation progress with todos
+        - FilesystemMiddleware: Handles PRD storage and retrieval
+        - SubAgentMiddleware: Enables task delegation to specialized agents
+        - SummarizationMiddleware: Auto-summarizes at 170k tokens
+        - AnthropicPromptCachingMiddleware: Reduces API costs
+        - HumanInTheLoopMiddleware: Pauses for booking approval
+      </default_middleware>
+    </middleware_configuration>
+
+    <backend_configuration>
+      <composite_backend>
+        - Default: StateBackend (ephemeral for conversation state)
+        - /prd/: StoreBackend (persistent PRD storage)
+        - /memories/: StoreBackend (persistent user preferences)
+      </composite_backend>
+    </backend_configuration>
+
+    <custom_tools>
+      <lead_scoring>
+        - Function: calculate_lead_score(budget, timeline, fit_score)
+        - Returns: 0-100 lead quality score
+      </lead_scoring>
+      <calendar_lookup>
+        - Function: get_expert_availability(expert_id, days_ahead, timezone)
+        - Returns: List of available time slots
+      </calendar_lookup>
+      <match_expert>
+        - Function: match_expert_to_needs(service_type, specialties)
+        - Returns: Ranked list of matching experts
+      </match_expert>
+      <send_email>
+        - Function: send_booking_confirmation(client_email, expert, slot, prd_url)
+        - Returns: Email delivery status
+      </send_email>
+    </custom_tools>
+  </deepagents_architecture>
+
+  <database_schema>
+    <tables>
+      <experts>
+        - id (UUID, primary key)
+        - name (VARCHAR 255)
+        - email (VARCHAR 255, unique)
+        - calendar_id (VARCHAR 255)
+        - photo_url (TEXT)
+        - role (VARCHAR 255)
+        - bio (TEXT)
+        - specialties (JSONB array)
+        - services (JSONB array)
+        - availability (JSONB config)
+        - refresh_token (TEXT, encrypted)
+        - is_active (BOOLEAN)
+        - created_at, updated_at (TIMESTAMPTZ)
+      </experts>
+
+      <conversation_sessions>
+        - id (UUID, primary key)
+        - visitor_id (VARCHAR 255)
+        - status (VARCHAR 50: active, completed, abandoned)
+        - current_phase (VARCHAR 50)
+        - client_info (JSONB)
+        - business_context (JSONB)
+        - qualification (JSONB)
+        - lead_score (INTEGER 0-100)
+        - recommended_service (VARCHAR 100)
+        - matched_expert_id (UUID, FK to experts)
+        - prd_id (UUID)
+        - booking_id (UUID)
+        - source_url (TEXT)
+        - user_agent (TEXT)
+        - ip_address (INET)
+        - started_at, last_activity, completed_at (TIMESTAMPTZ)
+      </conversation_sessions>
+
+      <messages>
+        - id (UUID, primary key)
+        - session_id (UUID, FK to conversation_sessions)
+        - role (VARCHAR 50: user, assistant)
+        - content (TEXT)
+        - metadata (JSONB)
+        - created_at (TIMESTAMPTZ)
+      </messages>
+
+      <prd_documents>
+        - id (UUID, primary key)
+        - session_id (UUID, FK to conversation_sessions)
+        - version (INTEGER)
+        - content_markdown (TEXT)
+        - client_company (VARCHAR 255)
+        - client_name (VARCHAR 255)
+        - recommended_service (VARCHAR 100)
+        - matched_expert (VARCHAR 255)
+        - storage_url (TEXT)
+        - download_count (INTEGER)
+        - created_at, expires_at (TIMESTAMPTZ)
+      </prd_documents>
+
+      <bookings>
+        - id (UUID, primary key)
+        - session_id (UUID, FK to conversation_sessions)
+        - expert_id (UUID, FK to experts)
+        - calendar_event_id (VARCHAR 255)
+        - title (VARCHAR 255)
+        - start_time, end_time (TIMESTAMPTZ)
+        - timezone (VARCHAR 100)
+        - meeting_link (TEXT)
+        - expert_email, client_email, client_name (VARCHAR 255)
+        - status (VARCHAR 50: confirmed, cancelled, completed, no_show)
+        - confirmation_sent_at, reminder_sent_at (TIMESTAMPTZ)
+        - created_at, updated_at (TIMESTAMPTZ)
+      </bookings>
+    </tables>
+  </database_schema>
+
+  <api_endpoints_summary>
+    <sessions>
+      - POST /api/v1/sessions (Create new chat session)
+      - POST /api/v1/sessions/{session_id}/messages (Send message)
+      - GET /api/v1/sessions/{session_id} (Get session history)
+      - POST /api/v1/sessions/{session_id}/resume (Resume session)
+    </sessions>
+
+    <prd>
+      - POST /api/v1/sessions/{session_id}/prd (Generate PRD)
+      - GET /api/v1/prd/{prd_id}/download (Download PRD)
+      - GET /api/v1/prd/{prd_id}/preview (Preview PRD)
+    </prd>
+
+    <booking>
+      - GET /api/v1/experts/{expert_id}/availability (Get availability)
+      - POST /api/v1/sessions/{session_id}/bookings (Create booking)
+      - DELETE /api/v1/bookings/{booking_id} (Cancel booking)
+    </booking>
+
+    <experts>
+      - GET /api/v1/experts (List experts)
+      - GET /api/v1/experts/{expert_id} (Get expert profile)
+      - POST /api/v1/sessions/{session_id}/match-expert (Match expert to session)
+    </experts>
+
+    <admin>
+      - GET /api/v1/admin/experts (List all experts)
+      - POST /api/v1/admin/experts (Create expert)
+      - PUT /api/v1/admin/experts/{id} (Update expert)
+      - DELETE /api/v1/admin/experts/{id} (Delete expert)
+      - GET /api/v1/admin/analytics (Get analytics dashboard)
+    </admin>
+
+    <websocket>
+      - WS /ws/chat (Chat connection with streaming)
+      - Events: connect, send_message, typing_start, typing_stop, select_slot
+      - Server events: connected, message, message_stream, phase_change, prd_ready, availability, booking_confirmed, error
+    </websocket>
+  </api_endpoints_summary>
+
+  <ui_layout>
+    <widget_collapsed>
+      - Floating button (60x60px) in bottom-right corner (24px margin)
+      - Chat icon with "Chat with us" label
+      - Subtle pulse animation on first visit
+      - Unread badge when messages waiting
+    </widget_collapsed>
+
+    <widget_expanded>
+      - Header (48px): Logo, title, minimize/close buttons
+      - Messages area (400px height, scrollable)
+      - Input area (56px): Text input, attachment, send button
+      - Width: 380px desktop, 100% mobile
+    </widget_expanded>
+
+    <special_components>
+      <quick_replies>
+        - Horizontal button group for common options
+        - Options: AI Strategy, Custom Dev, Analytics, Just Browsing
+      </quick_replies>
+
+      <expert_card>
+        - Photo thumbnail
+        - Name and role
+        - Specialties list
+        - "Book with [Expert]" CTA button
+      </expert_card>
+
+      <prd_preview>
+        - Document icon with filename
+        - Preview text snippet
+        - Preview and Download buttons
+      </prd_preview>
+
+      <calendar_picker>
+        - Expert name header
+        - Grouped by date
+        - Time slot buttons (2 per row)
+        - Selected state indicator
+        - Confirm button
+      </calendar_picker>
+
+      <booking_confirmation>
+        - Success checkmark
+        - Date, time, timezone
+        - Expert name and role
+        - Meeting location (Google Meet)
+        - Calendar invite and Join Meeting buttons
+      </booking_confirmation>
+    </special_components>
+  </ui_layout>
+
+  <design_system>
+    <color_palette>
+      - Primary: #2563EB (UnoDigit Blue)
+      - Primary Dark: #1D4ED8
+      - Secondary: #10B981 (Success Green)
+      - Background: #FFFFFF
+      - Surface: #F3F4F6
+      - Text: #1F2937
+      - Text Muted: #6B7280
+      - Border: #E5E7EB
+      - Error: #EF4444
+    </color_palette>
+
+    <typography>
+      - Font: Inter, -apple-system, sans-serif
+      - Size SM: 14px
+      - Size Base: 16px
+      - Size LG: 18px
+      - Weight Normal: 400
+      - Weight Medium: 500
+      - Weight Bold: 600
+    </typography>
+
+    <spacing>
+      - XS: 4px
+      - SM: 8px
+      - MD: 16px
+      - LG: 24px
+      - XL: 32px
+    </spacing>
+
+    <components>
+      - Rounded corners (4px, 8px, 16px, full)
+      - Shadow levels (sm, md, lg)
+      - Transition speeds (fast: 150ms, normal: 300ms)
+      - Bot message bubbles (left-aligned, surface background)
+      - User message bubbles (right-aligned, primary background)
+      - Typing indicator animation
+      - Skeleton loaders for async content
+    </components>
+  </design_system>
+
+  <implementation_steps>
+    <step number="1">
+      <title>Foundation Setup (Weeks 1-2)</title>
+      <tasks>
+        - Initialize Vite React project with TypeScript template
+        - Initialize FastAPI backend with Python 3.11
+        - Install deepagents and configure basic agent with create_deep_agent()
+        - Set up PostgreSQL with SQLAlchemy and Alembic migrations
+        - Configure Redis for session management
+        - Create basic chat widget UI shell
+        - Implement WebSocket server with Socket.io
+        - Build simple echo bot using DeepAgents for testing
+      </tasks>
+    </step>
+
+    <step number="2">
+      <title>Conversation Engine with DeepAgents (Weeks 3-4)</title>
+      <tasks>
+        - Install deepagents package (uv add deepagents)
+        - Create main agent with create_deep_agent() and custom system prompt
+        - Define custom tools for lead scoring, service matching, calendar lookup
+        - Configure subagents for specialized tasks:
+          - discovery-agent: Business elicitation and qualification
+          - prd-agent: PRD generation from conversation context
+          - booking-agent: Calendar integration and scheduling
+        - Set up interrupt_on for human-in-the-loop approval on bookings
+        - Configure FilesystemBackend for PRD document storage
+        - Add streaming response support via LangGraph streaming
+      </tasks>
+    </step>
+
+    <step number="3">
+      <title>PRD Generation Subagent (Week 5)</title>
+      <tasks>
+        - Design PRD template in Markdown
+        - Create PRD subagent with specialized system prompt
+        - Configure subagent with write_file tool for PRD output
+        - Use FilesystemBackend or StoreBackend for persistent PRD storage
+        - Implement Markdown preview rendering in frontend
+        - Add download functionality via glob/read_file tools
+        - Set up CompositeBackend to route /prd/ paths to persistent storage
+      </tasks>
+    </step>
+
+    <step number="4">
+      <title>Expert Matching & Profiles (Week 6)</title>
+      <tasks>
+        - Create expert database and CRUD operations
+        - Build expert profile UI components
+        - Implement matching algorithm
+        - Display profile cards in chat
+      </tasks>
+    </step>
+
+    <step number="5">
+      <title>Calendar Integration with Booking Subagent (Weeks 7-8)</title>
+      <tasks>
+        - Set up Google OAuth flow for experts
+        - Create calendar custom tools (get_availability, create_event)
+        - Configure booking-agent subagent with calendar tools
+        - Set up interrupt_on for booking approval (human-in-the-loop)
+        - Build time slot picker UI
+        - Integrate Google Meet link generation
+        - Add calendar event management
+      </tasks>
+    </step>
+
+    <step number="6">
+      <title>Notification System (Week 9)</title>
+      <tasks>
+        - Configure SendGrid integration
+        - Design email templates (booking confirmation, reminder)
+        - Implement confirmation emails with attachments
+        - Build reminder scheduling system
+        - Add ICS file generation
+      </tasks>
+    </step>
+
+    <step number="7">
+      <title>Admin Dashboard (Week 10)</title>
+      <tasks>
+        - Build admin authentication
+        - Create expert management UI
+        - Implement conversation analytics
+        - Add lead export functionality
+      </tasks>
+    </step>
+
+    <step number="8">
+      <title>Polish & Testing (Weeks 11-12)</title>
+      <tasks>
+        - UI polish and animations
+        - Mobile optimization
+        - Error handling improvements
+        - Unit and integration tests (80%+ coverage)
+        - Load testing for 100+ concurrent users
+        - Security audit and penetration testing
+        - Accessibility audit (WCAG 2.1 AA)
+        - Production deployment and monitoring setup
+      </tasks>
+    </step>
+  </implementation_steps>
+
+  <success_criteria>
+    <functionality>
+      - Complete conversation-to-booking flow works end-to-end
+      - PRD generated and downloadable within 60 seconds
+      - Expert matching returns relevant recommendations
+      - Calendar integration shows accurate availability
+      - Emails delivered within 30 seconds of booking
+      - Session persists across page refreshes
+    </functionality>
+
+    <performance>
+      - Widget loads in under 2 seconds
+      - Chat opens in under 500ms
+      - Bot response starts within 3 seconds
+      - Message streaming latency under 100ms
+      - System handles 100+ concurrent users
+      - System uptime 99.9%
+    </performance>
+
+    <business_metrics>
+      - 15% widget engagement rate (visitors who start chat)
+      - 60% conversation completion rate (reach PRD stage)
+      - 70% booking completion rate (of PRD downloads)
+      - 40% conversation-to-booking conversion rate
+      - Average time to booking under 15 minutes
+      - Lead quality score average 70+
+    </business_metrics>
+
+    <design>
+      - Professional, branded appearance
+      - Consistent with UnoDigit brand guidelines
+      - Mobile-responsive at all breakpoints
+      - WCAG 2.1 AA accessibility compliance
+      - Intuitive conversation flow (< 5% abandonment due to confusion)
+    </design>
+  </success_criteria>
+</project_specification>
+
