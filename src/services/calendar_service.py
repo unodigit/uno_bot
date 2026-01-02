@@ -311,7 +311,6 @@ class CalendarService:
         Returns:
             List of mock time slots with times in the requested timezone
         """
-        import random
         from datetime import datetime, timedelta
         from zoneinfo import ZoneInfo
 
@@ -348,10 +347,8 @@ class CalendarService:
                         'timezone': timezone
                     })
 
-        # Return a subset of available slots to meet min_slots_to_show requirement
-        if len(slots) > min_slots_to_show:
-            available_slots = random.sample(slots, min_slots_to_show)
-        else:
-            available_slots = slots
+        # Return first N slots deterministically (not random) for consistent test behavior
+        # This ensures the same slots are returned on subsequent calls
+        available_slots = slots[:min_slots_to_show]
 
         return available_slots

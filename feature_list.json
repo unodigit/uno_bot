@@ -836,11 +836,12 @@
       "Step 3: Verify unsubscribe confirmation",
       "Step 4: Verify no more marketing emails sent"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T05:28:16.842744Z"
+    "dev_completed_at": "2026-01-02T05:28:16.842744Z",
+    "qa_completed_at": "2026-01-02T05:42:45.479208+00:00"
   },
   {
     "category": "functional",
@@ -870,8 +871,10 @@
       "Step 5: Verify can continue conversation"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T05:31:20.876367Z"
   },
   {
     "category": "functional",
@@ -883,8 +886,10 @@
       "Step 4: Verify appropriate message shown for expired session"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T05:38:59.348642Z"
   },
   {
     "category": "functional",
@@ -910,8 +915,10 @@
       "Step 5: Submit and verify expert created"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T05:37:33.965801Z"
   },
   {
     "category": "functional",

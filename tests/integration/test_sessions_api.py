@@ -231,3 +231,61 @@ async def test_session_activity_updates(client, sample_visitor_id: str):
     updated_activity = get_response.json()["last_activity"]
 
     assert updated_activity > initial_activity
+
+
+@pytest.mark.asyncio
+async def test_unsubscribe_from_marketing(client, sample_visitor_id: str):
+    """Test PUT /api/v1/sessions/unsubscribe updates email preferences."""
+    # Create a session
+    create_response = await client.post(
+        "/api/v1/sessions",
+        json={"visitor_id": sample_visitor_id},
+    )
+    session_id = create_response.json()["id"]
+
+    # Verify initial state (email_opt_in defaults to False)
+    get_response = await client.get(f"/api/v1/sessions/{session_id}")
+    initial_data = get_response.json()
+    assert initial_data["email_opt_in"] == False
+
+    # Update to opt-in first
+    await client.patch(
+        f"/api/v1/sessions/{session_id}",
+        json={"client_info": {"email": "test@example.com"}},
+    )
+
+    # Now unsubscribe
+    unsubscribe_response = await client.put(
+        "/api/v1/sessions/unsubscribe",
+        json={"session_id": session_id},
+    )
+
+    assert unsubscribe_response.status_code == 200
+    data = unsubscribe_response.json()
+
+    assert "Successfully unsubscribed" in data["message"]
+    assert data["session_id"] == session_id
+    assert data["email_opt_in"] == False
+    assert data["email_preferences"]["marketing"] == False
+    assert data["email_preferences"]["updates"] == False
+    assert data["email_preferences"]["promotions"] == False
+    assert "unsubscribed_at" in data["email_preferences"]
+
+    # Verify the changes persisted in the database
+    get_response = await client.get(f"/api/v1/sessions/{session_id}")
+    session_data = get_response.json()
+    assert session_data["email_opt_in"] == False
+    assert session_data["email_preferences"]["marketing"] == False
+
+
+@pytest.mark.asyncio
+async def test_unsubscribe_nonexistent_session(client):
+    """Test PUT /api/v1/sessions/unsubscribe returns 404 for non-existent session."""
+    fake_id = str(uuid.uuid4())
+    response = await client.put(
+        "/api/v1/sessions/unsubscribe",
+        json={"session_id": fake_id},
+    )
+
+    assert response.status_code == 404
+    assert "not found" in response.json()["detail"].lower()

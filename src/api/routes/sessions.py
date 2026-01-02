@@ -62,6 +62,8 @@ async def create_session(
         started_at=session.started_at,
         last_activity=session.last_activity,
         completed_at=session.completed_at,
+        email_opt_in=session.email_opt_in,
+        email_preferences=session.email_preferences,
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -118,6 +120,8 @@ async def get_session(
         started_at=session.started_at,
         last_activity=session.last_activity,
         completed_at=session.completed_at,
+        email_opt_in=session.email_opt_in,
+        email_preferences=session.email_preferences,
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -240,6 +244,8 @@ async def resume_session_path(
         started_at=resumed_session.started_at,
         last_activity=resumed_session.last_activity,
         completed_at=resumed_session.completed_at,
+        email_opt_in=resumed_session.email_opt_in,
+        email_preferences=resumed_session.email_preferences,
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -313,6 +319,8 @@ async def resume_session(
         started_at=resumed_session.started_at,
         last_activity=resumed_session.last_activity,
         completed_at=resumed_session.completed_at,
+        email_opt_in=resumed_session.email_opt_in,
+        email_preferences=resumed_session.email_preferences,
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -451,6 +459,8 @@ async def update_session(
         started_at=updated_session.started_at,
         last_activity=updated_session.last_activity,
         completed_at=updated_session.completed_at,
+        email_opt_in=updated_session.email_opt_in,
+        email_preferences=updated_session.email_preferences,
         messages=[
             MessageResponse(
                 id=msg.id,
@@ -477,7 +487,7 @@ async def unsubscribe_from_marketing(
         db: Database session
 
     Returns:
-        Success message
+        Success message with session_id
     """
     service = SessionService(db)
 
@@ -488,7 +498,7 @@ async def unsubscribe_from_marketing(
             detail=f"Session {unsubscribe_request.session_id} not found"
         )
 
-    # Update email preferences to opt out
+    # Update email preferences to opt out of marketing
     session.email_opt_in = False
     session.email_preferences = {
         "marketing": False,
@@ -498,8 +508,11 @@ async def unsubscribe_from_marketing(
     }
 
     await db.commit()
+    await db.refresh(session)
 
     return {
         "message": "Successfully unsubscribed from marketing emails",
-        "session_id": str(unsubscribe_request.session_id)
+        "session_id": str(unsubscribe_request.session_id),
+        "email_opt_in": session.email_opt_in,
+        "email_preferences": session.email_preferences
     }
