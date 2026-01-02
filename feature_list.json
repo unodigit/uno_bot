@@ -1328,12 +1328,11 @@
       "Step 3: Verify only active experts returned",
       "Step 4: Verify all fields present"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T06:59:24.412724Z",
-    "qa_completed_at": "2026-01-02T07:25:00.000Z"
+    "qa_completed_at": "2026-01-02T19:38:00.000Z"
   },
   {
     "category": "functional",
@@ -1904,11 +1903,15 @@
       "Step 3: Verify 4px, 8px, 16px values used",
       "Step 4: Verify consistency"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:15:21.700843Z"
+    "dev_completed_at": "2026-01-02T08:15:21.700843Z",
+    "qa_completed_at": "2026-01-02T19:36:13.490872",
+    "test_files": [
+      "tests/e2e/test_design_system_border_radius.py"
+    ]
   },
   {
     "category": "style",
@@ -1934,10 +1937,11 @@
       "Step 3: Verify 150ms for fast transitions",
       "Step 4: Verify no janky animations"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T08:32:49.733806Z"
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T08:32:49.733806Z",
+    "qa_completed_at": "2026-01-02T08:33:38.338269+00:00"
   },
   {
     "category": "style",
@@ -2067,8 +2071,10 @@
       "Step 4: Verify no layout shift"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:33:25.518313Z"
   },
   {
     "category": "style",
@@ -2080,8 +2086,10 @@
       "Step 4: Verify call to action if applicable"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:33:26.544040Z"
   },
   {
     "category": "functional",
