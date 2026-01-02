@@ -442,7 +442,8 @@ class TestAdminConversationAnalytics:
         page.wait_for_timeout(3000)
 
         # Verify the specific metric is displayed
-        metric_label = page.locator(metric_selector)
+        # Use first() to handle cases where text might appear multiple times
+        metric_label = page.locator(metric_selector).first
         expect(metric_label).to_be_visible()
 
         # Try to get the metric value

@@ -1007,11 +1007,11 @@
       "Step 4: Save changes",
       "Step 5: Start new chat and verify new message used"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T06:21:14.236709Z"
+    "dev_completed_at": "2026-01-02T17:45:00.000000Z"
   },
   {
     "category": "functional",
@@ -1057,9 +1057,13 @@
       "Step 4: Provide clearer answer",
       "Step 5: Verify conversation continues"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "test_files": [
+      "tests/unit/test_ambiguity_detection.py",
+      "tests/e2e/test_ambiguity_handling.py"
+    ]
   },
   {
     "category": "functional",

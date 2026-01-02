@@ -13,6 +13,12 @@ from src.schemas.session import (
     SessionCreate,
     SessionResponse,
 )
+from src.schemas.template import (
+    WelcomeMessageSelectionRequest,
+    WelcomeMessageTemplateCreate,
+    WelcomeMessageTemplateResponse,
+    WelcomeMessageTemplateUpdate,
+)
 
 __all__ = [
     "SessionCreate",
@@ -29,4 +35,8 @@ __all__ = [
     "BookingResponse",
     "TimeSlot",
     "AvailabilityResponse",
+    "WelcomeMessageTemplateCreate",
+    "WelcomeMessageTemplateUpdate",
+    "WelcomeMessageTemplateResponse",
+    "WelcomeMessageSelectionRequest",
 ]

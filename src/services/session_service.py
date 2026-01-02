@@ -17,6 +17,7 @@ from src.models.session import (
 from src.schemas.session import MessageCreate, SessionCreate
 from src.services.ai_service import AIService
 from src.services.expert_service import ExpertService
+from src.services.template_service import TemplateService
 
 
 class SessionService:
@@ -25,6 +26,7 @@ class SessionService:
     def __init__(self, db: AsyncSession):
         self.db = db
         self.ai_service = AIService()
+        self.template_service = TemplateService(db)
 
     async def create_session(self, session_create: SessionCreate) -> ConversationSession:
         """Create a new conversation session."""
@@ -40,12 +42,27 @@ class SessionService:
         self.db.add(session)
         await self.db.flush()
 
+        # Get welcome message from template service
+        # Try to get a template based on context (could extract industry from source_url in future)
+        template = await self.template_service.get_template_for_industry(None)
+
+        if template:
+            welcome_content = template.content
+            # Increment use count
+            await self.template_service.increment_use_count(template.id)
+        else:
+            # Fallback to default message
+            welcome_content = "🎉 Welcome! I'm UnoBot, your AI business consultant from UnoDigit.\n\nI can help you explore our services, understand your needs, and connect you with the right expert.\n\nTo get started, what's your name?"
+
         # Add initial welcome message
         welcome_message = Message(
             session_id=session.id,
             role=MessageRole.ASSISTANT,
-            content="🎉 Welcome! I'm UnoBot, your AI business consultant from UnoDigit.\n\nI can help you explore our services, understand your needs, and connect you with the right expert.\n\nTo get started, what's your name?",
-            meta_data={"type": "welcome"},
+            content=welcome_content,
+            meta_data={
+                "type": "welcome",
+                "template_id": str(template.id) if template else None,
+            },
             created_at=datetime.utcnow(),
         )
         self.db.add(welcome_message)
@@ -170,6 +187,27 @@ class SessionService:
                 "role": msg.role,
                 "content": msg.content,
             })
+
+        # Check for ambiguous response FIRST - before extracting info
+        ambiguity_check = await self._check_ambiguity(user_message, session)
+        if ambiguity_check["is_ambiguous"]:
+            # Generate clarification response instead of normal flow
+            clarification_response = self._generate_clarification_response(
+                ambiguity_check, user_message, session
+            )
+
+            # Create and save AI message with clarification
+            ai_message = Message(
+                session_id=session.id,
+                role=MessageRole.ASSISTANT,
+                content=clarification_response,
+                meta_data={"type": "clarification", "ambiguous_reason": ambiguity_check["reason"]},
+                created_at=datetime.utcnow(),
+            )
+            self.db.add(ai_message)
+            await self.db.commit()
+            await self.db.refresh(ai_message)
+            return ai_message
 
         # Extract user information from their response FIRST
         # This updates session data which is used for context
@@ -571,3 +609,130 @@ class SessionService:
                 pass
 
         return results
+
+    async def _check_ambiguity(self, user_message: str, session: ConversationSession) -> dict:
+        """Check if user response is ambiguous and needs clarification.
+
+        Returns:
+            Dict with is_ambiguous (bool) and reason (str) keys
+        """
+        import re
+        user_text = user_message.lower().strip()
+
+        # Check for very short responses first
+        # (but exclude single word answers that are valid like names, emails)
+        if len(user_text) < 5 and not re.search(r'@', user_text):
+            # Single letter or very short non-name responses (2 chars or less)
+            if len(user_text) < 2:
+                return {"is_ambiguous": True, "reason": "too_short"}
+            # 2-4 chars that are not valid names (contain numbers or symbols)
+            if len(user_text) <= 4 and not re.search(r'^[a-z]+$', user_text):
+                return {"is_ambiguous": True, "reason": "too_short"}
+
+        # Check for specific ambiguity patterns with their reasons
+        # Order matters - more specific patterns first
+        patterns_with_reasons = [
+            (r'^\s*(yes|no|yeah|nah|yep|nope)\s*$', "minimal_response"),
+            (r'\b(not sure|not certain|don\'t know|don\'t really know|dunno)\b', "lack_of_knowledge"),
+            (r'\b(i guess|i suppose|i think)\b', "guessing"),
+            (r'\b(maybe|perhaps|possibly|probably|might|could)\b', "uncertainty"),
+            (r'\b(whatever|anything|something|stuff|things)\b', "non_specific"),
+            (r'\b(um|uh|er|ah|hmm|hum)\b', "hesitation"),
+            (r'\b(sort of|kind of|kinda|sorta)\b', "uncertainty"),
+        ]
+
+        for pattern, reason in patterns_with_reasons:
+            if re.search(pattern, user_text, re.IGNORECASE):
+                return {"is_ambiguous": True, "reason": reason}
+
+        # Check for responses that don't answer the specific question
+        # Look at the last bot message to see what was asked
+        last_messages = [msg for msg in session.messages if msg.role == MessageRole.ASSISTANT]
+        if last_messages:
+            last_bot_message = last_messages[-1].content.lower()
+
+            # If bot asked for name and response doesn't contain name-like patterns
+            if "name" in last_bot_message and not re.search(r'(name is|i am|i\'m|call me)', user_text):
+                # But user provided something that looks like a name
+                if len(user_text.split()) <= 3 and re.search(r'^[a-z\s]+$', user_text):
+                    # This is actually fine, it's likely a name
+                    return {"is_ambiguous": False, "reason": ""}
+
+            # If bot asked for email and response doesn't contain @
+            if "email" in last_bot_message and "@" not in user_text:
+                # Check if it's a valid response to something else
+                if not any(word in user_text for word in ["yes", "no", "maybe", "later"]):
+                    return {"is_ambiguous": True, "reason": "missing_email_format"}
+
+        return {"is_ambiguous": False, "reason": ""}
+
+    def _generate_clarification_response(self, ambiguity_check: dict, user_message: str, session: ConversationSession) -> str:
+        """Generate a clarification response based on the ambiguity type.
+
+        Args:
+            ambiguity_check: Dict with is_ambiguous and reason
+            user_message: The ambiguous user message
+            session: Current conversation session
+
+        Returns:
+            Clarification response text
+        """
+        reason = ambiguity_check["reason"]
+        name = session.client_info.get("name", "there")
+
+        # Get context about what we're asking
+        current_phase = session.current_phase
+
+        clarification_messages = {
+            "uncertainty": [
+                f"I understand you're not completely sure, {name}. Could you help me understand a bit better?",
+                f"No problem if you're uncertain! Could you give me more details about what you're thinking?",
+                f"That's totally fine, {name}. Could you tell me a bit more so I can help you better?"
+            ],
+            "lack_of_knowledge": [
+                f"No worries at all, {name}! I'm here to help. Could you tell me what you do know about this?",
+                f"That's completely okay! Could you share any details you might have?",
+                f"Thanks for being honest, {name}. Could you tell me more about your situation?"
+            ],
+            "guessing": [
+                f"Thanks for sharing, {name}. Could you give me more specific details?",
+                f"I appreciate your input! Could you tell me more about what you're looking for?",
+                f"Thanks for that, {name}. Could you provide a bit more detail?"
+            ],
+            "non_specific": [
+                f"I'd love to help, {name}! Could you be more specific about what you're looking for?",
+                f"Thanks for sharing! Could you give me more details about what you need?",
+                f"I understand, {name}. Could you tell me more specifically about your needs?"
+            ],
+            "minimal_response": [
+                f"Thanks, {name}! Could you tell me a bit more about that?",
+                f"I appreciate your response! Could you elaborate a bit more?",
+                f"Thanks for that, {name}. Could you give me more context?"
+            ],
+            "hesitation": [
+                f"Take your time, {name}! I'm here to help whenever you're ready.",
+                f"No rush, {name}. Could you tell me more when you're comfortable?",
+                f"Whenever you're ready, {name}! I'd love to hear more details."
+            ],
+            "too_short": [
+                f"Thanks, {name}! Could you give me a bit more detail?",
+                f"I appreciate your response! Could you elaborate a bit more?",
+                f"Thanks for that, {name}. Could you tell me more?"
+            ],
+            "missing_email_format": [
+                f"Thanks, {name}! Could you please provide your email address?",
+                f"I need your email to send you information. Could you share it with me?",
+                f"Could you provide your email address so I can follow up with you?"
+            ]
+        }
+
+        # Get appropriate message or default
+        messages = clarification_messages.get(reason, [
+            f"Thanks, {name}! Could you give me more details about that?",
+            f"I want to make sure I understand correctly, {name}. Could you tell me more?",
+            f"Thanks for sharing! Could you elaborate a bit more?"
+        ])
+
+        # Pick a random message from the options
+        import random
+        return random.choice(messages)

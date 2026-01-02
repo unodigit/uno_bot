@@ -45,16 +45,18 @@ async def db_session(engine) -> AsyncGenerator[AsyncSession, None]:
 
     async with async_session() as session:
         # Clean up all data before test
-        from src.models.expert import Expert
         from src.models.booking import Booking
-        from src.models.session import ConversationSession, Message
+        from src.models.expert import Expert
         from src.models.prd import PRDDocument
+        from src.models.session import ConversationSession, Message
+        from src.models.template import WelcomeMessageTemplate
 
         await session.execute(Expert.__table__.delete())
         await session.execute(Booking.__table__.delete())
         await session.execute(Message.__table__.delete())
         await session.execute(ConversationSession.__table__.delete())
         await session.execute(PRDDocument.__table__.delete())
+        await session.execute(WelcomeMessageTemplate.__table__.delete())
         await session.commit()
 
         yield session
