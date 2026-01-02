@@ -91,8 +91,9 @@ class TestBotMessageStyling:
         # Check for border styling
         assert 'border' in bubble_class, \
             f"Bot message should have border class, got: {bubble_class}"
-        assert 'border-gray-200' in bubble_class, \
-            f"Bot message should have border-gray-200 class, got: {bubble_class}"
+        # border-border is the design system token equivalent to border-gray-200
+        assert 'border-border' in bubble_class, \
+            f"Bot message should have border-border class, got: {bubble_class}"
 
         # Check for rounded corners
         assert 'rounded-lg' in bubble_class, \
