@@ -7,15 +7,16 @@ export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
 
-  const { messages, sessionId, createSession } = useChatStore()
+  const { messages, sessionId, createSession, loadSession } = useChatStore()
 
   // Check for existing session on mount
   useEffect(() => {
     const existingSessionId = localStorage.getItem('unobot_session_id')
-    if (existingSessionId) {
-      createSession()
+    if (existingSessionId && !sessionId) {
+      // Load existing session instead of creating a new one
+      loadSession(existingSessionId)
     }
-  }, [createSession])
+  }, [sessionId, loadSession])
 
   const handleToggle = () => {
     if (!isOpen) {
