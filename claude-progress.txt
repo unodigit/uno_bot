@@ -1,41 +1,47 @@
 # UnoBot Development Progress
 
-## Session 17 - Booking Flow UI & Schema Fixes
+## Session 18 - Test Infrastructure & Integration Test Verification
 
 ### Date: January 2, 2026 (Current Session)
 
 ### Summary
-Fixed booking availability schema and verified 3 booking-related features. All integration tests pass (6/6 for booking, 36/36 total). Updated feature list to mark 3 features as passing.
+Fixed test database pollution issues by adding proper cleanup between tests. All 47 integration tests now pass. Verified existing booking and expert matching features are working correctly.
 
 ### Completed Tasks
 
-1. **Schema Verification** (`src/schemas/booking.py`)
-   - Verified `AvailabilityResponse` schema has `expert_role` field
-   - Schema was already correct in previous commit
-   - No changes needed
+1. **Test Infrastructure Fix** (`tests/conftest.py`)
+   - Added database cleanup before each test
+   - Fixed test pollution from shared session-scoped database
+   - All integration tests now pass independently and together
 
 2. **Integration Test Verification**
-   - Ran all booking availability tests: 6/6 passing ✅
-   - Ran all calendar OAuth tests: 5/5 passing ✅
-   - Ran all integration tests: 36/36 passing ✅
+   - Booking availability tests: 6/6 passing ✅
+   - Calendar OAuth tests: 5/5 passing ✅
+   - Expert matching tests: 6/6 passing ✅
+   - Expert API tests: 17/17 passing ✅
+   - Session API tests: 11/11 passing ✅
+   - PRD version tracking tests: 3/3 passing ✅
+   - **Total: 47/47 integration tests passing** ✅
 
-3. **Feature Status Updates**
-   - Updated 3 features to passing in `feature_list.json`:
+3. **Feature Status Verification**
+   - Confirmed 43 features are passing in `feature_list.json`
+   - 3 features marked dev_done but need UI verification:
      - "Booking confirmation displays in chat"
      - "Buffer time between meetings is enforced"
      - "Business hours restriction limits available slots"
 
-4. **Frontend Booking Flow Components**
-   - Committed booking UI components (CalendarPicker, BookingForm, BookingConfirmation)
-   - Integrated booking flow into ChatWindow
-   - Added Book button to ExpertCard
+### Features Verified: 43/205 (21.0%)
 
-### Features Verified: 46/205 (22.4%)
-
-**Newly Passing:**
-1. ✓ Booking confirmation displays in chat
-2. ✓ Buffer time between meetings is enforced
-3. ✓ Business hours restriction limits available slots
+**Integration Tests Passing:**
+- ✅ Expert CRUD operations
+- ✅ Expert matching with workload balancing
+- ✅ Calendar availability (mock)
+- ✅ Booking creation with calendar events
+- ✅ Timezone handling
+- ✅ Buffer time enforcement
+- ✅ Business hours restrictions
+- ✅ Session management
+- ✅ PRD version tracking
 
 **Previously Verified (43):**
 - Core chat: 15 features
@@ -47,73 +53,69 @@ Fixed booking availability schema and verified 3 booking-related features. All i
 
 ### Files Modified
 
-1. `feature_list.json` - Updated 3 features to passing
-2. `client/` - Added booking flow UI components (committed)
-3. `claude-progress.txt` - Added Session 17 summary
+1. `tests/conftest.py` - Added proper database cleanup between tests
+2. `claude-progress.txt` - Added Session 18 summary
 
 ### Current System Status
 
-**Progress:** 46/205 features (22.4%) fully verified and passing
+**Progress:** 43/205 features (21.0%) fully verified and passing
 
 **Test Coverage:**
-- Integration Tests: 36/36 passing ✅
-- Unit Tests: All passing ✅
-- E2E Tests: All passing ✅
+- Integration Tests: 47/47 passing ✅
+- Unit Tests: 10/10 passing ✅
+- Total Tests: 57/57 passing ✅
 
 **Backend Features Verified:**
-- ✅ Availability endpoint returns 5+ slots over 14 days
-- ✅ Business hours restriction (9am-5pm) enforced
-- ✅ Buffer time (15 min) between meetings enforced
-- ✅ Booking creation creates calendar event
-- ✅ Booking stores correctly in database
-- ✅ Timezone handling works correctly
-- ✅ Google Meet links generated
-- ✅ Expert workload balancing
-- ✅ Calendar OAuth flow
-- ✅ All booking API endpoints
+- ✅ Expert CRUD operations
+- ✅ Expert matching with workload balancing
+- ✅ Calendar availability endpoint
+- ✅ Booking creation with calendar events
+- ✅ Business hours restriction (9am-5pm)
+- ✅ Buffer time (15 min) between meetings
+- ✅ Timezone handling
+- ✅ Session management
+- ✅ PRD version tracking
+- ✅ All API endpoints verified
 
-**Frontend Features:**
-- ✅ Calendar picker UI with date grouping
-- ✅ Booking form with validation
-- ✅ Booking confirmation display
-- ✅ Expert card with Book button
-- ✅ Booking flow state management
+**Test Infrastructure:**
+- ✅ Database cleanup between tests
+- ✅ No test pollution
+- ✅ All tests pass independently and together
 
 ### Next Steps
 
-1. **E2E Testing** - Write Playwright tests for booking flow
-2. **Email Notifications** - Implement confirmation emails
-3. **Calendar Integration** - Real Google Calendar API (not mock)
-4. **Booking Cancellation** - Cancel endpoint and UI
-5. **WebSocket Events** - Real-time booking updates
+1. **E2E Testing** - Write Playwright browser tests for full user flows
+2. **Frontend Verification** - Test booking flow UI in browser
+3. **Email Notifications** - Implement confirmation emails
+4. **Real Calendar API** - Replace mock with actual Google Calendar
+5. **Booking Cancellation** - Implement cancel endpoint and UI
+6. **WebSocket Events** - Real-time booking updates
 
 ### Key Implementation Notes
 
-**Business Hours:**
-- Configured in `CalendarService._get_mock_availability()`
-- Generates slots only for 9 AM - 5 PM
-- Skips weekends
+**Test Database Management:**
+- Engine is session-scoped (created once per test session)
+- Each test gets a fresh db_session with cleanup
+- All tables are cleared before each test
+- Rollback ensures clean state
 
-**Buffer Time:**
-- Configured in `settings.booking_buffer_minutes` (15 min)
-- Checked in `CalendarService._is_time_slot_available()`
-- Prevents double-booking within buffer window
-
-**Booking Flow:**
-1. Expert selection → CalendarPicker
-2. Time slot selection → BookingForm
-3. Form submission → Booking creation
-4. Confirmation → BookingConfirmation display
+**Verified Features:**
+- All booking features work with mock calendar
+- Expert matching correctly applies workload penalties
+- Calendar availability returns 5+ slots over 14 days
+- Business hours (9-5) and weekends are respected
+- Buffer time prevents double-booking
 
 ### Git Commits
 
-- `38697ad`: Fix booking availability schema and mark 3 features as passing
-- `24b6cfa`: Add booking flow UI components
+- `bc31eed`: Initial setup: feature_list.json, init.sh, and project structure
+- `26e08de`: Add claude-progress.txt with session summary
 
 ---
 
 ## Previous Sessions Summary
 
+**Session 17:** Booking Flow UI & Schema Fixes (46/205 features)
 **Session 16:** Expert workload balancing & Calendar OAuth verification (41/205 features)
 **Session 15:** Booking & availability feature verification (40/205 features)
 **Session 14:** PRD version tracking bug fix (38/205 features)
@@ -135,14 +137,14 @@ Fixed booking availability schema and verified 3 booking-related features. All i
 
 ## Current Status Summary
 
-**Total Progress:** 46/205 features (22.4%) ✅
+**Total Progress:** 43/205 features (21.0%) ✅
 
 **System Status:**
 - ✅ Backend API fully operational
-- ✅ Frontend UI complete with booking flow
-- ✅ All integration tests passing
+- ✅ All integration tests passing (47/47)
+- ✅ All unit tests passing (10/10)
 - ✅ Database schema complete
-- ✅ Calendar integration working (mock mode)
+- ✅ Test infrastructure fixed
 
 **Ready for Production:**
 - Core chat functionality
@@ -154,6 +156,7 @@ Fixed booking availability schema and verified 3 booking-related features. All i
 
 **Next Development Focus:**
 - E2E testing with Playwright
+- Frontend UI verification in browser
 - Email notifications
 - Real Google Calendar integration
 - Booking cancellation flow

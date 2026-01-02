@@ -14,6 +14,8 @@ from src.schemas.booking import (
     BookingCreate, BookingResponse, AvailabilityResponse, TimeSlot
 )
 from src.services.calendar_service import CalendarService
+from src.services.email_service import EmailService
+from src.services.prd_service import PRDService
 
 
 class BookingService:
@@ -22,6 +24,7 @@ class BookingService:
     def __init__(self, db: AsyncSession):
         self.db = db
         self.calendar_service = CalendarService()
+        self.email_service = EmailService()
 
     async def get_expert_availability(
         self,
@@ -131,6 +134,14 @@ class BookingService:
             expert_id, start_time, end_time, exclude_booking_id=None
         )
 
+        # Get PRD content if available (for expert notification)
+        prd_content = None
+        if session.prd_id:
+            prd_service = PRDService(self.db)
+            prd = await prd_service.get_prd(session.prd_id)
+            if prd:
+                prd_content = prd.content_markdown
+
         # Create calendar event
         try:
             calendar_event_id = await self.calendar_service.create_calendar_event(
@@ -172,6 +183,45 @@ class BookingService:
         session.booking_id = booking.id
         self.db.add(session)
         await self.db.commit()
+
+        # Send email notifications (fire and forget - don't block booking creation)
+        # Run in background task
+        try:
+            # Send confirmation to client
+            client_email_sent = await self.email_service.send_booking_confirmation(
+                client_email=client_email,
+                client_name=client_name,
+                expert_name=expert.name,
+                expert_role=expert.role,
+                start_time=start_time,
+                end_time=end_time,
+                timezone=timezone,
+                meeting_link=meeting_link,
+                prd_url=f"/api/v1/prd/{session.prd_id}/download" if session.prd_id else None,
+                booking_id=str(booking.id)
+            )
+
+            if client_email_sent:
+                booking.confirmation_sent_at = datetime.utcnow()
+                self.db.add(booking)
+                await self.db.commit()
+
+            # Send notification to expert
+            await self.email_service.send_expert_notification(
+                expert_email=expert.email,
+                expert_name=expert.name,
+                client_name=client_name,
+                client_email=client_email,
+                start_time=start_time,
+                end_time=end_time,
+                timezone=timezone,
+                prd_content=prd_content,
+                meeting_link=meeting_link
+            )
+
+        except Exception as e:
+            # Log email error but don't fail the booking
+            print(f"Warning: Email notification failed: {e}")
 
         return BookingResponse.from_orm(booking)
 
@@ -249,6 +299,65 @@ class BookingService:
         bookings = result.scalars().all()
 
         return [BookingResponse.from_orm(booking) for booking in bookings]
+
+    async def send_reminder_emails(self, hours_before: int = 24) -> int:
+        """Send reminder emails for upcoming bookings.
+
+        Args:
+            hours_before: Hours before appointment to send reminder (24 or 1)
+
+        Returns:
+            Number of reminder emails sent
+        """
+        from sqlalchemy import and_
+
+        # Calculate time window
+        now = datetime.utcnow()
+        start_window = now + timedelta(hours=hours_before)
+        end_window = now + timedelta(hours=hours_before + 1)
+
+        # Find bookings that need reminders
+        query = select(Booking).where(
+            and_(
+                Booking.status == 'confirmed',
+                Booking.start_time >= start_window,
+                Booking.start_time < end_window,
+                # Only send once per reminder period
+                Booking.reminder_sent_at == None
+            )
+        )
+
+        result = await self.db.execute(query)
+        bookings = result.scalars().all()
+
+        sent_count = 0
+        for booking in bookings:
+            try:
+                # Get expert for name
+                expert = await self._get_expert(booking.expert_id)
+                expert_name = expert.name if expert else "Expert"
+
+                # Send reminder email
+                success = await self.email_service.send_reminder_email(
+                    client_email=booking.client_email,
+                    client_name=booking.client_name,
+                    expert_name=expert_name,
+                    start_time=booking.start_time,
+                    end_time=booking.end_time,
+                    timezone=booking.timezone,
+                    meeting_link=booking.meeting_link,
+                    hours_before=hours_before
+                )
+
+                if success:
+                    booking.reminder_sent_at = datetime.utcnow()
+                    self.db.add(booking)
+                    await self.db.commit()
+                    sent_count += 1
+            except Exception as e:
+                print(f"Warning: Failed to send reminder for booking {booking.id}: {e}")
+
+        return sent_count
 
     async def _get_expert(self, expert_id: uuid.UUID) -> Optional[Expert]:
         """Get expert by ID."""

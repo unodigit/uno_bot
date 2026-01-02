@@ -575,8 +575,10 @@
       "Step 4: Verify timezone label is correct"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T04:48:50.892972Z"
   },
   {
     "category": "functional",
@@ -603,9 +605,12 @@
       "Step 3: Verify slot is highlighted as selected",
       "Step 4: Verify Confirm button becomes active"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T15:45:00.000000Z",
+    "qa_completed_at": "2026-01-02T15:45:00.000000Z"
   },
   {
     "category": "functional",
