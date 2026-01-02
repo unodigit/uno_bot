@@ -62,9 +62,9 @@ def test_complete_booking_flow(page: Page):
     match_experts_btn = page.get_by_test_id("match-experts-button")
     expect(match_experts_btn).to_be_visible(timeout=10000)
     match_experts_btn.click()
-
-    # Wait for expert matching to complete
-    page.wait_for_timeout(2000)
+    # Wait for expert matching to complete and experts to appear
+    expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
+    page.wait_for_timeout(1000)
 
     # Wait for expert list to appear
     expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
@@ -131,10 +131,10 @@ def test_complete_booking_flow(page: Page):
     expect(email_input).to_be_visible()
     email_input.fill("testuser@example.com")
 
-    # Click final confirm button in BookingForm (the one with Calendar icon)
-    # There are two "Confirm Booking" buttons - one in CalendarPicker (already clicked) and one in BookingForm
-    # The BookingForm button is inside a form
-    final_confirm = page.locator('form button:has-text("Confirm Booking")')
+    # Click final confirm button in BookingForm
+    # After filling name and email, the submit button should be enabled
+    # Use the button with type="submit" inside the form
+    final_confirm = page.locator('form button[type="submit"]')
     expect(final_confirm).to_be_visible()
     expect(final_confirm).to_be_enabled()
     final_confirm.click()
@@ -195,9 +195,9 @@ def test_timezone_detection(page: Page):
     match_experts_btn = page.get_by_test_id("match-experts-button")
     expect(match_experts_btn).to_be_visible(timeout=10000)
     match_experts_btn.click()
-
-    # Wait for expert matching to complete
-    page.wait_for_timeout(2000)
+    # Wait for expert matching to complete and experts to appear
+    expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
+    page.wait_for_timeout(1000)
 
     # Click "Book" on first expert
     book_expert_btn = page.get_by_test_id("book-expert-0")
@@ -259,7 +259,7 @@ def test_time_slot_selection_confirmation(page: Page):
     send_button.click()
     page.wait_for_timeout(800)
 
-    chat_input.fill("Need help")
+    chat_input.fill("Need AI help with machine learning")
     send_button.click()
     page.wait_for_timeout(2000)
 
@@ -267,9 +267,9 @@ def test_time_slot_selection_confirmation(page: Page):
     match_experts_btn = page.get_by_test_id("match-experts-button")
     expect(match_experts_btn).to_be_visible(timeout=10000)
     match_experts_btn.click()
-
-    # Wait for expert matching to complete
-    page.wait_for_timeout(2000)
+    # Wait for expert matching to complete and experts to appear
+    expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
+    page.wait_for_timeout(1000)
 
     # Click "Book" on first expert
     book_expert_btn = page.get_by_test_id("book-expert-0")
@@ -332,7 +332,7 @@ def test_double_booking_prevention(page: Page):
     send_button.click()
     page.wait_for_timeout(800)
 
-    chat_input.fill("Need help")
+    chat_input.fill("Need AI help with machine learning")
     send_button.click()
     page.wait_for_timeout(2000)
 
@@ -340,9 +340,9 @@ def test_double_booking_prevention(page: Page):
     match_experts_btn = page.get_by_test_id("match-experts-button")
     expect(match_experts_btn).to_be_visible(timeout=10000)
     match_experts_btn.click()
-
-    # Wait for expert matching to complete
-    page.wait_for_timeout(2000)
+    # Wait for expert matching to complete and experts to appear
+    expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
+    page.wait_for_timeout(1000)
 
     # Click "Book" on first expert
     book_expert_btn = page.get_by_test_id("book-expert-0")
@@ -419,7 +419,7 @@ def test_availability_refresh(page: Page):
     send_button.click()
     page.wait_for_timeout(800)
 
-    chat_input.fill("Need help")
+    chat_input.fill("Need AI help with machine learning")
     send_button.click()
     page.wait_for_timeout(2000)
 
@@ -427,9 +427,9 @@ def test_availability_refresh(page: Page):
     match_experts_btn = page.get_by_test_id("match-experts-button")
     expect(match_experts_btn).to_be_visible(timeout=10000)
     match_experts_btn.click()
-
-    # Wait for expert matching to complete
-    page.wait_for_timeout(2000)
+    # Wait for expert matching to complete and experts to appear
+    expect(page.get_by_test_id("expert-match-list")).to_be_visible(timeout=10000)
+    page.wait_for_timeout(1000)
 
     # Click "Book" on first expert
     book_expert_btn = page.get_by_test_id("book-expert-0")

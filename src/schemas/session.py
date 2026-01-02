@@ -62,6 +62,8 @@ class SessionResponse(BaseModel):
     started_at: datetime
     last_activity: datetime
     completed_at: datetime | None = None
+    email_opt_in: bool = False
+    email_preferences: dict[str, Any] = {}
     messages: list["MessageResponse"] = []
 
     class Config:
@@ -98,6 +100,12 @@ class SessionResumeRequest(BaseModel):
     """
 
     session_id: UUID | None = Field(None, description="Session ID to resume (required for body-based resume)")
+
+
+class UnsubscribeRequest(BaseModel):
+    """Request schema for unsubscribing from marketing emails."""
+
+    session_id: UUID = Field(..., description="Session ID to unsubscribe")
 
 
 class SessionUpdateRequest(BaseModel):

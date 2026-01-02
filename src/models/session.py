@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from enum import Enum
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.core.config import settings
@@ -107,6 +107,10 @@ class ConversationSession(Base):
     completed_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+
+    # Email preferences for marketing communications
+    email_opt_in: Mapped[bool] = mapped_column(Boolean, default=False)
+    email_preferences: Mapped[dict] = mapped_column(JSONType, default=dict)
 
     # Relationships
     matched_expert = relationship("Expert", back_populates="sessions")

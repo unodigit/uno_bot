@@ -28,6 +28,44 @@ class ExpertService:
         )
         return list(result.scalars().all())
 
+    async def list_experts(self, include_inactive: bool = False) -> list[Expert]:
+        """List all experts (optionally including inactive ones).
+
+        Args:
+            include_inactive: Whether to include inactive experts
+
+        Returns:
+            List of expert profiles
+        """
+        if include_inactive:
+            result = await self.db.execute(
+                select(Expert)
+            )
+        else:
+            result = await self.db.execute(
+                select(Expert).where(Expert.is_active == True)  # noqa: E712
+            )
+        return list(result.scalars().all())
+
+    async def count_experts(self, active_only: bool = False) -> int:
+        """Count total number of experts.
+
+        Args:
+            active_only: Whether to count only active experts
+
+        Returns:
+            Number of experts
+        """
+        if active_only:
+            result = await self.db.execute(
+                select(func.count()).select_from(Expert).where(Expert.is_active == True)  # noqa: E712
+            )
+        else:
+            result = await self.db.execute(
+                select(func.count()).select_from(Expert)
+            )
+        return result.scalar_one()
+
     async def get_expert(self, expert_id: uuid.UUID) -> Expert | None:
         """Get an expert by ID.
 

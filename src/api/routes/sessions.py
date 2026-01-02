@@ -1,5 +1,6 @@
 """Session and message API routes."""
 import uuid
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,6 +15,7 @@ from src.schemas.session import (
     SessionResponse,
     SessionResumeRequest,
     SessionUpdateRequest,
+    UnsubscribeRequest,
 )
 from src.services.expert_service import ExpertService
 from src.services.session_service import SessionService
@@ -461,3 +463,43 @@ async def update_session(
             for msg in updated_session.messages
         ],
     )
+
+
+@router.put("/unsubscribe")
+async def unsubscribe_from_marketing(
+    unsubscribe_request: UnsubscribeRequest,
+    db: AsyncSession = Depends(get_db)
+):
+    """Unsubscribe from marketing emails and update session preferences.
+
+    Args:
+        unsubscribe_request: Unsubscribe request with session_id
+        db: Database session
+
+    Returns:
+        Success message
+    """
+    service = SessionService(db)
+
+    session = await service.get_session(unsubscribe_request.session_id)
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Session {unsubscribe_request.session_id} not found"
+        )
+
+    # Update email preferences to opt out
+    session.email_opt_in = False
+    session.email_preferences = {
+        "marketing": False,
+        "updates": False,
+        "promotions": False,
+        "unsubscribed_at": datetime.utcnow().isoformat()
+    }
+
+    await db.commit()
+
+    return {
+        "message": "Successfully unsubscribed from marketing emails",
+        "session_id": str(unsubscribe_request.session_id)
+    }
