@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
 from src.models.session import MessageRole
+from src.schemas.expert import ExpertMatchResponse
 from src.schemas.session import (
     MessageCreate,
     MessageResponse,
@@ -13,6 +14,7 @@ from src.schemas.session import (
     SessionResponse,
     SessionResumeRequest,
 )
+from src.services.expert_service import ExpertService
 from src.services.session_service import SessionService
 
 router = APIRouter()
@@ -319,4 +321,73 @@ async def resume_session(
             )
             for msg in resumed_session.messages
         ],
+    )
+
+
+@router.post(
+    "/{session_id}/match-expert",
+    response_model=ExpertMatchResponse,
+    summary="Match experts to session",
+    description="Find matching experts based on session context and service needs",
+)
+async def match_expert(
+    session_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+) -> ExpertMatchResponse:
+    """Match experts to a session based on qualification data.
+
+    Analyzes the session's business context, recommended service, and
+    qualification data to find the most relevant experts. Returns
+    ranked experts with match scores.
+    """
+    session_service = SessionService(db)
+    session = await session_service.get_session(session_id)
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Session {session_id} not found",
+        )
+
+    expert_service = ExpertService(db)
+
+    # Get matching experts with scores
+    scored_experts = await expert_service.match_experts(
+        service_type=session.recommended_service,
+        business_context=session.business_context,
+    )
+
+    # Extract experts and scores for response
+    from src.schemas.expert import ExpertPublicResponse
+
+    experts = []
+    scores = []
+
+    for expert, score in scored_experts:
+        experts.append(
+            ExpertPublicResponse(
+                id=expert.id,
+                name=expert.name,
+                email=expert.email,
+                role=expert.role,
+                bio=expert.bio,
+                photo_url=expert.photo_url,
+                specialties=expert.specialties,
+                services=expert.services,
+                is_active=expert.is_active,
+            )
+        )
+        scores.append(score)
+
+    # Auto-select top expert if available
+    if scored_experts:
+        top_expert = scored_experts[0][0]
+        await session_service.update_session_data(
+            session,
+            {"matched_expert_id": top_expert.id}
+        )
+
+    return ExpertMatchResponse(
+        experts=experts,
+        match_scores=scores,
     )

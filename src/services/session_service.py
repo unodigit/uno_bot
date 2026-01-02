@@ -543,7 +543,8 @@ class SessionService:
             client_company=session.client_info.get("company"),
             client_name=session.client_info.get("name"),
             recommended_service=session.recommended_service,
-            matched_expert=session.matched_expert_id
+            matched_expert=session.matched_expert_id,
+            storage_url=f"/api/v1/prd/{session.id}/download"
         )
 
         self.db.add(prd)

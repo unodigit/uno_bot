@@ -219,6 +219,7 @@ This helps me match you with the right solutions!"""
         business_context: dict,
         client_info: dict,
         conversation_history: list[dict],
+        feedback: str | None = None,
     ) -> str:
         """Generate a Project Requirements Document."""
         if not self.llm:
@@ -233,8 +234,12 @@ Business Context:
 {business_context}
 
 Conversation History:
-{conversation_history}
+{conversation_history}"""
 
+        if feedback:
+            prompt += f"\n\nFeedback for this version:\n{feedback}\n\nPlease incorporate this feedback into the updated PRD."
+
+        prompt += """
 Please generate a comprehensive PRD including:
 1. Executive Summary
 2. Business Objectives

@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.database import get_db
 from src.models.prd import PRDDocument
 from src.schemas.prd import (
+    PRDCreate,
     PRDPreview,
     PRDRegenerateRequest,
     PRDResponse,
@@ -27,7 +28,7 @@ router = APIRouter()
     description="Generate a Project Requirements Document for a conversation session",
 )
 async def generate_prd(
-    session_id: uuid.UUID,
+    request: PRDCreate,
     db: AsyncSession = Depends(get_db),
 ) -> PRDResponse:
     """Generate a PRD for a session.
@@ -40,11 +41,11 @@ async def generate_prd(
     prd_service = PRDService(db)
 
     # Get the session
-    session = await session_service.get_session(session_id)
+    session = await session_service.get_session(request.session_id)
     if not session:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {session_id} not found",
+            detail=f"Session {request.session_id} not found",
         )
 
     # Check if we have enough data

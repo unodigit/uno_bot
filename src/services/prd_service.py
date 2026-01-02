@@ -55,7 +55,8 @@ class PRDService:
             client_company=session.client_info.get("company"),
             client_name=session.client_info.get("name"),
             recommended_service=session.recommended_service,
-            matched_expert=session.matched_expert_id
+            matched_expert=session.matched_expert_id,
+            storage_url=f"/api/v1/prd/{session.id}/download"
         )
 
         self.db.add(prd)
@@ -122,20 +123,49 @@ class PRDService:
         Returns:
             The new PRD document
         """
-        # Get existing PRD if any
-        existing_prd = None
+        # Get existing PRD version if any
+        existing_version = 1
         if session.prd_id:
             existing_prd = await self.get_prd(session.prd_id)
+            if existing_prd:
+                existing_version = existing_prd.version
 
-        # Generate new PRD
-        new_prd = await self.generate_prd(session)
+        # Build conversation history
+        conversation_history = []
+        for msg in session.messages:
+            conversation_history.append({
+                "role": msg.role,
+                "content": msg.content
+            })
 
-        # If there was an existing PRD, increment version
-        if existing_prd:
-            new_prd.version = existing_prd.version + 1
-            self.db.add(new_prd)
-            await self.db.commit()
-            await self.db.refresh(new_prd)
+        # Generate new PRD content using AI service
+        prd_content = await self.ai_service.generate_prd(
+            business_context=session.business_context,
+            client_info=session.client_info,
+            conversation_history=conversation_history,
+            feedback=feedback
+        )
+
+        # Create new PRD document with incremented version
+        new_prd = PRDDocument(
+            session_id=session.id,
+            content_markdown=prd_content,
+            client_company=session.client_info.get("company"),
+            client_name=session.client_info.get("name"),
+            recommended_service=session.recommended_service,
+            matched_expert=session.matched_expert_id,
+            storage_url=f"/api/v1/prd/{session.id}/download",
+            version=existing_version + 1
+        )
+
+        self.db.add(new_prd)
+        await self.db.commit()
+        await self.db.refresh(new_prd)
+
+        # Update session with new PRD ID
+        session.prd_id = new_prd.id
+        self.db.add(session)
+        await self.db.commit()
 
         return new_prd
 

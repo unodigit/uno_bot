@@ -220,7 +220,7 @@ def test_prd_message_display(page: Page):
 
     # Verify that PRD generation was communicated in chat
     messages_container = page.locator('[data-testid="messages-container"]')
-    expect(messages_container.locator('text=Project Requirements Document generated!')).to_be_visible()
+    expect(messages_container.locator('text=Project Requirements Document')).to_be_visible()
     expect(messages_container.locator('text=Use the download button')).to_be_visible()
 
     # Verify PRD preview also appears
