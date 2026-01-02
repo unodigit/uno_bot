@@ -1,9 +1,9 @@
 """Analytics service for conversation and system metrics."""
 from collections import defaultdict
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union, cast
 
-from sqlalchemy import func, select, text
+from sqlalchemy import Row, func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.booking import Booking, BookingStatus
@@ -17,7 +17,7 @@ class AnalyticsService:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def get_conversation_analytics(self, days_back: int = 30) -> Dict:
+    async def get_conversation_analytics(self, days_back: int = 30) -> Dict[str, Any]:
         """Get comprehensive conversation analytics.
 
         Args:
@@ -90,7 +90,7 @@ class AnalyticsService:
             }
         }
 
-    async def get_expert_analytics(self, days_back: int = 30) -> Dict:
+    async def get_expert_analytics(self, days_back: int = 30) -> Dict[str, Any]:
         """Get expert performance analytics.
 
         Args:
@@ -125,7 +125,7 @@ class AnalyticsService:
             })
 
         # Sort by booking count
-        expert_metrics.sort(key=lambda x: x["total_bookings"], reverse=True)
+        expert_metrics.sort(key=lambda x: cast(int, x["total_bookings"]), reverse=True)
 
         return {
             "time_period": {
@@ -141,7 +141,7 @@ class AnalyticsService:
             }
         }
 
-    async def get_booking_analytics(self, days_back: int = 30) -> Dict:
+    async def get_booking_analytics(self, days_back: int = 30) -> Dict[str, Any]:
         """Get booking performance analytics.
 
         Args:
