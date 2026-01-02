@@ -2227,13 +2227,15 @@
       "Step 4: Disable sound notifications",
       "Step 5: Receive message and verify no sound"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false,
-    "qa_retry_count": 1,
+    "is_qa_passed": true,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T08:37:28.118120Z",
-    "qa_completed_at": "2026-01-02T09:48:00.793144+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T10:00:14.252554+00:00",
+    "test_files": [
+      "tests/e2e/test_sound_notifications.py"
+    ]
   },
   {
     "category": "functional",
@@ -2244,13 +2246,15 @@
       "Step 3: Configure for bottom-right",
       "Step 4: Verify widget appears in bottom-right"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false,
-    "qa_retry_count": 1,
+    "is_qa_passed": true,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T09:03:59.339069Z",
-    "qa_completed_at": "2026-01-02T09:48:00.793156+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T10:00:14.252568+00:00",
+    "test_files": [
+      "tests/e2e/test_widget_position.py"
+    ]
   },
   {
     "category": "functional",
@@ -2261,13 +2265,15 @@
       "Step 3: Measure time until widget visible",
       "Step 4: Verify under 2000ms"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false,
-    "qa_retry_count": 1,
+    "is_qa_passed": true,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T09:36:02.485291Z",
-    "qa_completed_at": "2026-01-02T09:48:00.793159+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T10:00:14.252572+00:00",
+    "test_files": [
+      "tests/e2e/test_performance.py"
+    ]
   },
   {
     "category": "functional",
@@ -2277,13 +2283,15 @@
       "Step 2: Measure time until fully open",
       "Step 3: Verify under 500ms"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false,
-    "qa_retry_count": 1,
+    "is_qa_passed": true,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T08:53:17.579058Z",
-    "qa_completed_at": "2026-01-02T09:48:00.793161+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T10:00:14.252574+00:00",
+    "test_files": [
+      "tests/e2e/test_performance.py"
+    ]
   },
   {
     "category": "functional",
@@ -2293,13 +2301,15 @@
       "Step 2: Measure time until first response",
       "Step 3: Verify under 3000ms"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false,
-    "qa_retry_count": 1,
+    "is_qa_passed": true,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T08:59:30.001566Z",
-    "qa_completed_at": "2026-01-02T09:48:00.793162+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T10:00:14.252576+00:00",
+    "test_files": [
+      "tests/e2e/test_performance.py"
+    ]
   },
   {
     "category": "functional",
@@ -2309,13 +2319,15 @@
       "Step 2: Measure latency between stream chunks",
       "Step 3: Verify average under 100ms"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": false,
-    "is_qa_passed": false,
-    "qa_retry_count": 1,
+    "is_qa_passed": true,
+    "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T09:13:51.186143Z",
-    "qa_completed_at": "2026-01-02T09:48:00.793164+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T10:00:14.252578+00:00",
+    "test_files": [
+      "tests/e2e/test_performance.py"
+    ]
   },
   {
     "category": "functional",
