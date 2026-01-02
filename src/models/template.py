@@ -1,6 +1,7 @@
 """Welcome message template models."""
 import uuid
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import Boolean, DateTime, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
@@ -40,7 +41,7 @@ class WelcomeMessageTemplate(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     # Additional configuration (e.g., tone, style, custom variables)
-    config: Mapped[dict] = mapped_column(JSONType, default=dict)
+    config: Mapped[dict[str, Any]] = mapped_column(JSONType, default=dict)
 
     # Timestamps
     created_at: Mapped[datetime] = mapped_column(

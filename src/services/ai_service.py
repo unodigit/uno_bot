@@ -1,8 +1,9 @@
 """AI service for generating responses using LangChain/DeepAgents."""
 import asyncio
+from typing import Any, AsyncIterator, Optional, cast
 
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, BaseMessage
 
 from src.core.config import settings
 
@@ -10,14 +11,14 @@ from src.core.config import settings
 class AIService:
     """Service for AI-powered conversation responses."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the AI service with Anthropic Claude."""
         self.api_key = settings.anthropic_api_key
         self.model_name = settings.anthropic_model
 
         if not self.api_key:
             # For demo/testing without API key
-            self.llm = None
+            self.llm: Optional[ChatAnthropic] = None
         else:
             self.llm = ChatAnthropic(
                 model=self.model_name,
@@ -29,8 +30,8 @@ class AIService:
     async def generate_response(
         self,
         user_message: str,
-        conversation_history: list[dict] = None,
-        context: dict = None,
+        conversation_history: Optional[list[dict[str, Any]]] = None,
+        context: Optional[dict[str, Any]] = None,
     ) -> str:
         """Generate an AI response to a user message.
 
@@ -47,23 +48,25 @@ class AIService:
             return self._fallback_response(user_message, context)
 
         # Build prompt with conversation history
-        messages = [
+        messages: list[BaseMessage] = [
             SystemMessage(content=self._get_system_prompt(context)),
         ]
 
         if conversation_history:
             for msg in conversation_history:
-                if msg["role"] == "user":
-                    messages.append(HumanMessage(content=msg["content"]))
-                elif msg["role"] == "assistant":
-                    messages.append(AIMessage(content=msg["content"]))
+                role = msg.get("role", "")
+                content = msg.get("content", "")
+                if role == "user":
+                    messages.append(HumanMessage(content=content))
+                elif role == "assistant":
+                    messages.append(AIMessage(content=content))
 
         messages.append(HumanMessage(content=user_message))
 
         try:
             # Generate response
             response = await self.llm.ainvoke(messages)
-            return response.content
+            return cast(str, response.content)
         except Exception as e:
             print(f"AI service error: {e}")
             return self._fallback_response(user_message, context)
@@ -71,9 +74,9 @@ class AIService:
     async def stream_response(
         self,
         user_message: str,
-        conversation_history: list[dict] = None,
-        context: dict = None,
-    ):
+        conversation_history: Optional[list[dict[str, Any]]] = None,
+        context: Optional[dict[str, Any]] = None,
+    ) -> AsyncIterator[str]:
         """Stream AI response chunks for real-time updates.
 
         Args:
@@ -93,23 +96,25 @@ class AIService:
             return
 
         # Build prompt with conversation history
-        messages = [
+        messages: list[BaseMessage] = [
             SystemMessage(content=self._get_system_prompt(context)),
         ]
 
         if conversation_history:
             for msg in conversation_history:
-                if msg["role"] == "user":
-                    messages.append(HumanMessage(content=msg["content"]))
-                elif msg["role"] == "assistant":
-                    messages.append(AIMessage(content=msg["content"]))
+                role = msg.get("role", "")
+                content = msg.get("content", "")
+                if role == "user":
+                    messages.append(HumanMessage(content=content))
+                elif role == "assistant":
+                    messages.append(AIMessage(content=content))
 
         messages.append(HumanMessage(content=user_message))
 
         try:
             # Stream response chunks
             async for chunk in self.llm.astream(messages):
-                yield chunk.content
+                yield cast(str, chunk.content)
         except Exception as e:
             print(f"AI streaming error: {e}")
             fallback = self._fallback_response(user_message, context)
@@ -117,7 +122,7 @@ class AIService:
                 yield fallback[i:i+10]
                 await asyncio.sleep(0.05)
 
-    def _get_system_prompt(self, context: dict | None) -> str:
+    def _get_system_prompt(self, context: Optional[dict[str, Any]]) -> str:
         """Get the system prompt for the AI assistant."""
         base_prompt = """You are UnoBot, an AI business consultant for UnoDigit, a digital transformation company.
 
@@ -224,7 +229,7 @@ Current context:
 
         return base_prompt
 
-    def _fallback_response(self, user_message: str, context: dict | None) -> str:
+    def _fallback_response(self, user_message: str, context: Optional[dict[str, Any]]) -> str:
         """Generate a fallback response when AI service is unavailable."""
         # Initialize context if not provided
         if context is None:
@@ -282,10 +287,10 @@ This helps me match you with the right solutions!"""
 
     async def generate_prd(
         self,
-        business_context: dict,
-        client_info: dict,
-        conversation_history: list[dict],
-        feedback: str | None = None,
+        business_context: dict[str, Any],
+        client_info: dict[str, Any],
+        conversation_history: list[dict[str, Any]],
+        feedback: Optional[str] = None,
     ) -> str:
         """Generate a Project Requirements Document."""
         if not self.llm:
@@ -323,11 +328,11 @@ Format the response in clear Markdown.
                 SystemMessage(content="You are an expert technical product manager. Generate detailed PRDs."),
                 HumanMessage(content=prompt)
             ])
-            return response.content
+            return cast(str, response.content)
         except Exception:
             return self._fallback_prd(business_context, client_info)
 
-    def _fallback_prd(self, business_context: dict, client_info: dict) -> str:
+    def _fallback_prd(self, business_context: dict[str, Any], client_info: dict[str, Any]) -> str:
         """Fallback PRD when AI service is unavailable."""
         company = client_info.get("company", "Client")
         industry = business_context.get("industry", "technology")

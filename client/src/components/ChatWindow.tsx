@@ -87,6 +87,9 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     confirmBooking,
     cancelBooking,
     resetBookingFlow,
+    // WebSocket state
+    isWebSocketConnected,
+    isTyping,
     // Sound notifications
     playNotificationSound,
     soundNotificationsEnabled,
@@ -1049,6 +1052,25 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             tabIndex={1}
             autoFocus
           />
+          {/* Typing Indicator */}
+          <div className="flex items-center gap-2">
+            {isTyping && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground" aria-live="polite">
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                </div>
+                <span>Bot is typing...</span>
+              </div>
+            )}
+            {isStreaming && (
+              <div className="flex items-center gap-2 text-sm text-primary" aria-live="polite">
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                <span>Streaming...</span>
+              </div>
+            )}
+          </div>
           <div id="input-instruction" className="sr-only">
             Press Enter to send message, Shift+Enter for new line. Chat is {isStreaming ? 'streaming' : 'ready'}.
           </div>

@@ -2,8 +2,9 @@
 import uuid
 from datetime import datetime
 from enum import Enum
+from typing import Any, Type
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, TypeDecorator
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.core.config import settings
@@ -12,7 +13,7 @@ from src.core.types import JSONType, UUIDType
 
 # SQLite compatibility for INET
 if "sqlite" in settings.database_url:
-    INETType = String
+    INETType: Type[TypeDecorator[Any]] = String
 else:
     from sqlalchemy.dialects.postgresql import INET
     INETType = INET
@@ -63,13 +64,13 @@ class ConversationSession(Base):
     )
 
     # Client information
-    client_info: Mapped[dict] = mapped_column(JSONType, default=dict)
+    client_info: Mapped[dict[str, Any]] = mapped_column(JSONType, default=dict)
 
     # Business context
-    business_context: Mapped[dict] = mapped_column(JSONType, default=dict)
+    business_context: Mapped[dict[str, Any]] = mapped_column(JSONType, default=dict)
 
     # Qualification data
-    qualification: Mapped[dict] = mapped_column(JSONType, default=dict)
+    qualification: Mapped[dict[str, Any]] = mapped_column(JSONType, default=dict)
 
     # Lead scoring
     lead_score: Mapped[int | None] = mapped_column(
@@ -110,7 +111,7 @@ class ConversationSession(Base):
 
     # Email preferences for marketing communications
     email_opt_in: Mapped[bool] = mapped_column(Boolean, default=False)
-    email_preferences: Mapped[dict] = mapped_column(JSONType, default=dict)
+    email_preferences: Mapped[dict[str, Any]] = mapped_column(JSONType, default=dict)
 
     # Relationships
     matched_expert = relationship("Expert", back_populates="sessions")
@@ -138,7 +139,7 @@ class Message(Base):
 
     # Metadata for special messages (quick replies, cards, etc.)
     # Note: Using 'meta_data' to avoid SQLAlchemy reserved name 'metadata'
-    meta_data: Mapped[dict] = mapped_column(JSONType, default=dict)
+    meta_data: Mapped[dict[str, Any]] = mapped_column(JSONType, default=dict)
 
     # Timestamp
     created_at: Mapped[datetime] = mapped_column(
