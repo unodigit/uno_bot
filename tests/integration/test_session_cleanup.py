@@ -56,22 +56,17 @@ async def test_session_cleanup_endpoint():
         # Test cleanup endpoint
         async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
             # First, create an admin token
-            token_response = await client.post("/api/v1/admin/auth/token", params={
-                "username": "admin",
-                "password": "password123"
-            })
-            print(f"Token response status: {token_response.status_code}")
-            print(f"Token response content: {token_response.content}")
+            token_response = await client.post(
+                "/api/v1/admin/auth/token?username=admin&password=password123"
+            )
             assert token_response.status_code == 200
             admin_token = token_response.json()["token"]
 
             # Test cleanup endpoint with admin token
             cleanup_response = await client.post(
-                "/api/v1/admin/cleanup/sessions",
-                headers={"X-Admin-Token": admin_token},
-                json={"max_age_days": 7}
+                "/api/v1/admin/cleanup/sessions?max_age_days=7",
+                headers={"X-Admin-Token": admin_token}
             )
-
             assert cleanup_response.status_code == 200
             result = cleanup_response.json()
             assert result["deleted_count"] == 1
@@ -117,10 +112,9 @@ async def test_cleanup_stats_endpoint():
 
         async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
             # Create admin token
-            token_response = await client.post("/api/v1/admin/auth/token", params={
-                "username": "admin",
-                "password": "password123"
-            })
+            token_response = await client.post(
+                "/api/v1/admin/auth/token?username=admin&password=password123"
+            )
             assert token_response.status_code == 200
             admin_token = token_response.json()["token"]
 

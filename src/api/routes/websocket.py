@@ -160,7 +160,7 @@ async def handle_streaming_chat_message(
     # Create and save final AI message
     ai_message = await session_service.add_message(
         uuid.UUID(session_id),
-        MessageCreate(content=full_response),
+        MessageCreate(content=full_response),  # type: ignore[call-arg]
         MessageRole.ASSISTANT,
     )
 

@@ -4,10 +4,11 @@ Admin API routes for expert management and system administration.
 import uuid
 
 from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.api.dependencies import get_db
-from src.core.security import require_admin_auth
+from src.core.security import require_admin_auth, security
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 from src.services.analytics_service import AnalyticsService
 from src.services.cleanup_service import CleanupService
@@ -18,12 +19,12 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 
 async def verify_admin_access(
     x_admin_token: str = Header(None, alias="X-Admin-Token"),
-    auth_data: dict = Depends(require_admin_auth)
+    security: HTTPAuthorizationCredentials = Depends(security)
 ) -> dict:
     """
     Verify admin access via header or bearer token.
 
-    Priority: X-Admin-Token header > Bearer token from auth_data
+    Priority: X-Admin-Token header > Bearer token
     """
     from src.core.security import AdminSecurity
 
@@ -33,8 +34,18 @@ async def verify_admin_access(
         if token_data:
             return token_data
 
-    # Otherwise use the bearer token from require_admin_auth
-    return auth_data
+    # Otherwise check bearer token
+    if security:
+        token_data = AdminSecurity.verify_admin_token(security.credentials)
+        if token_data:
+            return token_data
+
+    # No valid authentication
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Admin authentication required",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
 
 
 @router.get("/experts", response_model=list[ExpertResponse])

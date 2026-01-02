@@ -1,9 +1,12 @@
 """Session and message API routes."""
+import logging
 import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
+logger = logging.getLogger(__name__)
 
 from src.core.config import settings
 from src.core.database import get_db
