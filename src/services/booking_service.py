@@ -146,6 +146,9 @@ class BookingService:
             expert_id, start_time, end_time, exclude_booking_id=None
         )
 
+        # Decrypt OAuth token
+        decrypted_token = decrypt_oauth_token(expert.refresh_token or '') if expert.refresh_token else ''
+
         # Get PRD content if available (for expert notification)
         prd_content = None
         if session.prd_id:
@@ -157,7 +160,7 @@ class BookingService:
         # Create calendar event
         try:
             calendar_event_id = await self.calendar_service.create_calendar_event(
-                refresh_token=expert.refresh_token or '',
+                refresh_token=decrypted_token,
                 expert_email=expert.email,
                 client_name=client_name,
                 client_email=client_email,

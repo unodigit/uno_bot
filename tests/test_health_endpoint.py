@@ -68,10 +68,10 @@ async def test_health_endpoint_includes_timestamp():
 
 @pytest.mark.asyncio
 async def test_detailed_health_endpoint():
-    """Test that GET /api/v1/health/detailed returns comprehensive health info."""
+    """Test that GET /api/v1/admin/health/detailed returns comprehensive health info."""
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.get("/api/v1/health/detailed")
+        response = await client.get("/api/v1/admin/health/detailed")
 
         assert response.status_code == 200
         data = response.json()
