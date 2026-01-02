@@ -85,7 +85,7 @@ class ExpertService:
         self,
         service_type: str | None = None,
         specialties: list[str] | None = None,
-        business_context: dict | None = None,
+        business_context: dict[str, Any] | None = None,
         workload_balancing: bool = True,
     ) -> list[tuple[Expert, float]]:
         """Match experts based on service type, specialties, and business context.
@@ -187,7 +187,7 @@ class ExpertService:
         expert: Expert,
         service_type: str | None,
         specialties: list[str] | None,
-        business_context: dict | None,
+        business_context: dict[str, Any] | None,
     ) -> float:
         """Calculate a match score for an expert.
 

@@ -195,7 +195,7 @@ class AnalyticsService:
             }
         }
 
-    async def get_system_health(self) -> Dict:
+    async def get_system_health(self) -> Dict[str, Any]:
         """Get system health and performance metrics.
 
         Returns:
@@ -316,7 +316,7 @@ class AnalyticsService:
         # For now, return a placeholder
         return 0.0
 
-    async def _get_lead_score_statistics(self, start_date: datetime, end_date: datetime) -> Dict:
+    async def _get_lead_score_statistics(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
         """Get lead score statistics."""
         result = await self.db.execute(
             select(
@@ -337,7 +337,7 @@ class AnalyticsService:
             "distribution": await self._get_lead_score_distribution(start_date, end_date)
         }
 
-    async def _get_lead_score_distribution(self, start_date: datetime, end_date: datetime) -> Dict:
+    async def _get_lead_score_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
         """Get lead score distribution buckets."""
         # Group lead scores into buckets
         result = await self.db.execute(
@@ -362,7 +362,7 @@ class AnalyticsService:
 
         return distribution
 
-    async def _get_service_recommendation_distribution(self, start_date: datetime, end_date: datetime) -> Dict:
+    async def _get_service_recommendation_distribution(self, start_date: datetime, end_date: datetime) -> Dict[str, Any]:
         """Get distribution of recommended services."""
         result = await self.db.execute(
             select(
