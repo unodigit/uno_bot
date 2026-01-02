@@ -335,16 +335,8 @@ async def generate_conversation_summary(
 
 @router.post(
     "/approve-summary-and-generate-prd",
-    response_model=PRDResponse,
-    status_code=status.HTTP_201_CREATED,
     summary="Approve summary and generate PRD",
-    description="Approve conversation summary and generate PRD",
-    responses={
-        200: {
-            "description": "Summary regenerated (when approve=False)",
-            "model": ConversationSummaryResponse,
-        }
-    },
+    description="Approve conversation summary and generate PRD. Returns ConversationSummaryResponse (200) when approve=False, or PRDResponse (201) when approve=True.",
 )
 async def approve_summary_and_generate_prd(
     request: ConversationSummaryApproveRequest,
@@ -374,21 +366,33 @@ async def approve_summary_and_generate_prd(
             session_id=session.id,
         )
 
+    # Validate that summary is provided when approving
+    if not request.summary:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Summary is required when approve=True",
+        )
+
     # Generate PRD with approved summary
     prd = await prd_service.generate_prd(session, request.summary)
 
-    return PRDResponse(
-        id=prd.id,
-        session_id=prd.session_id,
-        version=prd.version,
-        content_markdown=prd.content_markdown,
-        conversation_summary=prd.conversation_summary,
-        client_company=prd.client_company,
-        client_name=prd.client_name,
-        recommended_service=prd.recommended_service,
-        matched_expert=prd.matched_expert,
-        storage_url=prd.storage_url,
-        download_count=prd.download_count,
-        created_at=prd.created_at,
-        expires_at=prd.expires_at,
+    # Return 201 for PRD creation
+    from fastapi.responses import JSONResponse
+    return JSONResponse(
+        content=PRDResponse(
+            id=prd.id,
+            session_id=prd.session_id,
+            version=prd.version,
+            content_markdown=prd.content_markdown,
+            conversation_summary=prd.conversation_summary,
+            client_company=prd.client_company,
+            client_name=prd.client_name,
+            recommended_service=prd.recommended_service,
+            matched_expert=prd.matched_expert,
+            storage_url=prd.storage_url,
+            download_count=prd.download_count,
+            created_at=prd.created_at,
+            expires_at=prd.expires_at,
+        ).model_dump(mode='json'),
+        status_code=status.HTTP_201_CREATED
     )

@@ -29,16 +29,14 @@ router = APIRouter()
 def validate_session_id(session_id: str) -> uuid.UUID:
     """Validate session_id and return UUID or raise appropriate error.
 
-    Returns 422 for invalid UUID format to match test expectations.
+    For session endpoints, we want to return 404 for invalid UUIDs
+    rather than 422 validation errors, to be more RESTful.
     """
     try:
         return uuid.UUID(session_id)
     except (ValueError, AttributeError):
-        # Invalid UUID format - return validation error (422)
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Invalid UUID format for session_id: {session_id}",
-        )
+        # Invalid UUID format - treat as "not found"
+        raise NotFoundError("Session", session_id)
 
 
 @router.post(

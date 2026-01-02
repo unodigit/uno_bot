@@ -1181,7 +1181,7 @@
       "Step 4: Verify 400 response with details",
       "Step 5: Verify error responses follow schema"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
@@ -1279,11 +1279,12 @@
       "Step 4: Verify prd_id returned",
       "Step 5: Verify PRD stored in database"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T06:44:57.587129Z"
+    "dev_completed_at": "2026-01-02T06:44:57.587129Z",
+    "qa_completed_at": "2026-01-02T08:22:41.433744Z"
   },
   {
     "category": "functional",
@@ -1295,11 +1296,12 @@
       "Step 4: Verify Content-Disposition has filename",
       "Step 5: Verify file content is valid markdown"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T06:45:23.307453Z"
+    "dev_completed_at": "2026-01-02T06:45:23.307453Z",
+    "qa_completed_at": "2026-01-02T08:22:41.433754Z"
   },
   {
     "category": "functional",
@@ -1310,11 +1312,12 @@
       "Step 3: Verify PRD content returned",
       "Step 4: Verify rendered for preview"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T06:53:15.157796Z"
+    "dev_completed_at": "2026-01-02T06:53:15.157796Z",
+    "qa_completed_at": "2026-01-02T08:22:41.433757Z"
   },
   {
     "category": "functional",
@@ -1583,11 +1586,12 @@
       "Step 3: Verify file accessible via storage_url",
       "Step 4: Verify file content matches PRD"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "dev_completed_at": "2026-01-02T07:57:20.406942Z",
-    "qa_retry_count": 0
+    "qa_retry_count": 0,
+    "qa_completed_at": "2026-01-02T08:22:41.433763Z"
   },
   {
     "category": "style",
@@ -1881,11 +1885,12 @@
       "Step 4: Verify MD: 16px spacing used",
       "Step 5: Verify LG: 24px spacing used"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T07:57:46.208798Z"
+    "dev_completed_at": "2026-01-02T07:57:46.208798Z",
+    "qa_completed_at": "2026-01-02T19:23:22.021261Z"
   },
   {
     "category": "style",
@@ -1940,8 +1945,10 @@
       "Step 4: Verify skeleton styling matches theme"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:22:13.914296Z"
   },
   {
     "category": "style",
@@ -1994,8 +2001,10 @@
       "Step 4: Verify easy to tap without mistakes"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:22:42.566187Z"
   },
   {
     "category": "style",

@@ -75,5 +75,5 @@ class ConversationSummaryApproveRequest(BaseModel):
     """Request schema for approving conversation summary."""
 
     session_id: UUID
-    summary: str
+    summary: str | None = Field(None, description="Summary text (required when approve=True)")
     approve: bool = Field(..., description="True to approve, False to regenerate")
