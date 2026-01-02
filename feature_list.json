@@ -2082,11 +2082,15 @@
       "Step 3: Verify success color (#10B981) used",
       "Step 4: Verify appropriate iconography"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
-    "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:42:47.675673Z"
+    "is_qa_passed": true,
+    "qa_retry_count": 1,
+    "dev_completed_at": "2026-01-02T08:42:47.675673Z",
+    "qa_completed_at": "2026-01-02T20:45:00.000000Z",
+    "test_files": [
+      "tests/e2e/test_success_states.py"
+    ]
   },
   {
     "category": "style",
@@ -2320,8 +2324,10 @@
       "Step 5: Verify functional despite slow connection"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T09:39:07.607513Z"
   },
   {
     "category": "functional",
