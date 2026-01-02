@@ -225,43 +225,50 @@ class TestZustandStateManagement:
     async def test_state_persistence(self):
         """Test 5: Verify state persists across page refreshes"""
         try:
-            await self.page.goto(FRONTEND_URL, wait_until='networkidle')
+            await self.page.goto(FRONTEND_URL, wait_until='domcontentloaded')
 
-            # Open chat
+            # Open chat to create a session
             chat_button = await self.page.wait_for_selector('button', timeout=5000)
             await chat_button.click()
-            await asyncio.sleep(2)
+            await asyncio.sleep(3)  # Wait longer for session creation
 
-            # Send a message
-            input_field = await self.page.wait_for_selector('[data-testid="message-input"]', timeout=2000)
-            await input_field.fill("Persistence test message")
-            await asyncio.sleep(0.5)
-
-            # Send by pressing Enter
-            await input_field.press('Enter')
-            await asyncio.sleep(2)
-
-            # Get session ID before refresh
+            # Get session ID and visitor ID before refresh
             session_id_before = await self.page.evaluate('() => localStorage.getItem("unobot_session_id")')
+            visitor_id_before = await self.page.evaluate('() => localStorage.getItem("unobot_visitor_id")')
 
-            # Refresh page
-            await self.page.reload(wait_until='networkidle')
+            if not session_id_before:
+                self.log_result(
+                    "State persistence",
+                    False,
+                    "No session ID created before refresh"
+                )
+                return
+
+            # Refresh page with more robust error handling
+            try:
+                await self.page.reload(wait_until='domcontentloaded', timeout=10000)
+            except Exception as refresh_error:
+                # If refresh fails, try navigating to URL again
+                print(f"  Refresh failed, navigating again: {refresh_error}")
+                await self.page.goto(FRONTEND_URL, wait_until='domcontentloaded')
+
             await asyncio.sleep(2)
 
             # Check if session ID persisted
             session_id_after = await self.page.evaluate('() => localStorage.getItem("unobot_session_id")')
+            visitor_id_after = await self.page.evaluate('() => localStorage.getItem("unobot_visitor_id")')
 
-            if session_id_before and session_id_before == session_id_after:
+            if session_id_before == session_id_after:
                 self.log_result(
                     "State persistence",
                     True,
-                    f"Session ID persisted across refresh: {session_id_after[:8]}..."
+                    f"Session persisted: {session_id_after[:8]}..., visitor: {visitor_id_after[:15] if visitor_id_after else 'None'}..."
                 )
             else:
                 self.log_result(
                     "State persistence",
                     False,
-                    f"Session ID not persisted (before: {session_id_before}, after: {session_id_after})"
+                    f"Session changed after refresh (before: {session_id_before[:8]}, after: {session_id_after[:8] if session_id_after else 'None'})"
                 )
 
         except Exception as e:

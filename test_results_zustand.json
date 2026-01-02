@@ -16,13 +16,13 @@
   },
   {
     "test": "Message state update",
-    "passed": false,
-    "details": "Could not find send button"
+    "passed": true,
+    "details": "Message appeared in chat - state updated correctly"
   },
   {
     "test": "State persistence",
-    "passed": false,
-    "details": "Page.wait_for_selector: Timeout 2000ms exceeded.\nCall log:\n  - waiting for locator(\"textarea\") to be visible\n"
+    "passed": true,
+    "details": "Session persisted: 04fe4750..., visitor: visitor_1767359..."
   },
   {
     "test": "Loading state management",
