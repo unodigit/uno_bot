@@ -43,14 +43,21 @@ class SessionService:
         welcome_message = Message(
             session_id=session.id,
             role=MessageRole.ASSISTANT,
-            content=r"Hello\! I'm UnoBot, your AI business consultant. I can help you explore our services, understand your needs, and connect you with the right expert. How can I help you today?",
-            metadata={"type": "welcome"},
+            content="Hello! I'm UnoBot, your AI business consultant. I can help you explore our services, understand your needs, and connect you with the right expert. How can I help you today?",
+            meta_data={"type": "welcome"},
             created_at=datetime.utcnow(),
         )
         self.db.add(welcome_message)
         await self.db.commit()
+
+        # Refresh and eagerly load messages
         await self.db.refresh(session)
-        return session
+        result = await self.db.execute(
+            select(ConversationSession)
+            .where(ConversationSession.id == session.id)
+            .options(selectinload(ConversationSession.messages))
+        )
+        return result.scalar_one()
 
     async def get_session(self, session_id: uuid.UUID) -> ConversationSession | None:
         """Get a session by ID."""
@@ -58,7 +65,6 @@ class SessionService:
             select(ConversationSession)
             .where(ConversationSession.id == session_id)
             .options(
-                selectinload(ConversationSession.matched_expert),
                 selectinload(ConversationSession.messages),
             )
         )
@@ -78,7 +84,7 @@ class SessionService:
             session_id=session_id,
             role=role,
             content=message_create.content,
-            msg_metadata=message_create.msg_metadata or {},
+            meta_data=message_create.metadata or {},
             created_at=datetime.utcnow(),
         )
         self.db.add(message)
@@ -177,7 +183,7 @@ class SessionService:
             session_id=session.id,
             role=MessageRole.ASSISTANT,
             content=ai_content,
-            msg_metadata={},
+            meta_data={},
             created_at=datetime.utcnow(),
         )
         self.db.add(ai_message)

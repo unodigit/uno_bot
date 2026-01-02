@@ -1,7 +1,5 @@
 """End-to-end tests for Chat Widget functionality."""
-import pytest
 from playwright.sync_api import Page, expect
-
 
 # Frontend URL - use environment variable or default
 FRONTEND_URL = "http://localhost:5175"

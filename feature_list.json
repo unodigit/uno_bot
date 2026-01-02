@@ -116,8 +116,10 @@
       "Step 4: Verify messages have correct session_id, role, and timestamps"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:40:41.480631Z"
   },
   {
     "category": "functional",
@@ -145,8 +147,10 @@
       "Step 5: Verify conversation continues normally"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:37:09.367125Z"
   },
   {
     "category": "functional",
@@ -159,8 +163,10 @@
       "Step 5: Verify name is stored in session client_info"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:36:50.691442Z"
   },
   {
     "category": "functional",

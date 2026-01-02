@@ -44,6 +44,8 @@ async def create_session(
         visitor_id=session.visitor_id,
         status=session.status,
         current_phase=session.current_phase,
+        source_url=session.source_url,
+        user_agent=session.user_agent,
         client_info=session.client_info,
         business_context=session.business_context,
         qualification=session.qualification,
@@ -61,7 +63,7 @@ async def create_session(
                 session_id=msg.session_id,
                 role=msg.role,
                 content=msg.content,
-                metadata=msg.metadata,
+                meta_data=msg.meta_data,
                 created_at=msg.created_at,
             )
             for msg in session.messages
@@ -98,6 +100,8 @@ async def get_session(
         visitor_id=session.visitor_id,
         status=session.status,
         current_phase=session.current_phase,
+        source_url=session.source_url,
+        user_agent=session.user_agent,
         client_info=session.client_info,
         business_context=session.business_context,
         qualification=session.qualification,
@@ -115,7 +119,7 @@ async def get_session(
                 session_id=msg.session_id,
                 role=msg.role,
                 content=msg.content,
-                metadata=msg.metadata,
+                meta_data=msg.meta_data,
                 created_at=msg.created_at,
             )
             for msg in session.messages
@@ -171,7 +175,7 @@ async def send_message(
         session_id=ai_message.session_id,
         role=ai_message.role,
         content=ai_message.content,
-        metadata=ai_message.metadata,
+        meta_data=ai_message.meta_data,
         created_at=ai_message.created_at,
     )
 
@@ -214,6 +218,8 @@ async def resume_session(
         visitor_id=resumed_session.visitor_id,
         status=resumed_session.status,
         current_phase=resumed_session.current_phase,
+        source_url=resumed_session.source_url,
+        user_agent=resumed_session.user_agent,
         client_info=resumed_session.client_info,
         business_context=resumed_session.business_context,
         qualification=resumed_session.qualification,
@@ -231,7 +237,7 @@ async def resume_session(
                 session_id=msg.session_id,
                 role=msg.role,
                 content=msg.content,
-                metadata=msg.metadata,
+                meta_data=msg.meta_data,
                 created_at=msg.created_at,
             )
             for msg in resumed_session.messages

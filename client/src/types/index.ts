@@ -40,6 +40,11 @@ export interface MessageCreate {
   metadata?: Record<string, any>;
 }
 
+export interface SendMessageRequest {
+  content: string;
+  metadata?: Record<string, any>;
+}
+
 export interface MessageResponse extends Message {}
 
 // Chat UI Types
