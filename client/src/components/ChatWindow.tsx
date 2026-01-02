@@ -998,7 +998,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Quick Reply Buttons */}
-        {!isStreaming && !isLoading && messages.some(m => m.role === 'user') && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && matchedExperts.length === 0 && (
+        {!isStreaming && !isLoading && messages.some(m => m.role === 'assistant') && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && matchedExperts.length === 0 && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="quick-replies">
             <div className="flex flex-wrap gap-2 mb-2">
               {getQuickReplies(currentPhase).map((reply, idx) => (
