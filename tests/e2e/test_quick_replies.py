@@ -2,7 +2,7 @@
 from playwright.sync_api import Page, expect
 
 # Frontend URL
-FRONTEND_URL = "http://localhost:5173"
+FRONTEND_URL = "http://localhost:5180"
 
 
 class TestQuickReplies:

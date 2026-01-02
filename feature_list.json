@@ -900,9 +900,12 @@
       "Step 3: Verify all messages are visible",
       "Step 4: Verify messages in correct order"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T16:47:00.000000Z",
+    "qa_completed_at": "2026-01-02T16:47:00.000000Z"
   },
   {
     "category": "functional",
@@ -975,8 +978,10 @@
       "Step 5: Verify CSV contains lead data"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T05:45:05.477782Z"
   },
   {
     "category": "functional",

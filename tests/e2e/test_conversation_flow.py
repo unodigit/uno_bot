@@ -6,7 +6,7 @@ from playwright.sync_api import Page, expect
 def test_conversation_collects_user_information(page: Page):
     """Test that the conversation properly collects user information through phases."""
     # Navigate to app
-    page.goto("http://localhost:5173")
+    page.goto("http://localhost:5180")
 
     # Open chat widget
     page.click('[data-testid="chat-widget-button"]')
@@ -35,7 +35,7 @@ def test_conversation_collects_user_information(page: Page):
 
 def test_lead_scoring_and_service_matching(page: Page):
     """Test that lead scoring and service matching work correctly."""
-    page.goto("http://localhost:5173")
+    page.goto("http://localhost:5180")
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 
@@ -62,7 +62,7 @@ def test_lead_scoring_and_service_matching(page: Page):
 
 def test_conversation_phase_transitions(page: Page):
     """Test that conversation phases transition correctly."""
-    page.goto("http://localhost:5173")
+    page.goto("http://localhost:5180")
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 

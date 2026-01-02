@@ -9,7 +9,7 @@ async def test_session_resume_via_email_link(page: Page):
     """Test that session can be resumed via email link with session_id parameter."""
 
     # Step 1: Start conversation and get session ID
-    await page.goto("http://localhost:3000")
+    await page.goto("http://localhost:5180")
     await page.wait_for_load_state("networkidle")
 
     # Open chat widget
@@ -88,7 +88,7 @@ async def test_session_resume_url_parameter_handling(page: Page):
     test_session_id = "test-session-123"
 
     # Navigate to URL with session_id parameter
-    test_url = f"http://localhost:3000?session_id={test_session_id}"
+    test_url = f"http://localhost:5180?session_id={test_session_id}"
     await page.goto(test_url)
     await page.wait_for_load_state("networkidle")
 
@@ -105,7 +105,7 @@ async def test_session_resume_without_parameter(page: Page):
     """Test that normal session creation works when no session_id parameter is provided."""
 
     # Navigate to root URL without session_id parameter
-    await page.goto("http://localhost:3000")
+    await page.goto("http://localhost:5180")
     await page.wait_for_load_state("networkidle")
 
     # Session ID should be null initially
