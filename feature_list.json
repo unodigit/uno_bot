@@ -3027,7 +3027,9 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T13:10:24.448840+00:00",
-    "note": "Email service implemented in src/services/email_service.py"
+    "note": "Email service implemented in src/services/email_service.py",
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T13:11:43.040081Z"
   },
   {
     "category": "functional",
@@ -3374,8 +3376,9 @@
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
-    "qa_completed_at": "2026-01-02T13:10:24.448863+00:00",
-    "note": "SubAgentMiddleware and FilesystemMiddleware configured in deepagents_service.py"
+    "qa_completed_at": "2026-01-02T13:11:57.843426+00:00",
+    "note": "SubAgentMiddleware and FilesystemMiddleware configured in deepagents_service.py",
+    "dev_completed_at": "2026-01-02T13:11:57.843417+00:00"
   },
   {
     "category": "functional",
