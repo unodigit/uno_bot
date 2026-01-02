@@ -18,6 +18,8 @@ for i, feature in enumerate(features):
 
 print('First 10 failing features:')
 for f in failing_features:
-    print(f"{f['index'] + 1}: {f['description'][:80]}...")
+    idx = f['index'] + 1
+    desc = f['description'][:80] if len(f['description']) > 80 else f['description']
+    print(f"{idx}: {desc}...")
     print(f"   Category: {f['category']}, Dev Done: {f['is_dev_done']}")
     print()
