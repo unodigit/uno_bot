@@ -704,13 +704,13 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   'max-w-[85%] rounded-lg px-3 py-2 text-sm shadow-sm',
                   message.role === 'user'
                     ? 'bg-primary text-white rounded-br-sm'
-                    : 'bg-surface text-white rounded-bl-sm border border-border'
+                    : 'bg-surface text-text rounded-bl-sm border border-border'
                 )}
               >
                 <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                 <span className={twMerge(
                   'text-[10px] opacity-70 mt-1 block',
-                  message.role === 'user' ? 'text-white/80' : 'text-white-muted'
+                  message.role === 'user' ? 'text-white/80' : 'text-text-muted'
                 )}>
                   {formatTime(message.created_at)}
                 </span>

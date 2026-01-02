@@ -332,6 +332,21 @@ class ExpertService:
 
         return expert
 
+    async def deactivate_expert(self, expert: Expert) -> Expert:
+        """Deactivate an expert.
+
+        Args:
+            expert: The expert to deactivate
+
+        Returns:
+            The deactivated expert
+        """
+        expert.is_active = False
+        self.db.add(expert)
+        await self.db.commit()
+        await self.db.refresh(expert)
+        return expert
+
     async def delete_expert(self, expert: Expert) -> None:
         """Delete an expert.
 
