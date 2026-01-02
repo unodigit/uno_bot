@@ -1,20 +1,18 @@
 """DeepAgents service for advanced AI conversation flow using DeepAgents framework."""
 
-from typing import Any, Dict, List, Optional, Union
-from datetime import datetime
+import os
 import uuid
+from datetime import datetime
+from typing import Any
 
 from deepagents import create_deep_agent
-from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend
+from deepagents.middleware import FilesystemMiddleware, SubAgentMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
-from src.models.session import MessageRole, SessionPhase, SessionStatus
-from src.services.expert_service import ExpertService
 from src.services.calendar_service import CalendarService
 from src.services.email_service import EmailService
-from src.schemas.session import MessageCreate
 
 
 class DeepAgentsService:
@@ -39,6 +37,10 @@ class DeepAgentsService:
 
     def _create_deep_agents(self):
         """Create the main DeepAgents agent with subagents and tools."""
+        # Create PRD storage directory
+        prd_storage_dir = "prd_documents"
+        os.makedirs(prd_storage_dir, exist_ok=True)
+
         # Define custom tools for business flow
         tools = [
             self._tool_calculate_lead_score,
@@ -132,12 +134,30 @@ class DeepAgentsService:
             }
         ]
 
-        # Create main agent with built-in middleware
+        # Configure middleware with SubAgentMiddleware and FilesystemMiddleware
+        middleware = [
+            SubAgentMiddleware(),
+            FilesystemMiddleware(base_dir=prd_storage_dir)
+        ]
+
+        # Configure CompositeBackend with StateBackend and FilesystemBackend
+        # StateBackend for conversation state (ephemeral)
+        # FilesystemBackend for PRD storage (persistent)
+        backend = CompositeBackend(
+            default=StateBackend(),
+            routes={
+                "/prd/": FilesystemBackend(base_dir=prd_storage_dir)
+            }
+        )
+
+        # Create main agent with middleware and backend
         agent = create_deep_agent(
             model=self.model_name,
             tools=tools,
             system_prompt=self._get_main_system_prompt(),
             subagents=subagents,
+            middleware=middleware,
+            backend=backend,
             interrupt_on={
                 "create_booking": {
                     "allowed_decisions": ["approve", "edit", "reject"],
@@ -206,7 +226,7 @@ Transform website visitors into qualified leads by conducting intelligent busine
 Remember: Your goal is to provide value first, build trust, and naturally guide users toward the right UnoDigit solutions for their specific needs."""
 
     # Custom tools for business flow
-    def _tool_calculate_lead_score(self, budget: str, timeline: str, fit_score: int = 50) -> Dict[str, Union[int, str]]:
+    def _tool_calculate_lead_score(self, budget: str, timeline: str, fit_score: int = 50) -> dict[str, int | str]:
         """Calculate lead quality score based on budget, timeline, and fit."""
         score = 50  # Base score
 
@@ -248,10 +268,8 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
             "recommendation": self._get_lead_recommendation(score)
         }
 
-    def _tool_match_expert(self, service_type: str, business_context: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def _tool_match_expert(self, service_type: str, business_context: dict[str, Any]) -> list[dict[str, Any]]:
         """Match experts to client needs based on service type and context."""
-        expert_service = ExpertService(self.db)
-
         # Get matching experts with scores
         scored_experts = self.db.execute(
             "SELECT * FROM experts WHERE services @> :service_type AND is_active = true",
@@ -280,7 +298,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         expert_matches.sort(key=lambda x: x["match_score"], reverse=True)
         return expert_matches
 
-    def _tool_get_availability(self, expert_id: str, days_ahead: int = 14, timezone: str = "UTC") -> Dict[str, Any]:
+    def _tool_get_availability(self, expert_id: str, days_ahead: int = 14, timezone: str = "UTC") -> dict[str, Any]:
         """Get expert availability from calendar system."""
         calendar_service = CalendarService(self.db)
 
@@ -307,7 +325,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         start_time: str,
         end_time: str,
         timezone: str = "UTC"
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Create calendar event with Google Calendar."""
         calendar_service = CalendarService(self.db)
 
@@ -334,8 +352,8 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         to_email: str,
         subject: str,
         body: str,
-        attachments: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
+        attachments: list[str] | None = None
+    ) -> dict[str, Any]:
         """Send email notification."""
         email_service = EmailService()
 
@@ -352,7 +370,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
             "error": result.error if not result.success else None
         }
 
-    def _tool_extract_info(self, user_message: str, current_context: Dict[str, Any]) -> Dict[str, Any]:
+    def _tool_extract_info(self, user_message: str, current_context: dict[str, Any]) -> dict[str, Any]:
         """Extract structured information from user message."""
         # Simple extraction - in production this would use more sophisticated NLP
         extracted = {}
@@ -406,7 +424,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
 
         return extracted
 
-    def _tool_determine_next_phase(self, session_context: Dict[str, Any]) -> str:
+    def _tool_determine_next_phase(self, session_context: dict[str, Any]) -> str:
         """Determine the next conversation phase based on current context."""
         client_info = session_context.get("client_info", {})
         business_context = session_context.get("business_context", {})
@@ -428,19 +446,25 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         else:
             return "service_recommendation"
 
-    def _tool_write_file(self, content: str, filename: str, content_type: str = "text/markdown") -> Dict[str, str]:
-        """Write content to file (for PRD storage)."""
+    def _tool_write_file(self, content: str, filename: str, content_type: str = "text/markdown") -> dict[str, str]:
+        """Write content to file (for PRD storage).
+
+        This tool is a custom wrapper. When FilesystemMiddleware is configured,
+        the agent will also have access to built-in file tools (write_file, read_file, etc.)
+        which are automatically provided by DeepAgents.
+        """
         import os
         from datetime import datetime
 
-        # Create uploads directory if it doesn't exist
-        os.makedirs("uploads", exist_ok=True)
+        # Use the PRD storage directory
+        prd_storage_dir = "prd_documents"
+        os.makedirs(prd_storage_dir, exist_ok=True)
 
         # Generate unique filename
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         safe_filename = f"{timestamp}_{filename.replace(' ', '_')}"
 
-        filepath = os.path.join("uploads", safe_filename)
+        filepath = os.path.join(prd_storage_dir, safe_filename)
 
         with open(filepath, "w") as f:
             f.write(content)
@@ -448,8 +472,9 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         return {
             "filename": safe_filename,
             "filepath": filepath,
-            "url": f"/uploads/{safe_filename}",
-            "size": str(len(content))
+            "url": f"/prd/{safe_filename}",
+            "size": str(len(content)),
+            "storage_path": f"/prd/{safe_filename}"
         }
 
     def _tool_format_markdown(self, content: str, template_type: str = "prd") -> str:
@@ -465,8 +490,8 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         self,
         session_id: uuid.UUID,
         user_message: str,
-        session_context: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        session_context: dict[str, Any]
+    ) -> dict[str, Any]:
         """Process a single conversation turn using DeepAgents."""
         if not self.agent:
             # Fallback to simple logic if DeepAgents not available
@@ -504,9 +529,8 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
             print(f"DeepAgents error: {e}")
             return await self._fallback_conversation_turn(user_message, session_context)
 
-    async def _build_conversation_history(self, session_id: uuid.UUID) -> List[Dict[str, str]]:
+    async def _build_conversation_history(self, session_id: uuid.UUID) -> list[dict[str, str]]:
         """Build conversation history from database."""
-        from src.models.session import Message
 
         result = await self.db.execute(
             "SELECT role, content, created_at FROM messages WHERE session_id = :session_id ORDER BY created_at",
@@ -525,7 +549,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
 
     async def _determine_next_phase_with_agent(
         self,
-        session_context: Dict[str, Any],
+        session_context: dict[str, Any],
         latest_user_input: str
     ) -> str:
         """Use agent to determine next conversation phase."""
@@ -535,8 +559,8 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
     async def _fallback_conversation_turn(
         self,
         user_message: str,
-        session_context: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        session_context: dict[str, Any]
+    ) -> dict[str, Any]:
         """Fallback conversation logic when DeepAgents is unavailable."""
         # Import the existing AI service for fallback
         from src.services.ai_service import AIService
@@ -567,10 +591,10 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
     async def generate_prd_with_deepagents(
         self,
         session_id: uuid.UUID,
-        business_context: Dict[str, Any],
-        client_info: Dict[str, Any],
-        conversation_history: List[Dict[str, Any]]
-    ) -> Dict[str, Any]:
+        business_context: dict[str, Any],
+        client_info: dict[str, Any],
+        conversation_history: list[dict[str, Any]]
+    ) -> dict[str, Any]:
         """Generate PRD using DeepAgents framework."""
         if not self.agent:
             # Fallback to existing PRD generation

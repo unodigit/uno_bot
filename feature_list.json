@@ -1584,8 +1584,9 @@
       "Step 4: Verify file content matches PRD"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T07:47:47.369355Z"
   },
   {
     "category": "style",
@@ -1601,7 +1602,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T18:35:00.000000Z",
-    "dev_completed_at": "2026-01-02T07:32:28.087423Z"
+    "dev_completed_at": "2026-01-02T07:45:29.562631Z",
+    "qa_retry_count": 0
   },
   {
     "category": "style",
@@ -1691,8 +1693,10 @@
       "Step 4: Verify focus state styling"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T07:45:50.258169Z"
   },
   {
     "category": "style",
@@ -1747,8 +1751,10 @@
       "Step 5: Verify button row styling"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T07:46:15.434286Z"
   },
   {
     "category": "style",
