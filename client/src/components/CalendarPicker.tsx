@@ -69,7 +69,7 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
 
   // Auto-refresh availability every 30 seconds when confirming
   useEffect(() => {
-    let interval: NodeJS.Timeout
+    let interval: ReturnType<typeof setInterval>
     if (selectedSlot) {
       interval = setInterval(() => {
         fetchAvailability()
