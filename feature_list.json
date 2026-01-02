@@ -2701,9 +2701,11 @@
       "Step 3: Verify at least 80% coverage",
       "Step 4: Identify uncovered critical paths"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-03T00:20:00.000000Z",
+    "qa_completed_at": "2026-01-03T00:20:00.000000Z"
   },
   {
     "category": "functional",
@@ -3094,7 +3096,9 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T13:12:28.072356+00:00",
-    "note": "WebSocket client has reconnection logic with 5 attempts and exponential backoff"
+    "note": "WebSocket client has reconnection logic with 5 attempts and exponential backoff",
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T13:13:27.709495Z"
   },
   {
     "category": "functional",
