@@ -4,6 +4,7 @@ import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { Card } from '../components/ui/Card'
 import { ExpertCard } from './ExpertCard'
+import { EditExpertForm } from './EditExpertForm'
 
 interface AdminDashboardProps {
   onBack?: () => void
@@ -14,6 +15,8 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
+  const [editingExpert, setEditingExpert] = useState(null)
+  const [savingExpert, setSavingExpert] = useState(false)
 
   useEffect(() => {
     fetchExperts()
@@ -30,6 +33,42 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleEditExpert = (expert: any) => {
+    setEditingExpert(expert)
+  }
+
+  const handleSaveExpert = async (updatedExpert: any) => {
+    if (!editingExpert) return
+
+    try {
+      setSavingExpert(true)
+      const response = await fetch(`/api/v1/admin/experts/${editingExpert.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedExpert),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to update expert')
+      }
+
+      const updatedData = await response.json()
+      setExperts(prev => prev.map(exp => exp.id === editingExpert.id ? updatedData : exp))
+      setEditingExpert(null)
+    } catch (error) {
+      console.error('Failed to save expert:', error)
+      alert('Failed to save expert. Please try again.')
+    } finally {
+      setSavingExpert(false)
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setEditingExpert(null)
   }
 
   const handleDeleteExpert = async (expertId: string) => {
@@ -185,7 +224,7 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => { /* Edit expert */ }}
+                        onClick={() => handleEditExpert(expert)}
                         className="flex items-center gap-1"
                       >
                         <Edit className="w-3 h-3" />
@@ -208,6 +247,16 @@ export function AdminDashboard({ onBack }: AdminDashboardProps) {
           </div>
         </div>
       </div>
+
+      {/* Edit Expert Form */}
+      {editingExpert && (
+        <EditExpertForm
+          expert={editingExpert}
+          onSave={handleSaveExpert}
+          onCancel={handleCancelEdit}
+          isSaving={savingExpert}
+        />
+      )}
     </div>
   )
 }
