@@ -230,7 +230,6 @@ class BookingService:
         """Get a booking by ID."""
         result = await self.db.execute(
             select(Booking)
-            .options(selectinload(Booking.session))
             .options(selectinload(Booking.expert))
             .where(Booking.id == booking_id)
         )
@@ -244,7 +243,6 @@ class BookingService:
         """Get booking by session ID."""
         result = await self.db.execute(
             select(Booking)
-            .options(selectinload(Booking.session))
             .options(selectinload(Booking.expert))
             .where(Booking.session_id == session_id)
         )
