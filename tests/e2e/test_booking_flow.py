@@ -1,5 +1,6 @@
 """End-to-end tests for complete booking flow."""
 import pytest
+import re
 from playwright.sync_api import Page, expect
 
 # Frontend URL
@@ -83,13 +84,11 @@ def test_complete_booking_flow(page: Page):
     # For this test, we just need to verify the calendar picker loads
 
     # Select a time slot
-    # Find available slot buttons (they should be styled differently from disabled ones)
-    slot_buttons = page.locator('button:has-text(":")').filter(has=page.locator('text=\\d{1,2}:\\d{2}'))
-
     # Wait for slots to load
-    page.wait_for_timeout(1000)
+    page.wait_for_timeout(2000)
 
-    # Get first available slot
+    # Get first available slot - look for buttons with time format
+    # Use regex pattern to find time slots like "10:00 AM" or "14:30"
     available_slots = page.locator('button').filter(
         has_text=page.locator('text=/\\d{1,2}:\\d{2}/')
     )
@@ -260,7 +259,7 @@ def test_time_slot_selection_confirmation(page: Page):
     page.wait_for_selector('text=Select Time Slot', timeout=10000)
 
     # Find and click a slot
-    slot_buttons = page.locator('button').filter(has_text=page.locator('text=\\d{1,2}:\\d{2}', regex=True))
+    slot_buttons = page.locator('button').filter(has_text=page.locator('text=/\\d{1,2}:\\d{2}/'))
     slot_buttons.first.click()
 
     # Verify selection confirmation appears
@@ -333,7 +332,7 @@ def test_double_booking_prevention(page: Page):
     page.wait_for_selector('text=Select Time Slot', timeout=10000)
 
     # Select a slot
-    slot_buttons = page.locator('button').filter(has_text=page.locator('text=\\d{1,2}:\\d{2}', regex=True))
+    slot_buttons = page.locator('button').filter(has_text=page.locator('text=/\\d{1,2}:\\d{2}/'))
     slot_buttons.first.click()
 
     # Track API calls
@@ -420,7 +419,7 @@ def test_availability_refresh(page: Page):
     page.wait_for_selector('text=Select Time Slot', timeout=10000)
 
     # Select a slot
-    slot_buttons = page.locator('button').filter(has_text=page.locator('text=\\d{1,2}:\\d{2}', regex=True))
+    slot_buttons = page.locator('button').filter(has_text=page.locator('text=/\\d{1,2}:\\d{2}/'))
     slot_buttons.first.click()
 
     # Track availability refresh calls
