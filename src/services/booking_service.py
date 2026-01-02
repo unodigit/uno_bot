@@ -198,7 +198,8 @@ class BookingService:
                 timezone=timezone,
                 meeting_link=meeting_link,
                 prd_url=f"/api/v1/prd/{session.prd_id}/download" if session.prd_id else None,
-                booking_id=str(booking.id)
+                booking_id=str(booking.id),
+                session_id=str(session_id)
             )
 
             if client_email_sent:
