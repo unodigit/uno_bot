@@ -63,7 +63,7 @@
     "is_qa_passed": true,
     "dev_completed_at": "2026-01-02T02:52:43.334015Z",
     "qa_retry_count": 0,
-    "qa_completed_at": "2026-01-02T02:51:59.170127+00:00"
+    "qa_completed_at": "2026-01-02T03:15:00.000000+00:00"
   },
   {
     "category": "functional",
@@ -204,8 +204,10 @@
       "Step 4: Verify company is stored in business_context"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T02:53:59.595469Z"
   },
   {
     "category": "functional",
