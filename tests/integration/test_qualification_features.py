@@ -62,29 +62,29 @@ async def test_feature_187_decision_maker_identification(test_db):
         created_session = await service.create_session(session_create)
 
         # Simulate conversation to qualification phase
-        await service.send_message(
+        await service.add_message(
             created_session.id,
             MessageCreate(content="My name is John Doe", role="user")
         )
-        await service.send_message(
+        await service.add_message(
             created_session.id,
             MessageCreate(content="john@example.com", role="user")
         )
-        await service.send_message(
+        await service.add_message(
             created_session.id,
             MessageCreate(content="We need help with data analytics", role="user")
         )
-        await service.send_message(
+        await service.add_message(
             created_session.id,
             MessageCreate(content="Healthcare industry", role="user")
         )
-        await service.send_message(
+        await service.add_message(
             created_session.id,
             MessageCreate(content="Budget is around $50,000", role="user")
         )
 
         # Provide decision maker info
-        await service.send_message(
+        await service.add_message(
             created_session.id,
             MessageCreate(content="I am the decision maker for this project", role="user")
         )
@@ -120,7 +120,7 @@ async def test_feature_187_non_decision_maker(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
@@ -153,7 +153,7 @@ async def test_feature_188_success_criteria_collection(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
@@ -187,7 +187,7 @@ async def test_feature_188_vague_success_criteria(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
@@ -217,7 +217,7 @@ async def test_feature_189_intent_detection_ai_strategy(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
@@ -248,7 +248,7 @@ async def test_feature_189_intent_detection_custom_dev(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
@@ -290,7 +290,7 @@ async def test_feature_190_context_retention_long_conversation(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
@@ -344,7 +344,7 @@ async def test_feature_190_context_references_earlier_info(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
@@ -382,7 +382,7 @@ async def test_lead_score_calculation_with_decision_maker(test_db):
         ]
 
         for msg in messages:
-            await service.send_message(
+            await service.add_message(
                 created_session.id,
                 MessageCreate(content=msg, role="user")
             )
