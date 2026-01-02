@@ -70,9 +70,9 @@ export class WebSocketClient {
   private socket: Socket | null = null;
   private sessionId: string | null = null;
   private isSocketConnected = false;
-  private reconnectAttempts = 0;
-  private maxReconnectAttempts = 5;
-  private reconnectDelay = 1000; // Start with 1 second
+  public reconnectAttempts = 0;
+  public maxReconnectAttempts = 5;
+  public reconnectDelay = 1000; // Start with 1 second
 
   // Event listeners - key is event name, value is set of callbacks
   private listeners: Map<string, Set<(data: any) => void>> = new Map();
@@ -301,5 +301,6 @@ export class WebSocketClient {
   }
 }
 
-// Export singleton instance
+// Export singleton instance and class
 export const wsClient = new WebSocketClient();
+export { WebSocketClient };

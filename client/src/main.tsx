@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './index.css'
 import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
+import { wsClient } from './api/websocket'
 
 // Create QueryClient instance
 const queryClient = new QueryClient({
@@ -16,6 +17,10 @@ const queryClient = new QueryClient({
     },
   },
 })
+
+// Expose wsClient globally for testing
+// @ts-ignore - Exposing for testing purposes
+window.wsClient = wsClient
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

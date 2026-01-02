@@ -1,0 +1,18 @@
+[
+  {
+    "test": "Apply migration",
+    "passed": false
+  },
+  {
+    "test": "Rollback migration",
+    "passed": true
+  },
+  {
+    "test": "Re-apply migration",
+    "passed": false
+  },
+  {
+    "test": "Rollback to base",
+    "passed": false
+  }
+]

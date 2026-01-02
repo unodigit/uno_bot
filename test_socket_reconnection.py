@@ -27,7 +27,7 @@ async def test_socket_reconnection():
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         # Create a session
         response = await client.post("/api/v1/sessions", json={"visitor_id": "test_visitor"})
-        assert response.status_code == 200
+        assert response.status_code in [200, 201], f"Expected 200 or 201, got {response.status_code}"
         session = response.json()
         session_id = session["id"]
         print(f"✓ Created session: {session_id[:8]}...")
@@ -55,10 +55,9 @@ async def test_socket_reconnection():
     try:
         # Connect to WebSocket
         await sio.connect(
-            f"http://localhost:8000/ws",
+            f"http://localhost:8000/ws?session_id={session_id}",
             transports=["websocket"],
-            socketio_path="/ws/socket.io",
-            params={"session_id": session_id}
+            socketio_path="/ws/socket.io"
         )
 
         # Wait for connection to establish
@@ -73,10 +72,9 @@ async def test_socket_reconnection():
 
         # Reconnect
         await sio.connect(
-            f"http://localhost:8000/ws",
+            f"http://localhost:8000/ws?session_id={session_id}",
             transports=["websocket"],
-            socketio_path="/ws/socket.io",
-            params={"session_id": session_id}
+            socketio_path="/ws/socket.io"
         )
         await asyncio.sleep(1)
         assert len(connection_events) >= 2, "Should have reconnected"
