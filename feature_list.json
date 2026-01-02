@@ -1345,7 +1345,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T07:25:00.000Z",
-    "dev_completed_at": "2026-01-02T07:29:09.469270Z"
+    "dev_completed_at": "2026-01-02T07:35:42.822270Z",
+    "qa_retry_count": 0
   },
   {
     "category": "functional",
@@ -1566,8 +1567,10 @@
       "Step 5: Verify booking completes"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T07:34:22.464193Z"
   },
   {
     "category": "functional",
@@ -1594,7 +1597,8 @@
     ],
     "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
+    "qa_completed_at": "2026-01-02T18:35:00.000000Z",
     "dev_completed_at": "2026-01-02T07:32:28.087423Z"
   },
   {
@@ -1622,8 +1626,10 @@
       "Step 5: Verify close button visible"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T07:36:09.019663Z"
   },
   {
     "category": "style",
