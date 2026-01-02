@@ -84,6 +84,49 @@ export default {
     // Custom scrollbar plugin for consistent styling
     function({ addUtilities }) {
       addUtilities({
+        // Screen reader only utility
+        '.sr-only': {
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          padding: '0',
+          margin: '-1px',
+          overflow: 'hidden',
+          clip: 'rect(0, 0, 0, 0)',
+          whiteSpace: 'nowrap',
+          borderWidth: '0',
+        },
+        // Not screen reader only (undo sr-only)
+        '.not-sr-only': {
+          position: 'static',
+          width: 'auto',
+          height: 'auto',
+          padding: '0',
+          margin: '0',
+          overflow: 'visible',
+          clip: 'auto',
+          whiteSpace: 'normal',
+        },
+        // Focus visible utility for better keyboard navigation
+        '.focus-visible': {
+          outline: '2px solid #2563EB',
+          outlineOffset: '2px',
+        },
+        // Skip to content utility
+        '.skip-to-content': {
+          position: 'absolute',
+          top: '-40px',
+          left: '0',
+          background: '#2563EB',
+          color: 'white',
+          padding: '8px',
+          textDecoration: 'none',
+          zIndex: '100',
+        },
+        '.skip-to-content:focus': {
+          top: '0',
+        },
+        // Custom scrollbar utilities
         '.scrollbar-thin': {
           scrollbarWidth: 'thin',
           scrollbarColor: '#9CA3AF transparent',

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { MessageSquare, ArrowLeft, ArrowRight } from 'lucide-react'
 import { ChatWindow } from './ChatWindow'
 import { useChatStore } from '../stores/chatStore'
@@ -8,6 +8,9 @@ export function ChatWidget() {
   const [isMinimized, setIsMinimized] = useState(false)
   const [isFirstVisit, setIsFirstVisit] = useState(false)
   const [showPositionMenu, setShowPositionMenu] = useState(false)
+
+  // Ref for the main chat button to restore focus when closing
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const { messages, sessionId, createSession, loadSession, widgetPosition, setWidgetPosition } = useChatStore()
 
@@ -62,13 +65,38 @@ export function ChatWidget() {
       }
     } else {
       setIsOpen(false)
+      // Return focus to the button after closing
+      setTimeout(() => {
+        buttonRef.current?.focus()
+      }, 100)
     }
   }
 
   const handleMinimize = () => {
     setIsMinimized(true)
     setIsOpen(false)
+    // Return focus to the button after minimizing
+    setTimeout(() => {
+      buttonRef.current?.focus()
+    }, 100)
   }
+
+  // Handle keyboard navigation for position menu
+  const handlePositionMenuKeyDown = (e: React.KeyboardEvent, position: 'left' | 'right') => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      setWidgetPosition(position)
+      setShowPositionMenu(false)
+      buttonRef.current?.focus()
+    } else if (e.key === 'Escape') {
+      setShowPositionMenu(false)
+      buttonRef.current?.focus()
+    }
+  }
+
+  // Handle mouse enter/leave for position menu with keyboard support
+  const handleMouseEnter = () => setShowPositionMenu(true)
+  const handleMouseLeave = () => setShowPositionMenu(false)
 
   const unreadCount = messages.filter(m => m.role === 'assistant').length
 
@@ -79,6 +107,7 @@ export function ChatWidget() {
         {isFirstVisit && "Chat widget loaded. Press Enter to open chat."}
         {isOpen && "Chat window opened."}
         {!isOpen && isMinimized && `Chat minimized. ${unreadCount} new messages.`}
+        {showPositionMenu && "Position menu opened. Use arrow keys or tab to select position."}
       </div>
 
       {/* Position Toggle Menu - appears on hover of button area */}
@@ -87,20 +116,24 @@ export function ChatWidget() {
              role="menu"
              aria-label="Widget position options">
           <button
-            onClick={() => setWidgetPosition('left')}
-            className={`p-2 rounded ${widgetPosition === 'left' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+            onClick={() => { setWidgetPosition('left'); setShowPositionMenu(false); buttonRef.current?.focus(); }}
+            onKeyDown={(e) => handlePositionMenuKeyDown(e, 'left')}
+            className={`p-2 rounded ${widgetPosition === 'left' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-2 focus:ring-primary focus:outline-none'}`}
             aria-label="Position on left"
             aria-pressed={widgetPosition === 'left'}
             data-testid="position-left"
+            tabIndex={0}
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
           <button
-            onClick={() => setWidgetPosition('right')}
-            className={`p-2 rounded ${widgetPosition === 'right' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+            onClick={() => { setWidgetPosition('right'); setShowPositionMenu(false); buttonRef.current?.focus(); }}
+            onKeyDown={(e) => handlePositionMenuKeyDown(e, 'right')}
+            className={`p-2 rounded ${widgetPosition === 'right' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-2 focus:ring-primary focus:outline-none'}`}
             aria-label="Position on right"
             aria-pressed={widgetPosition === 'right'}
             data-testid="position-right"
+            tabIndex={0}
           >
             <ArrowRight className="w-4 h-4" />
           </button>
@@ -111,20 +144,31 @@ export function ChatWidget() {
       {!isOpen && !isMinimized && (
         <div className="group">
           <button
+            ref={buttonRef}
             onClick={handleToggle}
-            onMouseEnter={() => setShowPositionMenu(true)}
-            onMouseLeave={() => setShowPositionMenu(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault()
                 handleToggle()
+              } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                // Open position menu with arrow keys
+                e.preventDefault()
+                setShowPositionMenu(true)
+              } else if (e.key === 'Escape' && showPositionMenu) {
+                // Close position menu with Escape
+                e.preventDefault()
+                setShowPositionMenu(false)
               }
             }}
-            className={`fixed ${position.button} w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50 ${isFirstVisit ? 'animate-pulse-subtle' : ''}`}
+            className={`fixed ${position.button} w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 z-50 ${isFirstVisit ? 'animate-pulse-subtle' : ''} focus:ring-2 focus:ring-white focus:outline-none`}
             aria-label="Open chat"
             aria-expanded={isOpen}
+            aria-haspopup="menu"
             aria-describedby="chat-widget-tooltip"
             data-testid="chat-widget-button"
+            tabIndex={0}
           >
             <MessageSquare className="w-8 h-8" />
             <span id="chat-widget-tooltip" className="sr-only">UnoBot - AI Business Consultant</span>
@@ -136,20 +180,31 @@ export function ChatWidget() {
       {!isOpen && isMinimized && (
         <div className="group">
           <button
+            ref={buttonRef}
             onClick={handleToggle}
-            onMouseEnter={() => setShowPositionMenu(true)}
-            onMouseLeave={() => setShowPositionMenu(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault()
                 handleToggle()
+              } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                // Open position menu with arrow keys
+                e.preventDefault()
+                setShowPositionMenu(true)
+              } else if (e.key === 'Escape' && showPositionMenu) {
+                // Close position menu with Escape
+                e.preventDefault()
+                setShowPositionMenu(false)
               }
             }}
-            className={`fixed ${position.button} w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 relative z-50`}
+            className={`fixed ${position.button} w-[60px] h-[60px] bg-primary hover:bg-primary-dark text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 relative z-50 focus:ring-2 focus:ring-white focus:outline-none`}
             aria-label={`Open chat. ${unreadCount} new messages`}
             aria-expanded={isOpen}
+            aria-haspopup="menu"
             aria-describedby="chat-widget-tooltip-minimized"
             data-testid="chat-widget-button-minimized"
+            tabIndex={0}
           >
             <MessageSquare className="w-8 h-8" />
             <span id="chat-widget-tooltip-minimized" className="sr-only">UnoBot - AI Business Consultant</span>
@@ -165,20 +220,24 @@ export function ChatWidget() {
                  role="menu"
                  aria-label="Widget position options">
               <button
-                onClick={() => setWidgetPosition('left')}
-                className={`p-2 rounded ${widgetPosition === 'left' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+                onClick={() => { setWidgetPosition('left'); setShowPositionMenu(false); buttonRef.current?.focus(); }}
+                onKeyDown={(e) => handlePositionMenuKeyDown(e, 'left')}
+                className={`p-2 rounded ${widgetPosition === 'left' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-2 focus:ring-primary focus:outline-none'}`}
                 aria-label="Position on left"
                 aria-pressed={widgetPosition === 'left'}
                 data-testid="position-left"
+                tabIndex={0}
               >
                 <ArrowLeft className="w-4 h-4" />
               </button>
               <button
-                onClick={() => setWidgetPosition('right')}
-                className={`p-2 rounded ${widgetPosition === 'right' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600'}`}
+                onClick={() => { setWidgetPosition('right'); setShowPositionMenu(false); buttonRef.current?.focus(); }}
+                onKeyDown={(e) => handlePositionMenuKeyDown(e, 'right')}
+                className={`p-2 rounded ${widgetPosition === 'right' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-2 focus:ring-primary focus:outline-none'}`}
                 aria-label="Position on right"
                 aria-pressed={widgetPosition === 'right'}
                 data-testid="position-right"
+                tabIndex={0}
               >
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -190,7 +249,13 @@ export function ChatWidget() {
       {/* Chat Window */}
       {isOpen && (
         <ChatWindow
-          onClose={() => setIsOpen(false)}
+          onClose={() => {
+            setIsOpen(false)
+            // Return focus to button
+            setTimeout(() => {
+              buttonRef.current?.focus()
+            }, 100)
+          }}
           onMinimize={handleMinimize}
         />
       )}

@@ -22,14 +22,25 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl font-bold text-center mb-8">
-          Welcome to UnoDigit
-        </h1>
-        <p className="text-center text-text-muted">
-          AI-Powered Business Consulting
-        </p>
-      </div>
+      {/* Skip to main content link for keyboard users */}
+      <a
+        href="#main-content"
+        className="skip-to-content"
+        data-testid="skip-to-content"
+      >
+        Skip to main content
+      </a>
+
+      <main id="main-content" tabIndex={-1}>
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-4xl font-bold text-center mb-8">
+            Welcome to UnoDigit
+          </h1>
+          <p className="text-center text-text-muted">
+            AI-Powered Business Consulting
+          </p>
+        </div>
+      </main>
       <ChatWidget />
     </div>
   )
