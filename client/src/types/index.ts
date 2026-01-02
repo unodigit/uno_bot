@@ -53,6 +53,7 @@ export interface PRDResponse {
   session_id: string;
   version: number;
   content_markdown: string;
+  conversation_summary: string | null;
   client_company: string | null;
   client_name: string | null;
   recommended_service: string | null;
@@ -78,6 +79,23 @@ export interface PRDGenerateRequest {
 export interface PRDRegenerateRequest {
   session_id: string;
   feedback?: string;
+}
+
+export interface ConversationSummaryResponse {
+  summary: string;
+  session_id: string;
+}
+
+export interface ConversationSummaryApproveRequest {
+  session_id: string;
+  summary: string;
+  approve: boolean;
+}
+
+export interface SummaryState {
+  summary: string | null;
+  isGenerating: boolean;
+  isReviewing: boolean;
 }
 
 // Expert Types
@@ -171,6 +189,10 @@ export interface ChatState {
   isGeneratingPRD: boolean;
   matchedExperts: MatchedExpert[];
   isMatchingExperts: boolean;
+  // Summary state
+  conversationSummary: string | null;
+  isGeneratingSummary: boolean;
+  isReviewingSummary: boolean;
   // Booking flow state
   bookingState: 'idle' | 'selecting_expert' | 'selecting_time' | 'confirming' | 'completed' | 'cancelled';
   selectedExpert: MatchedExpert | null;
@@ -178,6 +200,9 @@ export interface ChatState {
   createdBooking: BookingResponse | null;
   isCreatingBooking: boolean;
   isCancellingBooking: boolean;
+  // WebSocket state
+  isWebSocketConnected: boolean;
+  isTyping: boolean;
 }
 
 export interface ChatActions {
@@ -194,12 +219,35 @@ export interface ChatActions {
   clearPRDPreview: () => void;
   matchExperts: () => Promise<void>;
   clearMatchedExperts: () => void;
+  // Summary actions
+  generateSummary: () => Promise<void>;
+  approveSummary: () => Promise<void>;
+  rejectSummary: () => Promise<void>;
+  clearSummary: () => void;
   // Booking flow actions
   startBookingFlow: (expert: MatchedExpert) => void;
   selectTimeSlot: (slot: TimeSlot) => Promise<void>;
   confirmBooking: (clientName: string, clientEmail: string) => Promise<void>;
   cancelBooking: (reason?: string) => Promise<void>;
   resetBookingFlow: () => void;
+  // WebSocket actions
+  initializeWebSocket: () => void;
+  disconnectWebSocket: () => void;
+  sendMessageViaWebSocket: (content: string) => void;
+  generatePRDViaWebSocket: () => void;
+  matchExpertsViaWebSocket: () => void;
+  getAvailabilityViaWebSocket: (expertId: string, timezone?: string) => void;
+  createBookingViaWebSocket: (data: {
+    expert_id: string;
+    start_time: string;
+    end_time: string;
+    timezone: string;
+    client_name: string;
+    client_email: string;
+  }) => void;
+  isWebSocketAvailable: () => boolean;
+  // Note: The following methods are also available on the store but are not part of ChatActions
+  // They are added for completeness: addMessage, clearError, setStreaming
 }
 
 export type ChatStore = ChatState & ChatActions;

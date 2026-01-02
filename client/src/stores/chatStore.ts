@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert, TimeSlot, BookingCreateRequest, BookingResponse } from '../types';
 import { api } from '../api/client';
+import { wsClient } from '../api/websocket';
 
 // Generate visitor ID
 const getVisitorId = (): string => {
@@ -10,6 +11,119 @@ const getVisitorId = (): string => {
   const newId = `visitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   localStorage.setItem('unobot_visitor_id', newId);
   return newId;
+};
+
+// Flag to control whether to use WebSocket (set to true to enable)
+let USE_WEBSOCKET = false;
+
+// Helper to setup WebSocket event listeners
+const setupWebSocketListeners = (set: any, get: any) => {
+  // Connection established
+  wsClient.on('connected', (data) => {
+    console.log('[WebSocket] Connected to session:', data.session_id);
+    set({ isWebSocketConnected: true });
+  });
+
+  // Message received
+  wsClient.on('message', (data) => {
+    const { user_message, ai_message } = data;
+    set((state: any) => ({
+      messages: [...state.messages, user_message, ai_message],
+      isStreaming: false,
+    }));
+  });
+
+  // Typing indicators
+  wsClient.on('typing_start', () => {
+    set({ isTyping: true });
+  });
+
+  wsClient.on('typing_stop', () => {
+    set({ isTyping: false });
+  });
+
+  // Phase change
+  wsClient.on('phase_change', (data) => {
+    set({ currentPhase: data.phase });
+  });
+
+  // PRD ready notification
+  wsClient.on('prd_ready', (data) => {
+    console.log('[WebSocket] PRD ready:', data.message);
+    // Could trigger UI notification here
+  });
+
+  // PRD generated
+  wsClient.on('prd_generated', (data) => {
+    const preview = {
+      id: data.prd_id,
+      filename: data.filename,
+      preview_text: data.preview_text,
+      version: data.version,
+      created_at: new Date().toISOString(),
+    };
+    set({ prdPreview: preview, isGeneratingPRD: false });
+
+    // Add message to chat
+    const prdMessage: Message = {
+      id: `prd_${Date.now()}`,
+      session_id: get().sessionId || '',
+      role: 'assistant',
+      content: `📄 Project Requirements Document generated!\n\n**${data.filename}**\n\nPreview: ${data.preview_text}\n\nUse the download button to save the full PRD.`,
+      meta_data: { type: 'prd_generated', prd_id: data.prd_id },
+      created_at: new Date().toISOString(),
+    };
+    set((state: any) => ({ messages: [...state.messages, prdMessage] }));
+  });
+
+  // Experts matched
+  wsClient.on('experts_matched', (data) => {
+    const matchedExperts: MatchedExpert[] = data.experts.map((expert, index) => ({
+      id: expert.id,
+      name: expert.name,
+      email: expert.email,
+      role: expert.role,
+      bio: expert.bio,
+      photo_url: expert.photo_url,
+      specialties: expert.specialties,
+      services: expert.services,
+      match_score: data.match_scores[index] || 0,
+    }));
+    set({ matchedExperts, isMatchingExperts: false });
+  });
+
+  // Availability received
+  wsClient.on('availability', (data) => {
+    // Update selected expert's availability in the store
+    // This would be handled by the booking flow
+    console.log('[WebSocket] Availability received:', data);
+  });
+
+  // Booking confirmed
+  wsClient.on('booking_confirmed', (data) => {
+    const { selectedExpert } = get();
+    const bookingMessage: Message = {
+      id: `booking_${Date.now()}`,
+      session_id: get().sessionId || '',
+      role: 'assistant',
+      content: `✅ Booking confirmed with ${selectedExpert?.name}!\n\nDate: ${new Date(data.start_time).toLocaleDateString()}\nTime: ${new Date(data.start_time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\n\nCheck the confirmation card for details.`,
+      meta_data: { type: 'booking_confirmed', booking_id: data.booking_id },
+      created_at: new Date().toISOString(),
+    };
+
+    set((state: any) => ({
+      messages: [...state.messages, bookingMessage],
+      createdBooking: data,
+      bookingState: 'completed',
+      isCreatingBooking: false,
+    }));
+  });
+
+  // Error handling
+  wsClient.on('error', (data) => {
+    console.error('[WebSocket] Error:', data.message);
+    set({ error: data.message, isStreaming: false });
+  });
 };
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -29,6 +143,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isGeneratingPRD: false,
   matchedExperts: [],
   isMatchingExperts: false,
+  // Summary state
+  conversationSummary: null,
+  isGeneratingSummary: false,
+  isReviewingSummary: false,
   // Booking flow state
   bookingState: 'idle',
   selectedExpert: null,
@@ -36,6 +154,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   createdBooking: null,
   isCreatingBooking: false,
   isCancellingBooking: false,
+  // WebSocket state
+  isWebSocketConnected: false,
+  isTyping: false,
 
   // Actions
   openChat: () => {
@@ -448,7 +569,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         id: `cancel_${Date.now()}`,
         session_id: sessionId || '',
         role: 'assistant',
-        content: `❌ Booking cancelled.\\n\\nYour appointment with ${createdBooking.client_name} has been cancelled.\\n\\nIf you need to book again, you can start a new booking flow.`,
+        content: `❌ Booking cancelled.\n\nYour appointment with ${createdBooking.client_name} has been cancelled.\n\nIf you need to book again, you can start a new booking flow.`,
         meta_data: { type: 'booking_cancelled', booking_id: createdBooking.id },
         created_at: new Date().toISOString(),
       };
@@ -466,5 +587,268 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       });
       console.error('Booking cancellation error:', error);
     }
+  },
+
+  // Summary actions
+  generateSummary: async () => {
+    try {
+      const { sessionId } = get();
+      if (!sessionId) {
+        throw new Error('No session available');
+      }
+
+      set({ isGeneratingSummary: true, isReviewingSummary: false, error: null });
+
+      // Generate summary
+      const response = await api.generateSummary(sessionId);
+
+      set({
+        conversationSummary: response.summary,
+        isGeneratingSummary: false,
+        isReviewingSummary: true,
+      });
+
+      // Add a message to the chat indicating summary was generated
+      const summaryMessage: Message = {
+        id: `summary_${Date.now()}`,
+        session_id: sessionId,
+        role: 'assistant',
+        content: `📋 Conversation Summary generated!\n\nPlease review the summary below and confirm if it accurately captures your requirements. You can approve it or request a regeneration before we proceed with PRD generation.\n\n**Summary:**\n${response.summary}`,
+        meta_data: { type: 'summary_generated' },
+        created_at: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        messages: [...state.messages, summaryMessage],
+      }));
+
+    } catch (error) {
+      set({
+        isGeneratingSummary: false,
+        error: error instanceof Error ? error.message : 'Failed to generate summary'
+      });
+      console.error('Summary generation error:', error);
+    }
+  },
+
+  approveSummary: async () => {
+    try {
+      const { sessionId, conversationSummary } = get();
+      if (!sessionId || !conversationSummary) {
+        throw new Error('No session or summary available');
+      }
+
+      set({ isGeneratingPRD: true, isReviewingSummary: false, error: null });
+
+      // Approve summary and generate PRD
+      const prdResponse = await api.approveSummaryAndGeneratePRD({
+        session_id: sessionId,
+        summary: conversationSummary,
+        approve: true,
+      });
+
+      // Get preview
+      const preview = await api.getPRDPreview(prdResponse.id);
+
+      set({
+        prdPreview: preview,
+        isGeneratingPRD: false,
+        conversationSummary: null,
+        isReviewingSummary: false,
+      });
+
+      // Add a success message to the chat
+      const successMessage: Message = {
+        id: `summary_approved_${Date.now()}`,
+        session_id: sessionId,
+        role: 'assistant',
+        content: `✅ Summary approved!\n\n📄 Project Requirements Document generated!\n\n**${preview.filename}**\n\nPreview: ${preview.preview_text}\n\nUse the download button to save the full PRD.`,
+        meta_data: { type: 'summary_approved', prd_id: prdResponse.id },
+        created_at: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        messages: [...state.messages, successMessage],
+      }));
+
+    } catch (error) {
+      set({
+        isGeneratingPRD: false,
+        isReviewingSummary: false,
+        error: error instanceof Error ? error.message : 'Failed to approve summary'
+      });
+      console.error('Summary approval error:', error);
+    }
+  },
+
+  rejectSummary: async () => {
+    try {
+      const { sessionId, conversationSummary } = get();
+      if (!sessionId || !conversationSummary) {
+        throw new Error('No session or summary available');
+      }
+
+      set({ isGeneratingSummary: true, error: null });
+
+      // Reject and regenerate
+      const response = await api.approveSummaryAndGeneratePRD({
+        session_id: sessionId,
+        summary: conversationSummary,
+        approve: false,
+      });
+
+      set({
+        conversationSummary: response.summary,
+        isGeneratingSummary: false,
+        isReviewingSummary: true,
+      });
+
+      // Add a message to the chat
+      const regenerateMessage: Message = {
+        id: `summary_regen_${Date.now()}`,
+        session_id: sessionId,
+        role: 'assistant',
+        content: `🔄 New summary generated!\n\n**New Summary:**\n${response.summary}\n\nDo you approve this revised summary?`,
+        meta_data: { type: 'summary_regenerated' },
+        created_at: new Date().toISOString(),
+      };
+
+      set((state) => ({
+        messages: [...state.messages, regenerateMessage],
+      }));
+
+    } catch (error) {
+      set({
+        isGeneratingSummary: false,
+        isReviewingSummary: false,
+        error: error instanceof Error ? error.message : 'Failed to regenerate summary'
+      });
+      console.error('Summary rejection error:', error);
+    }
+  },
+
+  clearSummary: () => {
+    set({ conversationSummary: null, isGeneratingSummary: false, isReviewingSummary: false });
+  },
+
+  // WebSocket actions
+  initializeWebSocket: () => {
+    const { sessionId } = get();
+    if (!sessionId) {
+      console.error('[WebSocket] Cannot initialize: no session ID');
+      return;
+    }
+
+    // Setup listeners only once
+    if (!wsClient.areListenersInitialized()) {
+      setupWebSocketListeners(set, get);
+    }
+
+    // Connect
+    wsClient.connect(sessionId);
+    USE_WEBSOCKET = true;
+  },
+
+  disconnectWebSocket: () => {
+    wsClient.disconnect();
+    set({ isWebSocketConnected: false, isTyping: false });
+    USE_WEBSOCKET = false;
+  },
+
+  // WebSocket-based message sending
+  sendMessageViaWebSocket: (content: string) => {
+    const { sessionId, addMessage } = get();
+
+    if (!sessionId) {
+      throw new Error('No session available');
+    }
+
+    if (!wsClient.isConnected()) {
+      throw new Error('WebSocket not connected');
+    }
+
+    // Add user message immediately
+    const userMessage: Message = {
+      id: `user_${Date.now()}`,
+      session_id: sessionId,
+      role: 'user',
+      content,
+      meta_data: {},
+      created_at: new Date().toISOString(),
+    };
+
+    addMessage(userMessage);
+
+    // Set streaming state
+    set({ isStreaming: true });
+
+    // Send via WebSocket
+    wsClient.sendMessage(content);
+  },
+
+  // WebSocket-based PRD generation
+  generatePRDViaWebSocket: () => {
+    const { sessionId } = get();
+    if (!sessionId) {
+      throw new Error('No session available');
+    }
+
+    if (!wsClient.isConnected()) {
+      throw new Error('WebSocket not connected');
+    }
+
+    set({ isGeneratingPRD: true, error: null });
+    wsClient.generatePRD();
+  },
+
+  // WebSocket-based expert matching
+  matchExpertsViaWebSocket: () => {
+    const { sessionId } = get();
+    if (!sessionId) {
+      throw new Error('No session available');
+    }
+
+    if (!wsClient.isConnected()) {
+      throw new Error('WebSocket not connected');
+    }
+
+    set({ isMatchingExperts: true, error: null });
+    wsClient.matchExperts();
+  },
+
+  // WebSocket-based availability check
+  getAvailabilityViaWebSocket: (expertId: string, timezone: string = 'UTC') => {
+    if (!wsClient.isConnected()) {
+      throw new Error('WebSocket not connected');
+    }
+
+    wsClient.getAvailability(expertId, timezone);
+  },
+
+  // WebSocket-based booking creation
+  createBookingViaWebSocket: (data: {
+    expert_id: string;
+    start_time: string;
+    end_time: string;
+    timezone: string;
+    client_name: string;
+    client_email: string;
+  }) => {
+    const { sessionId } = get();
+    if (!sessionId) {
+      throw new Error('No session available');
+    }
+
+    if (!wsClient.isConnected()) {
+      throw new Error('WebSocket not connected');
+    }
+
+    set({ isCreatingBooking: true, error: null });
+    wsClient.createBooking(data);
+  },
+
+  // Helper to check if WebSocket is available
+  isWebSocketAvailable: () => {
+    return wsClient.isConnected();
   },
 }));

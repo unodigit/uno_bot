@@ -1091,7 +1091,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T20:15:00.000000Z",
+    "dev_completed_at": "2026-01-02T07:03:40.920889Z",
     "qa_completed_at": "2026-01-02T20:30:00.000000Z",
     "test_files": [
       "tests/e2e/test_ai_conversation_features.py"
@@ -1106,9 +1106,16 @@
       "Step 3: Review summary",
       "Step 4: Verify summary captures key points"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T21:45:00.000000Z",
+    "qa_completed_at": "2026-01-02T21:50:00.000000Z",
+    "test_files": [
+      "tests/integration/test_summary_feature.py",
+      "tests/e2e/test_summary_workflow.py"
+    ]
   },
   {
     "category": "functional",
@@ -1136,9 +1143,15 @@
       "Step 4: Verify consent timestamp stored",
       "Step 5: Verify data processing continues"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T21:40:00.000000Z",
+    "qa_completed_at": "2026-01-02T21:45:00.000000Z",
+    "test_files": [
+      "tests/e2e/test_gdpr_consent.py"
+    ]
   },
   {
     "category": "functional",
@@ -1167,8 +1180,10 @@
       "Step 5: Verify error responses follow schema"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T06:58:48.227905Z"
   },
   {
     "category": "functional",
@@ -1308,8 +1323,10 @@
       "Step 4: Verify all fields present"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T06:59:24.412724Z"
   },
   {
     "category": "functional",

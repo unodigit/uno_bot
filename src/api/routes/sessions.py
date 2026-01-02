@@ -2,10 +2,11 @@
 import uuid
 from datetime import datetime
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
+from src.core.exceptions import BadRequestError, ConflictError, NotFoundError
 from src.models.session import MessageRole
 from src.schemas.expert import ExpertMatchResponse
 from src.schemas.session import (
@@ -97,10 +98,7 @@ async def get_session(
     session = await service.get_session(session_id)
 
     if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {session_id} not found",
-        )
+        raise NotFoundError("Session", session_id)
 
     return SessionResponse(
         id=session.id,
@@ -157,18 +155,12 @@ async def send_message(
     session = await service.get_session(session_id)
 
     if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {session_id} not found",
-        )
+        raise NotFoundError("Session", session_id)
 
     # Check if session is active (handle both string and enum)
     status_value = session.status.value if hasattr(session.status, 'value') else session.status
     if status_value != "active":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Cannot send message to {status_value} session",
-        )
+        raise BadRequestError(f"Cannot send message to {status_value} session")
 
     # Add user message
     user_message = await service.add_message(
@@ -211,18 +203,12 @@ async def resume_session_path(
     session = await service.get_session(session_id)
 
     if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {session_id} not found",
-        )
+        raise NotFoundError("Session", session_id)
 
     # Check if session is completed (handle both string and enum)
     status_value = session.status.value if hasattr(session.status, 'value') else session.status
     if status_value == "completed":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot resume a completed session",
-        )
+        raise BadRequestError("Cannot resume a completed session")
 
     resumed_session = await service.resume_session(session)
 
@@ -277,27 +263,18 @@ async def resume_session(
     Uses session_id from request body.
     """
     if not resume_request.session_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="session_id is required in request body",
-        )
+        raise BadRequestError("session_id is required in request body")
 
     service = SessionService(db)
     session = await service.get_session(resume_request.session_id)
 
     if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {resume_request.session_id} not found",
-        )
+        raise NotFoundError("Session", resume_request.session_id)
 
     # Check if session is completed (handle both string and enum)
     status_value = session.status.value if hasattr(session.status, 'value') else session.status
     if status_value == "completed":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot resume a completed session",
-        )
+        raise BadRequestError("Cannot resume a completed session")
 
     resumed_session = await service.resume_session(session)
 
@@ -355,10 +332,7 @@ async def match_expert(
     session = await session_service.get_session(session_id)
 
     if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {session_id} not found",
-        )
+        raise NotFoundError("Session", session_id)
 
     expert_service = ExpertService(db)
 
@@ -426,10 +400,7 @@ async def update_session(
     session = await service.get_session(session_id)
 
     if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {session_id} not found",
-        )
+        raise NotFoundError("Session", session_id)
 
     # Update session with provided data using keyword arguments
     updated_session = await service.update_session_data(
@@ -493,10 +464,7 @@ async def unsubscribe_from_marketing(
 
     session = await service.get_session(unsubscribe_request.session_id)
     if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Session {unsubscribe_request.session_id} not found"
-        )
+        raise NotFoundError("Session", unsubscribe_request.session_id)
 
     # Update email preferences to opt out of marketing
     session.email_opt_in = False

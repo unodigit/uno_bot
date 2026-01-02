@@ -4,7 +4,7 @@
  * Handles all HTTP communication with the UnoBot backend API.
  */
 
-import { Session, Message, CreateSessionRequest, SendMessageRequest, PRDResponse, PRDPreview, ExpertMatchResponse, AvailabilityResponse, BookingCreateRequest, BookingResponse } from '../types';
+import { Session, Message, CreateSessionRequest, SendMessageRequest, PRDResponse, PRDPreview, ExpertMatchResponse, AvailabilityResponse, BookingCreateRequest, BookingResponse, ConversationSummaryResponse, ConversationSummaryApproveRequest } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -200,6 +200,22 @@ class ApiClient {
    */
   async healthCheck(): Promise<{ status: string }> {
     return this.get<{ status: string }>('/api/v1/health');
+  }
+
+  /**
+   * Generate conversation summary
+   * POST /api/v1/prd/generate-summary
+   */
+  async generateSummary(sessionId: string): Promise<ConversationSummaryResponse> {
+    return this.post<ConversationSummaryResponse>('/api/v1/prd/generate-summary', { session_id: sessionId });
+  }
+
+  /**
+   * Approve summary and generate PRD
+   * POST /api/v1/prd/approve-summary-and-generate-prd
+   */
+  async approveSummaryAndGeneratePRD(data: ConversationSummaryApproveRequest): Promise<PRDResponse> {
+    return this.post<PRDResponse>('/api/v1/prd/approve-summary-and-generate-prd', data);
   }
 }
 

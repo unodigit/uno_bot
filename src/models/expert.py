@@ -46,6 +46,7 @@ class Expert(Base):
     # Relationships
     sessions = relationship("ConversationSession", back_populates="matched_expert")
     bookings = relationship("Booking", back_populates="expert")
+    prd_documents = relationship("PRDDocument", back_populates="expert")
 
     def __repr__(self) -> str:
         return f"<Expert(id={self.id}, name={self.name}, role={self.role})>"

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus, ArrowLeft, Calendar } from 'lucide-react'
+import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus, ArrowLeft, Calendar, Check, XCircle, RefreshCw } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import { twMerge } from 'tailwind-merge'
 import { ExpertMatchList } from './ExpertCard'
@@ -56,6 +56,15 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     isMatchingExperts,
     matchExperts,
     clearMatchedExperts,
+    // Summary state
+    conversationSummary,
+    isGeneratingSummary,
+    isReviewingSummary,
+    // Summary actions
+    generateSummary,
+    approveSummary,
+    rejectSummary,
+    clearSummary,
     // Booking flow state
     bookingState,
     selectedExpert,
@@ -92,7 +101,8 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     try {
       // Check if this is a special PRD generation request
       if (content === 'Generate PRD') {
-        await generatePRD()
+        // Start summary flow instead of direct PRD generation
+        await generateSummary()
         // Add user message
         await sendMessage(content)
       } else if (content.toLowerCase().includes('match') || content.toLowerCase().includes('expert') || content.toLowerCase().includes('recommend')) {
@@ -117,9 +127,10 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
 
   const handleGeneratePRD = async () => {
     try {
-      await generatePRD()
+      // Start the summary flow instead of direct PRD generation
+      await generateSummary()
     } catch (err) {
-      console.error('Failed to generate PRD:', err)
+      console.error('Failed to generate summary:', err)
     }
   }
 
@@ -161,6 +172,22 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     clearMatchedExperts()
   }
 
+  const handleApproveSummary = async () => {
+    try {
+      await approveSummary()
+    } catch (err) {
+      console.error('Failed to approve summary:', err)
+    }
+  }
+
+  const handleRejectSummary = async () => {
+    try {
+      await rejectSummary()
+    } catch (err) {
+      console.error('Failed to reject summary:', err)
+    }
+  }
+
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString([], {
       hour: '2-digit',
@@ -174,7 +201,8 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
       sessionId &&
       clientInfo?.name &&
       businessContext?.challenges &&
-      !isGeneratingPRD
+      !isGeneratingPRD &&
+      !isGeneratingSummary
     )
   }
 
@@ -402,6 +430,118 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     )
   }
 
+  // Summary review UI - this appears BEFORE the normal chat view
+  if (isReviewingSummary && conversationSummary) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ duration: 0.2 }}
+          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          data-testid="chat-window"
+        >
+          {/* Header */}
+          <div className="h-12 bg-primary text-white flex items-center justify-between px-4 rounded-t-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold">UD</span>
+              </div>
+              <span className="font-semibold text-sm">Review Summary</span>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-white/20 rounded transition-colors"
+              aria-label="Close chat"
+              data-testid="close-button"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Error Banner */}
+          {error && (
+            <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
+              <span className="text-xs text-error">{error}</span>
+              <button onClick={clearError} className="text-error hover:opacity-70 text-xs font-bold">✕</button>
+            </div>
+          )}
+
+          {/* Summary Content */}
+          <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-4 mb-4">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-1">Conversation Summary</h4>
+                  <p className="text-xs text-gray-600 mb-2">
+                    Please review this summary of your conversation. It will be included with your PRD.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-md p-3 border border-purple-200 mb-3">
+                <p className="text-sm text-gray-800 whitespace-pre-wrap leading-relaxed">{conversationSummary}</p>
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={handleApproveSummary}
+                  disabled={isGeneratingPRD}
+                  className={twMerge(
+                    'flex-1 py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                    isGeneratingPRD
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-700 text-white'
+                  )}
+                  data-testid="approve-summary-button"
+                >
+                  <Check className="w-4 h-4" />
+                  Approve
+                </button>
+                <button
+                  onClick={handleRejectSummary}
+                  disabled={isGeneratingSummary}
+                  className={twMerge(
+                    'flex-1 py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                    isGeneratingSummary
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-orange-600 hover:bg-orange-700 text-white'
+                  )}
+                  data-testid="regenerate-summary-button"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Regenerate
+                </button>
+                <button
+                  onClick={clearSummary}
+                  className="flex-1 py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 text-gray-700"
+                  data-testid="cancel-summary-button"
+                >
+                  <XCircle className="w-4 h-4" />
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+            {/* Loading indicator for PRD generation */}
+            {isGeneratingPRD && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                  <span className="text-xs text-blue-700">Generating PRD with approved summary...</span>
+                </div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
   // Normal chat view
   return (
     <AnimatePresence>
@@ -473,6 +613,16 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   <span className="text-xs text-gray-500">{prdPreview.filename}</span>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Summary Generation Indicator */}
+        {isGeneratingSummary && (
+          <div className="mx-3 mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg" data-testid="summary-generating">
+            <div className="flex items-center gap-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
+              <span className="text-xs text-purple-700">Generating conversation summary...</span>
             </div>
           </div>
         )}
@@ -589,7 +739,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         </div>
 
         {/* Generate PRD Button */}
-        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && (
+        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="prd-actions">
             <button
               onClick={handleGeneratePRD}
@@ -639,7 +789,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Quick Reply Buttons */}
-        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && matchedExperts.length === 0 && (
+        {!isStreaming && !isLoading && messages.length > 0 && !prdPreview && !isGeneratingPRD && !isGeneratingSummary && matchedExperts.length === 0 && (
           <div className="px-3 pb-2 bg-white border-t border-border" data-testid="quick-replies">
             <div className="flex flex-wrap gap-2 mb-2">
               {getQuickReplies(currentPhase, { clientInfo, businessContext, qualification }).map((reply, idx) => (

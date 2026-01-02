@@ -9,6 +9,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.database import get_db
 from src.models.prd import PRDDocument
 from src.schemas.prd import (
+    ConversationSummaryApproveRequest,
+    ConversationSummaryResponse,
     PRDCreate,
     PRDPreview,
     PRDRegenerateRequest,
@@ -69,6 +71,7 @@ async def generate_prd(
         session_id=prd.session_id,
         version=prd.version,
         content_markdown=prd.content_markdown,
+        conversation_summary=prd.conversation_summary,
         client_company=prd.client_company,
         client_name=prd.client_name,
         recommended_service=prd.recommended_service,
@@ -105,6 +108,7 @@ async def get_prd(
         session_id=prd.session_id,
         version=prd.version,
         content_markdown=prd.content_markdown,
+        conversation_summary=prd.conversation_summary,
         client_company=prd.client_company,
         client_name=prd.client_name,
         recommended_service=prd.recommended_service,
@@ -141,6 +145,7 @@ async def get_prd_by_session(
         session_id=prd.session_id,
         version=prd.version,
         content_markdown=prd.content_markdown,
+        conversation_summary=prd.conversation_summary,
         client_company=prd.client_company,
         client_name=prd.client_name,
         recommended_service=prd.recommended_service,
@@ -267,6 +272,7 @@ async def regenerate_prd(
         session_id=new_prd.session_id,
         version=new_prd.version,
         content_markdown=new_prd.content_markdown,
+        conversation_summary=new_prd.conversation_summary,
         client_company=new_prd.client_company,
         client_name=new_prd.client_name,
         recommended_service=new_prd.recommended_service,
@@ -275,4 +281,108 @@ async def regenerate_prd(
         download_count=new_prd.download_count,
         created_at=new_prd.created_at,
         expires_at=new_prd.expires_at,
+    )
+
+
+@router.post(
+    "/generate-summary",
+    response_model=ConversationSummaryResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Generate conversation summary",
+    description="Generate a summary of the conversation before PRD generation",
+)
+async def generate_conversation_summary(
+    request: PRDCreate,
+    db: AsyncSession = Depends(get_db),
+) -> ConversationSummaryResponse:
+    """Generate a conversation summary for review before PRD generation.
+
+    This endpoint generates a summary of the conversation that the user can
+    review and approve before proceeding with PRD generation.
+    """
+    session_service = SessionService(db)
+    prd_service = PRDService(db)
+
+    # Get the session
+    session = await session_service.get_session(request.session_id)
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Session {request.session_id} not found",
+        )
+
+    # Check if we have enough data
+    if not session.client_info.get("name"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Client name is required for summary generation",
+        )
+
+    if not session.business_context.get("challenges"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Business challenges are required for summary generation",
+        )
+
+    # Generate summary
+    summary = await prd_service.generate_conversation_summary(session)
+
+    return ConversationSummaryResponse(
+        summary=summary,
+        session_id=session.id,
+    )
+
+
+@router.post(
+    "/approve-summary-and-generate-prd",
+    response_model=PRDResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Approve summary and generate PRD",
+    description="Approve conversation summary and generate PRD",
+)
+async def approve_summary_and_generate_prd(
+    request: ConversationSummaryApproveRequest,
+    db: AsyncSession = Depends(get_db),
+) -> PRDResponse:
+    """Approve conversation summary and generate PRD.
+
+    If approve is True, generates PRD with the provided summary.
+    If approve is False, regenerates a new summary for review.
+    """
+    session_service = SessionService(db)
+    prd_service = PRDService(db)
+
+    # Get the session
+    session = await session_service.get_session(request.session_id)
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Session {request.session_id} not found",
+        )
+
+    if not request.approve:
+        # Regenerate summary
+        summary = await prd_service.generate_conversation_summary(session)
+        return ConversationSummaryResponse(
+            summary=summary,
+            session_id=session.id,
+        )
+
+    # Generate PRD with approved summary
+    prd = await prd_service.generate_prd(session, request.summary)
+
+    return PRDResponse(
+        id=prd.id,
+        session_id=prd.session_id,
+        version=prd.version,
+        content_markdown=prd.content_markdown,
+        conversation_summary=prd.conversation_summary,
+        client_company=prd.client_company,
+        client_name=prd.client_name,
+        recommended_service=prd.recommended_service,
+        matched_expert=prd.matched_expert,
+        storage_url=prd.storage_url,
+        download_count=prd.download_count,
+        created_at=prd.created_at,
+        expires_at=prd.expires_at,
     )

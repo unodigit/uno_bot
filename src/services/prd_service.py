@@ -18,11 +18,93 @@ class PRDService:
         self.db = db
         self.ai_service = AIService()
 
-    async def generate_prd(self, session: ConversationSession) -> PRDDocument:
+    async def generate_conversation_summary(self, session: ConversationSession) -> str:
+        """Generate a conversation summary before PRD generation.
+
+        Args:
+            session: The conversation session
+
+        Returns:
+            The conversation summary text
+        """
+        # Build conversation history
+        result = await self.db.execute(
+            select(Message)
+            .where(Message.session_id == session.id)
+            .order_by(Message.created_at)
+        )
+        messages = list(result.scalars().all())
+
+        conversation_history = []
+        for msg in messages:
+            conversation_history.append({
+                "role": msg.role,
+                "content": msg.content
+            })
+
+        # Generate summary using AI service
+        if not self.ai_service.llm:
+            # Fallback summary
+            return self._fallback_summary(session)
+
+        prompt = f"""Generate a concise summary of this business discovery conversation.
+
+Client Info:
+{session.client_info}
+
+Business Context:
+{session.business_context}
+
+Qualification:
+{session.qualification}
+
+Conversation History:
+{conversation_history}
+
+Please provide:
+1. Key business challenges identified
+2. Client's industry and company context
+3. Budget range and timeline
+4. Recommended service
+5. Any important notes or next steps
+
+Format as a clear, professional summary (3-5 bullet points)."""
+
+        from langchain_core.messages import HumanMessage, SystemMessage
+        try:
+            response = await self.ai_service.llm.ainvoke([
+                SystemMessage(content="You are an expert at summarizing business discovery conversations. Create concise, professional summaries."),
+                HumanMessage(content=prompt)
+            ])
+            return response.content
+        except Exception:
+            return self._fallback_summary(session)
+
+    def _fallback_summary(self, session: ConversationSession) -> str:
+        """Fallback summary when AI service is unavailable."""
+        name = session.client_info.get("name", "N/A")
+        company = session.client_info.get("company", "N/A")
+        industry = session.business_context.get("industry", "N/A")
+        challenges = session.business_context.get("challenges", "N/A")
+        budget = session.qualification.get("budget_range", "N/A")
+        timeline = session.qualification.get("timeline", "N/A")
+        service = session.recommended_service or "N/A"
+
+        return f"""**Conversation Summary**
+
+• **Client:** {name} from {company}
+• **Industry:** {industry}
+• **Challenges:** {challenges}
+• **Budget:** {budget}
+• **Timeline:** {timeline}
+• **Recommended Service:** {service}"""
+
+    async def generate_prd(self, session: ConversationSession, conversation_summary: str | None = None) -> PRDDocument:
         """Generate a PRD for a session.
 
         Args:
             session: The conversation session to generate PRD for
+            conversation_summary: Optional pre-approved conversation summary
 
         Returns:
             The generated PRD document
@@ -48,6 +130,10 @@ class PRDService:
                 "content": msg.content
             })
 
+        # Use provided summary or generate one
+        if not conversation_summary:
+            conversation_summary = await self.generate_conversation_summary(session)
+
         # Generate PRD content using AI service
         prd_content = await self.ai_service.generate_prd(
             business_context=session.business_context,
@@ -59,6 +145,7 @@ class PRDService:
         prd = PRDDocument(
             session_id=session.id,
             content_markdown=prd_content,
+            conversation_summary=conversation_summary,
             client_company=session.client_info.get("company"),
             client_name=session.client_info.get("name"),
             recommended_service=session.recommended_service,
@@ -92,7 +179,9 @@ class PRDService:
             The PRD document or None if not found
         """
         result = await self.db.execute(
-            select(PRDDocument).where(PRDDocument.id == prd_id)
+            select(PRDDocument)
+            .where(PRDDocument.id == prd_id)
+            .options(selectinload(PRDDocument.expert))
         )
         return result.scalar_one_or_none()
 
@@ -106,7 +195,9 @@ class PRDService:
             The PRD document or None if not found
         """
         result = await self.db.execute(
-            select(PRDDocument).where(PRDDocument.session_id == session_id)
+            select(PRDDocument)
+            .where(PRDDocument.session_id == session_id)
+            .options(selectinload(PRDDocument.expert))
         )
         return result.scalar_one_or_none()
 
@@ -137,10 +228,12 @@ class PRDService:
         """
         # Get existing PRD version if any
         existing_version = 1
+        existing_summary = None
         if session.prd_id:
             existing_prd = await self.get_prd(session.prd_id)
             if existing_prd:
                 existing_version = existing_prd.version
+                existing_summary = existing_prd.conversation_summary
 
         # Build conversation history - always load messages explicitly
         result = await self.db.execute(
@@ -169,6 +262,7 @@ class PRDService:
         new_prd = PRDDocument(
             session_id=session.id,
             content_markdown=prd_content,
+            conversation_summary=existing_summary,
             client_company=session.client_info.get("company"),
             client_name=session.client_info.get("name"),
             recommended_service=session.recommended_service,

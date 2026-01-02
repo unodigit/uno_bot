@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime, timedelta
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.core.config import settings
 from src.core.database import Base
@@ -60,8 +60,16 @@ class PRDDocument(Base):
         DateTime(timezone=True), default=default_expiry
     )
 
+    # Relationships
+    expert = relationship("Expert", back_populates="prd_documents")
+
     def __repr__(self) -> str:
         return f"<PRDDocument(id={self.id}, version={self.version})>"
+
+    @property
+    def matched_expert(self) -> str | None:
+        """Get the name of the matched expert."""
+        return self.expert.name if self.expert else None
 
     @property
     def is_expired(self) -> bool:
