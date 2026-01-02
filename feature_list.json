@@ -13,7 +13,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.590135Z"
+    "dev_completed_at": "2026-01-02T02:24:29.590135Z",
+    "qa_completed_at": "2026-01-02T02:50:12.724736+00:00"
   },
   {
     "category": "functional",
@@ -28,7 +29,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.296317Z"
+    "dev_completed_at": "2026-01-02T02:24:29.296317Z",
+    "qa_completed_at": "2026-01-02T02:50:12.724748+00:00"
   },
   {
     "category": "functional",
@@ -43,7 +45,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.594162Z"
+    "dev_completed_at": "2026-01-02T02:24:29.594162Z",
+    "qa_completed_at": "2026-01-02T02:50:12.724750+00:00"
   },
   {
     "category": "functional",
@@ -73,7 +76,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.355689Z"
+    "dev_completed_at": "2026-01-02T02:24:29.355689Z",
+    "qa_completed_at": "2026-01-02T02:50:12.724752+00:00"
   },
   {
     "category": "functional",
@@ -89,7 +93,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.518185Z"
+    "dev_completed_at": "2026-01-02T02:24:29.518185Z",
+    "qa_completed_at": "2026-01-02T02:50:12.724753+00:00"
   },
   {
     "category": "functional",
@@ -105,7 +110,8 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:24:29.358184Z"
+    "dev_completed_at": "2026-01-02T02:24:29.358184Z",
+    "qa_completed_at": "2026-01-02T02:50:12.724754+00:00"
   },
   {
     "category": "functional",
@@ -116,11 +122,12 @@
       "Step 3: Verify all messages are stored with correct content",
       "Step 4: Verify messages have correct session_id, role, and timestamps"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:40:41.480631Z"
+    "dev_completed_at": "2026-01-02T02:40:41.480631Z",
+    "qa_completed_at": "2026-01-02T02:50:12.724757+00:00"
   },
   {
     "category": "functional",
