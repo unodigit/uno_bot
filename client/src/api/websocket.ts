@@ -13,6 +13,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 export interface WebSocketEvents {
   connected: { session_id: string };
   message: { user_message: Message; ai_message: Message };
+  streaming_message: { chunk: string; is_complete: boolean; message_id?: string };
   typing_start: { from: 'bot' | 'user' };
   typing_stop: { from: 'bot' | 'user' };
   phase_change: { phase: string };
@@ -136,6 +137,7 @@ export class WebSocketClient {
     // Handle all WebSocket events
     this.socket.on('connected', (data) => this.emitLocal('connected', data));
     this.socket.on('message', (data) => this.emitLocal('message', data));
+    this.socket.on('streaming_message', (data) => this.emitLocal('streaming_message', data));
     this.socket.on('typing_start', (data) => this.emitLocal('typing_start', data));
     this.socket.on('typing_stop', (data) => this.emitLocal('typing_stop', data));
     this.socket.on('phase_change', (data) => this.emitLocal('phase_change', data));
@@ -212,6 +214,18 @@ export class WebSocketClient {
     }
 
     this.socket.emit('create_booking', data);
+  }
+
+  /**
+   * Send a streaming chat message (for real-time response chunks)
+   */
+  sendStreamingMessage(content: string): void {
+    if (!this.socket || !this.isSocketConnected) {
+      console.error('[WebSocket] Not connected');
+      return;
+    }
+
+    this.socket.emit('send_streaming_message', { content });
   }
 
   /**

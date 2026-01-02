@@ -1,4 +1,5 @@
 """AI service for generating responses using LangChain/DeepAgents."""
+import asyncio
 
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
@@ -66,6 +67,55 @@ class AIService:
         except Exception as e:
             print(f"AI service error: {e}")
             return self._fallback_response(user_message, context)
+
+    async def stream_response(
+        self,
+        user_message: str,
+        conversation_history: list[dict] = None,
+        context: dict = None,
+    ):
+        """Stream AI response chunks for real-time updates.
+
+        Args:
+            user_message: The user's message
+            conversation_history: List of previous messages with role/content
+            context: Additional context about the session
+
+        Yields:
+            Response chunks as they become available
+        """
+        if not self.llm:
+            # Fallback - return chunks for demo
+            response = self._fallback_response(user_message, context)
+            for i in range(0, len(response), 10):
+                yield response[i:i+10]
+                await asyncio.sleep(0.05)  # Small delay for demo
+            return
+
+        # Build prompt with conversation history
+        messages = [
+            SystemMessage(content=self._get_system_prompt(context)),
+        ]
+
+        if conversation_history:
+            for msg in conversation_history:
+                if msg["role"] == "user":
+                    messages.append(HumanMessage(content=msg["content"]))
+                elif msg["role"] == "assistant":
+                    messages.append(AIMessage(content=msg["content"]))
+
+        messages.append(HumanMessage(content=user_message))
+
+        try:
+            # Stream response chunks
+            async for chunk in self.llm.astream(messages):
+                yield chunk.content
+        except Exception as e:
+            print(f"AI streaming error: {e}")
+            fallback = self._fallback_response(user_message, context)
+            for i in range(0, len(fallback), 10):
+                yield fallback[i:i+10]
+                await asyncio.sleep(0.05)
 
     def _get_system_prompt(self, context: dict | None) -> str:
         """Get the system prompt for the AI assistant."""

@@ -12,7 +12,7 @@ from src.core.config import settings
 class EmailService:
     """Service for sending email notifications."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.api_key = settings.sendgrid_api_key
         self.from_email = settings.sendgrid_from_email
         self.environment = settings.environment
@@ -185,7 +185,7 @@ class EmailService:
             sg = SendGridAPIClient(self.api_key)
             response = sg.send(message)
 
-            return response.status_code == 202
+            return int(response.status_code) == 202
 
         except ImportError:
             print("SendGrid not installed. Install with: pip install sendgrid")
@@ -291,7 +291,7 @@ class EmailService:
             sg = SendGridAPIClient(self.api_key)
             response = sg.send(message)
 
-            return response.status_code == 202
+            return int(response.status_code) == 202
 
         except ImportError:
             print("SendGrid not installed. Install with: pip install sendgrid")
@@ -496,7 +496,7 @@ END:VCALENDAR"""
             sg = SendGridAPIClient(self.api_key)
             response = sg.send(message)
 
-            return response.status_code == 202
+            return int(response.status_code) == 202
 
         except ImportError:
             print("SendGrid not installed. Install with: pip install sendgrid")
@@ -603,7 +603,7 @@ END:VCALENDAR"""
             sg = SendGridAPIClient(self.api_key)
             response = sg.send(message)
 
-            return response.status_code == 202
+            return int(response.status_code) == 202
 
         except ImportError:
             print("SendGrid not installed. Install with: pip install sendgrid")

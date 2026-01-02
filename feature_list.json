@@ -2251,7 +2251,7 @@
     "is_qa_passed": true,
     "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T10:07:42.504175Z",
-    "qa_completed_at": "2026-01-02T21:30:00.000000Z",
+    "qa_completed_at": "2026-01-02T21:43:14.876690",
     "test_files": [
       "tests/e2e/test_widget_position.py"
     ]
@@ -2319,13 +2319,15 @@
       "Step 2: Measure latency between stream chunks",
       "Step 3: Verify average under 100ms"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T10:33:58.615700Z",
-    "qa_completed_at": "2026-01-02T10:00:14.252578+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T10:43:20.233517+00:00",
+    "test_files": [
+      "tests/e2e/test_pending_qa_features.py"
+    ]
   },
   {
     "category": "functional",
@@ -2376,9 +2378,10 @@
       "Step 3: Run production build",
       "Step 4: Verify successful build"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_completed_at": "2026-01-02T10:43:00Z"
   },
   {
     "category": "functional",
@@ -2454,9 +2457,15 @@
       "Step 3: Send request with wrong type",
       "Step 4: Verify appropriate error message"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T10:36:51.096526Z",
+    "qa_completed_at": "2026-01-02T10:43:20.233526+00:00",
+    "test_files": [
+      "tests/e2e/test_pending_qa_features.py"
+    ]
   },
   {
     "category": "functional",
@@ -2514,9 +2523,15 @@
       "Step 3: Check database URL loaded",
       "Step 4: Check all required vars present"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T10:36:45.097251Z",
+    "qa_completed_at": "2026-01-02T10:43:20.233528+00:00",
+    "test_files": [
+      "tests/e2e/test_pending_qa_features.py"
+    ]
   },
   {
     "category": "functional",

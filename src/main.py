@@ -18,7 +18,7 @@ from src.core.exception_handlers import register_exception_handlers
 from src.api.routes.websocket import (
     sio,
     manager,
-    handle_chat_message,
+    handle_streaming_chat_message,
     handle_generate_prd,
     handle_match_experts,
     handle_get_availability,
@@ -165,7 +165,7 @@ async def handle_socket_message(sid: str, data: dict) -> None:
             await sio.emit("typing_start", {"from": "bot"}, room=session_id)
 
             # Handle the message
-            result = await handle_chat_message(session_id, content, db)
+            result = await handle_streaming_chat_message(session_id, content, db)
 
             # Stop typing indicator
             await sio.emit("typing_stop", {"from": "bot"}, room=session_id)
@@ -291,6 +291,59 @@ async def handle_socket_booking(sid: str, data: dict) -> None:
 # Use socketio_path=None to handle all traffic at /ws/* paths
 socketio_app = ASGIApp(sio, socketio_path=None)
 app.mount("/ws", socketio_app)
+
+
+@sio.on("send_streaming_message")
+async def handle_socket_streaming_message(sid: str, data: dict) -> None:
+    """Handle incoming chat message via WebSocket with streaming response."""
+    session_data = await sio.get_session(sid)
+    session_id = session_data.get("session_id") if session_data else None
+
+    if not session_id:
+        await sio.emit("error", {"message": "Not connected to a session"}, room=sid)
+        return
+
+    content = data.get("content")
+    if not content:
+        await sio.emit("error", {"message": "content required"}, room=sid)
+        return
+
+    # Get database session
+    async with AsyncSessionLocal() as db:
+        try:
+            # Send typing indicator
+            await sio.emit("typing_start", {"from": "bot"}, room=session_id)
+
+            # Handle the message with streaming
+            result = await handle_streaming_chat_message(session_id, content, db)
+
+            # Stop typing indicator
+            await sio.emit("typing_stop", {"from": "bot"}, room=session_id)
+
+            # Send the complete response
+            await sio.emit("message", {
+                "user_message": result["user_message"],
+                "ai_message": result["ai_message"],
+            }, room=session_id)
+
+            # Send phase change if applicable
+            if result["session"].get("current_phase"):
+                await sio.emit("phase_change", {
+                    "phase": result["session"]["current_phase"]
+                }, room=session_id)
+
+            # Check if PRD is ready to be generated
+            session = result["session"]
+            if (session.get("client_info", {}).get("name") and
+                session.get("business_context", {}).get("challenges") and
+                not session.get("prd_id")):
+                await sio.emit("prd_ready", {
+                    "message": "PRD can now be generated"
+                }, room=session_id)
+
+        except Exception as e:
+            logger.error(f"Error handling streaming message: {e}")
+            await sio.emit("error", {"message": str(e)}, room=session_id)
 
 
 @app.get("/", tags=["root"])

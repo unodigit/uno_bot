@@ -1,5 +1,6 @@
 """Custom exception classes for the UnoBot API."""
 from http import HTTPStatus
+from typing import Optional, Any
 
 
 class UnoBotError(Exception):
@@ -10,7 +11,7 @@ class UnoBotError(Exception):
         message: str,
         status_code: int = HTTPStatus.INTERNAL_SERVER_ERROR,
         error_code: str = "INTERNAL_ERROR",
-        details: list = None,
+        details: Optional[list[Any]] = None,
     ):
         self.message = message
         self.status_code = status_code
@@ -22,7 +23,7 @@ class UnoBotError(Exception):
 class ValidationError(UnoBotError):
     """Validation error for input data."""
 
-    def __init__(self, message: str, field_errors: list = None):
+    def __init__(self, message: str, field_errors: Optional[list[Any]] = None):
         super().__init__(
             message=message,
             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
@@ -68,7 +69,7 @@ class ConflictError(UnoBotError):
 class DatabaseError(UnoBotError):
     """Database operation error."""
 
-    def __init__(self, operation: str, details: str = None):
+    def __init__(self, operation: str, details: Optional[str] = None):
         message = f"Database operation '{operation}' failed"
         if details:
             message += f": {details}"
@@ -82,7 +83,7 @@ class DatabaseError(UnoBotError):
 class ExternalServiceError(UnoBotError):
     """External service (Google Calendar, SendGrid) error."""
 
-    def __init__(self, service: str, operation: str, details: str = None):
+    def __init__(self, service: str, operation: str, details: Optional[str] = None):
         message = f"External service '{service}' operation '{operation}' failed"
         if details:
             message += f": {details}"

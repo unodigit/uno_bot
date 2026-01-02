@@ -213,6 +213,7 @@ export interface ChatActions {
   openChat: () => void;
   closeChat: () => void;
   sendMessage: (content: string) => Promise<void>;
+  sendStreamingMessage: (content: string) => void;
   createSession: () => Promise<void>;
   loadSession: (sessionId: string) => Promise<void>;
   addMessage: (message: Message) => void;

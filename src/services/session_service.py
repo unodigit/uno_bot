@@ -227,11 +227,9 @@ class SessionService:
             "current_phase": session.current_phase,
         }
 
-        # Generate AI response
-        ai_content = await self.ai_service.generate_response(
-            user_message=user_message,
-            conversation_history=conversation_history,
-            context=context,
+        # Generate AI response using streaming
+        ai_content = await self._generate_streaming_response(
+            user_message, conversation_history, context
         )
 
         # Determine and update phase based on collected data
@@ -736,3 +734,17 @@ class SessionService:
         # Pick a random message from the options
         import random
         return random.choice(messages)
+
+    async def _generate_streaming_response(
+        self, user_message: str, conversation_history: list[dict], context: dict
+    ) -> str:
+        """Generate AI response using streaming for real-time updates."""
+        full_response = ""
+
+        # Use async iterator for streaming
+        async for chunk in self.ai_service.stream_response(
+            user_message, conversation_history, context
+        ):
+            full_response += chunk
+
+        return full_response

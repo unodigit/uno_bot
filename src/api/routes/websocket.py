@@ -41,14 +41,14 @@ class WebSocketManager:
 manager = WebSocketManager()
 
 
-async def handle_chat_message(
+async def handle_streaming_chat_message(
     session_id: str,
     content: str,
     db: AsyncSession,
 ) -> Dict[str, Any]:
     """Handle incoming chat message and generate AI response with streaming.
 
-    Returns the complete response data.
+    This function sends streaming events for real-time response updates.
     """
     session_service = SessionService(db)
 
@@ -67,11 +67,118 @@ async def handle_chat_message(
     # Update session activity
     await session_service.update_session_activity(session)
 
-    # Generate AI response (this will be streamed)
-    ai_message = await session_service.generate_ai_response(session, content)
+    # Build conversation history
+    conversation_history = []
+    for msg in session.messages:
+        conversation_history.append({
+            "role": msg.role,
+            "content": msg.content,
+        })
+
+    # Extract user information from their response FIRST
+    # This updates session data which is used for context
+    await session_service._extract_user_info(session, content)
+
+    # Check for ambiguous response AFTER extracting info
+    ambiguity_check = await session_service._check_ambiguity(content, session)
+    if ambiguity_check["is_ambiguous"]:
+        # Generate clarification response instead of normal flow
+        clarification_response = session_service._generate_clarification_response(
+            ambiguity_check, content, session
+        )
+
+        # Create and save AI message with clarification
+        ai_message = await session_service.add_message(
+            uuid.UUID(session_id),
+            MessageCreate(content=clarification_response),
+            MessageRole.ASSISTANT,
+            metadata={"type": "clarification", "ambiguous_reason": ambiguity_check["reason"]}
+        )
+
+        # Get updated session data
+        session = await session_service.get_session(uuid.UUID(session_id))
+
+        return {
+            "user_message": {
+                "id": str(user_message.id),
+                "role": "user",
+                "content": user_message.content,
+                "created_at": user_message.created_at.isoformat(),
+            },
+            "ai_message": {
+                "id": str(ai_message.id),
+                "role": "assistant",
+                "content": ai_message.content,
+                "created_at": ai_message.created_at.isoformat(),
+                "meta_data": ai_message.meta_data,
+            },
+            "session": {
+                "current_phase": session.current_phase,
+                "client_info": session.client_info,
+                "business_context": session.business_context,
+                "qualification": session.qualification,
+                "lead_score": session.lead_score,
+                "recommended_service": session.recommended_service,
+                "matched_expert_id": str(session.matched_expert_id) if session.matched_expert_id else None,
+                "prd_id": str(session.prd_id) if session.prd_id else None,
+            }
+        }
+
+    # Calculate lead score and recommend service after each message
+    await session_service._calculate_lead_score(session)
+    await session_service._recommend_service(session)
+
+    # Build context with updated session data
+    context = {
+        "business_context": session.business_context,
+        "client_info": session.client_info,
+        "qualification": session.qualification,
+        "current_phase": session.current_phase,
+    }
+
+    # Generate AI response using streaming
+    full_response = ""
+    message_id = None
+
+    # Send streaming response chunks
+    async for chunk in session_service.ai_service.stream_response(
+        content, conversation_history, context
+    ):
+        full_response += chunk
+
+        # Send streaming event for each chunk
+        from src.main import sio
+        await sio.emit("streaming_message", {
+            "chunk": chunk,
+            "is_complete": False,
+            "message_id": message_id
+        }, room=session_id)
+
+    # Create and save final AI message
+    ai_message = await session_service.add_message(
+        uuid.UUID(session_id),
+        MessageCreate(content=full_response),
+        MessageRole.ASSISTANT,
+    )
+
+    # Update message_id for the final message
+    message_id = str(ai_message.id)
+
+    # Determine and update phase based on collected data
+    new_phase = await session_service._determine_next_phase(session)
+    if new_phase and new_phase != session.current_phase:
+        await session_service.update_session_phase(session, new_phase)
 
     # Get updated session data
     session = await session_service.get_session(uuid.UUID(session_id))
+
+    # Send final streaming event
+    from src.main import sio
+    await sio.emit("streaming_message", {
+        "chunk": "",
+        "is_complete": True,
+        "message_id": message_id
+    }, room=session_id)
 
     return {
         "user_message": {

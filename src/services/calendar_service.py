@@ -1,8 +1,7 @@
 """Google Calendar integration service for appointment booking."""
 import asyncio
-import datetime
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List, Optional, Any, Dict, cast
 
 from google.auth.transport.requests import Request
 from google.auth.exceptions import RefreshError
@@ -22,7 +21,7 @@ class CalendarService:
         'https://www.googleapis.com/auth/calendar.events'
     ]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.google_client_id = settings.google_client_id
         self.google_client_secret = settings.google_client_secret
         self.google_redirect_uri = settings.google_redirect_uri
@@ -57,7 +56,7 @@ class CalendarService:
         """Get Google credentials from stored refresh token."""
         try:
             creds = Credentials(
-                None,
+                None,  # type: ignore[no-untyped-call]
                 refresh_token=refresh_token,
                 token_uri='https://oauth2.googleapis.com/token',
                 client_id=self.google_client_id,
@@ -65,13 +64,13 @@ class CalendarService:
             )
 
             # Refresh the token
-            creds.refresh(Request())
+            creds.refresh(Request())  # type: ignore[no-untyped-call]
             return creds
         except RefreshError as e:
             print(f"Error refreshing credentials: {e}")
             raise Exception(f"Invalid refresh token: {e}")
 
-    def get_calendar_service(self, refresh_token: str):
+    def get_calendar_service(self, refresh_token: str) -> Any:
         """Get authenticated Google Calendar service."""
         creds = self.get_credentials_from_token(refresh_token)
         return build('calendar', 'v3', credentials=creds)
@@ -82,7 +81,7 @@ class CalendarService:
         timezone: str = 'UTC',
         days_ahead: int = 14,
         min_slots_to_show: int = 5
-    ) -> List[dict]:
+    ) -> List[Dict[str, Any]]:
         """Get available time slots for an expert.
 
         Args:
@@ -123,7 +122,7 @@ class CalendarService:
             business_start_hour = 9
             business_end_hour = 17
 
-            available_slots = []
+            available_slots: List[dict[str, Any]] = []
             current_time = start_date
 
             while len(available_slots) < min_slots_to_show and current_time < end_date:
@@ -173,18 +172,22 @@ class CalendarService:
     def _is_time_slot_available(
         self,
         start_time: datetime,
-        events: List[dict]
+        events: List[dict[str, Any]]
     ) -> bool:
         """Check if a time slot is available (no conflicting events)."""
         end_time = start_time + timedelta(hours=1)
         buffer_minutes = settings.booking_buffer_minutes
 
         for event in events:
+            event_start_str = event.get('start', {}).get('dateTime', '')
+            event_end_str = event.get('end', {}).get('dateTime', '')
+            if not event_start_str or not event_end_str:
+                continue
             event_start = datetime.fromisoformat(
-                event['start']['dateTime'].replace('Z', '+00:00')
+                event_start_str.replace('Z', '+00:00')
             )
             event_end = datetime.fromisoformat(
-                event['end']['dateTime'].replace('Z', '+00:00')
+                event_end_str.replace('Z', '+00:00')
             )
 
             # Check for conflicts with buffer time
@@ -265,7 +268,7 @@ class CalendarService:
                 conferenceDataVersion=1
             ).execute()
 
-            return created_event.get('id')
+            return str(created_event.get('id', ''))
 
         except HttpError as e:
             print(f"Google Calendar API error: {e}")
@@ -279,12 +282,12 @@ class CalendarService:
         try:
             service = self.get_calendar_service(refresh_token)
             calendar = service.calendars().get(calendarId='primary').execute()
-            return calendar.get('timeZone', 'UTC')
+            return str(calendar.get('timeZone', 'UTC'))
         except Exception as e:
             print(f"Error getting calendar timezone: {e}")
             return 'UTC'
 
-    def format_time_slot(self, start_time: datetime, timezone: str) -> dict:
+    def format_time_slot(self, start_time: datetime, timezone: str) -> Dict[str, Any]:
         """Format a time slot for display."""
         return {
             'start': start_time.isoformat(),
@@ -300,7 +303,7 @@ class CalendarService:
         timezone: str = 'UTC',
         days_ahead: int = 14,
         min_slots_to_show: int = 5
-    ) -> List[dict]:
+    ) -> List[Dict[str, Any]]:
         """Generate mock availability for testing and development.
 
         Args:

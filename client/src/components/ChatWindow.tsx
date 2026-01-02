@@ -52,6 +52,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     sessionId,
     createSession,
     sendMessage,
+    sendStreamingMessage,
     clearError,
     currentPhase,
     clientInfo,
@@ -157,19 +158,25 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     setInputValue('')
 
     try {
-      // Check if this is a special PRD generation request
-      if (content === 'Generate PRD') {
-        // Start summary flow instead of direct PRD generation
-        await generateSummary()
-        // Add user message
-        await sendMessage(content)
-      } else if (content.toLowerCase().includes('match') || content.toLowerCase().includes('expert') || content.toLowerCase().includes('recommend')) {
-        // Trigger expert matching
-        await matchExperts()
-        // Also send the message for conversation history
-        await sendMessage(content)
+      // Use streaming method when WebSocket is available and not loading
+      if (isWebSocketConnected && !isLoading && !isStreaming) {
+        sendStreamingMessage(content)
       } else {
-        await sendMessage(content)
+        // Fallback to regular sendMessage
+        // Check if this is a special PRD generation request
+        if (content === 'Generate PRD') {
+          // Start summary flow instead of direct PRD generation
+          await generateSummary()
+          // Add user message
+          await sendMessage(content)
+        } else if (content.toLowerCase().includes('match') || content.toLowerCase().includes('expert') || content.toLowerCase().includes('recommend')) {
+          // Trigger expert matching
+          await matchExperts()
+          // Also send the message for conversation history
+          await sendMessage(content)
+        } else {
+          await sendMessage(content)
+        }
       }
     } catch (err) {
       console.error('Failed to send message:', err)
@@ -661,7 +668,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             <button
               onClick={onClose}
               className="w-10 h-10 p-1 hover:bg-white/20 rounded transition-colors flex items-center justify-center"
-              aria-label="Close chat window"
+              aria-label="Close chat"
               aria-describedby="close-instruction"
               data-testid="close-button"
               tabIndex={5}

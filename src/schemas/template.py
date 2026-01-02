@@ -1,6 +1,6 @@
 """Pydantic schemas for welcome message templates."""
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -15,7 +15,7 @@ class WelcomeMessageTemplateBase(BaseModel):
     target_industry: Optional[str] = None
     is_default: bool = False
     is_active: bool = True
-    config: dict = {}
+    config: dict[str, Any] = {}
 
 
 class WelcomeMessageTemplateCreate(WelcomeMessageTemplateBase):
@@ -33,7 +33,7 @@ class WelcomeMessageTemplateUpdate(BaseModel):
     target_industry: Optional[str] = None
     is_default: Optional[bool] = None
     is_active: Optional[bool] = None
-    config: Optional[dict] = None
+    config: Optional[dict[str, Any]] = None
 
 
 class WelcomeMessageTemplateResponse(WelcomeMessageTemplateBase):
@@ -57,4 +57,4 @@ class WelcomeMessageSelectionRequest(BaseModel):
     """Schema for selecting a welcome message template for a session."""
 
     industry: Optional[str] = None
-    context: Optional[dict] = None
+    context: Optional[dict[str, Any]] = None

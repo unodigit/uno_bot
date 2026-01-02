@@ -30,6 +30,58 @@ const setupWebSocketListeners = (set: any, get: any) => {
     }));
   });
 
+  // Streaming message received
+  wsClient.on('streaming_message', (data) => {
+    const { chunk, is_complete, message_id } = data;
+
+    set((state: any) => {
+      const { messages } = state;
+
+      if (is_complete) {
+        // Final message - replace the streaming message with complete message
+        const updatedMessages = messages.map((msg: Message) => {
+          if (msg.id === message_id) {
+            return { ...msg, content: msg.content + chunk };
+          }
+          return msg;
+        });
+
+        return {
+          messages: updatedMessages,
+          isStreaming: false,
+        };
+      } else {
+        // Streaming chunk - update or create streaming message
+        let updatedMessages = [...messages];
+        const lastMessage = messages[messages.length - 1];
+
+        if (lastMessage && lastMessage.role === 'assistant' && lastMessage.content) {
+          // Update existing assistant message
+          updatedMessages[updatedMessages.length - 1] = {
+            ...lastMessage,
+            content: lastMessage.content + chunk
+          };
+        } else {
+          // Create new assistant message
+          const newMessage = {
+            id: message_id || `stream_${Date.now()}`,
+            session_id: get().sessionId || '',
+            role: 'assistant',
+            content: chunk,
+            meta_data: {},
+            created_at: new Date().toISOString(),
+          };
+          updatedMessages.push(newMessage);
+        }
+
+        return {
+          messages: updatedMessages,
+          isStreaming: true,
+        };
+      }
+    });
+  });
+
   // Typing indicators
   wsClient.on('typing_start', () => {
     set({ isTyping: true });
@@ -311,6 +363,34 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       });
       console.error('Send message error:', error);
     }
+  },
+
+  // Send message with streaming (preferred method)
+  sendStreamingMessage: (content: string) => {
+    const { sessionId, addMessage } = get();
+
+    if (!sessionId) {
+      console.error('No session available');
+      return;
+    }
+
+    // Add user message immediately
+    const userMessage: Message = {
+      id: `user_${Date.now()}`,
+      session_id: sessionId,
+      role: 'user',
+      content,
+      meta_data: {},
+      created_at: new Date().toISOString(),
+    };
+
+    addMessage(userMessage);
+
+    // Set streaming state
+    set({ isStreaming: true });
+
+    // Send via WebSocket with streaming
+    wsClient.sendStreamingMessage(content);
   },
 
   addMessage: (message: Message) => {
@@ -753,13 +833,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
     // Connect
     wsClient.connect(sessionId);
-    USE_WEBSOCKET = true;
   },
 
   disconnectWebSocket: () => {
     wsClient.disconnect();
     set({ isWebSocketConnected: false, isTyping: false });
-    USE_WEBSOCKET = false;
   },
 
   // WebSocket-based message sending
