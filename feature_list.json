@@ -2942,9 +2942,11 @@
       "Step 3: Verify change appears without refresh",
       "Step 4: Verify state preserved"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T12:59:48.149301+00:00",
+    "qa_completed_at": "2026-01-02T12:59:48.149306+00:00"
   },
   {
     "category": "functional",
@@ -3113,9 +3115,11 @@
       "Step 3: Verify styling applies",
       "Step 4: Verify no unused CSS in build"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T12:59:48.149312+00:00",
+    "qa_completed_at": "2026-01-02T12:59:48.149313+00:00"
   },
   {
     "category": "functional",

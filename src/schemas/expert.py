@@ -62,6 +62,7 @@ class ExpertResponse(ExpertBase):
     is_active: bool
     created_at: datetime
     updated_at: datetime
+    refresh_token: str | None = None
 
     model_config = ConfigDict(
         from_attributes=True,
