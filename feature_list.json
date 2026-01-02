@@ -3473,7 +3473,12 @@
     "qa_validated": true,
     "last_qa_run": "2026-01-02T13:30:41.230310Z",
     "qa_notes": "Coverage is 42.5% - below 80% target but infrastructure is in place",
-    "qa_report_path": "coverage.json"
+    "qa_report_path": "coverage.json",
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-02T23:16:15.414582Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
@@ -3492,7 +3497,12 @@
     "qa_validated": true,
     "last_qa_run": "2026-01-02T13:30:41.244564Z",
     "qa_notes": "Failed: One or more gates failed",
-    "qa_report_path": "unobot/qa-reports/feature-160-2026-01-02-13-30-41.json"
+    "qa_report_path": "unobot/qa-reports/feature-160-2026-01-02-13-30-41.json",
+    "dev_failure_count": 1,
+    "last_dev_failure_at": "2026-01-02T23:16:19.269719Z",
+    "dev_failure_reasons": [
+      "Worker session timed out"
+    ]
   },
   {
     "category": "functional",
