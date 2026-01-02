@@ -96,7 +96,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
               {onBook && (
                 <button
                   onClick={() => onBook(expert as MatchedExpert)}
-                  className="flex-1 px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors flex items-center justify-center gap-1"
+                  className="flex-1 px-3 py-2 min-h-[44px] bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors flex items-center justify-center gap-1"
                   data-testid={`book-expert-${index}`}
                   aria-label={`Book appointment with ${expert.name}`}
                 >
@@ -107,7 +107,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
               {onSelect && (
                 <button
                   onClick={() => onSelect(expert as MatchedExpert)}
-                  className="px-3 py-1.5 border border-border text-text text-xs rounded hover:bg-surface transition-colors"
+                  className="px-3 py-2 min-h-[44px] border border-border text-text text-xs rounded hover:bg-surface transition-colors"
                   data-testid={`select-expert-${index}`}
                   aria-label={`Select ${expert.name} for consultation`}
                 >
@@ -116,7 +116,7 @@ export function ExpertCard({ expert, index = 0, onSelect, onBook, onEdit, onDele
               )}
               <a
                 href={`mailto:${expert.email}?subject=Consultation Request`}
-                className="px-3 py-1.5 border border-border text-text text-xs rounded hover:bg-surface transition-colors"
+                className="px-3 py-2 min-h-[44px] border border-border text-text text-xs rounded hover:bg-surface transition-colors"
                 data-testid={`contact-expert-${index}`}
                 aria-label={`Contact ${expert.name} via email`}
               >

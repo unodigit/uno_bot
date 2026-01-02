@@ -54,7 +54,7 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
             </span>
             <button
               onClick={handleDismiss}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              className="w-8 h-8 p-1 hover:bg-gray-100 rounded transition-colors flex items-center justify-center min-w-[36px] min-h-[36px]"
               aria-label="Close PRD preview"
             >
               <X className="w-4 h-4 text-text-muted" />
@@ -74,7 +74,7 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
         <div className="flex gap-2">
           <button
             onClick={handleDownload}
-            className="flex items-center gap-2 px-3 py-2 bg-primary text-white text-sm rounded-md hover:bg-primary-dark transition-colors flex-1"
+            className="flex items-center gap-2 px-3 py-3 min-h-[44px] bg-primary text-white text-sm rounded-md hover:bg-primary-dark transition-colors flex-1"
             data-testid="download-prd-button"
             aria-label={`Download PRD file ${prdPreview.filename}`}
           >
@@ -83,7 +83,7 @@ export function PRDPreview({ onDismiss }: PRDPreviewProps) {
           </button>
           <button
             onClick={() => window.open(`/prd/${prdPreview.id}/preview`, '_blank')}
-            className="flex items-center gap-2 px-3 py-2 bg-gray-100 text-text text-sm rounded-md hover:bg-gray-200 transition-colors"
+            className="flex items-center gap-2 px-3 py-3 min-h-[44px] bg-gray-100 text-text text-sm rounded-md hover:bg-gray-200 transition-colors"
             data-testid="view-full-prd-button"
             aria-label="View full PRD in new tab"
           >

@@ -249,8 +249,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
-              aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -261,7 +260,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           {error && (
             <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
               <span className="text-xs text-error">{error}</span>
-              <button onClick={clearError} className="text-error hover:opacity-70 text-xs font-bold">✕</button>
+              <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
             </div>
           )}
 
@@ -300,8 +299,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
-              aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -312,7 +310,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           {error && (
             <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
               <span className="text-xs text-error">{error}</span>
-              <button onClick={clearError} className="text-error hover:opacity-70 text-xs font-bold">✕</button>
+              <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
             </div>
           )}
 
@@ -356,8 +354,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
-              aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -410,8 +407,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
-              aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -432,7 +428,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 resetBookingFlow()
                 clearMatchedExperts()
               }}
-              className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
+              className="w-full py-3 min-h-[44px] bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
             >
               Start New Booking
             </button>
@@ -464,8 +460,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             </div>
             <button
               onClick={onClose}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
-              aria-label="Close chat"
+              className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Close chat"
               data-testid="close-button"
             >
               <X className="w-4 h-4" />
@@ -476,7 +471,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           {error && (
             <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
               <span className="text-xs text-error">{error}</span>
-              <button onClick={clearError} className="text-error hover:opacity-70 text-xs font-bold">✕</button>
+              <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
             </div>
           )}
 
@@ -504,7 +499,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   onClick={handleApproveSummary}
                   disabled={isGeneratingPRD}
                   className={twMerge(
-                    'flex-1 py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                    'flex-1 py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
                     isGeneratingPRD
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-green-600 hover:bg-green-700 text-white'
@@ -518,7 +513,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   onClick={handleRejectSummary}
                   disabled={isGeneratingSummary}
                   className={twMerge(
-                    'flex-1 py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                    'flex-1 py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
                     isGeneratingSummary
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-orange-600 hover:bg-orange-700 text-white'
@@ -592,8 +587,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               <>
                 <button
                   onClick={onMinimize}
-                  className="p-1 hover:bg-white/20 rounded transition-colors"
-                  aria-label="Minimize chat window"
+                  className="w-10 h-10 p-3 hover:bg-white/20 rounded transition-colors flex items-center justify-center min-w-[40px] min-h-[40px]" aria-label="Minimize chat window"
                   aria-describedby="minimize-instruction"
                   data-testid="minimize-button"
                   tabIndex={3}
@@ -607,7 +601,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             )}
             <button
               onClick={onClose}
-              className="p-1 hover:bg-white/20 rounded transition-colors"
+              className="w-10 h-10 p-1 hover:bg-white/20 rounded transition-colors flex items-center justify-center"
               aria-label="Close chat window"
               aria-describedby="close-instruction"
               data-testid="close-button"
@@ -633,7 +627,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   <h4 className="text-sm font-semibold text-gray-900">PRD Generated!</h4>
                   <button
                     onClick={clearPRDPreview}
-                    className="text-xs text-blue-600 hover:text-blue-800 underline"
+                    className="text-xs text-blue-600 hover:text-blue-800 underline min-h-[32px]"
                   >
                     Hide
                   </button>
@@ -696,7 +690,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             />
             <button
               onClick={clearMatchedExperts}
-              className="mt-2 text-xs text-gray-500 hover:text-gray-700 underline w-full text-center"
+              className="mt-2 text-xs text-gray-500 hover:text-gray-700 underline w-full text-center min-h-[32px]"
             >
               Hide experts
             </button>
@@ -707,13 +701,13 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         {error && (
           <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
             <span className="text-xs text-error">{error}</span>
-            <button onClick={clearError} className="text-error hover:opacity-70 text-xs font-bold">✕</button>
+            <button onClick={clearError} className="w-8 h-8 text-error hover:opacity-70 text-xs font-bold flex items-center justify-center">✕</button>
           </div>
         )}
 
         {/* Messages Area */}
         <div
-          className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50"
+          className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50 min-h-[350px]"
           data-testid="messages-container"
           role="log"
           aria-live="polite"
@@ -721,7 +715,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           aria-atomic="false"
         >
           {messages.length === 0 && !isLoading && (
-            <div className="flex justify-center items-center h-full text-text-muted text-sm">
+            <div className="flex justify-center items-center h-full text-text-muted text-sm min-h-[350px]">
               <div className="text-center">
                 <div className="animate-pulse mb-2">...</div>
                 <p>Initializing chat...</p>
@@ -802,7 +796,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               onClick={handleGeneratePRD}
               disabled={!canGeneratePRD()}
               className={twMerge(
-                'w-full py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                'w-full py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
                 canGeneratePRD()
                   ? 'bg-blue-600 hover:bg-blue-700 text-white'
                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'
@@ -827,7 +821,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               onClick={handleMatchExperts}
               disabled={!canMatchExperts()}
               className={twMerge(
-                'w-full py-2 px-3 rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
+                'w-full py-3 px-3 min-h-[44px] rounded-md transition-colors flex items-center justify-center gap-2 text-sm font-medium',
                 canMatchExperts()
                   ? 'bg-purple-600 hover:bg-purple-700 text-white'
                   : 'bg-gray-200 text-gray-500 cursor-not-allowed'
@@ -860,7 +854,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                     }
                   }}
                   className={twMerge(
-                    'px-3 py-1.5 text-xs rounded-full transition-all duration-200 border font-medium',
+                    'px-3 py-2 min-h-[40px] min-w-[60px] text-xs rounded-full transition-all duration-200 border font-medium',
                     'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                     'disabled:opacity-50 disabled:cursor-not-allowed',
                     'bg-surface text-text border-border hover:bg-gray-200 active:scale-95 shadow-sm'
@@ -878,7 +872,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         )}
 
         {/* Input Area */}
-        <div className="h-14 border-t border-border bg-white p-3 flex items-center gap-2 rounded-b-lg">
+        <div className="h-16 border-t border-border bg-white p-3 flex items-center gap-2 rounded-b-lg">
           <input
             ref={inputRef}
             type="text"
@@ -889,7 +883,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             aria-label="Type your message"
             aria-describedby="input-instruction"
             aria-disabled={isStreaming || isLoading}
-            className="flex-1 h-full px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
+            className="flex-1 h-12 px-3 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm disabled:opacity-50"
             disabled={isStreaming || isLoading}
             data-testid="message-input"
             tabIndex={1}
@@ -904,7 +898,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             aria-label={inputValue.trim() ? `Send message${isStreaming ? ' (disabled - bot is typing)' : ''}` : 'Send message (disabled - empty message)'}
             aria-describedby="send-button-status"
             className={twMerge(
-              'h-full px-4 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
+              'h-12 w-12 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
               'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
               // Enabled state
               (!inputValue.trim() || isStreaming || isLoading)

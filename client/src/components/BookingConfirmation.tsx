@@ -142,7 +142,7 @@ export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }:
       <div className="space-y-2">
         <button
           onClick={onDone}
-          className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors shadow-sm hover:shadow"
+          className="w-full py-3 min-h-[44px] bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors shadow-sm hover:shadow"
           data-testid="done-button"
           aria-label="Done viewing booking confirmation"
         >
@@ -152,7 +152,7 @@ export function BookingConfirmation({ booking, onDone, onCancel, isCancelling }:
         <button
           onClick={onCancel}
           disabled={isCancelling}
-          className="w-full py-2 bg-white border border-red-300 text-error hover:bg-red-50 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 min-h-[44px] bg-white border border-red-300 text-error hover:bg-red-50 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           data-testid="cancel-button"
           aria-label="Cancel this booking"
         >

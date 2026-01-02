@@ -113,7 +113,7 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
         <div className="flex items-center gap-2">
           <button
             onClick={onBack}
-            className="text-xs text-text-muted hover:text-text px-2 py-1 rounded hover:bg-surface"
+            className="text-xs text-text-muted hover:text-text px-2 py-2 min-h-[40px] rounded hover:bg-surface"
             aria-label="Back to booking confirmation"
           >
             ← Back
@@ -190,7 +190,7 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
                           transition={{ delay: idx * 0.05 }}
                           onClick={() => handleSlotSelect(slot)}
                           className={twMerge(
-                            'px-3 py-2 rounded-lg border text-sm font-medium transition-all',
+                            'px-3 py-2 min-h-[44px] rounded-lg border text-sm font-medium transition-all',
                             isSelected
                               ? 'bg-primary border-primary text-white shadow-md'
                               : 'bg-white border-border text-text hover:border-primary hover:bg-surface'
@@ -225,7 +225,7 @@ export function CalendarPicker({ expertId, expertName, onSelectSlot, onBack }: C
                 </div>
                 <button
                   onClick={handleConfirm}
-                  className="w-full py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
+                  className="w-full py-3 min-h-[44px] bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-colors"
                   aria-label="Confirm booking with selected time slot"
                 >
                   Confirm Booking

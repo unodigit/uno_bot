@@ -2029,11 +2029,14 @@
       "Step 3: Verify adequate spacing between targets",
       "Step 4: Verify easy to tap without mistakes"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:22:42.566187Z"
+    "dev_completed_at": "2026-01-02T08:22:42.566187Z",
+    "test_files": [
+      "tests/e2e/test_touch_targets_mobile.py"
+    ]
   },
   {
     "category": "style",
@@ -2059,11 +2062,12 @@
       "Step 3: Verify error message styling",
       "Step 4: Verify error color (#EF4444) used"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T08:23:53.171804Z"
+    "dev_completed_at": "2026-01-02T08:23:53.171804Z",
+    "qa_completed_at": "2026-01-02T20:30:00Z"
   },
   {
     "category": "style",
@@ -2276,8 +2280,10 @@
       "Step 3: Verify average under 100ms"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T09:13:51.186143Z"
   },
   {
     "category": "functional",

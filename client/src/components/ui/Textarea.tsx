@@ -9,7 +9,7 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 }
 
 export function Textarea({ className, error = false, errorText, errorId, ...props }: TextareaProps) {
-  const baseClasses = 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent resize-vertical transition-all'
+  const baseClasses = 'w-full px-3 py-2 min-h-[44px] border rounded-md focus:outline-none focus:ring-2 focus:border-transparent resize-vertical transition-all'
 
   const stateClasses = error
     ? 'border-error focus:ring-error'

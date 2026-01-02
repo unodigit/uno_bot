@@ -63,7 +63,7 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
         <div className="flex items-center gap-2">
           <button
             onClick={onBack}
-            className="text-xs text-gray-600 hover:text-gray-900 px-2 py-1 rounded hover:bg-gray-100"
+            className="text-xs text-gray-600 hover:text-gray-900 px-2 py-2 min-h-[40px] rounded hover:bg-gray-100"
             disabled={isSubmitting}
             aria-label="Back to select time slot"
           >
@@ -143,7 +143,7 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
               onBlur={() => setNameTouched(true)}
               placeholder="John Doe"
               className={twMerge(
-                'w-full pl-9 pr-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 transition-colors',
+                'w-full pl-9 pr-3 py-2 min-h-[44px] border rounded-md text-sm focus:outline-none focus:ring-2 transition-colors',
                 nameTouched && name.trim().length === 0
                   ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
                   : 'border-gray-300 focus:border-primary focus:ring-primary/20'
@@ -175,7 +175,7 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
               onBlur={() => setEmailTouched(true)}
               placeholder="john@example.com"
               className={twMerge(
-                'w-full pl-9 pr-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 transition-colors',
+                'w-full pl-9 pr-3 py-2 min-h-[44px] border rounded-md text-sm focus:outline-none focus:ring-2 transition-colors',
                 emailTouched && !email.includes('@')
                   ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
                   : 'border-gray-300 focus:border-primary focus:ring-primary/20'
@@ -195,7 +195,7 @@ export function BookingForm({ expert, timeSlot, onBack, onSubmit, isSubmitting, 
           type="submit"
           disabled={!isValid || isSubmitting}
           className={twMerge(
-            'w-full py-2.5 rounded-lg font-medium transition-colors flex items-center justify-center gap-2',
+            'w-full py-3 min-h-[44px] rounded-lg font-medium transition-colors flex items-center justify-center gap-2',
             isValid && !isSubmitting
               ? 'bg-primary hover:bg-primary-dark text-white'
               : 'bg-gray-200 text-gray-500 cursor-not-allowed'

@@ -8,7 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export function Input({ className = '', error = false, errorText, errorId, ...props }: InputProps) {
-  const baseClasses = 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all'
+  const baseClasses = 'w-full px-3 py-2 min-h-[44px] border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all'
 
   const stateClasses = error
     ? 'border-error focus:ring-error'
