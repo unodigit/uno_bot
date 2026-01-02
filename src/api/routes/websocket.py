@@ -90,9 +90,11 @@ async def handle_streaming_chat_message(
         # Create and save AI message with clarification
         ai_message = await session_service.add_message(
             uuid.UUID(session_id),
-            MessageCreate(content=clarification_response),
+            MessageCreate(
+                content=clarification_response,
+                meta_data={"type": "clarification", "ambiguous_reason": ambiguity_check["reason"]}
+            ),
             MessageRole.ASSISTANT,
-            meta_data={"type": "clarification", "ambiguous_reason": ambiguity_check["reason"]}
         )
 
         # Get updated session data
@@ -113,14 +115,14 @@ async def handle_streaming_chat_message(
                 "created_at": ai_message.created_at.isoformat(),
                 "meta_data": ai_message.meta_data,
             },
-            "session": {  # type: ignore[union-attr]
-                "current_phase": session.current_phase,  # type: ignore[union-attr]
-                "client_info": session.client_info,  # type: ignore[union-attr]
-                "business_context": session.business_context,  # type: ignore[union-attr]
-                "qualification": session.qualification,  # type: ignore[union-attr]
-                "lead_score": session.lead_score,  # type: ignore[union-attr]
-                "recommended_service": session.recommended_service,  # type: ignore[union-attr]
-                "matched_expert_id": str(session.matched_expert_id) if session.matched_expert_id else None,  # type: ignore[union-attr]
+            "session": {
+                "current_phase": session.current_phase,
+                "client_info": session.client_info,
+                "business_context": session.business_context,
+                "qualification": session.qualification,
+                "lead_score": session.lead_score,
+                "recommended_service": session.recommended_service,
+                "matched_expert_id": str(session.matched_expert_id) if session.matched_expert_id else None,
                 "prd_id": str(session.prd_id) if session.prd_id else None,
             }
         }
@@ -129,12 +131,12 @@ async def handle_streaming_chat_message(
     await session_service._calculate_lead_score(session)
     await session_service._recommend_service(session)
 
-    # Build context with updated session data  # type: ignore[union-attr]
-    context = {  # type: ignore[union-attr]
-        "business_context": session.business_context,  # type: ignore[union-attr]
-        "client_info": session.client_info,  # type: ignore[union-attr]
-        "qualification": session.qualification,  # type: ignore[union-attr]
-        "current_phase": session.current_phase,  # type: ignore[union-attr]
+    # Build context with updated session data
+    context = {
+        "business_context": session.business_context,
+        "client_info": session.client_info,
+        "qualification": session.qualification,
+        "current_phase": session.current_phase,
     }
 
     # Generate AI response using streaming

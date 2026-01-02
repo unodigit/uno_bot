@@ -23,7 +23,7 @@ except ImportError:
         async def connect(self): pass
         async def disconnect(self): pass
     cache_service = DummyCacheService()  # type: ignore
-    def get_cache_service() -> Any:  # type: ignore[misc]
+    def get_cache_service() -> Any:
         return cache_service  # type: ignore[return-value]
 
 from src.api.routes import router
