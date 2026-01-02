@@ -40,11 +40,19 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    # Use the database URL from the project settings
-    import os
-    from src.core.config import settings
+    # Get database URL from config (supports both settings and config override)
+    config_db_url = config.get_main_option("sqlalchemy.url")
 
-    url = settings.database_url
+    if config_db_url:
+        url = config_db_url
+    else:
+        from src.core.config import settings
+        url = settings.database_url
+
+    # Convert async SQLite URL to sync for Alembic
+    if url.startswith("sqlite+aiosqlite://"):
+        url = url.replace("sqlite+aiosqlite://", "sqlite://")
+
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -63,14 +71,20 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    # Use the database URL from the project settings
     from sqlalchemy import create_engine
 
-    # Create a sync engine for Alembic
-    from src.core.config import settings
+    # Get database URL from config (supports both settings and config override)
+    config_db_url = config.get_main_option("sqlalchemy.url")
+
+    if config_db_url:
+        # Use the URL from config (e.g., from test or command line)
+        db_url = config_db_url
+    else:
+        # Fall back to project settings
+        from src.core.config import settings
+        db_url = settings.database_url
 
     # Convert async SQLite URL to sync for Alembic
-    db_url = settings.database_url
     if db_url.startswith("sqlite+aiosqlite://"):
         db_url = db_url.replace("sqlite+aiosqlite://", "sqlite://")
 

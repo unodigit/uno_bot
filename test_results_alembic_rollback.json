@@ -1,18 +1,22 @@
 [
   {
-    "test": "Apply migration",
-    "passed": false
-  },
-  {
-    "test": "Rollback migration",
+    "test": "Initial migration",
     "passed": true
   },
   {
-    "test": "Re-apply migration",
-    "passed": false
+    "test": "Second migration",
+    "passed": true
+  },
+  {
+    "test": "Rollback one migration",
+    "passed": true
   },
   {
     "test": "Rollback to base",
-    "passed": false
+    "passed": true
+  },
+  {
+    "test": "Re-apply migrations",
+    "passed": true
   }
 ]

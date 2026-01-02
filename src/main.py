@@ -287,7 +287,30 @@ async def handle_socket_message(sid: str, data: dict) -> None:
 
         except Exception as e:
             logger.error(f"Error handling message: {e}")
-            await sio.emit("error", {"message": str(e)}, room=session_id)
+            # Enhanced error handling for network interruptions
+            error_message = str(e)
+
+            # Categorize error types and provide appropriate responses
+            if "network" in error_message.lower() or "connection" in error_message.lower():
+                error_message = "Network connection issue detected. Please check your internet connection and try again."
+                # Don't disconnect session, allow retry
+            elif "timeout" in error_message.lower():
+                error_message = "Request timed out. The AI is processing your request. Please wait a moment and try again."
+            elif "database" in error_message.lower():
+                error_message = "Temporary database issue. Your session is preserved and will be restored shortly."
+            else:
+                error_message = f"An unexpected error occurred: {error_message}"
+
+            # Send error to client with retry guidance
+            await sio.emit("error", {
+                "message": error_message,
+                "can_retry": True,
+                "retry_instructions": "Please try sending your message again in a few seconds.",
+                "session_preserved": True
+            }, room=session_id)
+
+            # Log the error with session context
+            logger.error(f"Session {session_id}: {error_message}")
 
 
 @sio.on("generate_prd")
@@ -437,7 +460,30 @@ async def handle_socket_streaming_message(sid: str, data: dict) -> None:
 
         except Exception as e:
             logger.error(f"Error handling streaming message: {e}")
-            await sio.emit("error", {"message": str(e)}, room=session_id)
+            # Enhanced error handling for network interruptions
+            error_message = str(e)
+
+            # Categorize error types and provide appropriate responses
+            if "network" in error_message.lower() or "connection" in error_message.lower():
+                error_message = "Network connection issue detected. Please check your internet connection and try again."
+                # Don't disconnect session, allow retry
+            elif "timeout" in error_message.lower():
+                error_message = "Request timed out. The AI is processing your request. Please wait a moment and try again."
+            elif "database" in error_message.lower():
+                error_message = "Temporary database issue. Your session is preserved and will be restored shortly."
+            else:
+                error_message = f"An unexpected error occurred: {error_message}"
+
+            # Send error to client with retry guidance
+            await sio.emit("error", {
+                "message": error_message,
+                "can_retry": True,
+                "retry_instructions": "Please try sending your message again in a few seconds.",
+                "session_preserved": True
+            }, room=session_id)
+
+            # Log the error with session context
+            logger.error(f"Session {session_id}: {error_message}")
 
 
 @app.get("/", tags=["root"])

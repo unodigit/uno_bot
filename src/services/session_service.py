@@ -558,6 +558,17 @@ class SessionService:
                 )
                 return
 
+        # Extract success criteria
+        if not session.qualification.get("success_criteria"):
+            success_keywords = ['success', 'goal', 'objective', 'measure', 'metric', 'kpi', 'outcome', 'result', 'target', 'want to', 'need to', 'looking for']
+            if any(keyword in user_text for keyword in success_keywords):
+                sanitized_criteria = sanitize_input(user_message)
+                await self.update_session_data(
+                    session,
+                    qualification={"success_criteria": sanitized_criteria}
+                )
+                return
+
         # Check if we have enough info to calculate lead score and recommend service
         await self._calculate_lead_score(session)
         await self._recommend_service(session)

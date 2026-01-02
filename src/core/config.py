@@ -53,6 +53,7 @@ class Settings(BaseSettings):
     base_dir: Path = Path(__file__).resolve().parent.parent.parent
     logs_dir: Path = base_dir / "logs"
     reports_dir: Path = base_dir / "reports"
+    upload_dir: Path = base_dir / "uploads"
 
     # PRD settings
     prd_expiry_days: int = 90

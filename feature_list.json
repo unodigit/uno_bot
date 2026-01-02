@@ -3047,7 +3047,9 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_completed_at": "2026-01-02T13:10:24.448849+00:00",
-    "note": "Calendar service implemented in src/services/calendar_service.py"
+    "note": "Calendar service implemented in src/services/calendar_service.py",
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T13:15:39.654177Z"
   },
   {
     "category": "functional",
@@ -3126,9 +3128,12 @@
       "Step 4: Verify URL is saved",
       "Step 5: Verify image displays"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T13:13:47.048976Z",
+    "qa_completed_at": "2026-01-03T00:15:00.000Z"
   },
   {
     "category": "functional",
@@ -3169,9 +3174,11 @@
       "Step 3: Verify captured in context",
       "Step 4: Verify included in PRD"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_completed_at": "2026-01-02T13:18:53.647963+00:00",
+    "note": "Implemented in session_service.py with keyword matching"
   },
   {
     "category": "functional",

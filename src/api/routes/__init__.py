@@ -10,6 +10,7 @@ from src.api.routes.experts import router as experts_router
 from src.api.routes.prd import router as prd_router
 from src.api.routes.sessions import router as sessions_router
 from src.api.routes.templates import router as templates_router
+from src.api.routes.uploads import router as uploads_router
 from src.core.config import settings
 from src.core.database import AsyncSessionLocal
 from src.core.security import require_admin_auth
@@ -24,6 +25,7 @@ router.include_router(experts_router, prefix="/experts", tags=["experts"])
 router.include_router(prd_router, prefix="/prd", tags=["prd"])
 router.include_router(bookings_router, prefix="/bookings", tags=["bookings"])
 router.include_router(templates_router, prefix="/templates", tags=["templates"])
+router.include_router(uploads_router, prefix="/uploads", tags=["uploads"])
 router.include_router(admin_router, tags=["admin"])
 
 

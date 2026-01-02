@@ -124,6 +124,20 @@ export class WebSocketClient {
     this.socket.on('disconnect', (reason) => {
       console.log('[WebSocket] Disconnected:', reason);
       this.isSocketConnected = false;
+
+      // Handle different disconnection reasons
+      if (reason === 'io server disconnect') {
+        // Server disconnected - try to reconnect
+        console.log('[WebSocket] Server disconnected, attempting to reconnect...');
+        setTimeout(() => this.reconnect(), 2000);
+      } else if (reason === 'io client disconnect') {
+        // Client disconnected intentionally
+        console.log('[WebSocket] Client disconnected intentionally');
+      } else {
+        // Network disconnection - try to reconnect
+        console.log('[WebSocket] Network connection lost, attempting to reconnect...');
+        setTimeout(() => this.reconnect(), 1000);
+      }
     });
 
     this.socket.on('connect_error', (error) => {
@@ -146,7 +160,20 @@ export class WebSocketClient {
     this.socket.on('experts_matched', (data) => this.emitLocal('experts_matched', data));
     this.socket.on('availability', (data) => this.emitLocal('availability', data));
     this.socket.on('booking_confirmed', (data) => this.emitLocal('booking_confirmed', data));
-    this.socket.on('error', (data) => this.emitLocal('error', data));
+    this.socket.on('error', (data) => {
+      console.warn('[WebSocket] Error received:', data);
+      // Enhanced error handling for network interruptions
+      if (data && data.message) {
+        // Check if it's a network-related error that can be retried
+        if (data.can_retry) {
+          console.log('[WebSocket] Network error - session preserved, retry available');
+        }
+        if (data.session_preserved) {
+          console.log('[WebSocket] Session preserved during network interruption');
+        }
+      }
+      this.emitLocal('error', data);
+    });
   }
 
   /**
@@ -291,6 +318,19 @@ export class WebSocketClient {
       this.disconnect();
       this.connect(this.sessionId);
     }
+  }
+
+  /**
+   * Retry sending a message after network interruption
+   */
+  retrySendMessage(content: string): void {
+    // Simple retry logic - just resend the message
+    // In a more sophisticated implementation, you might want to:
+    // - Track retry count
+    // - Implement exponential backoff
+    // - Queue messages for retry
+    console.log('[WebSocket] Retrying message after network interruption');
+    this.sendMessage(content);
   }
 
   /**
