@@ -1872,8 +1872,9 @@
       "Step 4: Verify font weights match spec"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "dev_completed_at": "2026-01-02T08:26:14.089398Z"
   },
   {
     "category": "style",
@@ -1961,8 +1962,10 @@
       "Step 5: Verify badge clears on open"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:25:53.091030Z"
   },
   {
     "category": "style",
@@ -1974,8 +1977,10 @@
       "Step 4: Verify proper mobile styling"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T08:26:51.426420Z"
   },
   {
     "category": "style",
