@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
+from src.schemas.booking import AvailabilityResponse
 from src.schemas.expert import (
     ExpertCreate,
     ExpertMatchRequest,
@@ -14,6 +15,7 @@ from src.schemas.expert import (
     ExpertUpdate,
     GoogleOAuthResponse,
 )
+from src.services.booking_service import BookingService
 from src.services.calendar_service import CalendarService
 from src.services.expert_service import ExpertService
 
@@ -88,6 +90,53 @@ async def get_expert(
         services=expert.services,
         is_active=expert.is_active,
     )
+
+
+@router.get(
+    "/{expert_id}/availability",
+    response_model=AvailabilityResponse,
+    summary="Get expert availability",
+    description="Get available time slots for an expert",
+)
+async def get_expert_availability(
+    expert_id: uuid.UUID,
+    timezone: str | None = None,
+    days_ahead: int | None = None,
+    min_slots_to_show: int | None = None,
+    db: AsyncSession = Depends(get_db),
+) -> AvailabilityResponse:
+    """Get available time slots for an expert.
+
+    Args:
+        expert_id: Expert UUID
+        timezone: Timezone for availability (defaults to expert's calendar timezone)
+        days_ahead: Number of days to look ahead for availability
+        min_slots_to_show: Minimum number of slots to return
+        db: Database session
+
+    Returns:
+        AvailabilityResponse with grouped time slots
+    """
+    booking_service = BookingService(db)
+
+    try:
+        availability = await booking_service.get_expert_availability(
+            expert_id=expert_id,
+            timezone=timezone,
+            days_ahead=days_ahead,
+            min_slots_to_show=min_slots_to_show
+        )
+        return availability
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        ) from e
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get availability: {str(e)}"
+        ) from e
 
 
 @router.post(
