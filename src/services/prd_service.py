@@ -56,9 +56,14 @@ class PRDService:
             client_name=session.client_info.get("name"),
             recommended_service=session.recommended_service,
             matched_expert=session.matched_expert_id,
-            storage_url=f"/api/v1/prd/{session.id}/download"
         )
 
+        self.db.add(prd)
+        await self.db.commit()
+        await self.db.refresh(prd)
+
+        # Update storage_url with unique PRD ID (after we have the prd.id)
+        prd.storage_url = f"/api/v1/prd/{prd.id}/download"
         self.db.add(prd)
         await self.db.commit()
         await self.db.refresh(prd)
