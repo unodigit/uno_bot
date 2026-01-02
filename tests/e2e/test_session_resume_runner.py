@@ -168,7 +168,7 @@ def generate_report(results):
 
         print("🔧 Suggested fixes:")
         print("   - Check if backend API is running on localhost:8000")
-        print("   - Verify frontend is running on localhost:5180")
+        print("   - Verify frontend is running on localhost:5173")
         print("   - Ensure database migrations are applied")
         print("   - Check browser automation dependencies")
 

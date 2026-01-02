@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.api.dependencies import get_db
 from src.schemas.expert import ExpertCreate, ExpertResponse, ExpertUpdate
 from src.services.expert_service import ExpertService
+from src.services.analytics_service import AnalyticsService
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -111,23 +112,35 @@ async def get_admin_analytics(
     """
     try:
         service = ExpertService(db)
+        analytics_service = AnalyticsService(db)
 
         # Get expert statistics
         total_experts = await service.count_experts()
         active_experts = await service.count_experts(active_only=True)
 
-        # Get basic system metrics
+        # Get conversation analytics
+        conversation_analytics = await analytics_service.get_conversation_analytics(days_back=30)
+
+        # Get expert performance analytics
+        expert_analytics = await analytics_service.get_expert_analytics(days_back=30)
+
+        # Get booking analytics
+        booking_analytics = await analytics_service.get_booking_analytics(days_back=30)
+
+        # Get system health
+        system_health = await analytics_service.get_system_health()
+
+        # Combine all analytics
         analytics = {
             "experts": {
                 "total": total_experts,
                 "active": active_experts,
                 "inactive": total_experts - active_experts
             },
-            "system": {
-                "status": "operational",
-                "database_connected": True,
-                "redis_connected": True
-            },
+            "conversations": conversation_analytics,
+            "experts_performance": expert_analytics,
+            "bookings": booking_analytics,
+            "system_health": system_health,
             "api": {
                 "version": "1.0.0",
                 "endpoints": [
@@ -143,4 +156,96 @@ async def get_admin_analytics(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to fetch analytics: {str(e)}"
+        )
+
+
+@router.get("/analytics/conversations")
+async def get_conversation_analytics(
+    days_back: int = 30,
+    db: AsyncSession = Depends(get_db)
+):
+    """Get detailed conversation analytics.
+
+    Args:
+        days_back: Number of days to look back (default: 30)
+
+    Returns:
+        Detailed conversation metrics and trends
+    """
+    try:
+        analytics_service = AnalyticsService(db)
+        analytics = await analytics_service.get_conversation_analytics(days_back=days_back)
+        return analytics
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch conversation analytics: {str(e)}"
+        )
+
+
+@router.get("/analytics/experts")
+async def get_expert_analytics(
+    days_back: int = 30,
+    db: AsyncSession = Depends(get_db)
+):
+    """Get expert performance analytics.
+
+    Args:
+        days_back: Number of days to look back (default: 30)
+
+    Returns:
+        Expert performance metrics and rankings
+    """
+    try:
+        analytics_service = AnalyticsService(db)
+        analytics = await analytics_service.get_expert_analytics(days_back=days_back)
+        return analytics
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch expert analytics: {str(e)}"
+        )
+
+
+@router.get("/analytics/bookings")
+async def get_booking_analytics(
+    days_back: int = 30,
+    db: AsyncSession = Depends(get_db)
+):
+    """Get booking performance analytics.
+
+    Args:
+        days_back: Number of days to look back (default: 30)
+
+    Returns:
+        Booking metrics and cancellation analysis
+    """
+    try:
+        analytics_service = AnalyticsService(db)
+        analytics = await analytics_service.get_booking_analytics(days_back=days_back)
+        return analytics
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch booking analytics: {str(e)}"
+        )
+
+
+@router.get("/analytics/health")
+async def get_system_health(
+    db: AsyncSession = Depends(get_db)
+):
+    """Get system health and performance status.
+
+    Returns:
+        System health metrics and database status
+    """
+    try:
+        analytics_service = AnalyticsService(db)
+        health = await analytics_service.get_system_health()
+        return health
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch system health: {str(e)}"
         )

@@ -8,7 +8,7 @@ class TestConversationHistory:
     def test_full_conversation_history_viewable(self, page: Page):
         """Test that full conversation history is viewable and scrollable."""
         # Navigate to the main page and open chat widget
-        page.goto("http://localhost:5180/")
+        page.goto("http://localhost:5173/")
         page.wait_for_load_state("networkidle")
 
         # Click the chat widget button to open chat
@@ -92,7 +92,7 @@ class TestConversationHistory:
     def test_conversation_persists_across_refresh(self, page: Page):
         """Test that conversation history persists across page refreshes."""
         # Navigate to the main page and open chat widget
-        page.goto("http://localhost:5180/")
+        page.goto("http://localhost:5173/")
         page.wait_for_load_state("networkidle")
 
         # Open chat and send a few messages

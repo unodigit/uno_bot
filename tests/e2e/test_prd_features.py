@@ -24,7 +24,7 @@ async def test_prd_generation_button_appears():
 
         try:
             # Navigate to the application
-            await page.goto("http://localhost:5180")
+            await page.goto("http://localhost:5173")
 
             # Open chat widget
             await page.wait_for_selector('[data-testid="chat-button"]', timeout=5000)
@@ -78,7 +78,7 @@ async def test_prd_preview_displays_after_generation():
 
         try:
             # Navigate to the application
-            await page.goto("http://localhost:5180")
+            await page.goto("http://localhost:5173")
 
             # Open chat widget
             await page.wait_for_selector('[data-testid="chat-button"]', timeout=5000)
@@ -139,7 +139,7 @@ async def test_prd_download_button_works():
 
         try:
             # Navigate and complete qualification
-            await page.goto("http://localhost:5180")
+            await page.goto("http://localhost:5173")
             await page.wait_for_selector('[data-testid="chat-button"]', timeout=5000)
             await page.click('[data-testid="chat-button"]')
             await page.wait_for_selector('[data-testid="message-input"]', timeout=5000)
@@ -212,7 +212,7 @@ async def test_prd_generation_indicator_shows():
         page = await context.new_page()
 
         try:
-            await page.goto("http://localhost:5180")
+            await page.goto("http://localhost:5173")
             await page.wait_for_selector('[data-testid="chat-button"]', timeout=5000)
             await page.click('[data-testid="chat-button"]')
             await page.wait_for_selector('[data-testid="chat-window"]', timeout=5000)

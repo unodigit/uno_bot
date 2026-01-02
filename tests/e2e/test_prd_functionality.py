@@ -5,7 +5,7 @@ from playwright.sync_api import Page, expect
 
 def test_prd_preview_displays_in_chat_interface(page: Page):
     """Test that PRD preview displays correctly in chat interface."""
-    page.goto("http://localhost:5180")
+    page.goto("http://localhost:5173")
 
     # Open chat widget
     page.click('[data-testid="chat-widget-button"]')
@@ -63,7 +63,7 @@ def test_prd_preview_displays_in_chat_interface(page: Page):
 
 def test_prd_download_functionality(page: Page):
     """Test that PRD download works correctly."""
-    page.goto("http://localhost:5180")
+    page.goto("http://localhost:5173")
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 
@@ -113,7 +113,7 @@ def test_prd_download_functionality(page: Page):
 
 def test_prd_generation_indicator(page: Page):
     """Test that PRD generation shows loading indicator."""
-    page.goto("http://localhost:5180")
+    page.goto("http://localhost:5173")
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 
@@ -160,7 +160,7 @@ def test_prd_generation_indicator(page: Page):
 
 def test_prd_quick_reply_button(page: Page):
     """Test that PRD quick reply button works."""
-    page.goto("http://localhost:5180")
+    page.goto("http://localhost:5173")
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 
@@ -201,7 +201,7 @@ def test_prd_quick_reply_button(page: Page):
 
 def test_prd_message_display(page: Page):
     """Test that PRD generation is communicated to user via chat messages."""
-    page.goto("http://localhost:5180")
+    page.goto("http://localhost:5173")
     page.click('[data-testid="chat-widget-button"]')
     page.wait_for_selector('[data-testid="chat-window"]')
 

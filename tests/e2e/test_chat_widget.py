@@ -2,7 +2,7 @@
 from playwright.sync_api import Page, expect
 
 # Frontend URL - use environment variable or default
-FRONTEND_URL = "http://localhost:5180"
+FRONTEND_URL = "http://localhost:5173"
 
 
 class TestChatWidget:

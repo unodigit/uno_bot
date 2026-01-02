@@ -8,7 +8,7 @@ class TestAdminExpertEditing:
     def test_admin_can_edit_existing_expert_profiles(self, page: Page):
         """Test that admin can edit existing expert profiles."""
         # Navigate to admin page
-        page.goto("http://localhost:5180/admin")
+        page.goto("http://localhost:5173/admin")
         page.wait_for_load_state("networkidle")
 
         # Click login to show admin dashboard
@@ -81,7 +81,7 @@ class TestAdminExpertEditing:
         page.wait_for_load_state("networkidle")
 
         # Navigate back to admin dashboard
-        page.goto("http://localhost:5180/admin")
+        page.goto("http://localhost:5173/admin")
         page.wait_for_load_state("networkidle")
 
         # Verify the edited expert name is still visible
@@ -95,7 +95,7 @@ class TestAdminExpertEditing:
     def test_admin_edit_form_validation(self, page: Page):
         """Test admin expert edit form validation."""
         # Navigate to admin dashboard
-        page.goto("http://localhost:5180/admin")
+        page.goto("http://localhost:5173/admin")
         page.wait_for_load_state("networkidle")
 
         # Wait for experts to load
@@ -136,7 +136,7 @@ class TestAdminExpertEditing:
     def test_admin_edit_cancel_functionality(self, page: Page):
         """Test admin expert edit cancel functionality."""
         # Navigate to admin dashboard
-        page.goto("http://localhost:5180/admin")
+        page.goto("http://localhost:5173/admin")
         page.wait_for_load_state("networkidle")
 
         # Wait for experts to load

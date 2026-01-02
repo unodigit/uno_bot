@@ -1,17 +1,18 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { User, Mail, Award, Star, Briefcase, Calendar } from 'lucide-react'
-import { MatchedExpert } from '../types'
+import { MatchedExpert, Expert } from '../types'
 
 interface ExpertCardProps {
-  expert: MatchedExpert
-  index: number
+  expert: MatchedExpert | Expert
+  index?: number
   onSelect?: (expert: MatchedExpert) => void
   onBook?: (expert: MatchedExpert) => void
   showActions?: boolean
 }
 
-export function ExpertCard({ expert, index, onSelect, onBook, showActions = true }: ExpertCardProps) {
-  const scorePercentage = Math.round(expert.match_score)
+export function ExpertCard({ expert, index = 0, onSelect, onBook, showActions = true }: ExpertCardProps) {
+  const isMatchedExpert = 'match_score' in expert
+  const scorePercentage = isMatchedExpert ? Math.round((expert as MatchedExpert).match_score) : null
 
   return (
     <motion.div
@@ -39,11 +40,13 @@ export function ExpertCard({ expert, index, onSelect, onBook, showActions = true
               <p className="text-xs text-gray-600">{expert.role}</p>
             </div>
 
-            {/* Match Score Badge */}
-            <div className="flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">
-              <Star className="w-3 h-3 fill-current" />
-              {scorePercentage}%
-            </div>
+            {/* Match Score Badge - only show for matched experts */}
+            {isMatchedExpert && scorePercentage !== null && (
+              <div className="flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-xs font-medium">
+                <Star className="w-3 h-3 fill-current" />
+                {scorePercentage}%
+              </div>
+            )}
           </div>
 
           {/* Bio */}
@@ -84,12 +87,12 @@ export function ExpertCard({ expert, index, onSelect, onBook, showActions = true
             </div>
           )}
 
-          {/* Action Buttons */}
+          {/* Action Buttons - only show if callbacks provided */}
           {showActions && (onSelect || onBook) && (
             <div className="flex gap-2 mt-3">
               {onBook && (
                 <button
-                  onClick={() => onBook(expert)}
+                  onClick={() => onBook(expert as MatchedExpert)}
                   className="flex-1 px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors flex items-center justify-center gap-1"
                   data-testid={`book-expert-${index}`}
                 >
@@ -99,7 +102,7 @@ export function ExpertCard({ expert, index, onSelect, onBook, showActions = true
               )}
               {onSelect && (
                 <button
-                  onClick={() => onSelect(expert)}
+                  onClick={() => onSelect(expert as MatchedExpert)}
                   className="px-3 py-1.5 border border-gray-300 text-gray-700 text-xs rounded hover:bg-gray-50 transition-colors"
                   data-testid={`select-expert-${index}`}
                 >

@@ -13,7 +13,7 @@ async def test_session_resume_via_email_link(page: Page):
 
     # Step 1: Start conversation and get session ID
     print("Step 1: Starting conversation and getting session ID")
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     # Open chat widget
@@ -98,7 +98,7 @@ async def test_session_resume_preserves_conversation_history(page: Page):
 
     # Step 1: Create a comprehensive conversation
     print("Step 1: Creating comprehensive conversation")
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     # Open chat
@@ -201,7 +201,7 @@ async def test_session_resume_preserves_session_context(page: Page):
 
     # Step 1: Create conversation and gather context
     print("Step 1: Creating conversation with context")
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     chat_button = page.get_by_test_id("chat-widget-button")
@@ -303,7 +303,7 @@ async def test_session_resume_with_empty_conversation(page: Page):
 
     # Step 1: Create session with just welcome message
     print("Step 1: Creating session with minimal history")
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     chat_button = page.get_by_test_id("chat-widget-button")
@@ -367,7 +367,7 @@ async def test_session_resume_url_generation(page: Page):
 
     # Step 1: Create session and generate URL
     print("Step 1: Creating session and generating resume URL")
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     chat_button = page.get_by_test_id("chat-widget-button")
@@ -423,7 +423,7 @@ async def test_session_resume_multiple_times(page: Page):
 
     # Step 1: Create initial session
     print("Step 1: Creating initial session")
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     chat_button = page.get_by_test_id("chat-widget-button")
@@ -520,7 +520,7 @@ async def test_session_resume_chat_widget_behavior(page: Page):
 
     # Step 1: Create session and close chat
     print("Step 1: Creating session and closing chat")
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     chat_button = page.get_by_test_id("chat-widget-button")
@@ -603,7 +603,7 @@ async def test_session_resume_url_parameter_handling(page: Page):
     test_session_id = "test-session-123"
 
     # Navigate to URL with session_id parameter
-    test_url = f"http://localhost:5180?session_id={test_session_id}"
+    test_url = f"http://localhost:5173?session_id={test_session_id}"
     await page.goto(test_url)
     await page.wait_for_load_state("networkidle")
 
@@ -620,7 +620,7 @@ async def test_session_resume_without_parameter(page: Page):
     """Test that normal session creation works when no session_id parameter is provided."""
 
     # Navigate to root URL without session_id parameter
-    await page.goto("http://localhost:5180")
+    await page.goto("http://localhost:5173")
     await page.wait_for_load_state("networkidle")
 
     # Session ID should be null initially
