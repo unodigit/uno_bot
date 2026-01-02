@@ -939,7 +939,7 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T16:52:00.000000Z",
+    "dev_completed_at": "2026-01-02T06:11:31.812818Z",
     "qa_completed_at": "2026-01-02T16:52:00.000000Z"
   },
   {
@@ -1060,8 +1060,10 @@
       "Step 4: Verify bot understands industry-specific context"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T06:11:55.836393Z"
   },
   {
     "category": "functional",
