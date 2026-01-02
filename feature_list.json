@@ -2251,8 +2251,10 @@
     "is_qa_passed": true,
     "qa_retry_count": 2,
     "dev_completed_at": "2026-01-02T10:07:42.504175Z",
-    "qa_completed_at": "2026-01-02T10:00:14.252568+00:00",
-    "test_files": []
+    "qa_completed_at": "2026-01-02T21:30:00.000000Z",
+    "test_files": [
+      "tests/e2e/test_widget_position.py"
+    ]
   },
   {
     "category": "functional",
