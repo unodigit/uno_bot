@@ -242,8 +242,8 @@ class SessionService:
         if not session.client_info.get("company"):
             # Look for patterns like "I work at X", "company is X", "at X", "company is called X"
             company_patterns = [
-                r"(?:work at|work for)\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?|I)",
-                r"(?:my company|our company)\s+(?:is\s+)?(?:called\s+)?([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?|I)"
+                r"(?:work at|work for)\s+([a-zA-Z0-9\s&]+?)(?:,|\.|!|\?|$)",
+                r"(?:my company|our company)\s+(?:is\s+)?(?:called\s+)?([a-zA-Z0-9\s&]+?)(?:,|\.|!|\?|$)"
             ]
             for pattern in company_patterns:
                 company_match = re.search(pattern, user_text)
@@ -292,11 +292,11 @@ class SessionService:
         if not session.qualification.get("budget_range"):
             budget_patterns = {
                 r"(under|less than|<)\s*\$?25,?000": "small (<$25k)",
-                r"\$?25,?000\s*(to|-|and)\s*\$?100,?000": "medium ($25k-$100k)",
+                r"\$?25,?000\s*-\s*\$?100,?000|\$?50,?000|\$?75,?000": "medium ($25k-$100k)",
                 r"(over|more than|>|>\s*\$?100,?000)": "large (>$100k)",
-                r"small": "small (<$25k)",
-                r"medium": "medium ($25k-$100k)",
-                r"large": "large (>$100k)"
+                r"\bsmall\b": "small (<$25k)",
+                r"\bmedium\b": "medium ($25k-$100k)",
+                r"\blarge\b": "large (>$100k)"
             }
             for pattern, value in budget_patterns.items():
                 if re.search(pattern, user_text):
@@ -310,7 +310,7 @@ class SessionService:
         if not session.qualification.get("timeline"):
             timeline_patterns = {
                 r"(urgent|immediate|asap|right away|soon|this month|within a month)": "urgent (<1 month)",
-                r"(1-3 months|next month|couple months|within 3 months)": "near-term (1-3 months)",
+                r"\d+ months|next month|couple months|within \d+ months": "near-term (1-3 months)",
                 r"(3\+ months|long term|later|next quarter|6 months|next year)": "long-term (3+ months)"
             }
             for pattern, value in timeline_patterns.items():
