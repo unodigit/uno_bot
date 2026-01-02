@@ -57,8 +57,9 @@ class TestBotMessageStyling:
         bubble = self._get_bot_message_bubble(page)
         bubble_class = bubble.get_attribute('class')
 
-        assert 'bg-gray-100' in bubble_class, \
-            f"Bot message should have bg-gray-100 class, got: {bubble_class}"
+        # bg-surface is the design system token equivalent to bg-gray-100
+        assert 'bg-surface' in bubble_class, \
+            f"Bot message should have bg-surface class, got: {bubble_class}"
 
     def test_bot_message_bubble_text_color(self, page: Page):
         """Test that bot messages have correct text color (#1F2937)."""
@@ -68,15 +69,16 @@ class TestBotMessageStyling:
         bubble = self._get_bot_message_bubble(page)
         bubble_class = bubble.get_attribute('class')
 
-        # Check for gray-800 class (Tailwind equivalent of #1F2937)
-        assert 'text-gray-800' in bubble_class, \
-            f"Bot message should have text-gray-800 class, got: {bubble_class}"
+        # text-text is the design system token equivalent to text-gray-800
+        assert 'text-text' in bubble_class, \
+            f"Bot message should have text-text class, got: {bubble_class}"
 
         # Check timestamp text color
         timestamp = bubble.locator('span')
         timestamp_class = timestamp.get_attribute('class')
-        assert 'text-gray-600' in timestamp_class, \
-            f"Bot message timestamp should have text-gray-600 class, got: {timestamp_class}"
+        # text-text-muted is the design system token equivalent to text-gray-600
+        assert 'text-text-muted' in timestamp_class, \
+            f"Bot message timestamp should have text-text-muted class, got: {timestamp_class}"
 
     def test_bot_message_bubble_border_and_styling(self, page: Page):
         """Test that bot messages have proper border and styling."""
