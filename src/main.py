@@ -318,6 +318,13 @@ async def handle_socket_message(sid: str, data: dict) -> None:
             # Log the error with session context
             logger.error(f"Session {session_id}: {error_message}")
 
+        finally:
+            # Always send typing_stop to clean up UI state
+            try:
+                await sio.emit("typing_stop", {"from": "bot"}, room=session_id)
+            except Exception as cleanup_error:
+                logger.warning(f"Failed to send typing_stop cleanup: {cleanup_error}")
+
 
 @sio.on("generate_prd")
 async def handle_socket_prd(sid: str, data: dict) -> None:
