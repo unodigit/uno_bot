@@ -436,12 +436,14 @@ async def handle_socket_streaming_message(sid: str, data: dict) -> None:
         try:
             # Send typing indicator
             await sio.emit("typing_start", {"from": "bot"}, room=session_id)
+            logger.info(f"Sent typing_start for session {session_id}")
 
             # Handle the message with streaming
             result = await handle_streaming_chat_message(session_id, content, db)
 
             # Stop typing indicator
             await sio.emit("typing_stop", {"from": "bot"}, room=session_id)
+            logger.info(f"Sent typing_stop for session {session_id}")
 
             # Send the complete response
             await sio.emit("message", {
@@ -490,6 +492,13 @@ async def handle_socket_streaming_message(sid: str, data: dict) -> None:
 
             # Log the error with session context
             logger.error(f"Session {session_id}: {error_message}")
+
+        finally:
+            # Always send typing_stop to clean up UI state
+            try:
+                await sio.emit("typing_stop", {"from": "bot"}, room=session_id)
+            except Exception as cleanup_error:
+                logger.warning(f"Failed to send typing_stop cleanup: {cleanup_error}")
 
 
 @app.get("/", tags=["root"])

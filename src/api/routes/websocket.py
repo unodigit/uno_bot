@@ -143,6 +143,14 @@ async def handle_streaming_chat_message(
     full_response = ""
     message_id = None
 
+    # Create message first to get the ID, then stream
+    ai_message = await session_service.add_message(
+        uuid.UUID(session_id),
+        MessageCreate(content=""),  # type: ignore[call-arg]
+        MessageRole.ASSISTANT,
+    )
+    message_id = str(ai_message.id)
+
     # Send streaming response chunks
     async for chunk in session_service.ai_service.stream_response(
         content, conversation_history, context
@@ -157,15 +165,8 @@ async def handle_streaming_chat_message(
             "message_id": message_id
         }, room=session_id)
 
-    # Create and save final AI message
-    ai_message = await session_service.add_message(
-        uuid.UUID(session_id),
-        MessageCreate(content=full_response),  # type: ignore[call-arg]
-        MessageRole.ASSISTANT,
-    )
-
-    # Update message_id for the final message
-    message_id = str(ai_message.id)
+    # Update the message with complete content
+    ai_message.content = full_response
 
     # Determine and update phase based on collected data
     new_phase = await session_service._determine_next_phase(session)
