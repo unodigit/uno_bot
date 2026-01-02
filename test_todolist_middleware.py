@@ -29,7 +29,7 @@ async def test_todolist_middleware():
         )
 
         agent = create_deep_agent(
-            model="test-model",
+            model=None,  # Use default Claude Sonnet 4
             tools=[],  # No custom tools
             system_prompt="You are a test agent for todo functionality",
             backend=backend,

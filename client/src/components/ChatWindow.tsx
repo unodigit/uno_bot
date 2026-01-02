@@ -805,7 +805,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                   key={idx}
                   onClick={() => sendMessage(reply)}
                   className={twMerge(
-                    'px-3 py-1.5 text-xs rounded-full transition-all duration-150 border font-medium',
+                    'px-3 py-1.5 text-xs rounded-full transition-all duration-200 border font-medium',
                     'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                     'disabled:opacity-50 disabled:cursor-not-allowed',
                     'bg-surface text-text border-border hover:bg-gray-200 active:scale-95 shadow-sm'
@@ -836,7 +836,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             onClick={handleSend}
             disabled={!inputValue.trim() || isStreaming || isLoading}
             className={twMerge(
-              'h-full px-4 rounded-md transition-all duration-150 flex items-center justify-center font-medium',
+              'h-full px-4 rounded-md transition-all duration-200 flex items-center justify-center font-medium',
               'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
               // Enabled state
               (!inputValue.trim() || isStreaming || isLoading)

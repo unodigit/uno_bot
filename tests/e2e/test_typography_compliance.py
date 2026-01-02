@@ -279,7 +279,7 @@ def test_typography_contrast_compliance(page: Page):
             tested_elements += 1
 
             # Get computed styles
-            styles = element.evaluate("el => {
+            styles = element.evaluate("""el => {
                 const computed = getComputedStyle(el);
                 return {
                     color: computed.color,
@@ -287,7 +287,7 @@ def test_typography_contrast_compliance(page: Page):
                     fontSize: computed.fontSize,
                     fontWeight: computed.fontWeight
                 };
-            }")
+            }""")
 
             # Basic contrast check - text color should not be too similar to background
             if styles['backgroundColor'] and styles['backgroundColor'] != 'rgba(0, 0, 0, 0)':
