@@ -43,7 +43,7 @@ class SessionService:
         welcome_message = Message(
             session_id=session.id,
             role=MessageRole.ASSISTANT,
-            content="Hello! I'm UnoBot, your AI business consultant. I can help you explore our services, understand your needs, and connect you with the right expert. How can I help you today?",
+            content="🎉 Welcome! I'm UnoBot, your AI business consultant from UnoDigit.\n\nI can help you explore our services, understand your needs, and connect you with the right expert.\n\nTo get started, what's your name?",
             meta_data={"type": "welcome"},
             created_at=datetime.utcnow(),
         )
@@ -202,7 +202,7 @@ class SessionService:
 
         # Extract name (simple heuristic - if it's a greeting response)
         if not session.client_info.get("name"):
-            # Look for patterns like "My name is John" or "I'm John"
+            # Look for patterns like "My name is John" or "I'm John" or "John"
             name_match = re.search(r"(?:my name is|i am|i'm)\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?)", user_text)
             if name_match:
                 name = name_match.group(1).strip().title()
@@ -225,12 +225,28 @@ class SessionService:
                 )
                 return
 
+        # Extract company information
+        if not session.client_info.get("company"):
+            # Look for patterns like "I work at X", "company is X", "at X"
+            company_patterns = [
+                r"(?:work at|work for|company is|at)\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?|I)",
+                r"(?:my company|our company)\s+is\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?)"
+            ]
+            for pattern in company_patterns:
+                company_match = re.search(pattern, user_text)
+                if company_match:
+                    company = company_match.group(1).strip().title()
+                    if len(company) > 2 and len(company) < 100:
+                        await self.update_session_data(
+                            session,
+                            client_info={"company": company}
+                        )
+                        return
+
         # Extract business challenges
         if not session.business_context.get("challenges"):
-            # If user mentions challenges, problems, issues, etc.
-            challenge_keywords = ['problem', 'issue', 'challenge', 'difficulty', 'struggle', 'pain', 'need']
+            challenge_keywords = ['problem', 'issue', 'challenge', 'difficulty', 'struggle', 'pain', 'need', 'want', 'looking for', 'trying to']
             if any(keyword in user_text for keyword in challenge_keywords):
-                # Store the business context
                 await self.update_session_data(
                     session,
                     business_context={"challenges": user_message}
@@ -239,7 +255,7 @@ class SessionService:
 
         # Extract industry
         if not session.business_context.get("industry"):
-            industry_keywords = ['healthcare', 'finance', 'education', 'retail', 'manufacturing', 'tech', 'technology', 'software', 'e-commerce', 'ecommerce']
+            industry_keywords = ['healthcare', 'finance', 'education', 'retail', 'manufacturing', 'tech', 'technology', 'software', 'e-commerce', 'ecommerce', 'saas', 'insurance', 'banking', 'logistics', 'construction', 'real estate']
             for keyword in industry_keywords:
                 if keyword in user_text:
                     await self.update_session_data(
@@ -247,3 +263,164 @@ class SessionService:
                         business_context={"industry": keyword.title()}
                     )
                     return
+
+        # Extract technology stack
+        if not session.business_context.get("tech_stack"):
+            tech_keywords = ['python', 'javascript', 'react', 'angular', 'vue', 'node', 'java', 'c#', 'dotnet', 'aws', 'azure', 'gcp', 'docker', 'kubernetes', 'sql', 'mongodb', 'postgresql', 'mysql']
+            found_tech = [tech for tech in tech_keywords if tech in user_text]
+            if found_tech:
+                await self.update_session_data(
+                    session,
+                    business_context={"tech_stack": ", ".join(found_tech)}
+                )
+                return
+
+        # Extract budget range
+        if not session.qualification.get("budget_range"):
+            budget_patterns = {
+                r"(under|less than|<)\s*\$?25,?000": "small (<$25k)",
+                r"\$?25,?000\s*(to|-|and)\s*\$?100,?000": "medium ($25k-$100k)",
+                r"(over|more than|>|>\s*\$?100,?000)": "large (>$100k)",
+                r"small": "small (<$25k)",
+                r"medium": "medium ($25k-$100k)",
+                r"large": "large (>$100k)"
+            }
+            for pattern, value in budget_patterns.items():
+                if re.search(pattern, user_text):
+                    await self.update_session_data(
+                        session,
+                        qualification={"budget_range": value}
+                    )
+                    return
+
+        # Extract timeline
+        if not session.qualification.get("timeline"):
+            timeline_patterns = {
+                r"(urgent|immediate|asap|right away|soon|this month|within a month)": "urgent (<1 month)",
+                r"(1-3 months|next month|couple months|within 3 months)": "near-term (1-3 months)",
+                r"(3\+ months|long term|later|next quarter|6 months|next year)": "long-term (3+ months)"
+            }
+            for pattern, value in timeline_patterns.items():
+                if re.search(pattern, user_text):
+                    await self.update_session_data(
+                        session,
+                        qualification={"timeline": value}
+                    )
+                    return
+
+        # Extract company size
+        if not session.business_context.get("company_size"):
+            size_patterns = {
+                r"(startup|small|1-10|under 10|few people)": "1-10",
+                r"(10-50|medium small|50 people)": "10-50",
+                r"(50-200|medium|100 people)": "50-200",
+                r"(200\+|large|enterprise|1000|big)": "200+"
+            }
+            for pattern, value in size_patterns.items():
+                if re.search(pattern, user_text):
+                    await self.update_session_data(
+                        session,
+                        business_context={"company_size": value}
+                    )
+                    return
+
+        # Extract decision maker status
+        if not session.qualification.get("is_decision_maker"):
+            if "decision maker" in user_text or "i decide" in user_text or "i can decide" in user_text:
+                await self.update_session_data(
+                    session,
+                    qualification={"is_decision_maker": True}
+                )
+                return
+            elif "not the decision maker" in user_text or "need approval" in user_text or "boss" in user_text:
+                await self.update_session_data(
+                    session,
+                    qualification={"is_decision_maker": False}
+                )
+                return
+
+        # Check if we have enough info to calculate lead score and recommend service
+        await self._calculate_lead_score(session)
+        await self._recommend_service(session)
+
+    async def _calculate_lead_score(self, session: ConversationSession) -> None:
+        """Calculate lead score based on collected information."""
+        score = 0
+
+        # Client info points
+        if session.client_info.get("name"):
+            score += 10
+        if session.client_info.get("email"):
+            score += 15
+        if session.client_info.get("company"):
+            score += 10
+
+        # Business context points
+        if session.business_context.get("challenges"):
+            score += 20
+        if session.business_context.get("industry"):
+            score += 10
+        if session.business_context.get("company_size"):
+            score += 10
+
+        # Qualification points
+        budget = session.qualification.get("budget_range")
+        if budget:
+            if "large" in budget:
+                score += 25
+            elif "medium" in budget:
+                score += 20
+            else:
+                score += 15
+
+        timeline = session.qualification.get("timeline")
+        if timeline:
+            if "urgent" in timeline:
+                score += 20
+            elif "near-term" in timeline:
+                score += 15
+            else:
+                score += 10
+
+        if session.qualification.get("is_decision_maker") is True:
+            score += 15
+
+        # Cap at 100
+        score = min(score, 100)
+
+        # Only update if we have meaningful data
+        if score > 0:
+            await self.update_session_data(session, lead_score=score)
+
+    async def _recommend_service(self, session: ConversationSession) -> None:
+        """Recommend appropriate service based on collected information."""
+        if session.recommended_service:
+            return
+
+        # Get context
+        challenges = session.business_context.get("challenges", "").lower()
+        industry = session.business_context.get("industry", "").lower()
+        tech_stack = session.business_context.get("tech_stack", "").lower()
+
+        # Determine service based on keywords
+        ai_keywords = ['ai', 'ml', 'machine learning', 'artificial intelligence', 'data', 'analytics', 'intelligence']
+        dev_keywords = ['software', 'app', 'application', 'website', 'web', 'mobile', 'development', 'build', 'create']
+        cloud_keywords = ['cloud', 'infrastructure', 'devops', 'deployment', 'server', 'aws', 'azure', 'gcp']
+        strategy_keywords = ['strategy', 'consulting', 'planning', 'roadmap', 'digital transformation']
+
+        content = challenges + " " + industry + " " + tech_stack
+
+        # Score each service
+        scores = {
+            "AI Strategy & Planning": sum(1 for k in ai_keywords if k in content),
+            "Custom Software Development": sum(1 for k in dev_keywords if k in content),
+            "Cloud Infrastructure & DevOps": sum(1 for k in cloud_keywords if k in content),
+            "Digital Transformation Consulting": sum(1 for k in strategy_keywords if k in content),
+            "Data Intelligence & Analytics": sum(1 for k in ['data', 'analytics', 'insight'] if k in content)
+        }
+
+        # Get max score
+        if scores:
+            recommended = max(scores, key=scores.get)
+            if scores[recommended] > 0:
+                await self.update_session_data(session, recommended_service=recommended)

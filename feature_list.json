@@ -175,11 +175,12 @@
       "Step 4: Provide name and verify it's acknowledged",
       "Step 5: Verify name is stored in session client_info"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
-    "qa_retry_count": 1,
-    "qa_completed_at": "2026-01-02T02:55:12.724752+00:00"
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "qa_completed_at": "2026-01-02T03:11:40.497403+00:00",
+    "dev_completed_at": "2026-01-02T03:10:08.359288Z"
   },
   {
     "category": "functional",
@@ -191,11 +192,12 @@
       "Step 4: Enter valid email address",
       "Step 5: Verify email is accepted and stored"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:32:24.365921Z"
+    "dev_completed_at": "2026-01-02T02:32:24.365921Z",
+    "qa_completed_at": "2026-01-02T03:11:40.497418+00:00"
   },
   {
     "category": "functional",
@@ -221,11 +223,12 @@
       "Step 3: Verify bot asks clarifying questions",
       "Step 4: Verify responses are stored in session context"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T02:30:47.817273Z"
+    "dev_completed_at": "2026-01-02T02:30:47.817273Z",
+    "qa_completed_at": "2026-01-02T03:11:40.497421+00:00"
   },
   {
     "category": "functional",
@@ -370,8 +373,10 @@
       "Step 5: Verify download count is incremented"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T03:11:14.054468Z"
   },
   {
     "category": "functional",

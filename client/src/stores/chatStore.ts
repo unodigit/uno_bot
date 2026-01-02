@@ -66,20 +66,27 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // Store session ID
       localStorage.setItem('unobot_session_id', session.id);
 
-      // Add welcome message if no messages exist
-      const welcomeMessage: Message = {
-        id: `welcome_${Date.now()}`,
-        session_id: session.id,
-        role: 'assistant',
-        content: "👋 Hi there! I'm UnoBot, your AI business consultant. I can help you with:\n\n• AI Strategy & Planning\n• Custom Software Development\n• Data Intelligence Solutions\n\nWhat brings you here today?",
-        meta_data: { type: 'welcome' },
-        created_at: new Date().toISOString(),
-      };
+      // Use messages from API response (includes welcome message)
+      const messages: Message[] = session.messages.map(msg => ({
+        id: msg.id,
+        session_id: msg.session_id,
+        role: msg.role,
+        content: msg.content,
+        meta_data: msg.meta_data,
+        created_at: msg.created_at,
+      }));
 
       set({
         sessionId: session.id,
         visitorId,
-        messages: [welcomeMessage],
+        messages: messages.length > 0 ? messages : [{
+          id: `welcome_${Date.now()}`,
+          session_id: session.id,
+          role: 'assistant',
+          content: "🎉 Welcome! I'm UnoBot, your AI business consultant from UnoDigit.\n\nTo get started, what's your name?",
+          meta_data: { type: 'welcome' },
+          created_at: new Date().toISOString(),
+        }],
         isLoading: false,
       });
     } catch (error) {
