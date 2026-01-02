@@ -307,3 +307,112 @@ class TestChatWidget:
         assert test_message_found, "Test message not found after refresh"
 
         print("✓ Session persists across page refresh")
+
+    def test_widget_position_is_configurable(self, page: Page):
+        """
+        Test: Widget position can be configured (left/right) and persists
+
+        Steps:
+        1. Navigate to main page
+        2. Verify widget starts in default right position
+        3. Hover over widget to show position menu
+        4. Click left position button
+        5. Verify widget moves to left side
+        6. Verify position persists in localStorage
+        7. Refresh page and verify position is maintained
+        """
+        # Clear storage to start fresh
+        page.context.clear_cookies()
+        page.goto(FRONTEND_URL)
+        page.wait_for_load_state("networkidle")
+        page.evaluate("localStorage.clear()")
+
+        # Step 1: Verify widget starts in default right position
+        chat_button = page.get_by_test_id("chat-widget-button")
+        expect(chat_button).to_be_visible()
+
+        # Get initial position (should be right)
+        initial_box = chat_button.bounding_box()
+        viewport_size = page.viewport_size
+        assert initial_box is not None and viewport_size is not None
+
+        # Should be positioned at right (approximately)
+        expected_right = viewport_size["width"] - 60 - 24
+        assert abs(initial_box["x"] - expected_right) < 5, "Widget should start in right position"
+        print("✓ Widget starts in default right position")
+
+        # Step 2: Hover to show position menu
+        chat_button.hover()
+        page.wait_for_timeout(300)  # Wait for menu to appear
+
+        # Step 3: Click left position button
+        left_button = page.get_by_test_id("position-left")
+        expect(left_button).to_be_visible()
+        left_button.click()
+
+        # Step 4: Verify widget moved to left side
+        page.wait_for_timeout(500)  # Wait for animation
+        new_box = chat_button.bounding_box()
+        assert new_box is not None
+
+        expected_left = 24  # 24px margin from left edge
+        assert abs(new_box["x"] - expected_left) < 5, f"Widget should be on left side, got x={new_box['x']}, expected ~{expected_left}"
+        print("✓ Widget moves to left position when left button clicked")
+
+        # Step 5: Verify position is stored in localStorage
+        stored_position = page.evaluate("localStorage.getItem('unobot_widget_position')")
+        assert stored_position == "left", f"Position should be 'left' in localStorage, got '{stored_position}'"
+        print("✓ Position persists in localStorage")
+
+        # Step 6: Refresh page and verify position is maintained
+        page.reload()
+        page.wait_for_load_state("networkidle")
+
+        # Wait for widget to be visible
+        chat_button = page.get_by_test_id("chat-widget-button")
+        expect(chat_button).to_be_visible()
+
+        # Check position after refresh
+        refreshed_box = chat_button.bounding_box()
+        assert refreshed_box is not None
+
+        # Should still be on left side
+        assert abs(refreshed_box["x"] - expected_left) < 5, "Widget should remain on left after refresh"
+        print("✓ Position persists across page refresh")
+
+        # Step 7: Change to right position
+        chat_button.hover()
+        page.wait_for_timeout(300)
+        right_button = page.get_by_test_id("position-right")
+        expect(right_button).to_be_visible()
+        right_button.click()
+
+        # Verify moved to right
+        page.wait_for_timeout(500)
+        final_box = chat_button.bounding_box()
+        assert final_box is not None
+        assert abs(final_box["x"] - expected_right) < 5, "Widget should move to right position"
+        print("✓ Widget can be switched back to right position")
+
+        # Step 8: Verify position in minimized state
+        # Open chat, then minimize
+        chat_button.click()
+        page.get_by_test_id("minimize-button").click()
+
+        # Hover minimized button
+        minimized_button = page.get_by_test_id("chat-widget-button-minimized")
+        expect(minimized_button).to_be_visible()
+        minimized_button.hover()
+        page.wait_for_timeout(300)
+
+        # Position menu should appear for minimized button too
+        expect(left_button).to_be_visible()
+        left_button.click()
+
+        # Verify minimized button moved to left
+        page.wait_for_timeout(500)
+        minimized_box = minimized_button.bounding_box()
+        assert minimized_box is not None
+        assert abs(minimized_box["x"] - expected_left) < 5, "Minimized widget should also respect position"
+        print("✓ Position works correctly for minimized widget")
+

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Minimize2, Download, FileText, UserPlus, Check, XCircle, RefreshCw, Settings, Volume2, VolumeX } from 'lucide-react'
+import { X, Send, Minimize2, Download, FileText, UserPlus, Check, XCircle, RefreshCw, Settings, Volume2, VolumeX, ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import { twMerge } from 'tailwind-merge'
 import { ExpertMatchList } from './ExpertCard'
@@ -12,6 +12,14 @@ import { TimeSlot } from '../types'
 interface ChatWindowProps {
   onClose: () => void
   onMinimize?: () => void
+}
+
+// Helper to get responsive position classes based on widgetPosition
+const getResponsivePositionClasses = (position: 'left' | 'right'): string => {
+  if (position === 'left') {
+    return 'bottom-6 left-6 sm:bottom-4 sm:left-4'
+  }
+  return 'bottom-6 right-6 sm:bottom-4 sm:right-4'
 }
 
 // Phase-based quick reply options
@@ -82,6 +90,9 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     playNotificationSound,
     soundNotificationsEnabled,
     toggleSoundNotifications,
+    // Widget position
+    widgetPosition,
+    toggleWidgetPosition,
   } = useChatStore()
 
   // Create session on mount if not exists
@@ -273,7 +284,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ duration: 0.15 }}
-          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          className={`fixed ${getResponsivePositionClasses(widgetPosition)} w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50`}
           data-testid="chat-window"
         >
           {/* Header */}
@@ -323,7 +334,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ duration: 0.15 }}
-          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          className={`fixed ${getResponsivePositionClasses(widgetPosition)} w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50`}
           data-testid="chat-window"
         >
           {/* Header */}
@@ -377,7 +388,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ duration: 0.15 }}
-          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          className={`fixed ${getResponsivePositionClasses(widgetPosition)} w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50`}
           data-testid="chat-window"
         >
           {/* Header */}
@@ -430,7 +441,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ duration: 0.15 }}
-          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          className={`fixed ${getResponsivePositionClasses(widgetPosition)} w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50`}
           data-testid="chat-window"
         >
           {/* Header */}
@@ -483,7 +494,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ duration: 0.15 }}
-          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          className={`fixed ${getResponsivePositionClasses(widgetPosition)} w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50`}
           data-testid="chat-window"
         >
           {/* Header */}
@@ -597,7 +608,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ duration: 0.2 }}
-        className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50 md:w-[380px] md:h-[520px] sm:w-[95vw] sm:h-[90vh] sm:bottom-4 sm:right-4 sm:rounded-lg"
+        className={`fixed ${getResponsivePositionClasses(widgetPosition)} w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50 md:w-[380px] md:h-[520px] sm:w-[95vw] sm:h-[90vh] sm:rounded-lg`}
         data-testid="chat-window"
       >
         {/* Screen reader announcements */}
@@ -715,6 +726,39 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
               {soundNotificationsEnabled
                 ? 'Sounds enabled for new messages, bookings, and PRD generation'
                 : 'Sounds disabled'}
+            </div>
+            <div className="flex items-center justify-between py-2 border-t border-gray-200 mt-2">
+              <div className="flex items-center gap-2">
+                {widgetPosition === 'left' ? (
+                  <ArrowLeftFromLine className="w-4 h-4 text-primary" />
+                ) : (
+                  <ArrowRightFromLine className="w-4 h-4 text-primary" />
+                )}
+                <span className="text-sm text-gray-700">Widget Position</span>
+              </div>
+              <button
+                onClick={toggleWidgetPosition}
+                className={twMerge(
+                  'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
+                  widgetPosition === 'left' ? 'bg-primary' : 'bg-gray-300'
+                )}
+                role="switch"
+                aria-checked={widgetPosition === 'left'}
+                aria-label="Toggle widget position"
+                data-testid="position-toggle"
+              >
+                <span
+                  className={twMerge(
+                    'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
+                    widgetPosition === 'left' ? 'translate-x-6' : 'translate-x-1'
+                  )}
+                />
+              </button>
+            </div>
+            <div className="text-xs text-gray-500 mt-2">
+              {widgetPosition === 'left'
+                ? 'Widget positioned on bottom-left'
+                : 'Widget positioned on bottom-right'}
             </div>
           </motion.div>
         )}

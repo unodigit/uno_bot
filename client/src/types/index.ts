@@ -205,6 +205,8 @@ export interface ChatState {
   isTyping: boolean;
   // Sound notifications state
   soundNotificationsEnabled: boolean;
+  // Widget position configuration
+  widgetPosition: 'left' | 'right';
 }
 
 export interface ChatActions {
@@ -252,6 +254,9 @@ export interface ChatActions {
   toggleSoundNotifications: () => void;
   setSoundNotificationsEnabled: (enabled: boolean) => void;
   playNotificationSound: (type?: 'message' | 'booking' | 'prd') => void;
+  // Widget position actions
+  setWidgetPosition: (position: 'left' | 'right') => void;
+  toggleWidgetPosition: () => void;
   // Note: The following methods are also available on the store but are not part of ChatActions
   // They are added for completeness: addMessage, clearError, setStreaming
 }

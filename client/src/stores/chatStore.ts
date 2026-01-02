@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert, TimeSlot, BookingCreateRequest, BookingResponse } from '../types';
+import { ChatStore, Message, CreateSessionRequest, PRDPreview, MatchedExpert, TimeSlot, BookingCreateRequest, BookingResponse, PRDResponse, ConversationSummaryResponse } from '../types';
 import { api } from '../api/client';
 import { wsClient } from '../api/websocket';
 
@@ -159,6 +159,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   isTyping: false,
   // Sound notifications state - load from localStorage
   soundNotificationsEnabled: localStorage.getItem('unobot_sound_notifications') === 'true',
+  // Widget position state - load from localStorage, default to 'right'
+  widgetPosition: (localStorage.getItem('unobot_widget_position') as 'left' | 'right') || 'right',
 
   // Actions
   openChat: () => {
@@ -702,8 +704,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         approve: false,
       });
 
+      // When approve=false, response is ConversationSummaryResponse
+      const summaryResponse = response as ConversationSummaryResponse;
+
       set({
-        conversationSummary: response.summary,
+        conversationSummary: summaryResponse.summary,
         isGeneratingSummary: false,
         isReviewingSummary: true,
       });
@@ -906,5 +911,19 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     } catch (error) {
       console.warn('Could not play notification sound:', error);
     }
+  },
+
+  // Widget position actions
+  setWidgetPosition: (position: 'left' | 'right') => {
+    localStorage.setItem('unobot_widget_position', position);
+    set({ widgetPosition: position });
+  },
+
+  toggleWidgetPosition: () => {
+    set((state: any) => {
+      const newPosition = state.widgetPosition === 'left' ? 'right' : 'left';
+      localStorage.setItem('unobot_widget_position', newPosition);
+      return { widgetPosition: newPosition };
+    });
   },
 }));

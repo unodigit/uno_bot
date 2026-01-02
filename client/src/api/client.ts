@@ -213,9 +213,10 @@ class ApiClient {
   /**
    * Approve summary and generate PRD
    * POST /api/v1/prd/approve-summary-and-generate-prd
+   * Returns ConversationSummaryResponse when approve=false, PRDResponse when approve=true
    */
-  async approveSummaryAndGeneratePRD(data: ConversationSummaryApproveRequest): Promise<PRDResponse> {
-    return this.post<PRDResponse>('/api/v1/prd/approve-summary-and-generate-prd', data);
+  async approveSummaryAndGeneratePRD(data: ConversationSummaryApproveRequest): Promise<PRDResponse | ConversationSummaryResponse> {
+    return this.post<PRDResponse | ConversationSummaryResponse>('/api/v1/prd/approve-summary-and-generate-prd', data);
   }
 }
 
