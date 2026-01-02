@@ -339,11 +339,17 @@ async def generate_conversation_summary(
     status_code=status.HTTP_201_CREATED,
     summary="Approve summary and generate PRD",
     description="Approve conversation summary and generate PRD",
+    responses={
+        200: {
+            "description": "Summary regenerated (when approve=False)",
+            "model": ConversationSummaryResponse,
+        }
+    },
 )
 async def approve_summary_and_generate_prd(
     request: ConversationSummaryApproveRequest,
     db: AsyncSession = Depends(get_db),
-) -> PRDResponse:
+):
     """Approve conversation summary and generate PRD.
 
     If approve is True, generates PRD with the provided summary.
@@ -361,7 +367,7 @@ async def approve_summary_and_generate_prd(
         )
 
     if not request.approve:
-        # Regenerate summary
+        # Regenerate summary and return with 200 status
         summary = await prd_service.generate_conversation_summary(session)
         return ConversationSummaryResponse(
             summary=summary,

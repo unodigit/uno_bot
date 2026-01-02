@@ -185,7 +185,17 @@ async def test_prd_download_increments_download_count(client, sample_visitor_id:
     )
     session_id = create_response.json()["id"]
 
-    for msg in ["My name is Test", "Test Corp", "Need help", "$50k", "3 months"]:
+    # Add messages with proper conversation flow
+    messages = [
+        "My name is Test User",
+        "My email is test@example.com",
+        "I work at Test Corp",
+        "We need help with custom software development",
+        "Our budget is around $50,000",
+        "We're looking at a 3 month timeline",
+    ]
+
+    for msg in messages:
         await client.post(
             f"/api/v1/sessions/{session_id}/messages",
             json={"content": msg},
@@ -196,6 +206,9 @@ async def test_prd_download_increments_download_count(client, sample_visitor_id:
         "/api/v1/prd/generate",
         json={"session_id": session_id},
     )
+
+    # Check that PRD generation succeeded
+    assert prd_response.status_code == 201, f"PRD generation failed: {prd_response.text}"
     prd_id = prd_response.json()["id"]
 
     # Download once
@@ -290,7 +303,17 @@ async def test_prd_preview_truncates_long_content(client, sample_visitor_id: str
     )
     session_id = create_response.json()["id"]
 
-    for msg in ["My name is Test", "Test Corp", "Need help", "$50k", "3 months"]:
+    # Add messages with proper conversation flow
+    messages = [
+        "My name is Preview Test",
+        "My email is preview@example.com",
+        "I work at Preview Corp",
+        "We need help with data analytics platform",
+        "Our budget is $50,000",
+        "Timeline is 3 months",
+    ]
+
+    for msg in messages:
         await client.post(
             f"/api/v1/sessions/{session_id}/messages",
             json={"content": msg},
@@ -301,6 +324,7 @@ async def test_prd_preview_truncates_long_content(client, sample_visitor_id: str
         "/api/v1/prd/generate",
         json={"session_id": session_id},
     )
+    assert prd_response.status_code == 201, f"PRD generation failed: {prd_response.text}"
     prd_id = prd_response.json()["id"]
 
     # Get preview
@@ -324,7 +348,17 @@ async def test_prd_get_by_id(client, sample_visitor_id: str):
     )
     session_id = create_response.json()["id"]
 
-    for msg in ["My name is GetTest", "Get Corp", "Need help", "$50k", "3 months"]:
+    # Add messages with proper conversation flow
+    messages = [
+        "My name is GetTest User",
+        "My email is gettest@example.com",
+        "I work at Get Corp",
+        "We need software development services",
+        "Budget is $50,000",
+        "Timeline is 3 months",
+    ]
+
+    for msg in messages:
         await client.post(
             f"/api/v1/sessions/{session_id}/messages",
             json={"content": msg},
@@ -335,6 +369,7 @@ async def test_prd_get_by_id(client, sample_visitor_id: str):
         "/api/v1/prd/generate",
         json={"session_id": session_id},
     )
+    assert prd_response.status_code == 201, f"PRD generation failed: {prd_response.text}"
     prd_id = prd_response.json()["id"]
 
     # Get PRD by ID
@@ -371,7 +406,17 @@ async def test_prd_version_tracking(client, sample_visitor_id: str):
     )
     session_id = create_response.json()["id"]
 
-    for msg in ["My name is VersionTest", "Version Corp", "Need help", "$50k", "3 months"]:
+    # Add messages with proper conversation flow
+    messages = [
+        "My name is VersionTest User",
+        "My email is version@example.com",
+        "I work at Version Corp",
+        "We need AI strategy consulting",
+        "Budget is $50,000",
+        "Timeline is 3 months",
+    ]
+
+    for msg in messages:
         await client.post(
             f"/api/v1/sessions/{session_id}/messages",
             json={"content": msg},
@@ -382,6 +427,7 @@ async def test_prd_version_tracking(client, sample_visitor_id: str):
         "/api/v1/prd/generate",
         json={"session_id": session_id},
     )
+    assert prd_response.status_code == 201, f"PRD generation failed: {prd_response.text}"
     assert prd_response.json()["version"] == 1
 
     # Regenerate with feedback
@@ -406,7 +452,17 @@ async def test_prd_generation_with_summary(client, sample_visitor_id: str):
     )
     session_id = create_response.json()["id"]
 
-    for msg in ["My name is SummaryTest", "Summary Corp", "Need help", "$50k", "3 months"]:
+    # Add messages with proper conversation flow
+    messages = [
+        "My name is SummaryTest User",
+        "My email is summary@example.com",
+        "I work at Summary Corp",
+        "We need data intelligence solutions",
+        "Budget is $50,000",
+        "Timeline is 3 months",
+    ]
+
+    for msg in messages:
         await client.post(
             f"/api/v1/sessions/{session_id}/messages",
             json={"content": msg},
@@ -417,7 +473,7 @@ async def test_prd_generation_with_summary(client, sample_visitor_id: str):
         "/api/v1/prd/generate-summary",
         json={"session_id": session_id},
     )
-    assert summary_response.status_code == 200
+    assert summary_response.status_code == 200, f"Summary generation failed: {summary_response.text}"
     summary = summary_response.json()["summary"]
     assert len(summary) > 0
 
@@ -443,7 +499,17 @@ async def test_prd_summary_rejection_regenerates(client, sample_visitor_id: str)
     )
     session_id = create_response.json()["id"]
 
-    for msg in ["My name is RejectTest", "Reject Corp", "Need help", "$50k", "3 months"]:
+    # Add messages with proper conversation flow
+    messages = [
+        "My name is RejectTest User",
+        "My email is reject@example.com",
+        "I work at Reject Corp",
+        "We need cloud migration services",
+        "Budget is $50,000",
+        "Timeline is 3 months",
+    ]
+
+    for msg in messages:
         await client.post(
             f"/api/v1/sessions/{session_id}/messages",
             json={"content": msg},
@@ -454,6 +520,7 @@ async def test_prd_summary_rejection_regenerates(client, sample_visitor_id: str)
         "/api/v1/prd/generate-summary",
         json={"session_id": session_id},
     )
+    assert summary1_response.status_code == 200, f"First summary generation failed: {summary1_response.text}"
     summary1 = summary1_response.json()["summary"]
 
     # Reject and request new summary

@@ -1,0 +1,24 @@
+{
+  "test_date": "2026-01-02",
+  "application": "UnoBot",
+  "base_url": "http://localhost:5173",
+  "api_base": "http://localhost:8000/api/v1",
+  "results": [
+    [
+      "Frontend Availability",
+      true
+    ],
+    [
+      "WebSocket/API Connection",
+      true
+    ],
+    [
+      "Chat Session Creation",
+      false
+    ],
+    [
+      "Message Sending",
+      false
+    ]
+  ]
+}

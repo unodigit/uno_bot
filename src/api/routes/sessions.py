@@ -2,7 +2,9 @@
 import uuid
 from datetime import datetime
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.exceptions import RequestValidationError
+from pydantic import UUID4
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.database import get_db
@@ -22,6 +24,19 @@ from src.services.expert_service import ExpertService
 from src.services.session_service import SessionService
 
 router = APIRouter()
+
+
+def validate_session_id(session_id: str) -> uuid.UUID:
+    """Validate session_id and return UUID or raise appropriate error.
+
+    For session endpoints, we want to return 404 for invalid UUIDs
+    rather than 422 validation errors, to be more RESTful.
+    """
+    try:
+        return uuid.UUID(session_id)
+    except (ValueError, AttributeError):
+        # Invalid UUID format - treat as "not found"
+        raise NotFoundError("Session", session_id)
 
 
 @router.post(
@@ -319,7 +334,7 @@ async def resume_session(
     description="Find matching experts based on session context and service needs",
 )
 async def match_expert(
-    session_id: uuid.UUID,
+    session_id: str,
     db: AsyncSession = Depends(get_db),
 ) -> ExpertMatchResponse:
     """Match experts to a session based on qualification data.
@@ -328,8 +343,11 @@ async def match_expert(
     qualification data to find the most relevant experts. Returns
     ranked experts with match scores.
     """
+    # Validate session_id and convert to UUID
+    session_uuid = validate_session_id(session_id)
+
     session_service = SessionService(db)
-    session = await session_service.get_session(session_id)
+    session = await session_service.get_session(session_uuid)
 
     if not session:
         raise NotFoundError("Session", session_id)
@@ -387,7 +405,7 @@ async def match_expert(
     description="Update session metadata (business context, qualification, etc.)",
 )
 async def update_session(
-    session_id: uuid.UUID,
+    session_id: str,
     updates: SessionUpdateRequest,
     db: AsyncSession = Depends(get_db),
 ) -> SessionResponse:
@@ -396,8 +414,11 @@ async def update_session(
     Allows partial updates to session fields like business_context,
     qualification, recommended_service, etc.
     """
+    # Validate session_id and convert to UUID
+    session_uuid = validate_session_id(session_id)
+
     service = SessionService(db)
-    session = await service.get_session(session_id)
+    session = await service.get_session(session_uuid)
 
     if not session:
         raise NotFoundError("Session", session_id)
