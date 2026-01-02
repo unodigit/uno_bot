@@ -7,7 +7,7 @@ from typing import Any
 
 from deepagents import create_deep_agent
 from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend
-from deepagents.middleware import FilesystemMiddleware, SubAgentMiddleware
+from langchain_anthropic import ChatAnthropic
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
@@ -20,7 +20,19 @@ class DeepAgentsService:
         """Initialize DeepAgents service."""
         self.db = db
         self.api_key = settings.anthropic_api_key
-        self.model_name = "anthropic:claude-sonnet-4-5-20250929"
+
+        # Create model object for DeepAgents
+        if self.api_key:
+            self.model = ChatAnthropic(
+                model="claude-sonnet-4-5-20250929",
+                api_key=self.api_key,
+                temperature=0.7,
+                max_tokens=4096
+            )
+            self.model_name = "anthropic:claude-sonnet-4-5-20250929"
+        else:
+            self.model = None
+            self.model_name = None
 
         # Initialize DeepAgents if API key is available
         if self.api_key:
@@ -50,12 +62,13 @@ class DeepAgentsService:
             self._tool_determine_next_phase,
         ]
 
-        # Define subagents
+        # Define subagents - note: create_deep_agent expects 'system_prompt' not 'prompt'
+        from deepagents.middleware.subagents import SubAgent
         subagents = [
-            {
-                "name": "discovery-agent",
-                "description": "Conducts business elicitation and qualification",
-                "system_prompt": """You are an expert at understanding business challenges and qualifying leads.
+            SubAgent(
+                name="discovery-agent",
+                description="Conducts business elicitation and qualification",
+                system_prompt="""You are an expert at understanding business challenges and qualifying leads.
                 Your role is to:
                 1. Gather comprehensive client information (name, email, company)
                 2. Understand business challenges and pain points
@@ -86,7 +99,7 @@ class DeepAgentsService:
             {
                 "name": "prd-agent",
                 "description": "Generates Project Requirements Documents from conversation",
-                "system_prompt": """You are a technical writer who creates professional Project Requirements Documents (PRDs).
+                "prompt": """You are a technical writer who creates professional Project Requirements Documents (PRDs).
                 Your role is to:
                 1. Analyze conversation history and extract key requirements
                 2. Structure information into a comprehensive PRD
@@ -110,7 +123,7 @@ class DeepAgentsService:
             {
                 "name": "booking-agent",
                 "description": "Handles calendar integration and meeting scheduling",
-                "system_prompt": """You manage appointment scheduling with experts.
+                "prompt": """You manage appointment scheduling with experts.
                 Your role is to:
                 1. Fetch expert availability from calendar systems
                 2. Present available time slots to users
@@ -132,11 +145,18 @@ class DeepAgentsService:
             }
         ]
 
-        # Configure middleware with SubAgentMiddleware and FilesystemMiddleware
-        middleware = [
-            SubAgentMiddleware(),
-            FilesystemMiddleware(base_dir=prd_storage_dir)
-        ]
+        # Configure middleware
+        # Note: create_deep_agent already includes:
+        # - TodoListMiddleware (built-in for write_todos/read_todos)
+        # - FilesystemMiddleware (for file operations via backend)
+        # - SubAgentMiddleware (for task delegation)
+        # - SummarizationMiddleware (for long conversations)
+        # - AnthropicPromptCachingMiddleware (for cost optimization)
+        # - HumanInTheLoopMiddleware (when interrupt_on is provided)
+        #
+        # We pass empty middleware here since all required middleware
+        # is already included by create_deep_agent by default.
+        middleware = []
 
         # Configure CompositeBackend with StateBackend and FilesystemBackend
         # StateBackend for conversation state (ephemeral)
@@ -150,7 +170,7 @@ class DeepAgentsService:
 
         # Create main agent with middleware and backend
         agent = create_deep_agent(
-            model=self.model_name,
+            model=self.model,
             tools=tools,
             system_prompt=self._get_main_system_prompt(),
             subagents=subagents,
