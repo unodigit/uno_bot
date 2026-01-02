@@ -2511,11 +2511,15 @@
       "Step 3: Verify session data present",
       "Step 4: Verify TTL matches 7 days"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
-    "is_qa_passed": false,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T10:49:02.915802Z"
+    "dev_completed_at": "2026-01-02T10:49:02.915802Z",
+    "qa_completed_at": "2026-01-02T10:59:04.825105+00:00",
+    "test_files": [
+      "tests/e2e/test_security_features.py"
+    ]
   },
   {
     "category": "functional",
@@ -2575,7 +2579,11 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T10:50:02.035066Z"
+    "dev_completed_at": "2026-01-02T10:50:02.035066Z",
+    "qa_completed_at": "2026-01-02T10:59:04.825114+00:00",
+    "test_files": [
+      "tests/e2e/test_security_features.py"
+    ]
   },
   {
     "category": "functional",
@@ -2603,7 +2611,11 @@
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T10:48:49.366018Z"
+    "dev_completed_at": "2026-01-02T10:48:49.366018Z",
+    "qa_completed_at": "2026-01-02T10:59:04.825116+00:00",
+    "test_files": [
+      "tests/e2e/test_security_features.py"
+    ]
   },
   {
     "category": "functional",

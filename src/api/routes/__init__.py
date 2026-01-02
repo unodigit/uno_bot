@@ -1,7 +1,7 @@
 """API routes initialization."""
 from datetime import datetime
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from sqlalchemy import text
 
 from src.api.routes.admin import router as admin_router
@@ -10,8 +10,10 @@ from src.api.routes.experts import router as experts_router
 from src.api.routes.prd import router as prd_router
 from src.api.routes.sessions import router as sessions_router
 from src.api.routes.templates import router as templates_router
+from src.services.cache_service import cache_service, CACHE_PREFIXES
 from src.core.config import settings
 from src.core.database import AsyncSessionLocal
+from src.core.security import require_admin_auth
 
 # Create main router
 router = APIRouter(prefix="/api/v1")

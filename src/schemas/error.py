@@ -22,10 +22,10 @@ class ErrorResponse(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.now, description="Error timestamp")
     path: Optional[str] = Field(None, description="API endpoint path")
     details: Optional[List[ValidationErrorDetail]] = Field(
-        None, description="Field-level validation errors"
+        default=None, description="Field-level validation errors"
     )
     debug_info: Optional[Dict[str, Any]] = Field(
-        None, description="Additional debug information (development only)"
+        default=None, description="Additional debug information (development only)"
     )
 
 
@@ -45,7 +45,7 @@ class ValidationErrorResponse(ErrorResponse):
     """422 Validation Error response with field details."""
 
     error_code: Literal["VALIDATION_ERROR"] = "VALIDATION_ERROR"
-    details: List[ValidationErrorDetail] = Field(..., description="Field validation errors")
+    details: List[ValidationErrorDetail] = Field(default_factory=list, description="Field validation errors")
 
 
 class InternalServerError(ErrorResponse):

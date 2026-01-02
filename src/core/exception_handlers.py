@@ -1,8 +1,8 @@
 """Exception handlers for the UnoBot API."""
 import logging
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
-from fastapi import Request, Response
+from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
@@ -18,11 +18,7 @@ from src.core.exceptions import (
     UnoBotError,
 )
 from src.schemas.error import (
-    BadRequestError as BadRequestErrorResponse,
-    ConflictError as ConflictErrorResponse,
     ErrorResponse,
-    InternalServerError,
-    NotFoundError as NotFoundErrorResponse,
     ValidationErrorResponse,
     ValidationErrorDetail,
 )
@@ -68,34 +64,26 @@ async def validation_exception_handler(
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:
     """Handle HTTP exceptions."""
+    error_response = ErrorResponse(
+        success=False,
+        detail=exc.detail,
+        error_code="INTERNAL_ERROR",
+        path=str(request.url),
+    )
+
+    # Map status codes to error codes
     if exc.status_code == 404:
-        error_response = NotFoundErrorResponse(
-            success=False,
-            detail=exc.detail,
-            error_code="NOT_FOUND",
-            path=str(request.url),
-        )
+        error_response.error_code = "NOT_FOUND"
     elif exc.status_code == 400:
-        error_response = BadRequestErrorResponse(
-            success=False,
-            detail=exc.detail,
-            error_code="BAD_REQUEST",
-            path=str(request.url),
-        )
+        error_response.error_code = "BAD_REQUEST"
     elif exc.status_code == 409:
-        error_response = ConflictErrorResponse(
-            success=False,
-            detail=exc.detail,
-            error_code="CONFLICT",
-            path=str(request.url),
-        )
-    else:
-        error_response = InternalServerError(
-            success=False,
-            detail=exc.detail,
-            error_code="INTERNAL_ERROR",
-            path=str(request.url),
-        )
+        error_response.error_code = "CONFLICT"
+    elif exc.status_code == 422:
+        error_response.error_code = "VALIDATION_ERROR"
+    elif exc.status_code == 429:
+        error_response.error_code = "RATE_LIMIT_EXCEEDED"
+    elif exc.status_code >= 500:
+        error_response.error_code = "INTERNAL_ERROR"
 
     return JSONResponse(
         status_code=exc.status_code,
@@ -105,34 +93,12 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
 
 async def unobot_exception_handler(request: Request, exc: UnoBotError) -> JSONResponse:
     """Handle custom UnoBot exceptions."""
-    if isinstance(exc, NotFoundError):
-        error_response = NotFoundErrorResponse(
-            success=False,
-            detail=exc.message,
-            error_code=exc.error_code,
-            path=str(request.url),
-        )
-    elif isinstance(exc, BadRequestError):
-        error_response = BadRequestErrorResponse(
-            success=False,
-            detail=exc.message,
-            error_code=exc.error_code,
-            path=str(request.url),
-        )
-    elif isinstance(exc, ConflictError):
-        error_response = ConflictErrorResponse(
-            success=False,
-            detail=exc.message,
-            error_code=exc.error_code,
-            path=str(request.url),
-        )
-    else:
-        error_response = InternalServerError(
-            success=False,
-            detail=exc.message,
-            error_code=exc.error_code,
-            path=str(request.url),
-        )
+    error_response = ErrorResponse(
+        success=False,
+        detail=exc.message,
+        error_code=exc.error_code,
+        path=str(request.url),
+    )
 
     if settings.debug:
         error_response.debug_info = {
@@ -152,22 +118,24 @@ async def database_exception_handler(request: Request, exc: SQLAlchemyError) -> 
 
     # Check for specific database error types
     status_code: int
+    error_code: str
+    detail: str
+
     if isinstance(exc, IntegrityError):
-        error_response = InternalServerError(
-            success=False,
-            detail="Database constraint violation",
-            error_code="INTEGRITY_ERROR",
-            path=str(request.url),
-        )
         status_code = 409
+        error_code = "INTEGRITY_ERROR"
+        detail = "Database constraint violation"
     else:
-        error_response = InternalServerError(
-            success=False,
-            detail="Database operation failed",
-            error_code="DATABASE_ERROR",
-            path=str(request.url),
-        )
         status_code = 500
+        error_code = "DATABASE_ERROR"
+        detail = "Database operation failed"
+
+    error_response = ErrorResponse(
+        success=False,
+        detail=detail,
+        error_code=error_code,
+        path=str(request.url),
+    )
 
     if settings.debug:
         error_response.debug_info = {
@@ -185,7 +153,7 @@ async def external_service_exception_handler(request: Request, exc: Exception) -
     """Handle external service exceptions (Google Calendar, SendGrid, etc.)."""
     logger.error(f"External service error: {exc}")
 
-    error_response = InternalServerError(
+    error_response = ErrorResponse(
         success=False,
         detail="External service temporarily unavailable",
         error_code="EXTERNAL_SERVICE_ERROR",

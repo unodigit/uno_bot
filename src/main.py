@@ -11,7 +11,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from socketio import AsyncServer, ASGIApp
 
-from src.services.cache_service import cache_service, get_cache_service
+# Import cache service with fallback (Redis is optional)
+try:
+    from src.services.cache_service import cache_service, get_cache_service
+    CACHE_AVAILABLE = True
+except ImportError:
+    CACHE_AVAILABLE = False
+    # Create a dummy cache service for when Redis is not available
+    class DummyCacheService:
+        async def connect(self): pass
+        async def disconnect(self): pass
+    cache_service = DummyCacheService()
+    get_cache_service = lambda: cache_service
+
 from src.api.routes import router
 from src.core.config import settings
 from src.core.database import init_db, AsyncSessionLocal
@@ -66,12 +78,15 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     await init_db()
     logger.info("Database initialized")
 
-    # Initialize cache service
-    try:
-        await cache_service.connect()
-        logger.info("Redis cache service initialized")
-    except Exception as e:
-        logger.warning(f"Redis cache service not available: {e}")
+    # Initialize cache service (optional)
+    if CACHE_AVAILABLE:
+        try:
+            await cache_service.connect()
+            logger.info("Redis cache service initialized")
+        except Exception as e:
+            logger.warning(f"Redis cache service not available: {e}")
+    else:
+        logger.warning("Redis cache service not installed")
 
     yield
 
@@ -79,11 +94,12 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.info("Shutting down UnoBot API...")
 
     # Close cache service
-    try:
-        await cache_service.disconnect()
-        logger.info("Redis cache service closed")
-    except Exception as e:
-        logger.warning(f"Error closing cache service: {e}")
+    if CACHE_AVAILABLE:
+        try:
+            await cache_service.disconnect()
+            logger.info("Redis cache service closed")
+        except Exception as e:
+            logger.warning(f"Error closing cache service: {e}")
 
 
 # Create FastAPI application

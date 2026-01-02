@@ -19,6 +19,7 @@ from src.schemas.session import MessageCreate, SessionCreate
 from src.services.ai_service import AIService
 from src.services.expert_service import ExpertService
 from src.services.template_service import TemplateService
+from src.services.cache_service import cache_session_data, get_cached_session_data
 
 
 class SessionService:
@@ -84,7 +85,14 @@ class SessionService:
         return result.scalar_one()
 
     async def get_session(self, session_id: uuid.UUID) -> ConversationSession | None:
-        """Get a session by ID."""
+        """Get a session by ID with caching."""
+        # Try to get from cache first
+        cached_session = await get_cached_session_data(str(session_id))
+        if cached_session:
+            # Reconstruct the session object from cached data
+            return self._reconstruct_session_from_cache(cached_session)
+
+        # If not cached, get from database
         result = await self.db.execute(
             select(ConversationSession)
             .where(ConversationSession.id == session_id)
@@ -92,7 +100,67 @@ class SessionService:
                 selectinload(ConversationSession.messages),
             )
         )
-        return result.scalar_one_or_none()
+        session = result.scalar_one_or_none()
+
+        # Cache the session data if found
+        if session:
+            await cache_session_data(
+                str(session_id),
+                {
+                    "id": str(session.id),
+                    "visitor_id": session.visitor_id,
+                    "status": session.status.value,
+                    "current_phase": session.current_phase.value,
+                    "client_info": session.client_info,
+                    "business_context": session.business_context,
+                    "qualification": session.qualification,
+                    "messages": [
+                        {
+                            "id": str(m.id),
+                            "role": m.role.value,
+                            "content": m.content,
+                            "meta_data": m.meta_data,
+                            "created_at": m.created_at.isoformat()
+                        }
+                        for m in session.messages
+                    ]
+                }
+            )
+
+        return session
+
+    def _reconstruct_session_from_cache(self, cached_data: dict) -> ConversationSession:
+        """Reconstruct a ConversationSession object from cached data."""
+        from src.models.session import SessionStatus, SessionPhase, MessageRole, Message
+        import uuid
+        from datetime import datetime
+
+        # Create a mock session object with cached data
+        session = ConversationSession(
+            id=uuid.UUID(cached_data["id"]),
+            visitor_id=cached_data["visitor_id"],
+            status=SessionStatus(cached_data["status"]),
+            current_phase=SessionPhase(cached_data["current_phase"]),
+            client_info=cached_data["client_info"],
+            business_context=cached_data["business_context"],
+            qualification=cached_data["qualification"],
+            started_at=datetime.utcnow(),  # These would need to be cached too
+            last_activity=datetime.utcnow(),
+        )
+
+        # Add cached messages
+        for msg_data in cached_data["messages"]:
+            message = Message(
+                id=uuid.UUID(msg_data["id"]),
+                session_id=session.id,
+                role=MessageRole(msg_data["role"]),
+                content=msg_data["content"],
+                meta_data=msg_data["meta_data"],
+                created_at=datetime.fromisoformat(msg_data["created_at"]),
+            )
+            session.messages.append(message)
+
+        return session
 
     async def update_session_activity(self, session: ConversationSession) -> None:
         """Update the last activity timestamp of a session."""

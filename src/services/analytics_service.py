@@ -1,4 +1,5 @@
 """Analytics service for conversation and system metrics."""
+import uuid
 from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Union, cast
@@ -137,7 +138,7 @@ class AnalyticsService:
             "summary": {
                 "total_experts": len(expert_metrics),
                 "active_experts": len([e for e in expert_metrics if e["availability_status"] == "active"]),
-                "average_bookings_per_expert": sum(e["total_bookings"] for e in expert_metrics) / len(expert_metrics) if expert_metrics else 0
+                "average_bookings_per_expert": sum(e["total_bookings"] for e in expert_metrics) / len(expert_metrics) if expert_metrics else 0.0
             }
         }
 
@@ -328,7 +329,11 @@ class AnalyticsService:
                 ConversationSession.started_at >= start_date,
                 ConversationSession.started_at <= end_date
             ))
-        avg_score, min_score, max_score = result.fetchone()
+        row = result.fetchone()
+        if row:
+            avg_score, min_score, max_score = row
+        else:
+            avg_score, min_score, max_score = None, None, None
 
         return {
             "average": float(avg_score) if avg_score else 0.0,
@@ -397,7 +402,7 @@ class AnalyticsService:
             )
         )
 
-        phase_counts = dict(result.fetchall())
+        phase_counts: Dict[str, int] = dict(result.fetchall())
         total_sessions = sum(phase_counts.values())
 
         completion_rates = {}
@@ -416,11 +421,11 @@ class AnalyticsService:
         # For now, return empty list
         return []
 
-    async def _get_expert_booking_counts(self, start_date: datetime, end_date: datetime) -> Dict[Expert, int]:
+    async def _get_expert_booking_counts(self, start_date: datetime, end_date: datetime) -> Dict[uuid.UUID, int]:
         """Get booking counts per expert."""
         result = await self.db.execute(
             select(
-                Expert,
+                Expert.id,
                 func.count(Booking.id)
             ).select_from(Booking).join(Expert).where(
                 Booking.start_time >= start_date,
@@ -430,11 +435,11 @@ class AnalyticsService:
 
         return dict(result.fetchall())
 
-    async def _get_expert_session_counts(self, start_date: datetime, end_date: datetime) -> Dict[Expert, int]:
+    async def _get_expert_session_counts(self, start_date: datetime, end_date: datetime) -> Dict[uuid.UUID, int]:
         """Get session counts per expert."""
         result = await self.db.execute(
             select(
-                Expert,
+                Expert.id,
                 func.count(ConversationSession.id)
             ).select_from(ConversationSession).join(Expert, Expert.id == ConversationSession.matched_expert_id).where(
                 ConversationSession.started_at >= start_date,

@@ -1,44 +1,30 @@
-"""Redis-based caching service for UnoBot."""
+"""Redis-based caching service for UnoBot with fallback to in-memory cache."""
 import json
 import time
+import asyncio
 from typing import Any, Optional, Dict, List, Union
 from datetime import datetime, timedelta
 
-import aioredis
 from fastapi import HTTPException, status
 
 from src.core.config import settings
 
+# Try to import Redis, fallback to in-memory if not available
+try:
+    import redis.asyncio as redis_async
+    REDIS_AVAILABLE = True
+except ImportError:
+    REDIS_AVAILABLE = False
+    redis_async = None
 
-class CacheService:
-    """Redis-based caching service with TTL support."""
+
+class InMemoryCache:
+    """Simple in-memory cache with TTL support."""
 
     def __init__(self):
-        """Initialize Redis connection."""
-        self.redis_url = settings.redis_url
-        self.redis: Optional[aioredis.Redis] = None
-
-    async def connect(self) -> None:
-        """Connect to Redis."""
-        try:
-            self.redis = aioredis.from_url(
-                self.redis_url,
-                encoding="utf-8",
-                decode_responses=True,
-                socket_connect_timeout=5
-            )
-            # Test connection
-            await self.redis.ping()
-        except Exception as e:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail=f"Redis connection failed: {e}"
-            )
-
-    async def disconnect(self) -> None:
-        """Disconnect from Redis."""
-        if self.redis:
-            await self.redis.close()
+        """Initialize in-memory cache."""
+        self.cache: Dict[str, Dict[str, Any]] = {}
+        self.ttl_tasks: List[asyncio.Task] = []
 
     async def set(
         self,
@@ -46,274 +32,319 @@ class CacheService:
         value: Any,
         ttl: Optional[int] = None
     ) -> bool:
-        """
-        Set a value in cache.
-
-        Args:
-            key: Cache key
-            value: Value to cache (will be JSON serialized)
-            ttl: Time to live in seconds (optional)
-
-        Returns:
-            True if successful, False otherwise
-        """
-        if not self.redis:
-            await self.connect()
-
+        """Set a value in cache."""
         try:
-            # Serialize value to JSON
-            serialized_value = json.dumps(value, default=str)
+            self.cache[key] = {
+                'value': value,
+                'expires_at': datetime.now() + timedelta(seconds=ttl) if ttl else None
+            }
 
+            # Schedule cleanup if TTL is set
             if ttl:
-                await self.redis.setex(key, ttl, serialized_value)
-            else:
-                await self.redis.set(key, serialized_value)
+                task = asyncio.create_task(self._schedule_cleanup(key, ttl))
+                self.ttl_tasks.append(task)
 
             return True
-        except Exception as e:
-            print(f"Cache set error: {e}")
+        except Exception:
             return False
 
     async def get(self, key: str) -> Optional[Any]:
-        """
-        Get a value from cache.
-
-        Args:
-            key: Cache key
-
-        Returns:
-            Cached value or None if not found
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            value = await self.redis.get(key)
-            if value:
-                return json.loads(value)
+        """Get a value from cache."""
+        if key not in self.cache:
             return None
-        except Exception as e:
-            print(f"Cache get error: {e}")
+
+        entry = self.cache[key]
+        if entry['expires_at'] and datetime.now() > entry['expires_at']:
+            await self.delete(key)
             return None
+
+        return entry['value']
 
     async def delete(self, key: str) -> bool:
-        """
-        Delete a key from cache.
-
-        Args:
-            key: Cache key
-
-        Returns:
-            True if successful, False otherwise
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            result = await self.redis.delete(key)
-            return result > 0
-        except Exception as e:
-            print(f"Cache delete error: {e}")
-            return False
+        """Delete a key from cache."""
+        if key in self.cache:
+            del self.cache[key]
+            return True
+        return False
 
     async def exists(self, key: str) -> bool:
-        """
-        Check if a key exists in cache.
-
-        Args:
-            key: Cache key
-
-        Returns:
-            True if key exists, False otherwise
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            result = await self.redis.exists(key)
-            return result > 0
-        except Exception as e:
-            print(f"Cache exists error: {e}")
+        """Check if a key exists in cache."""
+        if key not in self.cache:
             return False
+
+        entry = self.cache[key]
+        if entry['expires_at'] and datetime.now() > entry['expires_at']:
+            await self.delete(key)
+            return False
+
+        return True
 
     async def expire(self, key: str, ttl: int) -> bool:
-        """
-        Set expiration time for a key.
-
-        Args:
-            key: Cache key
-            ttl: Time to live in seconds
-
-        Returns:
-            True if successful, False otherwise
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            result = await self.redis.expire(key, ttl)
-            return result > 0
-        except Exception as e:
-            print(f"Cache expire error: {e}")
-            return False
+        """Set expiration time for a key."""
+        if key in self.cache:
+            self.cache[key]['expires_at'] = datetime.now() + timedelta(seconds=ttl)
+            return True
+        return False
 
     async def ttl(self, key: str) -> int:
-        """
-        Get remaining TTL for a key.
-
-        Args:
-            key: Cache key
-
-        Returns:
-            TTL in seconds, or -1 if key doesn't exist, -2 if no expiration
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            return await self.redis.ttl(key)
-        except Exception as e:
-            print(f"Cache TTL error: {e}")
+        """Get remaining TTL for a key."""
+        if key not in self.cache:
             return -1
 
+        entry = self.cache[key]
+        if entry['expires_at']:
+            remaining = (entry['expires_at'] - datetime.now()).total_seconds()
+            return max(0, int(remaining))
+        return -2  # No expiration
+
     async def keys(self, pattern: str) -> List[str]:
-        """
-        Get all keys matching a pattern.
-
-        Args:
-            pattern: Redis pattern (e.g., "session:*")
-
-        Returns:
-            List of matching keys
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            return await self.redis.keys(pattern)
-        except Exception as e:
-            print(f"Cache keys error: {e}")
-            return []
+        """Get all keys matching a pattern."""
+        import fnmatch
+        return [key for key in self.cache.keys() if fnmatch.fnmatch(key, pattern)]
 
     async def delete_pattern(self, pattern: str) -> int:
-        """
-        Delete all keys matching a pattern.
-
-        Args:
-            pattern: Redis pattern (e.g., "session:*")
-
-        Returns:
-            Number of deleted keys
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            keys = await self.keys(pattern)
-            if keys:
-                return await self.redis.delete(*keys)
-            return 0
-        except Exception as e:
-            print(f"Cache delete pattern error: {e}")
-            return 0
+        """Delete all keys matching a pattern."""
+        keys_to_delete = await self.keys(pattern)
+        deleted = 0
+        for key in keys_to_delete:
+            if await self.delete(key):
+                deleted += 1
+        return deleted
 
     async def increment(self, key: str, amount: int = 1) -> int:
-        """
-        Increment a numeric value in cache.
+        """Increment a numeric value in cache."""
+        current = await self.get(key)
+        if current is None:
+            current = 0
 
-        Args:
-            key: Cache key
-            amount: Amount to increment by (default: 1)
-
-        Returns:
-            New value after increment
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            return await self.redis.incr(key, amount)
-        except Exception as e:
-            print(f"Cache increment error: {e}")
-            return 0
+        new_value = current + amount
+        await self.set(key, new_value)
+        return new_value
 
     async def set_hash(self, key: str, mapping: Dict[str, Any]) -> bool:
-        """
-        Set multiple fields in a hash.
-
-        Args:
-            key: Hash key
-            mapping: Dictionary of field-value pairs
-
-        Returns:
-            True if successful, False otherwise
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            # Serialize values to JSON
-            serialized_mapping = {
-                field: json.dumps(value, default=str)
-                for field, value in mapping.items()
-            }
-            await self.redis.hset(key, mapping=serialized_mapping)
-            return True
-        except Exception as e:
-            print(f"Cache set hash error: {e}")
-            return False
+        """Set multiple fields in a hash."""
+        return await self.set(key, mapping)
 
     async def get_hash(self, key: str, field: Optional[str] = None) -> Union[Dict[str, Any], Any, None]:
-        """
-        Get fields from a hash.
+        """Get fields from a hash."""
+        value = await self.get(key)
+        if value is None:
+            return None
 
-        Args:
-            key: Hash key
-            field: Specific field to get (optional)
+        if field:
+            return value.get(field) if isinstance(value, dict) else None
+        return value if isinstance(value, dict) else {}
 
-        Returns:
-            If field is specified: field value or None
-            If field is None: entire hash as dictionary
-        """
-        if not self.redis:
-            await self.connect()
+    async def delete_hash_field(self, key: str, field: str) -> bool:
+        """Delete a field from a hash."""
+        value = await self.get(key)
+        if isinstance(value, dict) and field in value:
+            del value[field]
+            await self.set(key, value)
+            return True
+        return False
 
-        try:
-            if field:
-                value = await self.redis.hget(key, field)
+    async def _schedule_cleanup(self, key: str, ttl: int):
+        """Schedule cleanup of a key after TTL."""
+        await asyncio.sleep(ttl)
+        await self.delete(key)
+
+
+class CacheService:
+    """Redis-based caching service with TTL support and fallback to in-memory."""
+
+    def __init__(self):
+        """Initialize cache service with Redis or fallback."""
+        self.redis_url = settings.redis_url
+        self.redis: Optional[Any] = None
+        self.in_memory_cache: Optional[InMemoryCache] = None
+        self.use_redis: bool = False
+
+    async def connect(self) -> None:
+        """Connect to Redis or initialize in-memory cache."""
+        if REDIS_AVAILABLE:
+            try:
+                self.redis = redis_async.from_url(
+                    self.redis_url,
+                    encoding="utf-8",
+                    decode_responses=True,
+                    socket_connect_timeout=5
+                )
+                # Test connection
+                await self.redis.ping()
+                self.use_redis = True
+                return
+            except Exception:
+                pass
+
+        # Fallback to in-memory cache
+        self.in_memory_cache = InMemoryCache()
+        self.use_redis = False
+
+    async def disconnect(self) -> None:
+        """Disconnect from cache service."""
+        if self.use_redis and self.redis:
+            await self.redis.close()
+        # In-memory cache doesn't need explicit disconnection
+
+    async def set(
+        self,
+        key: str,
+        value: Any,
+        ttl: Optional[int] = None
+    ) -> bool:
+        """Set a value in cache."""
+        if self.use_redis and self.redis:
+            try:
+                # Serialize value to JSON
+                serialized_value = json.dumps(value, default=str)
+
+                if ttl:
+                    await self.redis.setex(key, ttl, serialized_value)
+                else:
+                    await self.redis.set(key, serialized_value)
+
+                return True
+            except Exception:
+                return False
+        else:
+            return await self.in_memory_cache.set(key, value, ttl)
+
+    async def get(self, key: str) -> Optional[Any]:
+        """Get a value from cache."""
+        if self.use_redis and self.redis:
+            try:
+                value = await self.redis.get(key)
                 if value:
                     return json.loads(value)
                 return None
-            else:
-                values = await self.redis.hgetall(key)
-                return {
-                    field: json.loads(value)
-                    for field, value in values.items()
+            except Exception:
+                return None
+        else:
+            return await self.in_memory_cache.get(key)
+
+    async def delete(self, key: str) -> bool:
+        """Delete a key from cache."""
+        if self.use_redis and self.redis:
+            try:
+                result = await self.redis.delete(key)
+                return result > 0
+            except Exception:
+                return False
+        else:
+            return await self.in_memory_cache.delete(key)
+
+    async def exists(self, key: str) -> bool:
+        """Check if a key exists in cache."""
+        if self.use_redis and self.redis:
+            try:
+                result = await self.redis.exists(key)
+                return result > 0
+            except Exception:
+                return False
+        else:
+            return await self.in_memory_cache.exists(key)
+
+    async def expire(self, key: str, ttl: int) -> bool:
+        """Set expiration time for a key."""
+        if self.use_redis and self.redis:
+            try:
+                result = await self.redis.expire(key, ttl)
+                return result > 0
+            except Exception:
+                return False
+        else:
+            return await self.in_memory_cache.expire(key, ttl)
+
+    async def ttl(self, key: str) -> int:
+        """Get remaining TTL for a key."""
+        if self.use_redis and self.redis:
+            try:
+                return await self.redis.ttl(key)
+            except Exception:
+                return -1
+        else:
+            return await self.in_memory_cache.ttl(key)
+
+    async def keys(self, pattern: str) -> List[str]:
+        """Get all keys matching a pattern."""
+        if self.use_redis and self.redis:
+            try:
+                return await self.redis.keys(pattern)
+            except Exception:
+                return []
+        else:
+            return await self.in_memory_cache.keys(pattern)
+
+    async def delete_pattern(self, pattern: str) -> int:
+        """Delete all keys matching a pattern."""
+        if self.use_redis and self.redis:
+            try:
+                keys = await self.keys(pattern)
+                if keys:
+                    return await self.redis.delete(*keys)
+                return 0
+            except Exception:
+                return 0
+        else:
+            return await self.in_memory_cache.delete_pattern(pattern)
+
+    async def increment(self, key: str, amount: int = 1) -> int:
+        """Increment a numeric value in cache."""
+        if self.use_redis and self.redis:
+            try:
+                return await self.redis.incr(key, amount)
+            except Exception:
+                return 0
+        else:
+            return await self.in_memory_cache.increment(key, amount)
+
+    async def set_hash(self, key: str, mapping: Dict[str, Any]) -> bool:
+        """Set multiple fields in a hash."""
+        if self.use_redis and self.redis:
+            try:
+                # Serialize values to JSON
+                serialized_mapping = {
+                    field: json.dumps(value, default=str)
+                    for field, value in mapping.items()
                 }
-        except Exception as e:
-            print(f"Cache get hash error: {e}")
-            return None if field else {}
+                await self.redis.hset(key, mapping=serialized_mapping)
+                return True
+            except Exception:
+                return False
+        else:
+            return await self.in_memory_cache.set_hash(key, mapping)
+
+    async def get_hash(self, key: str, field: Optional[str] = None) -> Union[Dict[str, Any], Any, None]:
+        """Get fields from a hash."""
+        if self.use_redis and self.redis:
+            try:
+                if field:
+                    value = await self.redis.hget(key, field)
+                    if value:
+                        return json.loads(value)
+                    return None
+                else:
+                    values = await self.redis.hgetall(key)
+                    return {
+                        field: json.loads(value)
+                        for field, value in values.items()
+                    }
+            except Exception:
+                return None if field else {}
+        else:
+            return await self.in_memory_cache.get_hash(key, field)
 
     async def delete_hash_field(self, key: str, field: str) -> bool:
-        """
-        Delete a field from a hash.
-
-        Args:
-            key: Hash key
-            field: Field to delete
-
-        Returns:
-            True if successful, False otherwise
-        """
-        if not self.redis:
-            await self.connect()
-
-        try:
-            result = await self.redis.hdel(key, field)
-            return result > 0
-        except Exception as e:
-            print(f"Cache delete hash field error: {e}")
-            return False
+        """Delete a field from a hash."""
+        if self.use_redis and self.redis:
+            try:
+                result = await self.redis.hdel(key, field)
+                return result > 0
+            except Exception:
+                return False
+        else:
+            return await self.in_memory_cache.delete_hash_field(key, field)
 
 
 # Global cache service instance
