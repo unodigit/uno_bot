@@ -153,10 +153,10 @@ async def send_message(
             detail=f"Session {session_id} not found",
         )
 
-    if session.status.value != "active":
+    if session.status != "active":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Cannot send message to {session.status.value} session",
+            detail=f"Cannot send message to {session.status} session",
         )
 
     # Add user message
@@ -205,7 +205,7 @@ async def resume_session_path(
             detail=f"Session {session_id} not found",
         )
 
-    if session.status.value == "completed":
+    if session.status == "completed":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot resume a completed session",
@@ -276,7 +276,7 @@ async def resume_session(
             detail=f"Session {resume_request.session_id} not found",
         )
 
-    if session.status.value == "completed":
+    if session.status == "completed":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot resume a completed session",

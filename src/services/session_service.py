@@ -164,11 +164,16 @@ class SessionService:
                 "content": msg.content,
             })
 
-        # Build context
+        # Extract user information from their response FIRST
+        # This updates session data which is used for context
+        await self._extract_user_info(session, user_message)
+
+        # Build context with updated session data
         context = {
             "business_context": session.business_context,
             "client_info": session.client_info,
             "qualification": session.qualification,
+            "current_phase": session.current_phase,
         }
 
         # Generate AI response
@@ -178,15 +183,21 @@ class SessionService:
             context=context,
         )
 
-        # Extract user information from their response
-        await self._extract_user_info(session, user_message)
+        # Determine and update phase based on collected data
+        new_phase = await self._determine_next_phase(session)
+        if new_phase and new_phase != session.current_phase:
+            await self.update_session_phase(session, new_phase)
+            # Add phase change metadata to AI message
+            meta_data = {"phase_change": new_phase}
+        else:
+            meta_data = {}
 
         # Create and save AI message
         ai_message = Message(
             session_id=session.id,
             role=MessageRole.ASSISTANT,
             content=ai_content,
-            meta_data={},
+            meta_data=meta_data,
             created_at=datetime.utcnow(),
         )
         self.db.add(ai_message)

@@ -125,9 +125,10 @@ class TestChatWidget:
         bot_message = page.get_by_test_id("message-assistant")
         expect(bot_message).to_be_visible()
 
-        # Verify it contains greeting text (actual message starts with "Hi")
-        expect(bot_message).to_contain_text("Hi")
+        # Verify it contains greeting text and UnoBot
         expect(bot_message).to_contain_text("UnoBot")
+        # Welcome message should ask for name
+        expect(bot_message).to_contain_text("name")
         print("✓ Welcome message displays correctly")
 
     def test_user_can_send_message(self, page: Page):
@@ -235,7 +236,8 @@ class TestChatWidget:
 
         # Check for key content
         content = bot_message.inner_text()
-        assert "UnoBot" in content or "Hello" in content
+        assert "UnoBot" in content
+        assert "name" in content.lower()  # Should ask for name
         print("✓ Welcome message has proper content")
 
     def test_session_persists_across_page_refresh(self, page: Page):

@@ -144,13 +144,17 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // Set streaming state
       set({ isStreaming: true });
 
-      // Call API to get bot response
-      const response = await api.sendMessage(sessionId, { content });
+      // Call API to send message (this triggers AI response generation)
+      await api.sendMessage(sessionId, { content });
 
-      // Add bot response
-      addMessage(response);
+      // Fetch the updated session to get the bot response
+      const updatedSession = await api.getSession(sessionId);
 
-      set({ isStreaming: false });
+      // Update messages with the full conversation history
+      set({
+        messages: updatedSession.messages,
+        isStreaming: false,
+      });
     } catch (error) {
       set({
         isStreaming: false,

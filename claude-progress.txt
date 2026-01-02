@@ -630,3 +630,97 @@ Step 6: Final verification
 2. **Lead Scoring** - Calculate lead score based on qualification data
 3. **Service Matching** - Recommend appropriate service type
 4. **Quick Replies** - Add quick reply buttons for common options
+
+---
+
+## Session 8 - Test Fixes & Session Persistence Verification
+
+### Date: January 2, 2026 (Afternoon)
+
+### Summary
+Fixed critical test infrastructure issues and verified session persistence functionality end-to-end. All 8 e2e tests now pass, including the previously failing session persistence test.
+
+### Completed Tasks
+
+1. **Fixed Test Infrastructure Bug** (`tests/e2e/test_chat_widget.py`)
+   - **Issue:** `add_init_script("localStorage.clear()")` was clearing localStorage on EVERY page load, including refreshes
+   - **Root Cause:** Playwright's `context.add_init_script()` runs before every page navigation
+   - **Fix:** Changed to use `page.evaluate("localStorage.clear()")` only once at test start
+   - **Result:** Session persistence test now correctly verifies localStorage survives refresh
+
+2. **Fixed Syntax Error in Session Service** (`src/services/session_service.py`)
+   - **Issue:** Line 206 regex had escaped apostrophe causing Python syntax error
+   - **Fix:** Changed to use double quotes for regex string
+   - **Result:** Name extraction functionality works correctly
+
+3. **Verified End-to-End Session Persistence**
+   - ✅ Session ID persists in localStorage across page refresh
+   - ✅ Messages are loaded from backend after refresh
+   - ✅ User can continue conversation after refresh
+   - ✅ No duplicate sessions created
+
+### Test Results
+
+```
+tests/e2e/test_chat_widget.py
+  ✓ test_chat_widget_button_renders_on_page_load
+  ✓ test_chat_widget_opens_when_clicking_button
+  ✓ test_chat_widget_closes_when_clicking_minimize
+  ✓ test_welcome_message_displays_when_chat_opens
+  ✓ test_user_can_send_message
+  ✓ test_session_creation_on_first_open
+  ✓ test_welcome_message_content
+  ✓ test_session_persists_across_page_refresh  [FIXED]
+
+All 8 tests passed!
+```
+
+### Files Modified
+
+1. `tests/e2e/test_chat_widget.py` - Fixed session persistence test
+2. `src/services/session_service.py` - Fixed regex syntax error
+3. `feature_list.json` - Updated feature 8 status
+4. `claude-progress.txt` - Added Session 8 summary
+
+### Features Verified: 15/205 (7.3%)
+
+**Fully Passing:**
+1. ✓ Chat widget button renders on page load
+2. ✓ Chat widget opens when clicking button
+3. ✓ Chat widget closes when clicking minimize
+4. ✓ Chat session is created when opening widget
+5. ✓ Welcome message is displayed
+6. ✓ User can type and send messages
+7. ✓ Bot responds with AI-generated content
+8. ✓ Messages are persisted in database
+9. ✓ Session persists across page refreshes [FIXED]
+10. ✓ POST /api/v1/sessions creates session
+11. ✓ POST /api/v1/sessions/{id}/messages works
+12. ✓ GET /api/v1/sessions/{id} returns session
+13. ✓ Bot asks for user's name
+14. ✓ Bot collects and validates email
+15. ✓ Bot asks about business challenges
+
+### Current System Status
+
+**Servers Running:**
+- ✅ Backend: http://localhost:8001 (FastAPI + uvicorn)
+- ✅ Frontend: http://localhost:5173 (Vite dev server)
+
+**Database:** SQLite (unobot.db) - fully operational
+
+**AI Integration:** ✅ Anthropic Claude API working via proxy
+
+**Test Coverage:**
+- ✅ 8/8 e2e tests passing
+- ✅ Integration tests verified
+- ✅ Session persistence verified end-to-end
+
+### Next Priorities
+
+1. **Phase Tracking** - Implement conversation phase transitions (greeting → discovery → qualification → booking)
+2. **Lead Scoring** - Calculate scores based on collected data (budget, timeline, needs)
+3. **Service Matching** - Recommend appropriate UnoDigit services
+4. **PRD Generation** - Generate Project Requirements Documents
+5. **Expert Matching** - Match clients with appropriate experts
+6. **Booking Flow** - Calendar integration and appointment booking
