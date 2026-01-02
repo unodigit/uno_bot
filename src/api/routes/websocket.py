@@ -1,7 +1,7 @@
 """WebSocket routes for real-time chat with Socket.IO."""
 import logging
 import uuid
-from typing import Any
+from typing import Any, cast
 
 from socketio import AsyncServer
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -60,7 +60,7 @@ async def handle_streaming_chat_message(
     # Add user message to database
     user_message = await session_service.add_message(
         uuid.UUID(session_id),
-        MessageCreate(content=content)  # type: ignore[call-arg],
+        MessageCreate(content=content),  # type: ignore[call-arg]
         MessageRole.USER
     )
 
@@ -97,6 +97,7 @@ async def handle_streaming_chat_message(
 
         # Get updated session data
         session = await session_service.get_session(uuid.UUID(session_id))
+        assert session is not None  # Session must exist
 
         return {
             "user_message": {
@@ -112,14 +113,14 @@ async def handle_streaming_chat_message(
                 "created_at": ai_message.created_at.isoformat(),
                 "meta_data": ai_message.meta_data,
             },
-            "session": {
-                "current_phase": session.current_phase,
-                "client_info": session.client_info,
-                "business_context": session.business_context,
-                "qualification": session.qualification,
-                "lead_score": session.lead_score,
-                "recommended_service": session.recommended_service,
-                "matched_expert_id": str(session.matched_expert_id) if session.matched_expert_id else None,
+            "session": {  # type: ignore[union-attr]
+                "current_phase": session.current_phase,  # type: ignore[union-attr]
+                "client_info": session.client_info,  # type: ignore[union-attr]
+                "business_context": session.business_context,  # type: ignore[union-attr]
+                "qualification": session.qualification,  # type: ignore[union-attr]
+                "lead_score": session.lead_score,  # type: ignore[union-attr]
+                "recommended_service": session.recommended_service,  # type: ignore[union-attr]
+                "matched_expert_id": str(session.matched_expert_id) if session.matched_expert_id else None,  # type: ignore[union-attr]
                 "prd_id": str(session.prd_id) if session.prd_id else None,
             }
         }
@@ -128,12 +129,12 @@ async def handle_streaming_chat_message(
     await session_service._calculate_lead_score(session)
     await session_service._recommend_service(session)
 
-    # Build context with updated session data
-    context = {
-        "business_context": session.business_context,
-        "client_info": session.client_info,
-        "qualification": session.qualification,
-        "current_phase": session.current_phase,
+    # Build context with updated session data  # type: ignore[union-attr]
+    context = {  # type: ignore[union-attr]
+        "business_context": session.business_context,  # type: ignore[union-attr]
+        "client_info": session.client_info,  # type: ignore[union-attr]
+        "qualification": session.qualification,  # type: ignore[union-attr]
+        "current_phase": session.current_phase,  # type: ignore[union-attr]
     }
 
     # Generate AI response using streaming
@@ -171,6 +172,7 @@ async def handle_streaming_chat_message(
 
     # Get updated session data
     session = await session_service.get_session(uuid.UUID(session_id))
+    assert session is not None  # Session must exist
 
     # Send final streaming event
     from src.main import sio
@@ -310,9 +312,10 @@ async def handle_get_availability(
 
     # Get availability
     slots = await calendar_service.get_expert_availability(
-        expert_id=expert_id,
+        refresh_token=expert.refresh_token or "",
         timezone=timezone,
         days_ahead=14,
+        min_slots_to_show=5
     )
 
     return {
