@@ -2146,7 +2146,10 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T08:31:55.686654Z",
-    "qa_completed_at": "2026-01-02T21:00:00Z"
+    "qa_completed_at": "2026-01-02T20:45:00Z",
+    "test_files": [
+      "tests/e2e/test_keyboard_navigation.py"
+    ]
   },
   {
     "category": "functional",
@@ -2369,8 +2372,10 @@
       "Step 4: Verify request/response schemas shown"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T09:47:05.173427Z"
   },
   {
     "category": "functional",
@@ -2422,8 +2427,10 @@
       "Step 4: Verify proper connection release"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T09:47:39.558160Z"
   },
   {
     "category": "functional",
