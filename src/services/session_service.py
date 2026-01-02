@@ -84,15 +84,21 @@ class SessionService:
         )
         return result.scalar_one()
 
-    async def get_session(self, session_id: uuid.UUID) -> ConversationSession | None:
-        """Get a session by ID with caching."""
-        # Try to get from cache first
-        cached_session = await get_cached_session_data(str(session_id))
-        if cached_session:
-            # Reconstruct the session object from cached data
-            return self._reconstruct_session_from_cache(cached_session)
+    async def get_session(self, session_id: uuid.UUID, skip_cache: bool = False) -> ConversationSession | None:
+        """Get a session by ID with caching.
 
-        # If not cached, get from database
+        Args:
+            session_id: The session ID to retrieve
+            skip_cache: If True, bypass the cache and fetch from database directly
+        """
+        # Try to get from cache first (unless skipped)
+        if not skip_cache:
+            cached_session = await get_cached_session_data(str(session_id))
+            if cached_session:
+                # Reconstruct the session object from cached data
+                return self._reconstruct_session_from_cache(cached_session)
+
+        # If not cached (or cache skipped), get from database
         result = await self.db.execute(
             select(ConversationSession)
             .where(ConversationSession.id == session_id)
@@ -102,8 +108,8 @@ class SessionService:
         )
         session = result.scalar_one_or_none()
 
-        # Cache the session data if found
-        if session:
+        # Cache the session data if found (and cache not skipped)
+        if session and not skip_cache:
             await cache_session_data(
                 str(session_id),
                 {
@@ -116,6 +122,16 @@ class SessionService:
                     "qualification": session.qualification,
                     "email_opt_in": session.email_opt_in,
                     "email_preferences": session.email_preferences,
+                    "started_at": session.started_at.isoformat() if session.started_at else None,
+                    "last_activity": session.last_activity.isoformat() if session.last_activity else None,
+                    "completed_at": session.completed_at.isoformat() if session.completed_at else None,
+                    "source_url": session.source_url,
+                    "user_agent": session.user_agent,
+                    "lead_score": session.lead_score,
+                    "recommended_service": session.recommended_service,
+                    "matched_expert_id": str(session.matched_expert_id) if session.matched_expert_id else None,
+                    "prd_id": str(session.prd_id) if session.prd_id else None,
+                    "booking_id": str(session.booking_id) if session.booking_id else None,
                     "messages": [
                         {
                             "id": str(m.id),
@@ -137,6 +153,11 @@ class SessionService:
         import uuid
         from datetime import datetime
 
+        # Parse timestamps from cache
+        started_at = datetime.fromisoformat(cached_data["started_at"]) if cached_data.get("started_at") else datetime.utcnow()
+        last_activity = datetime.fromisoformat(cached_data["last_activity"]) if cached_data.get("last_activity") else datetime.utcnow()
+        completed_at = datetime.fromisoformat(cached_data["completed_at"]) if cached_data.get("completed_at") else None
+
         # Create a mock session object with cached data
         session = ConversationSession(
             id=uuid.UUID(cached_data["id"]),
@@ -148,8 +169,16 @@ class SessionService:
             qualification=cached_data["qualification"],
             email_opt_in=cached_data.get("email_opt_in", False),
             email_preferences=cached_data.get("email_preferences", {}),
-            started_at=datetime.utcnow(),  # These would need to be cached too
-            last_activity=datetime.utcnow(),
+            started_at=started_at,
+            last_activity=last_activity,
+            completed_at=completed_at,
+            source_url=cached_data.get("source_url"),
+            user_agent=cached_data.get("user_agent"),
+            lead_score=cached_data.get("lead_score"),
+            recommended_service=cached_data.get("recommended_service"),
+            matched_expert_id=uuid.UUID(cached_data["matched_expert_id"]) if cached_data.get("matched_expert_id") else None,
+            prd_id=uuid.UUID(cached_data["prd_id"]) if cached_data.get("prd_id") else None,
+            booking_id=uuid.UUID(cached_data["booking_id"]) if cached_data.get("booking_id") else None,
         )
 
         # Add cached messages
@@ -169,10 +198,10 @@ class SessionService:
     async def update_session_activity(self, session: ConversationSession) -> None:
         """Update the last activity timestamp of a session."""
         session.last_activity = datetime.utcnow()
-        self.db.add(session)
+        merged_session = await self.db.merge(session)
         await self.db.commit()
         # Invalidate cache
-        await delete_cached_session_data(str(session.id))
+        await delete_cached_session_data(str(merged_session.id))
 
     async def add_message(
         self, session_id: uuid.UUID, message_create: MessageCreate, role: MessageRole
@@ -212,31 +241,35 @@ class SessionService:
         """Resume an existing session."""
         session.status = SessionStatus.ACTIVE
         session.last_activity = datetime.utcnow()
-        self.db.add(session)
+        merged_session = await self.db.merge(session)
         await self.db.commit()
-        await self.db.refresh(session)
+        await self.db.refresh(merged_session)
         # Reload messages after refresh
-        await self.db.refresh(session, attribute_names=["messages"])
+        await self.db.refresh(merged_session, attribute_names=["messages"])
         # Invalidate cache
-        await delete_cached_session_data(str(session.id))
-        return session
+        await delete_cached_session_data(str(merged_session.id))
+        return merged_session
 
     async def complete_session(self, session: ConversationSession) -> ConversationSession:
         """Mark a session as completed."""
         session.status = SessionStatus.COMPLETED
         session.completed_at = datetime.utcnow()
-        self.db.add(session)
+        merged_session = await self.db.merge(session)
         await self.db.commit()
-        await self.db.refresh(session)
-        return session
+        await self.db.refresh(merged_session)
+        # Invalidate cache
+        await delete_cached_session_data(str(merged_session.id))
+        return merged_session
 
     async def update_session_phase(
         self, session: ConversationSession, phase: SessionPhase
     ) -> None:
         """Update the current phase of a session."""
         session.current_phase = phase.value
-        self.db.add(session)
+        merged_session = await self.db.merge(session)
         await self.db.commit()
+        # Invalidate cache
+        await delete_cached_session_data(str(merged_session.id))
 
     async def update_session_data(
         self,
@@ -262,10 +295,16 @@ class SessionService:
         if recommended_service:
             session.recommended_service = recommended_service
 
-        self.db.add(session)
+        # Use merge() to handle both attached and detached objects
+        # This is needed because cached sessions are detached
+        merged_session = await self.db.merge(session)
         await self.db.commit()
-        await self.db.refresh(session)
-        return session
+        await self.db.refresh(merged_session)
+
+        # Invalidate cache after update
+        await delete_cached_session_data(str(merged_session.id))
+
+        return merged_session
 
     async def generate_ai_response(
         self, session: ConversationSession, user_message: str

@@ -175,7 +175,8 @@ async def send_message(
     session_uuid = validate_session_id(session_id)
 
     service = SessionService(db)
-    session = await service.get_session(session_uuid)
+    # Skip cache to ensure we have a fresh, attached session object
+    session = await service.get_session(session_uuid, skip_cache=True)
 
     if not session:
         raise NotFoundError("Session", session_id)
@@ -187,7 +188,7 @@ async def send_message(
 
     # Add user message
     user_message = await service.add_message(
-        session_id, message_create, MessageRole.USER
+        session_uuid, message_create, MessageRole.USER
     )
 
     # Update session activity
@@ -403,6 +404,10 @@ async def match_expert(
         await db.commit()
         await db.refresh(session)
 
+        # Invalidate cache after update
+        from src.services.cache_service import delete_cached_session_data
+        await delete_cached_session_data(str(session.id))
+
     return ExpertMatchResponse(
         experts=experts,
         match_scores=scores,
@@ -507,12 +512,18 @@ async def unsubscribe_from_marketing(
         "unsubscribed_at": datetime.utcnow().isoformat()
     }
 
+    # Use merge to handle detached objects from cache and invalidate cache
+    merged_session = await db.merge(session)
     await db.commit()
-    await db.refresh(session)
+    await db.refresh(merged_session)
+
+    # Invalidate cache
+    from src.services.cache_service import delete_cached_session_data
+    await delete_cached_session_data(str(merged_session.id))
 
     return {
         "message": "Successfully unsubscribed from marketing emails",
         "session_id": str(unsubscribe_request.session_id),
-        "email_opt_in": session.email_opt_in,
-        "email_preferences": session.email_preferences
+        "email_opt_in": merged_session.email_opt_in,
+        "email_preferences": merged_session.email_preferences
     }

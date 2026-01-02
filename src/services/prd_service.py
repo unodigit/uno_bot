@@ -164,8 +164,12 @@ Format as a clear, professional summary (3-5 bullet points)."""
 
         # Update session with PRD ID
         session.prd_id = prd.id
-        self.db.add(session)
+        await self.db.merge(session)
         await self.db.commit()
+
+        # Invalidate cache
+        from src.services.cache_service import delete_cached_session_data
+        await delete_cached_session_data(str(session.id))
 
         return prd
 
@@ -282,8 +286,12 @@ Format as a clear, professional summary (3-5 bullet points)."""
 
         # Update session with new PRD ID
         session.prd_id = new_prd.id
-        self.db.add(session)
+        await self.db.merge(session)
         await self.db.commit()
+
+        # Invalidate cache
+        from src.services.cache_service import delete_cached_session_data
+        await delete_cached_session_data(str(session.id))
 
         return new_prd
 
