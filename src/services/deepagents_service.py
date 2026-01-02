@@ -6,9 +6,10 @@ from datetime import datetime
 from typing import Any
 
 from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, FilesystemBackend, StateBackend
+from deepagents.backends import CompositeBackend, FilesystemBackend
 from deepagents.middleware.subagents import SubAgent
 from langchain_anthropic import ChatAnthropic
+from pydantic import SecretStr
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.config import settings
@@ -23,17 +24,18 @@ class DeepAgentsService:
         self.api_key = settings.anthropic_api_key
 
         # Create model object for DeepAgents
+        from typing import Optional
+        self.model: Optional[ChatAnthropic] = None
+        self.model_name: Optional[str] = None
+
         if self.api_key:
             self.model = ChatAnthropic(
-                model="claude-sonnet-4-5-20250929",
-                api_key=self.api_key,
+                model="claude-3-5-sonnet-20241022",
+                api_key=SecretStr(self.api_key),
                 temperature=0.7,
                 max_tokens=4096
             )
-            self.model_name = "anthropic:claude-sonnet-4-5-20250929"
-        else:
-            self.model = None
-            self.model_name = None
+            self.model_name = "anthropic:claude-3-5-sonnet-20241022"
 
         # Initialize DeepAgents if API key is available
         if self.api_key:
@@ -158,15 +160,12 @@ class DeepAgentsService:
         # is already included by create_deep_agent by default.
         middleware = []
 
-        # Configure CompositeBackend with StateBackend and FilesystemBackend
-        # StateBackend for conversation state (ephemeral)
-        # FilesystemBackend for PRD storage (persistent)
-        # Note: StateBackend requires a runtime parameter, using None for default
+        # Configure CompositeBackend with FilesystemBackend
+        # FilesystemBackend handles both conversation state and PRD storage
+        # PRD files are stored in the prd_documents directory
         backend = CompositeBackend(
-            default=StateBackend(None),
-            routes={
-                "/prd/": FilesystemBackend(root_dir=prd_storage_dir)
-            }
+            default=FilesystemBackend(root_dir=prd_storage_dir),
+            routes={}
         )
 
         # Create main agent with middleware and backend
