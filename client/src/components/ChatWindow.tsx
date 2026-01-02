@@ -1,9 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus } from 'lucide-react'
+import { X, Send, Minimize2, MessageSquare, Download, FileText, ExternalLink, UserPlus, ArrowLeft, Calendar } from 'lucide-react'
 import { useChatStore } from '../stores/chatStore'
 import { twMerge } from 'tailwind-merge'
 import { ExpertMatchList } from './ExpertCard'
+import { CalendarPicker } from './CalendarPicker'
+import { BookingForm } from './BookingForm'
+import { BookingConfirmation } from './BookingConfirmation'
+import { TimeSlot } from '../types'
 
 interface ChatWindowProps {
   onClose: () => void
@@ -14,7 +18,7 @@ interface ChatWindowProps {
 const getQuickReplies = (phase: string, context: any): string[] => {
   switch (phase) {
     case 'greeting':
-      return ['Hi!', 'Hello', \"I'm interested\", 'Need help'];
+      return ['Hi!', 'Hello', "I'm interested", 'Need help'];
     case 'discovery':
       return ['Email: test@example.com', 'I work at Acme Corp', 'Tech industry', 'Healthcare'];
     case 'qualification':
@@ -52,6 +56,17 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     isMatchingExperts,
     matchExperts,
     clearMatchedExperts,
+    // Booking flow state
+    bookingState,
+    selectedExpert,
+    selectedTimeSlot,
+    createdBooking,
+    isCreatingBooking,
+    // Booking flow actions
+    startBookingFlow,
+    selectTimeSlot,
+    confirmBooking,
+    resetBookingFlow,
   } = useChatStore()
 
   // Create session on mount if not exists
@@ -119,6 +134,31 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     sendMessage(`I'd like to work with ${expert.name} (${expert.role})`)
   }
 
+  const handleBookExpert = (expert: any) => {
+    startBookingFlow(expert)
+  }
+
+  const handleTimeSlotSelect = async (slot: TimeSlot) => {
+    try {
+      await selectTimeSlot(slot)
+    } catch (err) {
+      console.error('Failed to select time slot:', err)
+    }
+  }
+
+  const handleBookingSubmit = async (name: string, email: string) => {
+    try {
+      await confirmBooking(name, email)
+    } catch (err) {
+      console.error('Failed to confirm booking:', err)
+    }
+  }
+
+  const handleBookingDone = () => {
+    resetBookingFlow()
+    clearMatchedExperts()
+  }
+
   const formatTime = (timestamp: string) => {
     return new Date(timestamp).toLocaleTimeString([], {
       hour: '2-digit',
@@ -145,6 +185,166 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
     )
   }
 
+  // Booking flow UI
+  if (bookingState === 'selecting_time' && selectedExpert) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ duration: 0.2 }}
+          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          data-testid="chat-window"
+        >
+          {/* Header */}
+          <div className="h-12 bg-primary text-white flex items-center justify-between px-4 rounded-t-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold">UD</span>
+              </div>
+              <span className="font-semibold text-sm">Book Appointment</span>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-white/20 rounded transition-colors"
+              aria-label="Close chat"
+              data-testid="close-button"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Error Banner */}
+          {error && (
+            <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
+              <span className="text-xs text-error">{error}</span>
+              <button onClick={clearError} className="text-error hover:opacity-70 text-xs font-bold">✕</button>
+            </div>
+          )}
+
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+            <CalendarPicker
+              expertId={selectedExpert.id}
+              expertName={selectedExpert.name}
+              onSelectSlot={handleTimeSlotSelect}
+              onBack={resetBookingFlow}
+            />
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
+  if (bookingState === 'confirming' && selectedExpert && selectedTimeSlot) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ duration: 0.2 }}
+          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          data-testid="chat-window"
+        >
+          {/* Header */}
+          <div className="h-12 bg-primary text-white flex items-center justify-between px-4 rounded-t-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold">UD</span>
+              </div>
+              <span className="font-semibold text-sm">Booking Details</span>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-white/20 rounded transition-colors"
+              aria-label="Close chat"
+              data-testid="close-button"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Error Banner */}
+          {error && (
+            <div className="bg-error/10 border-b border-error/20 px-4 py-2 flex items-center justify-between">
+              <span className="text-xs text-error">{error}</span>
+              <button onClick={clearError} className="text-error hover:opacity-70 text-xs font-bold">✕</button>
+            </div>
+          )}
+
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+            <BookingForm
+              expert={selectedExpert}
+              timeSlot={selectedTimeSlot}
+              onBack={() => {
+                // Go back to time selection
+                const { selectedTimeSlot: _, ...rest } = {} as any
+              }}
+              onSubmit={handleBookingSubmit}
+              isSubmitting={isCreatingBooking}
+              error={error}
+            />
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
+  if (bookingState === 'completed' && createdBooking) {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          transition={{ duration: 0.2 }}
+          className="fixed bottom-6 right-6 w-[380px] h-[520px] bg-white rounded-lg shadow-xl flex flex-col overflow-hidden z-50"
+          data-testid="chat-window"
+        >
+          {/* Header */}
+          <div className="h-12 bg-primary text-white flex items-center justify-between px-4 rounded-t-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-xs font-bold">UD</span>
+              </div>
+              <span className="font-semibold text-sm">Booking Confirmed</span>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-white/20 rounded transition-colors"
+              aria-label="Close chat"
+              data-testid="close-button"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
+            <BookingConfirmation
+              booking={{
+                id: createdBooking.id,
+                expert_name: selectedExpert?.name || '',
+                expert_role: selectedExpert?.role || '',
+                start_time: createdBooking.start_time,
+                end_time: createdBooking.end_time,
+                timezone: createdBooking.timezone,
+                meeting_link: createdBooking.meeting_link,
+                client_name: createdBooking.client_name,
+                client_email: createdBooking.client_email,
+              }}
+              onDone={handleBookingDone}
+            />
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    )
+  }
+
+  // Normal chat view
   return (
     <AnimatePresence>
       <motion.div
@@ -245,6 +445,7 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
             <ExpertMatchList
               experts={matchedExperts}
               onSelect={handleSelectExpert}
+              onBook={handleBookExpert}
               showActions={true}
             />
             <button

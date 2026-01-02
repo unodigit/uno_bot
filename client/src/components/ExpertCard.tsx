@@ -1,15 +1,16 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { User, Mail, Award, Star, Briefcase } from 'lucide-react'
+import { User, Mail, Award, Star, Briefcase, Calendar } from 'lucide-react'
 import { MatchedExpert } from '../types'
 
 interface ExpertCardProps {
   expert: MatchedExpert
   index: number
   onSelect?: (expert: MatchedExpert) => void
+  onBook?: (expert: MatchedExpert) => void
   showActions?: boolean
 }
 
-export function ExpertCard({ expert, index, onSelect, showActions = true }: ExpertCardProps) {
+export function ExpertCard({ expert, index, onSelect, onBook, showActions = true }: ExpertCardProps) {
   const scorePercentage = Math.round(expert.match_score)
 
   return (
@@ -84,15 +85,27 @@ export function ExpertCard({ expert, index, onSelect, showActions = true }: Expe
           )}
 
           {/* Action Buttons */}
-          {showActions && onSelect && (
+          {showActions && (onSelect || onBook) && (
             <div className="flex gap-2 mt-3">
-              <button
-                onClick={() => onSelect(expert)}
-                className="flex-1 px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors"
-                data-testid={`select-expert-${index}`}
-              >
-                Select Expert
-              </button>
+              {onBook && (
+                <button
+                  onClick={() => onBook(expert)}
+                  className="flex-1 px-3 py-1.5 bg-primary hover:bg-primary-dark text-white text-xs rounded transition-colors flex items-center justify-center gap-1"
+                  data-testid={`book-expert-${index}`}
+                >
+                  <Calendar className="w-3 h-3" />
+                  Book
+                </button>
+              )}
+              {onSelect && (
+                <button
+                  onClick={() => onSelect(expert)}
+                  className="px-3 py-1.5 border border-gray-300 text-gray-700 text-xs rounded hover:bg-gray-50 transition-colors"
+                  data-testid={`select-expert-${index}`}
+                >
+                  Select
+                </button>
+              )}
               <a
                 href={`mailto:${expert.email}?subject=Consultation Request`}
                 className="px-3 py-1.5 border border-gray-300 text-gray-700 text-xs rounded hover:bg-gray-50 transition-colors"
@@ -111,11 +124,12 @@ export function ExpertCard({ expert, index, onSelect, showActions = true }: Expe
 interface ExpertMatchListProps {
   experts: MatchedExpert[]
   onSelect?: (expert: MatchedExpert) => void
+  onBook?: (expert: MatchedExpert) => void
   showActions?: boolean
   title?: string
 }
 
-export function ExpertMatchList({ experts, onSelect, showActions = true, title = 'Recommended Experts' }: ExpertMatchListProps) {
+export function ExpertMatchList({ experts, onSelect, onBook, showActions = true, title = 'Recommended Experts' }: ExpertMatchListProps) {
   if (experts.length === 0) {
     return null
   }
@@ -140,6 +154,7 @@ export function ExpertMatchList({ experts, onSelect, showActions = true, title =
               expert={expert}
               index={index}
               onSelect={onSelect}
+              onBook={onBook}
               showActions={showActions}
             />
           ))}
