@@ -1,0 +1,191 @@
+{
+  "test_date": "2026-01-02T18:48:54.892811",
+  "base_url": "http://localhost:8000",
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "success_rate": "100.0%"
+  },
+  "results": [
+    {
+      "test": "Health Check",
+      "status": "PASS",
+      "status_code": 200,
+      "response": {
+        "status": "healthy",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "test": "Session Creation",
+      "status": "PASS",
+      "status_code": 201,
+      "session_id": "93928aa4-67ab-412f-a805-54ab7bfb4390",
+      "response": {
+        "id": "93928aa4-67ab-412f-a805-54ab7bfb4390",
+        "visitor_id": "test_visitor_2026-01-02T18:48:36.843585",
+        "status": "active",
+        "current_phase": "greeting",
+        "source_url": "http://localhost:5173/test",
+        "user_agent": "Test Script",
+        "client_info": {},
+        "business_context": {},
+        "qualification": {},
+        "lead_score": null,
+        "recommended_service": null,
+        "matched_expert_id": null,
+        "prd_id": null,
+        "booking_id": null,
+        "started_at": "2026-01-02T07:48:36.844220",
+        "last_activity": "2026-01-02T07:48:36.844221",
+        "completed_at": null,
+        "email_opt_in": false,
+        "email_preferences": {},
+        "messages": [
+          {
+            "id": "f1a25084-9d70-4379-81ea-d69b0f6433ac",
+            "session_id": "93928aa4-67ab-412f-a805-54ab7bfb4390",
+            "role": "assistant",
+            "content": "\ud83c\udf89 Welcome! I'm UnoBot, your AI business consultant from UnoDigit.\n\nI can help you explore our services, understand your needs, and connect you with the right expert.\n\nTo get started, what's your name?",
+            "meta_data": {
+              "type": "welcome",
+              "template_id": null
+            },
+            "created_at": "2026-01-02T07:48:36.846193"
+          }
+        ]
+      }
+    },
+    {
+      "test": "Session Update",
+      "status": "PASS",
+      "status_code": 200,
+      "response": {
+        "id": "93928aa4-67ab-412f-a805-54ab7bfb4390",
+        "visitor_id": "test_visitor_2026-01-02T18:48:36.843585",
+        "status": "active",
+        "current_phase": "greeting",
+        "source_url": "http://localhost:5173/test",
+        "user_agent": "Test Script",
+        "client_info": {
+          "name": "Updated Test Client",
+          "email": "updated@example.com",
+          "company": "Updated Test Company"
+        },
+        "business_context": {
+          "challenges": "We need to implement AI-powered customer onboarding with automation",
+          "goals": "Reduce onboarding time from 2 weeks to 2 days with 90%+ customer satisfaction",
+          "current_technology": "Manual processes with basic CRM",
+          "industry": "SaaS",
+          "pain_points": [
+            "Manual data entry",
+            "Slow response times",
+            "Poor user experience"
+          ],
+          "success_criteria": [
+            "Faster onboarding",
+            "Better user satisfaction",
+            "Reduced support tickets"
+          ]
+        },
+        "qualification": {
+          "budget_range": "50000-100000",
+          "timeline": "3-6 months",
+          "decision_maker": true,
+          "business_size": "50-200 employees",
+          "technical_comfort": "Medium",
+          "urgency": "High"
+        },
+        "lead_score": 85,
+        "recommended_service": "AI Strategy Consulting",
+        "matched_expert_id": null,
+        "prd_id": null,
+        "booking_id": null,
+        "started_at": "2026-01-02T07:48:36.844220",
+        "last_activity": "2026-01-02T07:48:36.862378",
+        "completed_at": null,
+        "email_opt_in": false,
+        "email_preferences": {},
+        "messages": [
+          {
+            "id": "f1a25084-9d70-4379-81ea-d69b0f6433ac",
+            "session_id": "93928aa4-67ab-412f-a805-54ab7bfb4390",
+            "role": "assistant",
+            "content": "\ud83c\udf89 Welcome! I'm UnoBot, your AI business consultant from UnoDigit.\n\nI can help you explore our services, understand your needs, and connect you with the right expert.\n\nTo get started, what's your name?",
+            "meta_data": {
+              "type": "welcome",
+              "template_id": null
+            },
+            "created_at": "2026-01-02T07:48:36.846193"
+          }
+        ]
+      }
+    },
+    {
+      "test": "PRD Generation",
+      "status": "PASS",
+      "status_code": 201,
+      "prd_id": "1832f7f0-d14b-4e9f-a8bc-792700d4543a",
+      "content_length": 5000,
+      "response": {
+        "id": "1832f7f0-d14b-4e9f-a8bc-792700d4543a",
+        "session_id": "93928aa4-67ab-412f-a805-54ab7bfb4390",
+        "version": 1,
+        "content_markdown": "# Project Requirements Document (PRD)\n\n## Executive Summary\n\n**Client:** Updated Test Client  \n**Company:** Updated Test Company  \n**Email:** updated@example.com  \n**Project Title:** AI-Powered Customer Onboarding Automation  \n**Industry:** SaaS  \n**Prepared by:** UnoDigit Consulting Team  \n**Date:** December 2025  \n\nUpdated Test Company seeks to revolutionize their customer onboarding process through digital transformation. Currently, their onboarding relies on manual processes and basic CRM tools, resulting in a 2-week onboarding cycle that negatively impacts customer experience and operational efficiency. This project aims to implement an AI-driven onboarding system that reduces onboarding time to 2 days while achieving 90%+ customer satisfaction.\n\nThe transformation will leverage modern technologies including artificial intelligence, workflow automation, and intelligent data processing to create a seamless, personalized onboarding experience that scales with business growth.\n\n## Business Objectives\n\n### Primary Goals\n- **Reduce onboarding time from 14 days to 2 days** (85% improvement)\n- **Achieve 90%+ customer satisfaction** with the onboarding process\n- **Eliminate manual data entry** across all onboarding touchpoints\n- **Improve response times** for customer queries and support requests\n- **Enhance user experience** through personalized, intuitive workflows\n\n### Secondary Benefits\n- **Reduce support ticket volume** by 60% post-implementation\n- **Increase customer retention** through positive first impressions\n- **Enable scalability** for handling 5x current onboarding volume\n- **Provide actionable insights** into onboarding bottlenecks and customer preferences\n\n### Measurable Outcomes\n- Onboarding completion rate improvement from current baseline to 95%\n- Customer satisfaction score (CSAT) target of 90%+ within 3 months post-launch\n- Reduction in average response time from current levels to under 2 hours\n- 80% reduction in manual data entry tasks for onboarding team\n\n## Technical Requirements\n\n### Core System Architecture\n- **Microservices-based architecture** for scalability and maintainability\n- **Cloud-native deployment** on AWS/Azure/GCP (client preference)\n- **API-first design** for seamless integration with existing systems\n- **Containerized deployment** using Docker and Kubernetes orchestration\n\n### AI & Machine Learning Components\n- **Natural Language Processing (NLP)** for intelligent customer communication\n- **Machine Learning algorithms** for personalized onboarding workflows\n- **Predictive analytics** for identifying potential onboarding bottlenecks\n- **Chatbot integration** with 24/7 customer support capabilities\n- **Document processing AI** for automated data extraction and validation\n\n### Data Management\n- **Real-time data synchronization** across all touchpoints\n- **Secure data encryption** for sensitive customer information\n- **Data validation and cleansing** automation\n- **Customer data unification** from multiple sources\n- **Analytics dashboard** with real-time onboarding metrics\n\n### Integration Requirements\n- **CRM integration** (Salesforce, HubSpot, or client's preferred platform)\n- **Payment gateway integration** for automated billing setup\n- **Email marketing platform** integration for communication workflows\n- **Existing business systems** integration (ERP, accounting, etc.)\n- **Single Sign-On (SSO)** capability for enterprise clients\n\n### User Experience Requirements\n- **Mobile-responsive design** for onboarding accessibility\n- **Progressive web app (PWA)** capabilities for offline functionality\n- **Multi-language support** for international customers\n- **Accessibility compliance** (WCAG 2.1 AA standards)\n- **Personalized onboarding journeys** based on customer profile and preferences\n\n## Scope & Deliverables\n\n### Phase 1: Foundation & Core Infrastructure (Weeks 1-6)\n- [ ] **System Architecture Design**\n  - Technical architecture documentation\n  - API specifications and integration patterns\n  - Data flow diagrams and security protocols\n\n- [ ] **Core Platform Development**\n  - User management system\n  - Authentication and authorization framework\n  - Basic workflow engine setup\n\n### Phase 2: AI-Powered Onboarding Engine (Weeks 7-14)\n- [ ] **Intelligent Workflow System**\n  - Dynamic onboarding journey mapping\n  - AI-driven decision trees and routing\n  - Personalization engine implementation\n\n- [ ] **Communication Automation**\n  - Smart email templates and triggers\n  - AI chatbot development with NLP capabilities\n  - SMS and push notification integration\n\n### Phase 3: Data Processing & Integration (Weeks 15-20)\n- [ ] **Document Processing AI**\n  - Automated document upload and processing\n  - Intelligent data extraction from forms and documents\n  - Validation and verification workflows\n\n- [ ] **System Integration**\n  - CRM integration with data sync\n  - Payment gateway setup and testing\n  - Third-party API integrations\n\n### Phase 4: Analytics & Optimization (Weeks 21-24)\n- [ ] **",
+        "conversation_summary": "**Business Discovery Summary**\n\n- **Client**: Updated Test Client from Updated Test Company (SaaS industry, 50-200 employees)\n- **Key Challenge**: Manual customer onboarding process requiring 2 weeks, causing slow response times and poor user experience\n- **Goal**: Reduce onboarding time to 2 days with 90%+ customer satisfaction through AI-powered automation\n- **Investment**: $50,000-$100,000 budget over 3-6 month timeline, with decision-making authority and high urgency\n- **Recommended Service**: AI-Powered Customer Onboarding Automation solution to streamline processes and eliminate manual data entry",
+        "client_company": "Updated Test Company",
+        "client_name": "Updated Test Client",
+        "recommended_service": "AI Strategy Consulting",
+        "matched_expert": null,
+        "storage_url": "/api/v1/prd/1832f7f0-d14b-4e9f-a8bc-792700d4543a/download",
+        "download_count": 0,
+        "created_at": "2026-01-02T07:48:54.847545",
+        "expires_at": "2026-04-02T07:48:54.847547"
+      }
+    },
+    {
+      "test": "PRD Preview",
+      "status": "PASS",
+      "status_code": 200,
+      "preview_length": 200,
+      "response": {
+        "id": "1832f7f0-d14b-4e9f-a8bc-792700d4543a",
+        "filename": "PRD_Updated Test Company_20260102_v1.md",
+        "preview_text": "# Project Requirements Document (PRD)\n\n## Executive Summary\n\n**Client:** Updated Test Client  \n**Company:** Updated Test Company  \n**Email:** updated@example.com  \n**Project Title:** AI-Powered Cus...",
+        "version": 1,
+        "created_at": "2026-01-02T07:48:54.847545"
+      }
+    },
+    {
+      "test": "PRD Download",
+      "status": "PASS",
+      "status_code": 200,
+      "content_type": "text/markdown; charset=utf-8",
+      "content_length": 5000,
+      "is_markdown": true,
+      "has_filename": true,
+      "has_title": true,
+      "has_sections": true
+    },
+    {
+      "test": "Get PRD by Session",
+      "status": "PASS",
+      "status_code": 200,
+      "response": {
+        "id": "1832f7f0-d14b-4e9f-a8bc-792700d4543a",
+        "session_id": "93928aa4-67ab-412f-a805-54ab7bfb4390",
+        "version": 1,
+        "content_markdown": "# Project Requirements Document (PRD)\n\n## Executive Summary\n\n**Client:** Updated Test Client  \n**Company:** Updated Test Company  \n**Email:** updated@example.com  \n**Project Title:** AI-Powered Customer Onboarding Automation  \n**Industry:** SaaS  \n**Prepared by:** UnoDigit Consulting Team  \n**Date:** December 2025  \n\nUpdated Test Company seeks to revolutionize their customer onboarding process through digital transformation. Currently, their onboarding relies on manual processes and basic CRM tools, resulting in a 2-week onboarding cycle that negatively impacts customer experience and operational efficiency. This project aims to implement an AI-driven onboarding system that reduces onboarding time to 2 days while achieving 90%+ customer satisfaction.\n\nThe transformation will leverage modern technologies including artificial intelligence, workflow automation, and intelligent data processing to create a seamless, personalized onboarding experience that scales with business growth.\n\n## Business Objectives\n\n### Primary Goals\n- **Reduce onboarding time from 14 days to 2 days** (85% improvement)\n- **Achieve 90%+ customer satisfaction** with the onboarding process\n- **Eliminate manual data entry** across all onboarding touchpoints\n- **Improve response times** for customer queries and support requests\n- **Enhance user experience** through personalized, intuitive workflows\n\n### Secondary Benefits\n- **Reduce support ticket volume** by 60% post-implementation\n- **Increase customer retention** through positive first impressions\n- **Enable scalability** for handling 5x current onboarding volume\n- **Provide actionable insights** into onboarding bottlenecks and customer preferences\n\n### Measurable Outcomes\n- Onboarding completion rate improvement from current baseline to 95%\n- Customer satisfaction score (CSAT) target of 90%+ within 3 months post-launch\n- Reduction in average response time from current levels to under 2 hours\n- 80% reduction in manual data entry tasks for onboarding team\n\n## Technical Requirements\n\n### Core System Architecture\n- **Microservices-based architecture** for scalability and maintainability\n- **Cloud-native deployment** on AWS/Azure/GCP (client preference)\n- **API-first design** for seamless integration with existing systems\n- **Containerized deployment** using Docker and Kubernetes orchestration\n\n### AI & Machine Learning Components\n- **Natural Language Processing (NLP)** for intelligent customer communication\n- **Machine Learning algorithms** for personalized onboarding workflows\n- **Predictive analytics** for identifying potential onboarding bottlenecks\n- **Chatbot integration** with 24/7 customer support capabilities\n- **Document processing AI** for automated data extraction and validation\n\n### Data Management\n- **Real-time data synchronization** across all touchpoints\n- **Secure data encryption** for sensitive customer information\n- **Data validation and cleansing** automation\n- **Customer data unification** from multiple sources\n- **Analytics dashboard** with real-time onboarding metrics\n\n### Integration Requirements\n- **CRM integration** (Salesforce, HubSpot, or client's preferred platform)\n- **Payment gateway integration** for automated billing setup\n- **Email marketing platform** integration for communication workflows\n- **Existing business systems** integration (ERP, accounting, etc.)\n- **Single Sign-On (SSO)** capability for enterprise clients\n\n### User Experience Requirements\n- **Mobile-responsive design** for onboarding accessibility\n- **Progressive web app (PWA)** capabilities for offline functionality\n- **Multi-language support** for international customers\n- **Accessibility compliance** (WCAG 2.1 AA standards)\n- **Personalized onboarding journeys** based on customer profile and preferences\n\n## Scope & Deliverables\n\n### Phase 1: Foundation & Core Infrastructure (Weeks 1-6)\n- [ ] **System Architecture Design**\n  - Technical architecture documentation\n  - API specifications and integration patterns\n  - Data flow diagrams and security protocols\n\n- [ ] **Core Platform Development**\n  - User management system\n  - Authentication and authorization framework\n  - Basic workflow engine setup\n\n### Phase 2: AI-Powered Onboarding Engine (Weeks 7-14)\n- [ ] **Intelligent Workflow System**\n  - Dynamic onboarding journey mapping\n  - AI-driven decision trees and routing\n  - Personalization engine implementation\n\n- [ ] **Communication Automation**\n  - Smart email templates and triggers\n  - AI chatbot development with NLP capabilities\n  - SMS and push notification integration\n\n### Phase 3: Data Processing & Integration (Weeks 15-20)\n- [ ] **Document Processing AI**\n  - Automated document upload and processing\n  - Intelligent data extraction from forms and documents\n  - Validation and verification workflows\n\n- [ ] **System Integration**\n  - CRM integration with data sync\n  - Payment gateway setup and testing\n  - Third-party API integrations\n\n### Phase 4: Analytics & Optimization (Weeks 21-24)\n- [ ] **",
+        "conversation_summary": "**Business Discovery Summary**\n\n- **Client**: Updated Test Client from Updated Test Company (SaaS industry, 50-200 employees)\n- **Key Challenge**: Manual customer onboarding process requiring 2 weeks, causing slow response times and poor user experience\n- **Goal**: Reduce onboarding time to 2 days with 90%+ customer satisfaction through AI-powered automation\n- **Investment**: $50,000-$100,000 budget over 3-6 month timeline, with decision-making authority and high urgency\n- **Recommended Service**: AI-Powered Customer Onboarding Automation solution to streamline processes and eliminate manual data entry",
+        "client_company": "Updated Test Company",
+        "client_name": "Updated Test Client",
+        "recommended_service": "AI Strategy Consulting",
+        "matched_expert": null,
+        "storage_url": "/api/v1/prd/1832f7f0-d14b-4e9f-a8bc-792700d4543a/download",
+        "download_count": 1,
+        "created_at": "2026-01-02T07:48:54.847545",
+        "expires_at": "2026-04-02T07:48:54.847547"
+      }
+    }
+  ]
+}

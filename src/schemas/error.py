@@ -17,7 +17,7 @@ class ErrorResponse(BaseModel):
     """Standard error response schema."""
 
     success: bool = Field(False, description="Always false for error responses")
-    error: str = Field(..., description="Error message")
+    detail: str = Field(..., description="Error message")
     error_code: str = Field(..., description="Machine-readable error code")
     timestamp: datetime = Field(default_factory=datetime.now, description="Error timestamp")
     path: Optional[str] = Field(None, description="API endpoint path")

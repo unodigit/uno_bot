@@ -47,7 +47,7 @@ async def validation_exception_handler(
 
     error_response = ValidationErrorResponse(
         success=False,
-        error="Validation failed",
+        detail="Validation failed",
         error_code="VALIDATION_ERROR",
         path=str(request.url),
         details=field_errors,
@@ -70,28 +70,28 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException) 
     if exc.status_code == 404:
         error_response = NotFoundErrorResponse(
             success=False,
-            error=exc.detail,
+            detail=exc.detail,
             error_code="NOT_FOUND",
             path=str(request.url),
         )
     elif exc.status_code == 400:
         error_response = BadRequestErrorResponse(
             success=False,
-            error=exc.detail,
+            detail=exc.detail,
             error_code="BAD_REQUEST",
             path=str(request.url),
         )
     elif exc.status_code == 409:
         error_response = ConflictErrorResponse(
             success=False,
-            error=exc.detail,
+            detail=exc.detail,
             error_code="CONFLICT",
             path=str(request.url),
         )
     else:
         error_response = InternalServerError(
             success=False,
-            error=exc.detail,
+            detail=exc.detail,
             error_code="INTERNAL_ERROR",
             path=str(request.url),
         )
@@ -107,28 +107,28 @@ async def unobot_exception_handler(request: Request, exc: UnoBotError) -> JSONRe
     if isinstance(exc, NotFoundError):
         error_response = NotFoundErrorResponse(
             success=False,
-            error=exc.message,
+            detail=exc.message,
             error_code=exc.error_code,
             path=str(request.url),
         )
     elif isinstance(exc, BadRequestError):
         error_response = BadRequestErrorResponse(
             success=False,
-            error=exc.message,
+            detail=exc.message,
             error_code=exc.error_code,
             path=str(request.url),
         )
     elif isinstance(exc, ConflictError):
         error_response = ConflictErrorResponse(
             success=False,
-            error=exc.message,
+            detail=exc.message,
             error_code=exc.error_code,
             path=str(request.url),
         )
     else:
         error_response = InternalServerError(
             success=False,
-            error=exc.message,
+            detail=exc.message,
             error_code=exc.error_code,
             path=str(request.url),
         )
@@ -153,7 +153,7 @@ async def database_exception_handler(request: Request, exc: SQLAlchemyError) -> 
     if isinstance(exc, IntegrityError):
         error_response = ConflictErrorResponse(
             success=False,
-            error="Database constraint violation",
+            detail="Database constraint violation",
             error_code="INTEGRITY_ERROR",
             path=str(request.url),
         )
@@ -161,7 +161,7 @@ async def database_exception_handler(request: Request, exc: SQLAlchemyError) -> 
     else:
         error_response = InternalServerError(
             success=False,
-            error="Database operation failed",
+            detail="Database operation failed",
             error_code="DATABASE_ERROR",
             path=str(request.url),
         )
@@ -185,7 +185,7 @@ async def external_service_exception_handler(request: Request, exc: Exception) -
 
     error_response = InternalServerError(
         success=False,
-        error="External service temporarily unavailable",
+        detail="External service temporarily unavailable",
         error_code="EXTERNAL_SERVICE_ERROR",
         path=str(request.url),
     )

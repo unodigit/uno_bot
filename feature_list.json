@@ -1681,7 +1681,8 @@
     "passes": false,
     "is_dev_done": true,
     "is_qa_passed": false,
-    "dev_completed_at": "2026-01-02T07:43:29.740493Z"
+    "dev_completed_at": "2026-01-02T07:49:10.905952Z",
+    "qa_retry_count": 0
   },
   {
     "category": "style",
@@ -1708,9 +1709,15 @@
       "Step 4: Verify enabled state styling",
       "Step 5: Verify hover state"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T18:48:54.521621Z",
+    "qa_completed_at": "2026-01-02T18:48:54.521625Z",
+    "test_files": [
+      "tests/e2e/test_button_styling.py"
+    ]
   },
   {
     "category": "style",
@@ -1722,9 +1729,14 @@
       "Step 4: Verify hover states",
       "Step 5: Verify selected state"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T18:48:54.521630Z",
+    "qa_completed_at": "2026-01-02T18:48:54.521631Z",
+    "test_files": [
+      "tests/e2e/test_button_styling.py"
+    ]
   },
   {
     "category": "style",

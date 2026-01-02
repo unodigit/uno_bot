@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     environment: str = "development"
 
     # Server
-    backend_port: int = 8001
+    backend_port: int = 8000
     frontend_port: int = 5173
     allowed_origins: str = "http://localhost:5173,http://localhost:5180,http://localhost:3000"
 
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     # Google Calendar
     google_client_id: str | None = None
     google_client_secret: str | None = None
-    google_redirect_uri: str = "http://localhost:8001/api/v1/auth/google/callback"
+    google_redirect_uri: str = "http://localhost:8000/api/v1/auth/google/callback"
 
     # SendGrid
     sendgrid_api_key: str | None = None

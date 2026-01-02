@@ -804,8 +804,14 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
                 <button
                   key={idx}
                   onClick={() => sendMessage(reply)}
-                  className="px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors border border-gray-300"
+                  className={twMerge(
+                    'px-3 py-1.5 text-xs rounded-full transition-all duration-200 border',
+                    'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+                    'disabled:opacity-50 disabled:cursor-not-allowed',
+                    'bg-surface text-text border-border hover:bg-gray-200 active:scale-95 shadow-sm'
+                  )}
                   disabled={isStreaming || isLoading}
+                  data-testid={`quick-reply-${idx}`}
                 >
                   {reply}
                 </button>
@@ -829,7 +835,14 @@ export function ChatWindow({ onClose, onMinimize }: ChatWindowProps) {
           <button
             onClick={handleSend}
             disabled={!inputValue.trim() || isStreaming || isLoading}
-            className="h-full px-4 bg-primary hover:bg-primary-dark disabled:bg-opacity-50 disabled:cursor-not-allowed text-white rounded-md transition-colors flex items-center justify-center"
+            className={twMerge(
+              'h-full px-4 rounded-md transition-all duration-200 flex items-center justify-center',
+              'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+              // Enabled state
+              (!inputValue.trim() || isStreaming || isLoading)
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-60'
+                : 'bg-primary hover:bg-primary-dark active:scale-95 text-white shadow-sm hover:shadow'
+            )}
             aria-label="Send message"
             data-testid="send-button"
           >

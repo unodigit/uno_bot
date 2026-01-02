@@ -263,8 +263,9 @@ class SessionService:
 
         # Extract name (simple heuristic - if it's a greeting response)
         if not session.client_info.get("name"):
-            # Look for patterns like "My name is John" or "I'm John" or "John"
-            name_match = re.search(r"(?:my name is|i am|i'm)\s+([a-zA-Z\s]+?)(?:\s|$|,|\.|!|\?)", user_text)
+            # Look for patterns like "My name is John Doe" or "I'm John Doe" or "John Doe"
+            # Capture full names (multiple words) until we hit punctuation or common stop words
+            name_match = re.search(r"(?:my name is|i am|i'm)\s+([a-zA-Z\s]+?)(?:\s+(?:and|but|or|with|from|at|in|to|for|on|about|my|our|we|i)|[,.!?]|$)", user_text)
             if name_match:
                 name = name_match.group(1).strip().title()
                 if len(name) > 1 and len(name) < 50:  # Basic validation

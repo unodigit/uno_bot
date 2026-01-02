@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>WebSocket Test Page</h1>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+
+        function log(message) {
+            const div = document.createElement('div');
+            div.textContent = new Date().toISOString() + ': ' + message;
+            output.appendChild(div);
+        }
+
+        // Test WebSocket connection
+        log('Starting WebSocket test...');
+
+        // Create a session first
+        fetch('http://localhost:8000/api/v1/sessions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                visitor_id: 'websocket-test-' + Date.now(),
+                source_url: 'http://localhost:5173/test',
+                user_agent: 'WebSocket Test'
+            })
+        })
+        .then(response => response.json())
+        .then(sessionData => {
+            log('Created session: ' + sessionData.id);
+
+            const session_id = sessionData.id;
+
+            // Connect to WebSocket
+            const socket = io('http://localhost:8000', {
+                transports: ['websocket'],
+                query: { session_id: session_id }
+            });
+
+            socket.on('connect', () => {
+                log('✅ WebSocket connected successfully!');
+
+                // Join session
+                socket.emit('join_session', { session_id: session_id });
+            });
+
+            socket.on('connected', (data) => {
+                log('✅ Received connected event: ' + JSON.stringify(data));
+
+                // Test sending a message
+                log('Sending test message...');
+                socket.emit('send_message', {
+                    content: 'Hello from WebSocket test!'
+                });
+            });
+
+            socket.on('message', (data) => {
+                log('✅ Received message: ' + JSON.stringify(data));
+            });
+
+            socket.on('typing_start', (data) => {
+                log('✅ Received typing_start: ' + JSON.stringify(data));
+            });
+
+            socket.on('typing_stop', (data) => {
+                log('✅ Received typing_stop: ' + JSON.stringify(data));
+            });
+
+            socket.on('phase_change', (data) => {
+                log('✅ Received phase_change: ' + JSON.stringify(data));
+            });
+
+            socket.on('error', (data) => {
+                log('❌ Received error: ' + JSON.stringify(data));
+            });
+
+            socket.on('disconnect', () => {
+                log('❌ WebSocket disconnected');
+            });
+
+            socket.on('connect_error', (error) => {
+                log('❌ WebSocket connection error: ' + error.message);
+            });
+        })
+        .catch(error => {
+            log('❌ Error: ' + error);
+        });
+    </script>
+</body>
+</html>
