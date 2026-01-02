@@ -1008,7 +1008,7 @@
       "Step 5: Start new chat and verify new message used"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T06:21:14.236709Z"
@@ -1023,11 +1023,14 @@
       "Step 4: Verify database status shown",
       "Step 5: Verify Redis status shown"
     ],
-    "passes": false,
+    "passes": true,
     "is_dev_done": true,
     "is_qa_passed": false,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T06:26:04.613388Z"
+    "dev_completed_at": "2026-01-02T06:26:04.613388Z",
+    "test_files": [
+      "tests/e2e/test_admin_conversation_analytics.py"
+    ]
   },
   {
     "category": "functional",
@@ -1039,7 +1042,7 @@
       "Step 4: Verify conversation can continue normally"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T05:53:37.835696Z"
@@ -1068,7 +1071,7 @@
       "Step 4: Verify bot understands industry-specific context"
     ],
     "passes": false,
-    "is_dev_done": true,
+    "is_dev_done": false,
     "is_qa_passed": false,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T06:11:55.836393Z"
@@ -1097,8 +1100,10 @@
       "Step 5: Verify SummarizationMiddleware kicks in if needed"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T06:30:43.375427Z"
   },
   {
     "category": "functional",
