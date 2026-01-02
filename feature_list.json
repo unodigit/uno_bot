@@ -1002,16 +1002,22 @@
     "description": "Admin can configure welcome message templates",
     "steps": [
       "Step 1: Log in to admin dashboard",
-      "Step 2: Navigate to settings",
-      "Step 3: Edit welcome message template",
-      "Step 4: Save changes",
-      "Step 5: Start new chat and verify new message used"
+      "Step 2: Navigate to Welcome Templates tab",
+      "Step 3: Create/edit welcome message template",
+      "Step 4: Set as default and save",
+      "Step 5: Start new chat and verify template is used"
     ],
     "passes": true,
     "is_dev_done": true,
     "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T17:45:00.000000Z"
+    "dev_completed_at": "2026-01-02T17:45:00.000000Z",
+    "qa_completed_at": "2026-01-02T20:30:00.000000Z",
+    "test_files": [
+      "tests/integration/test_welcome_templates.py",
+      "tests/e2e/test_admin_template_management.py",
+      "tests/e2e/test_admin_welcome_templates.py"
+    ]
   },
   {
     "category": "functional",
@@ -1041,11 +1047,15 @@
       "Step 3: Verify bot politely redirects",
       "Step 4: Verify conversation can continue normally"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T05:53:37.835696Z"
+    "dev_completed_at": "2026-01-02T20:15:00.000000Z",
+    "qa_completed_at": "2026-01-02T20:30:00.000000Z",
+    "test_files": [
+      "tests/e2e/test_ai_conversation_features.py"
+    ]
   },
   {
     "category": "functional",
@@ -1074,11 +1084,15 @@
       "Step 3: Verify bot uses relevant healthcare terms",
       "Step 4: Verify bot understands industry-specific context"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false,
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
     "qa_retry_count": 0,
-    "dev_completed_at": "2026-01-02T06:11:55.836393Z"
+    "dev_completed_at": "2026-01-02T20:15:00.000000Z",
+    "qa_completed_at": "2026-01-02T20:30:00.000000Z",
+    "test_files": [
+      "tests/e2e/test_ai_conversation_features.py"
+    ]
   },
   {
     "category": "functional",
@@ -1245,8 +1259,10 @@
       "Step 5: Verify PRD stored in database"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T06:44:57.587129Z"
   },
   {
     "category": "functional",
@@ -1259,8 +1275,10 @@
       "Step 5: Verify file content is valid markdown"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T06:45:23.307453Z"
   },
   {
     "category": "functional",
