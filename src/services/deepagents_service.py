@@ -280,7 +280,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
     def _tool_match_expert(self, service_type: str, business_context: dict[str, Any]) -> list[dict[str, Any]]:
         """Match experts to client needs based on service type and context."""
         # Get matching experts with scores
-        scored_experts = self.db.execute(
+        scored_experts = self.db.execute(  # type: ignore[call-overload]
             "SELECT * FROM experts WHERE services @> :service_type AND is_active = true",
             {"service_type": [service_type]}
         ).fetchall()
@@ -555,7 +555,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
     async def _build_conversation_history(self, session_id: uuid.UUID) -> list[dict[str, str]]:
         """Build conversation history from database."""
 
-        result = await self.db.execute(
+        result = await self.db.execute(  # type: ignore[call-overload]
             "SELECT role, content, created_at FROM messages WHERE session_id = :session_id ORDER BY created_at",
             {"session_id": session_id}
         )
@@ -591,7 +591,7 @@ Remember: Your goal is to provide value first, build trust, and naturally guide 
         ai_service = AIService()
 
         # Build conversation history
-        conversation_history = []
+        conversation_history: list[dict[str, str]] = []
         # This would need to be populated from session context
 
         # Generate response

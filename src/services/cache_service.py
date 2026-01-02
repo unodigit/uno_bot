@@ -2,17 +2,20 @@
 import asyncio
 import json
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from src.core.config import settings
 
+if TYPE_CHECKING:
+    import redis.asyncio as redis_async
+
 # Try to import Redis, fallback to in-memory if not available
 try:
-    import redis.asyncio as redis_async
+    import redis.asyncio as redis_async  # type: ignore[import-not-found]
     REDIS_AVAILABLE = True
 except ImportError:
     REDIS_AVAILABLE = False
-    redis_async = None
+    redis_async = None  # type: ignore[assignment,unused-ignore]
 
 
 class InMemoryCache:
@@ -224,7 +227,7 @@ class CacheService:
         if self.use_redis and self.redis:
             try:
                 result = await self.redis.delete(key)
-                return result > 0
+                return bool(result > 0)
             except Exception:
                 return False
         else:
@@ -235,7 +238,7 @@ class CacheService:
         if self.use_redis and self.redis:
             try:
                 result = await self.redis.exists(key)
-                return result > 0
+                return bool(result > 0)
             except Exception:
                 return False
         else:
@@ -246,7 +249,7 @@ class CacheService:
         if self.use_redis and self.redis:
             try:
                 result = await self.redis.expire(key, ttl)
-                return result > 0
+                return bool(result > 0)
             except Exception:
                 return False
         else:
@@ -256,7 +259,7 @@ class CacheService:
         """Get remaining TTL for a key."""
         if self.use_redis and self.redis:
             try:
-                return await self.redis.ttl(key)
+                return int(await self.redis.ttl(key))
             except Exception:
                 return -1
         else:
@@ -266,7 +269,8 @@ class CacheService:
         """Get all keys matching a pattern."""
         if self.use_redis and self.redis:
             try:
-                return await self.redis.keys(pattern)
+                result = await self.redis.keys(pattern)
+                return list(result) if result else []
             except Exception:
                 return []
         else:
@@ -278,7 +282,8 @@ class CacheService:
             try:
                 keys = await self.keys(pattern)
                 if keys:
-                    return await self.redis.delete(*keys)
+                    result = await self.redis.delete(*keys)
+                    return int(result)
                 return 0
             except Exception:
                 return 0
@@ -289,7 +294,8 @@ class CacheService:
         """Increment a numeric value in cache."""
         if self.use_redis and self.redis:
             try:
-                return await self.redis.incr(key, amount)
+                result = await self.redis.incr(key, amount)
+                return int(result)
             except Exception:
                 return 0
         else:

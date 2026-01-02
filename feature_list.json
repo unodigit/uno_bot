@@ -2863,7 +2863,8 @@
     "is_qa_passed": true,
     "qa_retry_count": 0,
     "dev_completed_at": "2026-01-02T12:41:39.364613+00:00",
-    "qa_completed_at": "2026-01-02T12:41:39.364617+00:00"
+    "qa_completed_at": "2026-01-02T12:41:39.364617+00:00",
+    "notes": "QueryClient provider added, useExperts hook created"
   },
   {
     "category": "functional",
@@ -2892,9 +2893,10 @@
       "Step 4: Verify lists render",
       "Step 5: Verify code blocks render"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "notes": "PRDPreview component with full markdown rendering"
   },
   {
     "category": "functional",
@@ -2906,8 +2908,10 @@
       "Step 4: Verify ARIA attributes present"
     ],
     "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "is_dev_done": true,
+    "is_qa_passed": false,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T12:47:02.604753Z"
   },
   {
     "category": "functional",
@@ -2944,9 +2948,11 @@
       "Step 3: Verify code splitting works",
       "Step 4: Verify assets are minified"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T12:50:35.577103Z",
+    "qa_completed_at": "2026-01-02T12:50:35.577109Z"
   },
   {
     "category": "functional",
@@ -3065,9 +3071,12 @@
       "Step 3: Verify fallback UI shown",
       "Step 4: Verify can recover"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "qa_retry_count": 0,
+    "dev_completed_at": "2026-01-02T12:49:32.625483+00:00",
+    "qa_completed_at": "2026-01-02T12:49:32.625493+00:00"
   },
   {
     "category": "functional",
