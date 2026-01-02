@@ -57,7 +57,7 @@ class BookingService:
         if not timezone:
             try:
                 timezone = await self.calendar_service.get_calendar_timezone(
-                    expert.refresh_token
+                    expert.refresh_token or ''
                 )
             except Exception:
                 timezone = 'UTC'
@@ -68,7 +68,7 @@ class BookingService:
 
         # Get availability from Google Calendar
         time_slots = await self.calendar_service.get_expert_availability(
-            refresh_token=expert.refresh_token,
+            refresh_token=expert.refresh_token or '',
             timezone=timezone,
             days_ahead=days_ahead,
             min_slots_to_show=min_slots_to_show
@@ -153,7 +153,7 @@ class BookingService:
         # Create calendar event
         try:
             calendar_event_id = await self.calendar_service.create_calendar_event(
-                refresh_token=expert.refresh_token,
+                refresh_token=expert.refresh_token or '',
                 expert_email=expert.email,
                 client_name=client_name,
                 client_email=client_email,
@@ -326,7 +326,7 @@ class BookingService:
         if end_date:
             query = query.where(Booking.end_time <= end_date)
 
-        query = query.options(selectinload(Booking.session))
+        query = query.options(selectinload(Booking.session))  # type: ignore[attr-defined]
 
         result = await self.db.execute(query)
         bookings = result.scalars().all()
@@ -356,7 +356,7 @@ class BookingService:
                 Booking.start_time >= start_window,
                 Booking.start_time < end_window,
                 # Only send once per reminder period
-                Booking.reminder_sent_at is None
+                Booking.reminder_sent_at == None  # noqa: E711
             )
         )
 

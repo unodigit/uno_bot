@@ -355,6 +355,8 @@ async def oauth_callback(
 
             # Update expert with refresh token and calendar ID
             await expert_service.update_expert(expert, ExpertUpdate(
+                name=None,
+                role=None,
                 refresh_token=credentials.refresh_token,
                 calendar_id=credentials.client_id  # Store client_id as calendar_id for now
             ))

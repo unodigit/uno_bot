@@ -128,6 +128,7 @@ class ConversationSession(Base):
         "Message", back_populates="session", order_by="Message.created_at"
     )
 
+    bookings = relationship("Booking", back_populates="session")
     def __repr__(self) -> str:
         return f"<ConversationSession(id={self.id}, status={self.status})>"
 

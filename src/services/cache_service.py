@@ -11,11 +11,11 @@ if TYPE_CHECKING:
 
 # Try to import Redis, fallback to in-memory if not available
 try:
-    import redis.asyncio as redis_async  # type: ignore[import-not-found]
+    import redis.asyncio as redis_async
     REDIS_AVAILABLE = True
 except ImportError:
     REDIS_AVAILABLE = False
-    redis_async = None  # type: ignore[assignment,unused-ignore]
+    redis_async = None  # type: ignore
 
 
 class InMemoryCache:
@@ -342,7 +342,7 @@ class CacheService:
         if self.use_redis and self.redis:
             try:
                 result = await self.redis.hdel(key, field)
-                return result > 0
+                return bool(result > 0)
             except Exception:
                 return False
         else:

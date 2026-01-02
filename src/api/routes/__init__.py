@@ -44,7 +44,7 @@ async def check_redis_health() -> str:
     try:
         import redis
         client = redis.Redis.from_url(settings.redis_url, socket_connect_timeout=2)
-        client.ping()
+        if client: client.ping()
         return "healthy"
     except redis.exceptions.ConnectionError:
         return "unavailable"
@@ -94,7 +94,7 @@ async def cache_status(admin_data: dict = Depends(require_admin_auth)):
         await cache_service.connect()
 
         # Get cache statistics
-        stats = {
+        stats: dict[str, object] = {
             "status": "healthy",
             "prefixes": CACHE_PREFIXES,
             "total_keys": 0,
@@ -104,8 +104,8 @@ async def cache_status(admin_data: dict = Depends(require_admin_auth)):
         # Count keys by prefix
         for prefix_name, prefix_value in CACHE_PREFIXES.items():
             keys = await cache_service.keys(f"{prefix_value}*")
-            stats["key_counts"][prefix_name] = len(keys)
-            stats["total_keys"] += len(keys)
+            stats["key_counts"][prefix_name] = len(keys)  # type: ignore[index]
+            stats["total_keys"] = int(stats["total_keys"]) + len(keys)  # type: ignore[index]
 
         return stats
     except Exception as e:

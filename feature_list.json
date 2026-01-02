@@ -2977,9 +2977,11 @@
       "Step 4: Delete records",
       "Step 5: Verify relationships work"
     ],
-    "passes": false,
-    "is_dev_done": false,
-    "is_qa_passed": false
+    "passes": true,
+    "is_dev_done": true,
+    "is_qa_passed": true,
+    "dev_completed_at": "2026-01-02T12:53:33.609530Z",
+    "qa_completed_at": "2026-01-02T12:53:33.609537Z"
   },
   {
     "category": "functional",

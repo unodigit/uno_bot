@@ -16,13 +16,14 @@ try:
     from src.services.cache_service import cache_service, get_cache_service
     CACHE_AVAILABLE = True
 except ImportError:
+    from typing import Any
     CACHE_AVAILABLE = False
     # Create a dummy cache service for when Redis is not available
     class DummyCacheService:
         async def connect(self): pass
         async def disconnect(self): pass
-    cache_service = DummyCacheService()
-    def get_cache_service():
+    cache_service: Any = DummyCacheService()
+    def get_cache_service() -> Any:
         return cache_service
 
 from src.api.routes import router

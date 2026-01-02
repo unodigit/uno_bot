@@ -74,6 +74,7 @@ class Booking(Base):
 
     # Relationships
     expert = relationship("Expert", back_populates="bookings")
+    session = relationship("ConversationSession", back_populates="bookings")
 
     def __repr__(self) -> str:
         return f"<Booking(id={self.id}, status={self.status})>"

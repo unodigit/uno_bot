@@ -294,7 +294,7 @@ async def resume_session(
     session = await service.get_session(resume_request.session_id)
 
     if not session:
-        raise NotFoundError("Session", resume_request.session_id)
+        raise NotFoundError("Session", str(resume_request.session_id))
 
     # Check if session is completed (handle both string and enum)
     status_value = session.status.value if hasattr(session.status, 'value') else session.status
@@ -499,7 +499,7 @@ async def unsubscribe_from_marketing(
 
     session = await service.get_session(unsubscribe_request.session_id)
     if not session:
-        raise NotFoundError("Session", unsubscribe_request.session_id)
+        raise NotFoundError("Session", str(unsubscribe_request.session_id))
 
     # Update email preferences to opt out of marketing
     session.email_opt_in = False
