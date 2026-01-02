@@ -131,6 +131,12 @@ async def test_feature_187_non_decision_maker(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
@@ -165,6 +171,12 @@ async def test_feature_188_success_criteria_collection(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
@@ -200,6 +212,12 @@ async def test_feature_188_vague_success_criteria(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
@@ -231,6 +249,12 @@ async def test_feature_189_intent_detection_ai_strategy(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
@@ -263,6 +287,12 @@ async def test_feature_189_intent_detection_custom_dev(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
@@ -306,6 +336,12 @@ async def test_feature_190_context_retention_long_conversation(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
@@ -361,6 +397,12 @@ async def test_feature_190_context_references_earlier_info(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
@@ -400,6 +442,12 @@ async def test_lead_score_calculation_with_decision_maker(test_db):
                 MessageCreate(content=msg),
             MessageRole.USER
             )
+            # Extract information from the message
+            await service._extract_user_info(created_session, msg)
+
+        # Recommend service based on extracted info
+        await service._recommend_service(created_session)
+
 
         await session.refresh(created_session)
 
