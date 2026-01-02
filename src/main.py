@@ -9,13 +9,21 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket as FastAPIWebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from socketio import AsyncServer
+from socketio import AsyncServer, ASGIApp
 
 from src.api.routes import router
 from src.core.config import settings
 from src.core.database import init_db, AsyncSessionLocal
 from src.core.exception_handlers import register_exception_handlers
-from src.api.routes.websocket import manager, handle_chat_message, handle_generate_prd, handle_match_experts, handle_get_availability, handle_create_booking
+from src.api.routes.websocket import (
+    sio,
+    manager,
+    handle_chat_message,
+    handle_generate_prd,
+    handle_match_experts,
+    handle_get_availability,
+    handle_create_booking
+)
 
 # Configure logging
 logging.basicConfig(
@@ -23,12 +31,6 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
-
-# Socket.IO server
-sio = AsyncServer(
-    cors_allowed_origins=settings.allowed_origins.split(","),
-    async_mode="asgi",
-)
 
 
 @asynccontextmanager
@@ -286,7 +288,9 @@ async def handle_socket_booking(sid: str, data: dict) -> None:
 
 
 # Mount Socket.IO ASGI app
-app.mount("/ws", sio)
+# Use socketio_path=None to handle all traffic at /ws/* paths
+socketio_app = ASGIApp(sio, socketio_path=None)
+app.mount("/ws", socketio_app)
 
 
 @app.get("/", tags=["root"])

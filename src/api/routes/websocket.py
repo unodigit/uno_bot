@@ -4,7 +4,9 @@ import uuid
 from typing import Dict, Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from socketio import AsyncServer
 
+from src.core.config import settings
 from src.models.session import MessageRole
 from src.schemas.session import MessageCreate
 from src.services.session_service import SessionService
@@ -12,6 +14,14 @@ from src.services.prd_service import PRDService
 from src.services.expert_service import ExpertService
 
 logger = logging.getLogger(__name__)
+
+# Socket.IO server
+sio = AsyncServer(
+    cors_allowed_origins=settings.allowed_origins.split(","),
+    async_mode="asgi",
+    logger=True,
+    engineio_logger=False,
+)
 
 
 class WebSocketManager:
