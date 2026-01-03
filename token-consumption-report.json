@@ -1,0 +1,17 @@
+{
+  "project_name": "unobot",
+  "project_dir": "unobot",
+  "report_generated": "2026-01-02T23:25:37.748050+00:00",
+  "summary": {
+    "total_sessions": 0,
+    "total_api_calls": 0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_tokens": 0,
+    "total_duration_seconds": 0.0,
+    "estimated_cost_usd": 0.0
+  },
+  "endpoint_breakdown": {},
+  "sessions": [],
+  "calls": []
+}
